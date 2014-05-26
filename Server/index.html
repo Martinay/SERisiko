@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>JSServer Example</title>
+</head>
+<body>
+    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var socket = io.connect('http://localhost');
+
+        RegisterResponses();
+        
+        function AddNewPlayer() {
+            var playerName = document.getElementById("PlayerName").value;
+            socket.emit('AddNewPlayer', {playerName : new Player(playerName)});
+        }
+
+        function AddNewRealm() {
+            var realmName = document.getElementById("RealmName").value;
+            socket.emit('AddNewRealm', {realm : new Realm(realmName)});
+        }
+
+        function AddNewPlayerToRealm() {
+            var realmGuid = document.getElementById("RealmGuid").value;
+            var playerGuid = document.getElementById("PlayerGuid").value;
+            socket.emit('AddNewPlayerToRealm', { realm: realmGuid, guid: playerGuid });
+        }
+
+        function GetRealmList() {
+            socket.emit('GetRealmList');
+        }
+
+        function GetPlayerList() {
+            socket.emit('GetPlayerList');
+        }
+        
+        function RegisterResponses() {
+            socket.on('GetRealmListResponse', function (data) {
+                WriteRealmList(data);
+            });
+
+            socket.on('GetPlayerListResponse', function (data) {
+                WritePlayerList(data);
+            });
+        }
+
+        function WriteRealmList(data) {
+            var realmString = "";
+            for (var i = 0; i < data.realms.length; i++) {
+                var realm = data.realms[i].realm;
+                realmString += realm.RealmName + " Guid: " + realm.Guid + " Players : " + realm.Players.length + "; ";
+            }
+
+            document.getElementById("RealmListe").innerHTML = realmString;
+        };
+
+        function WritePlayerList(data) {
+            var playerString = "";
+            for (var i = 0; i < data.players.length; i++) {
+                var player = data.players[i].playerName;
+                playerString += player.PlayerName + " Guid: " + player.Guid + "; ";
+            }
+
+            document.getElementById("PlayerListe").innerHTML = playerString;
+        };
+
+
+        var Realm = function (name) {
+            this.RealmName = name;
+            this.Guid = GenerateGuid();
+            this.Players = [];
+            this.AddPlayer = function (player) { Players.push(player) };
+            return this;
+        }
+
+        var Player = function (name) {
+            this.PlayerName = name;
+            this.Guid = GenerateGuid();
+            return this;
+        }
+
+        function GenerateGuid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+    </script>
+    
+    <form>
+        <input type="text" id="PlayerName" placeholder="Playername"/>
+        <input type="submit" onclick="AddNewPlayer()"/>
+    </form>
+    
+    <form>
+        <input type="text" id="RealmName" placeholder="RealmName" />
+        <input type="submit" onclick="AddNewRealm()" />
+    </form>
+
+    <input type="submit" value="GetRealms!" onclick="GetRealmList()">
+    RealmListe:
+    <span id="RealmListe"></span><br />
+    
+    <input type="submit" value="GetPlayers!" onclick="GetPlayerList()">
+    PlayerListe:
+    <span id="PlayerListe"></span>
+    
+    <form>
+        <input type="text" id="RealmGuid" placeholder="RealmGuid" />
+        <input type="text" id="PlayerGuid" placeholder="PlayerGuid" />
+        <input type="submit" onclick="AddNewPlayerToRealm()" />
+    </form>
+
+</body>
+</html>
