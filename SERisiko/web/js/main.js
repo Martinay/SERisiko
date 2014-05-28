@@ -6,7 +6,7 @@ function Main() {
 	this.sctTable = null;
 	this.gameWindow = null;
 	this.gameList = new GameList();
-	this.connection = null;
+	this.connection = new RisikoApi();
 	
 	//#Private Vars
 	var thePlayerName = "";
@@ -18,183 +18,182 @@ function Main() {
 	
 	//#Preinitiator
 	window.onload = function () {
-		canvas = document.getElementById("screen");
-		ctx = canvas.getContext("2d");
-		
-		ctx.strokeRect(40, 40, 80, 40);
-		ctx.fillText("SE_RISK", 50, 65);
+            canvas = document.getElementById("screen");
+            ctx = canvas.getContext("2d");
+
+            ctx.strokeRect(40, 40, 80, 40);
+            ctx.fillText("SE_RISK", 50, 65);
 	}
 	
 	// Start ConnectionToServer
-
-	$(function() {
-		connection = new RisikoApi();
-		connection.onmessage = function(elem) { //get message from server
-			console.log( elem );
-			$('#message').append(elem.data);
-		};
-	});
-	
+        this.connection.onmessage = function(elem) { //get message from server
+            console.log( elem );
+            $('#message').append(elem.data);
+        };
 	
 	
 	//# Public Methods
 	this.setPlayerName = function(){
-		var name = document.getElementById("playerName").value;
-		if(name == "" || name == "Ihr Spielername")
-			return false;
-		thePlayerName = name;
-		
-		// check for name from server
-		// if valid
-		hideElement(document.getElementById("setPlayerName"));
-		showElement(document.getElementById("selectGame"));
-		divs = document.getElementsByClassName('playerNameDisplay');
-		[].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-		
-		// create selectable Table
-		this.sctTable = new SelectableTable(this.gameList);
-		gameListRefresher = $.timer(function(){main.updateGameList();}, 2000);
-		gameListRefresher.play();
+            var name = document.getElementById("playerName").value;
+            if(name == "" || name == "Ihr Spielername")
+                    return false;
+            thePlayerName = name;
 
-		return true;
+            // create Player on Server
+            this.connection.joinServer(thePlayerName);
+
+            // create Player on Client
+            hideElement(document.getElementById("setPlayerName"));
+            showElement(document.getElementById("selectGame"));
+            divs = document.getElementsByClassName('playerNameDisplay');
+            [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
+
+            // create selectable Table
+            this.sctTable = new SelectableTable(this.gameList);
+            gameListRefresher = $.timer(function(){main.updateGameList();}, 2000);
+            gameListRefresher.play();
+
+            return true;
 	}
 
 	this.deletePlayerName = function(){
-		if(thePlayerName == "")
-			return false;
-		
-		// delete playername from server
-		
-		// delete playername from client
-		thePlayerName = "";
-		
-		// revert menu
-		showElement(document.getElementById("setPlayerName"));
-		hideElement(document.getElementById("selectGame"));
-		gameListRefresher.pause();
+            if(thePlayerName == "")
+                return false;
 
-		divs = document.getElementsByClassName('playerNameDisplay');
-		[].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
-		this.sctTable.clear("availableGames");
+            // delete playername from server
+
+            // delete playername from client
+            thePlayerName = "";
+
+            // revert menu
+            showElement(document.getElementById("setPlayerName"));
+            hideElement(document.getElementById("selectGame"));
+            gameListRefresher.pause();
+
+            divs = document.getElementsByClassName('playerNameDisplay');
+            [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
+            this.sctTable.clear("availableGames");
 	}
 	
 	this.backToLobby = function(){
-		showElement(document.getElementById("selectGame"));
-		hideElement(document.getElementById("game"));
-		hideElement(document.getElementById("newGame"));
-		game = "stopped";
-		gameListRefresher.play();
-		playerListRefresher.pause();
+            showElement(document.getElementById("selectGame"));
+            hideElement(document.getElementById("game"));
+            hideElement(document.getElementById("newGame"));
+            game = "stopped";
+            gameListRefresher.play();
+            playerListRefresher.pause();
 	}
 	
 	this.setGame = function(id){
-		if(this.sctTable != null){
-			//if(this.sctTable.isSelected()){
-			if(id > 0 && id <= this.gameList.getGameAmount() && id <= this.sctTable.getRows()){
-				//alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
-				alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
-				startGame(this.sctTable, id);
-			}
-			else
-				alert("You must select a Game first!");
-		}
-		else
-			alert("Error! no gameTable");
+            if(this.sctTable != null){
+                //if(this.sctTable.isSelected()){
+                if(id > 0 && id <= this.gameList.getGameAmount() && id <= this.sctTable.getRows()){
+                        //alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
+                        alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
+                        startGame(this.sctTable, id);
+                }
+                else
+                        alert("You must select a Game first!");
+            }
+            else
+                    alert("Error! no gameTable");
 	}
 	
 	this.showCreateNewGame = function(){
-		showElement(document.getElementById("newGame"));
-		hideElement(document.getElementById("selectGame"));
-		gameListRefresher.pause();
+            showElement(document.getElementById("newGame"));
+            hideElement(document.getElementById("selectGame"));
+            gameListRefresher.pause();
 	}
 	
 	this.createNewGame = function(){
-		//check game settings....
-		var gameName = document.getElementById("gameName").value;
-		var maxPlayers = document.getElementById("maxPlayers").value;
-		var gameSettings = document.getElementById("gameSettings").value;
-		//parse data to server
-		//verify 
-		//create game
-		alert("coming soon...");
+            //check game settings....
+            var gameName = document.getElementById("gameName").value;
+            var maxPlayers = document.getElementById("maxPlayers").value;
+            var gameSettings = document.getElementById("gameSettings").value;
+            //parse data to server
+            //verify 
+            //create game
+            alert("coming soon...");
 	}
 	
 	this.updateGameList = function(){
-		if(this.sctTable != null){
-			this.sctTable.clear("availableGames");
-			getGameList(this.sctTable, this.gameList);
-		}
-		else
-			alert("Error! no gameTable");	
+            if(this.sctTable != null){
+                    this.sctTable.clear("availableGames");
+                    getGameList(this.sctTable, this.gameList);
+            }
+            else
+                    alert("Error! no gameTable");	
 	}
 	
 	this.minmax = function(value, min, max){
-		if(parseInt(value) < min || isNaN(value)) 
-			return min; 
-		else if(parseInt(value) > max) 
-			return max; 
-		else return value;
+            if(parseInt(value) < min || isNaN(value)) 
+                return min; 
+            else if(parseInt(value) > max) 
+                return max; 
+            else return value;
 	}
 	
 	this.checkForKey = function(caller, key){
-		switch(caller){
-			case "playerName":
-				if(key == 13)
-					this.setPlayerName();
-				break;
-			default:
-				//nothing
-		}
+            switch(caller){
+                case "playerName":
+                        if(key == 13)
+                                this.setPlayerName();
+                        break;
+                default:
+                        //nothing
+            }
 	}
 	
 	this.readyToPlay = function(){		
-		// send to server : player ready
-		updatePlayerList();
+            // send to server : player ready
+            updatePlayerList();
 	}
 	
 	this.updatePlayerList = function(){
-		// get playerlsit from server // get ready state of pl from server
-		var players = [ // pseudo test data
-					  {"name" : "Hans von Massow", "rdy" : 1},
-					  {"name" : "Maismüller", "rdy" : 1},
-					  {"name" : "Karl-Heinz", "rdy" : 0},
-					  {"name" : "Philipp", "rdy" : 1},
-					  {"name" : "Alex", "rdy" : 0},
-					  {"name" : "Nerv", "rdy" : 1}
-					  ];			  	  
-		var rdy = '<img id="Ready" src="img/Gruener-Haken.jpg" width="15" align="right"/>';
-		var notRdy = '';
-		
-		document.getElementById("PlayerList").innerHTML = "";
-		for(var i = 0; i < 6; i++){
-			$("#PlayerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
-		}
+            // get playerlsit from server // get ready state of pl from server
+            var players = [ // pseudo test data
+                            {"name" : "Hans von Massow", "rdy" : 1},
+                            {"name" : "Maismï¿½ller", "rdy" : 1},
+                            {"name" : "Karl-Heinz", "rdy" : 0},
+                            {"name" : "Philipp", "rdy" : 1},
+                            {"name" : "Alex", "rdy" : 0},
+                            {"name" : "Nerv", "rdy" : 1}
+                            ];			  	  
+            var rdy = '<img id="Ready" src="img/Gruener-Haken.jpg" width="15" align="right"/>';
+            var notRdy = '';
+
+            document.getElementById("PlayerList").innerHTML = "";
+            for(var i = 0; i < 6; i++){
+                    $("#PlayerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
+            }
 	}
 	
 	//# Private Methods
-    var startGame = function(table, id){
-		this.gameWindow = new GameWindow(canvas, ctx);
-			
-		showElement(document.getElementById("game"));
-		hideElement(document.getElementById("selectGame"))
-		gameListRefresher.pause();
-		game = "running";
-		table.selectRow(0);
-		
-		playerListRefresher = $.timer(function(){main.updatePlayerList();}, 2000);
-		playerListRefresher.play();
-    }
+        var startGame = function(table, id){
+            this.gameWindow = new GameWindow(canvas, ctx);
+
+            showElement(document.getElementById("game"));
+            hideElement(document.getElementById("selectGame"))
+            gameListRefresher.pause();
+            game = "running";
+            table.selectRow(0);
+
+            playerListRefresher = $.timer(function(){main.updatePlayerList();}, 2000);
+            playerListRefresher.play();
+
+            this.connection.joinGame("gameNumber");
+        }
 	var hideElement = function(element){
-		element.style.display = "none";
+            element.style.display = "none";
 	}
 	var showElement = function(element){
-		element.style.display = "block";
+            element.style.display = "block";
 	}
 	
 	var getGameList = function(table, list){
-		list.addGame(["Game 1", "DHBW", "1/6", "n/a"], table);
-		list.addGame(["Game 42", "World", "0/6", "n/a"], table);
-		list.addGame(["Game 3", "DHBW", "4/6", "n/a"], table);
+            list.addGame(["Game 1", "DHBW", "1/6", "n/a"], table);
+            list.addGame(["Game 42", "World", "0/6", "n/a"], table);
+            list.addGame(["Game 3", "DHBW", "4/6", "n/a"], table);
 	}
 }
 
@@ -321,11 +320,12 @@ function GameList(){
 	}
 }
 
-function GameObject(name, mp, maxP, set){
+function GameObject(name, number, mp, maxP, set){
 	//#Public Vars
 	
 	//#Private Vars
 	var gameName = name;
+        var gameNumer = number;
 	var map = mp;
 	var maxPlayers = maxP;
 	var settings = gameName;
