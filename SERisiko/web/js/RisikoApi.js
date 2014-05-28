@@ -1,12 +1,8 @@
-
-
-var WebSocketApi = function(address, port, host) {
-    
-      port = port || 8080;
+//@TODO clean up and restruckture
+var WebSocketApi = function(address, host) {
       address = address || '';
       host = host || document.location.host;
-      
-    var ws = new WebSocket('ws://' + host + ':'+port+address);
+    var ws = new WebSocket('ws://' + host + ''+address);
       
     ws.onopen = function() { 
         console.log("Connected");
@@ -39,12 +35,16 @@ var WebSocketApi = function(address, port, host) {
 //client Api
 var RisikoApi = function() {
     
-    var socket = new WebSocketApi('/websocket', 80);
+    var socket = new WebSocketApi('/websocket');
     
-    socket.joinLobby = function(playerName){
-        socket.call("joinLobby", playerName);
+    
+    socket.joinServer = function(playerName){
+        socket.call("joinServer", playerName);
     };
     
+    socket.joinLobby = function(){
+        socket.call("joinLobby");
+    };
     socket.leaveLobby = function() {
         socket.call("leaveLobby");
     };
@@ -57,22 +57,30 @@ var RisikoApi = function() {
     socket.createGame = function() {
         socket.call("createGame");
     };
-    socket.createGame = function() {
+    socket.startGame = function() {
         socket.call("startGame");
     };
     
+    socket.listOpenGames = function() {
+        socket.call("listOpenGames");
+    };    
+    socket.listPlayers = function() {
+        socket.call("listPlayers");
+    }; 
+    
+    
+    socket.attack = function(source, target, value) {
+        socket.call("attack", source, target, value);
+    }; 
+    socket.move = function(source, target, value) {
+        socket.call("move", source, target, value);
+    }; 
+    socket.set = function(target, value) {
+        socket.call("set", target, value);
+    }; 
+    socket.endTurn = function() {
+        socket.call("endTurn");
+    }; 
+    
     return socket;
 };
-
-
-
-//example
-var connection;
-
-$(function() {
-    connection = new RisikoApi();
-    connection.onmessage = function(elem) { //get message from server
-        console.log( elem );
-        $('#message').append(elem.data);
-    };
-});
