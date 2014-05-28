@@ -1,12 +1,13 @@
 package ServerLogic.Responses;
 
-import java.util.UUID;
-
-/**
- * Created by Martin on 5/28/2014.
- */
 public class Player {
-    public UUID Uuid;
+    public int ID;
     public String Name;
     public boolean Ready;
+
+    public Player(int playerID, String playerName) {
+        ID = playerID;
+        Name = playerName;
+        Ready = false;
+    }
 }

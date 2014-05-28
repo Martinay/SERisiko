@@ -31,7 +31,7 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public void CreatePlayer(int playerID, String playerName) {
-
+        _lobby.AddPlayer(new Player(playerID,playerName));
     }
 
     @Override
