@@ -1,120 +1,119 @@
 ﻿<html>
 <head>
-	<!-- root dir -->
-	<base href="http://localhost/">
+    <!-- root dir -->
+    <base href="http://localhost/">
 
-	<!-- javascripts -->
-	<script src="js/jquery-2.1.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.timer.js"></script>
-        <script src="js/RisikoApi.js"></script>
-	<script src="js/main.js"></script>
-	
-	<!-- style sheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="css/style.css">
+    <!-- javascripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.timer.js"></script>
+    <script src="js/RisikoApi.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- style sheets -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<br />
-	<div id="setPlayerName">
-		<table id="tableLogin">
-			<tr>
-				<th colspan="2">
-					<h1>Bitte geben Sie Ihren Spielernamen ein</h1><br /><br>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					<input id="playerName" value="Ihr Spielername" onkeyup="main.checkForKey('playerName', event.keyCode)">
-				</td>
-				<td>
-					<button onClick="main.setPlayerName()">Go</button>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div id="selectGame">
-		<table id="tableSelectGame">
-			<tr>
-				<th colspan="2"><h3><div class="playerNameDisplay" style="text-align: center;"></div></h3></th>
-			</tr>
-			<tr>
-				<th colspan="4">
-					<br>
-					<div id="gameList">
-						<table align="center" id="availableGames">
-							<tr>
-								<th>Name</th>
-								<th>Map</th>
-								<th>Player</th>
-								<th>Settings</th>
-							</tr>
-						</table>
-					</div>
-					<br>
-				</th>	
-			</tr>
-			<tr>
-				<td><button  name="deletePlayerName" onClick='main.deletePlayerName();'>Zurück</button></td>
-				<td><button  name="showCreatetNewGame" onClick='main.showCreateNewGame()'>neues Spiel erstellen</button></td>
-			</tr>
-		</table>
-	</div>
-	<div id="newGame">
-		<table>
-			<tr>
-				<th colspan="2">
-					<h3><div class="playerNameDisplay" style="text-align: center;"></div></h3>
-				</th>
-			</tr>
-			<tr>
-				<td>Name des Spiels:</td>
-				<td><input id="playName" value="Spielname" size="26"></td>
-			</tr>
-			<tr>
-				<td>Anzahl der Spieler:</td>
-				<td><input id="playerCount" value="6" size="26" onkeyup="this.value = main.minmax(this.value, 2, 6)"></td>
-			</tr>
-			<tr>
-				<td>Einstellungen des Spiels:</td>
-				<td><input id="playSettings" value="Spieleinstellungen" size="26"></td>
-			</tr>
-			<tr>
-				<th><button  name="backToLobby" onClick='main.backToLobby()'>Zurück</button></th>
-				<th><button  name="createtNewGame" onClick="main.createNewGame()">neues Spiel erstellen</button></th>
-			</tr>
-		</table>
-	</div>
-	<div id="game"> 
-		<div id="gameOptions">
-			<table>
-				<tr>
-					<th><div id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </div></th>
-				</tr>
-				<tr>
-					<th style="padding-bottom: 10px;">Ihre Mitspieler</th>
-				</tr>
-				<tr>
-					<td id="PlayerList">
-					</td>
-				</tr>
-				<tr>
-					<th style="padding-top: 10px;">
-						<button  name="readyToPlay" onClick='main.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
-						<button  name="backToLobby" onClick='main.backToLobby()'>Spiel verlassen</button>
-					</th>
-				</tr>
-			</table>
-		</div>
-		<div id="GameScreen">
-			<h3><div class="playerNameDisplay" style="text-align: center;"> Teste </div></h3>
-			<canvas id='screen' width='800' height='480'></canvas>
-			<br><br>
-		</div>
-	</div>
-	<br><br>
-	<!-- Results -->
+    <br />
+    <div id="setPlayerName">
+        <table id="tableLogin">
+            <tr>
+                <th colspan="2">
+                    <h1>Bitte geben Sie Ihren Spielernamen ein</h1><br /><br>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <input id="playerName" value="Ihr Spielername" onkeyup="main.checkForKey('playerName', event.keyCode)">
+                </td>
+                <td>
+                    <button onClick="main.setPlayerName()">Go</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="selectGame">
+        <table id="tableSelectGame">
+            <tr>
+                <th colspan="2"><h3><div class="playerNameDisplay" style="text-align: center;"></div></h3></th>
+            </tr>
+            <tr>
+                <th colspan="4">
+                    <br>
+                    <div id="gameList">
+                        <table align="center" id="availableGames">
+                            <tr>
+                                <th>Name</th>
+                                <th>Map</th>
+                                <th>Player</th>
+                                <th>Settings</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                </th>	
+            </tr>
+            <tr>
+                <td><button  name="deletePlayerName" onClick='main.deletePlayerName();'>Zurück</button></td>
+                <td><button  name="showCreatetNewGame" onClick='main.showCreateNewGame()'>neues Spiel erstellen</button></td>
+            </tr>
+        </table>
+    </div>
+    <div id="newGame">
+        <table>
+            <tr>
+                <th colspan="2">
+                    <h3><div class="playerNameDisplay" style="text-align: center;"></div></h3>
+                </th>
+            </tr>
+            <tr>
+                <td>Name des Spiels:</td>
+                <td><input id="playName" value="Spielname" size="26"></td>
+            </tr>
+            <tr>
+                <td>Anzahl der Spieler:</td>
+                <td><input id="playerCount" value="6" size="26" onkeyup="this.value = main.minmax(this.value, 2, 6)"></td>
+            </tr>
+            <tr>
+                <td>Einstellungen des Spiels:</td>
+                <td><input id="playSettings" value="Spieleinstellungen" size="26"></td>
+            </tr>
+            <tr>
+                <th><button  name="backToLobby" onClick='main.backToLobby()'>Zurück</button></th>
+                <th><button  name="createtNewGame" onClick="main.createNewGame()">neues Spiel erstellen</button></th>
+            </tr>
+        </table>
+    </div>
+    <div id="game"> 
+        <div id="gameOptions">
+            <table>
+                <tr>
+                    <th><div id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </div></th>
+                </tr>
+                <tr>
+                    <th style="padding-bottom: 10px;">Ihre Mitspieler</th>
+                </tr>
+                <tr>
+                    <td id="PlayerList"></td>
+                </tr>
+                <tr>
+                    <th style="padding-top: 10px;">
+                        <button  name="readyToPlay" onClick='main.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
+                        <button  name="backToLobby" onClick='main.backToLobby()'>Spiel verlassen</button>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <div id="GameScreen">
+            <h3><div class="playerNameDisplay" style="text-align: center;"> Teste </div></h3>
+            <canvas id='screen' width='800' height='480'></canvas>
+            <br><br>
+        </div>
+    </div>
+    <br><br>
+    <!-- Results -->
     <div id="message"></div>
 </body>
 </html>
