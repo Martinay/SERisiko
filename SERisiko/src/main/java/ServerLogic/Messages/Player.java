@@ -1,4 +1,4 @@
-package ServerLogic.Responses;
+package ServerLogic.Messages;
 
 public class Player {
     public int ID;

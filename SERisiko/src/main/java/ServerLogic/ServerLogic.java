@@ -1,6 +1,15 @@
 package ServerLogic;
 
-import ServerLogic.Responses.*;
+import ServerLogic.Messages.Game;
+import ServerLogic.Messages.PlayerLeftMessage;
+import ServerLogic.Messages.Player;
+import ServerLogic.Messages.NewPlayerJoinedMessage;
+import ServerLogic.Messages.EndTurnMessage;
+import ServerLogic.Messages.PlayerLeftLobbyMessage;
+import ServerLogic.Messages.GameCreatedMessage;
+import ServerLogic.Messages.MapChangeMessage;
+import ServerLogic.Messages.GameStartedMessage;
+import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 
 import java.util.List;
 import java.util.UUID;
@@ -10,22 +19,22 @@ public class ServerLogic implements IServerLogic {
     private Lobby _lobby = new Lobby();
 
     @Override
-    public MapChangeResponse Attack(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangeMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
         return null;
     }
 
     @Override
-    public MapChangeResponse Move(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangeMessage Move(int playerID, int countryFromID, int countryToID, int units) {
         return null;
     }
 
     @Override
-    public MapChangeResponse PlaceUnits(int playerID, int countryID, int units) {
+    public MapChangeMessage PlaceUnits(int playerID, int countryID, int units) {
         return null;
     }
 
     @Override
-    public EndTurnResponse EndTurn(int playerID) {
+    public EndTurnMessage EndTurn(int playerID) {
         return null;
     }
 
@@ -35,32 +44,32 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public AddNewPlayerToLobbyResponse JoinLobby(int playerID) {
+    public AddNewPlayerToLobbyMessage JoinLobby(int playerID) {
         return null;
     }
 
     @Override
-    public PlayerLeftLobbyResponse LeaveLobby(int playerID) {
+    public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
         return null;
     }
 
     @Override
-    public NewPlayerJoinedResponse JoinGame(int playerID, UUID GameID) {
+    public NewPlayerJoinedMessage JoinGame(int playerID, UUID GameID) {
         return null;
     }
 
     @Override
-    public PlayerLeftResponse LeaveGame(int playerID, UUID GameID) {
+    public PlayerLeftMessage LeaveGame(int playerID, UUID GameID) {
         return null;
     }
 
     @Override
-    public GameCreatedResponse CreateGame(int playerID, String GameName) {
+    public GameCreatedMessage CreateGame(int playerID, String GameName) {
         return null;
     }
 
     @Override
-    public GameStartedResponse StartGame(int playerID) {
+    public GameStartedMessage StartGame(int playerID) {
         return null;
     }
 

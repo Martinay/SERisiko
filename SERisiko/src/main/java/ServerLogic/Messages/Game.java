@@ -1,4 +1,4 @@
-package ServerLogic.Responses;
+package ServerLogic.Messages;
 
 
 import java.util.List;

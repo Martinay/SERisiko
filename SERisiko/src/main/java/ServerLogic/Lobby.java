@@ -1,6 +1,6 @@
 package ServerLogic;
 
-import ServerLogic.Responses.Player;
+import ServerLogic.Messages.Player;
 
 import java.util.LinkedList;
 import java.util.List;
