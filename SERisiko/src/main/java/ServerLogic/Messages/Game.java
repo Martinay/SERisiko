@@ -1,9 +1,7 @@
 package ServerLogic.Messages;
 
-
-import java.util.List;
-
-public class Game {
+public abstract class Game {
     public String Name;
-    public List<Player> Players;
+    public int ID;
+    public abstract int GetPlayerCount();
 }

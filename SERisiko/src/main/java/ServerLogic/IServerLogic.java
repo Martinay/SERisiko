@@ -12,7 +12,6 @@ import ServerLogic.Messages.GameStartedMessage;
 import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IServerLogic {
 
@@ -27,8 +26,8 @@ public interface IServerLogic {
     AddNewPlayerToLobbyMessage JoinLobby(int playerID);
     PlayerLeftLobbyMessage LeaveLobby(int playerID);
 
-    NewPlayerJoinedMessage JoinGame(int playerID, UUID GameID);
-    PlayerLeftMessage LeaveGame(int playerID, UUID GameID);
+    NewPlayerJoinedMessage JoinGame(int playerID, int GameID);
+    PlayerLeftMessage LeaveGame(int playerID, int GameID);
     GameCreatedMessage CreateGame(int playerID, String GameName);
     GameStartedMessage StartGame(int playerID);
 
@@ -36,5 +35,5 @@ public interface IServerLogic {
 
     List<Game> GetGames(Player player, String GameName);
     List<Player> GetPlayersInLobby();
-    List<Player> GetPlayersInGame(UUID GameID);
+    List<Player> GetPlayersInGame(int GameID);
 }

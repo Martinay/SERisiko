@@ -12,8 +12,6 @@ import ServerLogic.Messages.GameStartedMessage;
 import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 
 import java.util.List;
-import java.util.UUID;
-
 public class ServerLogic implements IServerLogic {
 
     private State _state = new State();
@@ -68,18 +66,18 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public NewPlayerJoinedMessage JoinGame(int playerID, UUID GameID) {
+    public NewPlayerJoinedMessage JoinGame(int playerID, int GameID) {
         return null;
     }
 
     @Override
-    public PlayerLeftMessage LeaveGame(int playerID, UUID GameID) {
+    public PlayerLeftMessage LeaveGame(int playerID, int GameID) {
         return null;
     }
 
     @Override
     public GameCreatedMessage CreateGame(int playerID, String GameName) {
-        return null;
+         return null;
     }
 
     @Override
@@ -98,7 +96,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public List<Player> GetPlayersInGame(UUID GameID) {
+    public List<Player> GetPlayersInGame(int GameID) {
         return null;
     }
 
