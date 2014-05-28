@@ -1,5 +1,5 @@
 package ServerLogic.Messages;
 
-public class PlayerLeftLobbyMessage {
-    int PlayerID;
+public class PlayerLeftLobbyMessage extends MessageBase{
+    public int PlayerID;
 }

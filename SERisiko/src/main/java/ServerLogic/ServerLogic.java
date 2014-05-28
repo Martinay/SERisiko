@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class ServerLogic implements IServerLogic {
 
-    private Lobby _lobby = new Lobby();
+    private State _state = new State();
 
     @Override
     public MapChangeMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
@@ -40,17 +40,31 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public void CreatePlayer(int playerID, String playerName) {
-        _lobby.AddPlayer(new Player(playerID,playerName));
+        _state.Players.add(new Player(playerID,playerName));
     }
 
     @Override
     public AddNewPlayerToLobbyMessage JoinLobby(int playerID) {
-        return null;
+        
+        Player player = _state.GetPlayer(playerID);
+        _state.Lobby.AddPlayer(player);
+        
+        AddNewPlayerToLobbyMessage message = new AddNewPlayerToLobbyMessage();
+        message.Player = player;
+        message.PlayerIDsToUpdate.addAll(_state.Lobby.GetPlayerIDs());
+        return message;
     }
 
     @Override
     public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
-        return null;
+        Player player = _state.GetPlayer(playerID);
+        _state.Lobby.DeletePlayer(player);
+        
+        PlayerLeftLobbyMessage message = new PlayerLeftLobbyMessage();
+        message.PlayerIDsToUpdate = _state.Lobby.GetPlayerIDs();
+        message.PlayerID = playerID;
+        
+        return message;
     }
 
     @Override
