@@ -33,6 +33,7 @@ class ServerGame extends Game {
         for (Player player : Players) {
             IDs.add(player.ID);
         }
+
         return IDs;
     }
 
