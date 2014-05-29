@@ -1,6 +1,7 @@
 package Network.WebSocket;
 
 
+import ServerApi.GameClient;
 import ServerApi.RisikoServerResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

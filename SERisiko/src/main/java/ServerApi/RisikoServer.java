@@ -2,7 +2,6 @@ package ServerApi;
 
 import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 import ServerLogic.ServerLogic;
-import Network.WebSocket.GameClient;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 

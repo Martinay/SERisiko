@@ -1,6 +1,5 @@
 package ServerApi;
 
-import Network.WebSocket.GameClient;
 import Network.WebSocket.WebSocketResponse;
 
 /**

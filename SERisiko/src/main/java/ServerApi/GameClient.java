@@ -1,5 +1,5 @@
 
-package Network.WebSocket;
+package ServerApi;
 
 import org.webbitserver.WebSocketConnection;
 
