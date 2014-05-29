@@ -5,7 +5,7 @@
 	/*display: none;*/
 }
 
-/** Spiel auswählen Tabelle **/
+/** Spiel auswï¿½hlen Tabelle **/
 
 
 #availableGames{
@@ -43,7 +43,7 @@
 	width: 800px;
 }
 
-/** Komplett Spiel auswählen **/
+/** Komplett Spiel auswï¿½hlen **/
 
 #selectGame{
 	display: none;
@@ -109,4 +109,26 @@
 	width: 200px;
 	height: 400px;
 	text-align: center;
+}
+
+/**anderes **/
+hr{
+    color: #000000;
+}
+
+/** loading overlay **/
+#loading_overlay {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #000;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+#loading_message{
+    margin: 0px auto;
+    color: #ffffff;
 }

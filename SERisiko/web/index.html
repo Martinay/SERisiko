@@ -37,7 +37,7 @@
     <div id="selectGame">
         <table id="tableSelectGame">
             <tr>
-                <th colspan="2"><h3><div class="playerNameDisplay" style="text-align: center;"></div></h3></th>
+                <th colspan="2"><h3 class="playerNameDisplay" style="text-align: center;"></h3></th>
             </tr>
             <tr>
                 <th colspan="4">
@@ -65,7 +65,7 @@
         <table>
             <tr>
                 <th colspan="2">
-                    <h3><div class="playerNameDisplay" style="text-align: center;"></div></h3>
+                    <h3 class="playerNameDisplay" style="text-align: center;"></h3>
                 </th>
             </tr>
             <tr>
@@ -90,7 +90,7 @@
         <div id="gameOptions">
             <table>
                 <tr>
-                    <th><div id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </div></th>
+                    <th id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </th>
                 </tr>
                 <tr>
                     <th style="padding-bottom: 10px;">Ihre Mitspieler</th>
@@ -107,13 +107,16 @@
             </table>
         </div>
         <div id="GameScreen">
-            <h3><div class="playerNameDisplay" style="text-align: center;"> Teste </div></h3>
-            <canvas id='screen' width='800' height='480'></canvas>
-            <br><br>
+            <h3 class="playerNameDisplay" style="text-align: center;"> Teste </h3>
+            <canvas id='screen' width='800' height='480'></canvas><br><br>
         </div>
-    </div>
-    <br><br>
+    </div><br><br>
+    <hr>
     <!-- Results -->
-    <div id="message"></div>
+    <button  name="clearServerAnswers" onClick='main.clearServerAnswers()'>Serverantworten leeren</button>
+    <div id="serverAnswers"></div>
+    <hr>
+    <!-- Loading Overlay -->
+    <div id="loading_overlay"><div id="loading_message">Waiting for Server... <img id="loading" src="img/loading_overlay.gif"></div></div>
 </body>
 </html>
