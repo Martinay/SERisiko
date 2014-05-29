@@ -1,9 +1,0 @@
-package network;
-
-/**
- * 
- * 
- */
-interface WebSocketApi {
-    
-}

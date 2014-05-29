@@ -1,6 +1,6 @@
 package main;
 
-import network.RisikoServer;
+import ServerApi.RisikoServer;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 import org.webbitserver.handler.StaticFileHandler;
