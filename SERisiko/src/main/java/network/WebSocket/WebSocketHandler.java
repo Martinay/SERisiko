@@ -40,7 +40,7 @@ public class WebSocketHandler extends BaseWebSocketHandler {
         //initialize a new GameClient and put to clientList
         this.clientList.put(connection.hashCode(), new GameClient(connection) );
 
-        System.out.println("\rConnected clients: " + this.clientList.size());  
+         System.out.println(connection.hashCode() + " connected");
         
     }
 
@@ -51,7 +51,7 @@ public class WebSocketHandler extends BaseWebSocketHandler {
         this.clientList.remove(connection.hashCode());
         connection.send("42");
         connection.close();
-        System.out.print("\rConnected clients: " + this.clientList.size());
+        System.out.println(connection.hashCode() + " disconnected");
         
        
     }
@@ -117,8 +117,11 @@ public class WebSocketHandler extends BaseWebSocketHandler {
             for(int i = 0; i < targetList.size(); i++) {
                 
                 GameClient client = this.clientList.get( (Integer)targetList.get(i) );
-                
-                client.sendMessage(response); //send msg to client
+                if(client != null) {
+                    client.sendMessage(response); //send msg to client
+                } else {
+                    //send back playerHasDisconnected
+                }
             }
             
         } catch (ParseException ex) {

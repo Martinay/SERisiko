@@ -1,8 +1,9 @@
 //@TODO clean up and restruckture
-var WebSocketApi = function(address, host) {
+var WebSocketApi = function(address, host, port) {
+      port = port || 8080;
       address = address || '';
-      host = host || document.location.host;
-    var ws = new WebSocket('ws://' + host + ''+address);
+      host = host || document.location.hostname;
+    var ws = new WebSocket('ws://' + host + ':'+port+address);
       
     ws.onopen = function() { 
         console.log("Connected");
@@ -24,7 +25,7 @@ var WebSocketApi = function(address, host) {
             "name": arguments[0],
             "args": args
         };
-        console.log(message);
+
         ws.send( JSON.stringify(message) );
 
     };   
@@ -34,8 +35,11 @@ var WebSocketApi = function(address, host) {
 
 //client Api
 var RisikoApi = function() {
-    
-    var socket = new WebSocketApi('/websocket');
+    //apiServer settings    
+    var host = document.location.hostname;
+    var port = 8080;
+        
+    var socket = new WebSocketApi('/websocket', host, port);
     
     
     socket.joinServer = function(playerName){
