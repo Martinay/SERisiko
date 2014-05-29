@@ -33,7 +33,8 @@ function Main() {
     // Start ConnectionToServer
     connection.onmessage = function(elem) { //get message from server
         console.log( elem );
-        $('#message').append(elem.data);
+        parseServerAnswers(elem);
+        $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
     };
 
     //# Public Methods
@@ -43,20 +44,12 @@ function Main() {
             return false;
         thePlayerName = name;
 
-        // create Player on Server
-        connection.joinServer(thePlayerName);
-        // all correct? then:
-        connection.joinLobby(thePlayerName);
-
-        // create Player on Client
-        hideElement(document.getElementById("setPlayerName"));
-        showElement(document.getElementById("selectGame"));
-        divs = document.getElementsByClassName('playerNameDisplay');
-        [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-
-        gameListRefresher.play();
-
-        return true;
+        // create Player on Server + joinLobby
+        connection.joinServer(thePlayerName); // includes joinlobby
+        //connection.joinLobby(thePlayerName);
+        
+        //wait for answer
+        showElement(document.getElementById("loading_overlay"));
     };
 
     this.deletePlayerName = function(){
@@ -68,6 +61,8 @@ function Main() {
         //connection.leaveServer(); not yet implemented
         // delete playername from client
         thePlayerName = "";
+        playerNameRegistered = false;
+        document.getElementById("playerName").value = "Ihr Spielername";
 
         // revert menu
         showElement(document.getElementById("setPlayerName"));
@@ -179,7 +174,11 @@ function Main() {
             $("#PlayerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
         }
     };
-
+    
+    this.clearServerAnswers = function(){
+        document.getElementById("serverAnswers").innerHTML = "";
+    };
+    
     //# Private Methods
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
@@ -201,9 +200,47 @@ function Main() {
     };
 
     var getGameList = function(table, list){
+        // get gameslist from server
+        connection.listOpenGames();
+        
         list.addGame(["Game 1", "DHBW", "1/6", "n/a"], table);
         list.addGame(["Game 42", "World", "0/6", "n/a"], table);
         list.addGame(["Game 3", "DHBW", "4/6", "n/a"], table);
+    };
+    
+    var parseServerAnswers = function(elem){
+        var message = JSON.parse(elem.data);
+        
+        switch(message.type){
+            case "AddNewPlayerToLobbyMessage":
+                if(message.state == 1){
+                    hideElement(document.getElementById("loading_overlay"));      
+
+                    // create Player on Client
+                    hideElement(document.getElementById("setPlayerName"));
+                    showElement(document.getElementById("selectGame"));
+                    divs = document.getElementsByClassName('playerNameDisplay');
+                    [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
+
+                    gameListRefresher.play();
+                }
+                else{
+                    alert("Error: Bad response from Server");
+                    hideElement(document.getElementById("loading_overlay"));                    
+                }
+                break;
+            default:
+                //nothing
+        }  
+    };
+    
+    var sleep = function(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
     };
 }
 
