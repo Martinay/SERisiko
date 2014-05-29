@@ -40,7 +40,9 @@ public class RisikoServerResponse implements WebSocketResponse {
         JSONArray objects = new JSONArray();
         
         for( int i= 0; i < this.objectList.size(); i++) {
-            objects.add( this.objectList.get(i).getResponseData() );
+            JSONObject cObject = new JSONObject();
+            cObject.put(this.objectList.get(i).getClass().getSimpleName(), this.objectList.get(i).getResponseData());
+            objects.add( cObject );
         }
         response.put("data", objects);
         

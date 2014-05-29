@@ -4,6 +4,7 @@ import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 import ServerLogic.ServerLogic;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
+import ServerLogic.Messages.PlayerLeftLobbyMessage;
 
 
 
@@ -49,11 +50,16 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse leaveLobby(GameClient gameClient) {
         System.out.println("Leave Lobby");
         
+        int clientId = gameClient.getIdentifyer();
         
+        
+        PlayerLeftLobbyMessage message = gameManager.LeaveLobby(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
-        
-        
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+ 
         
         return response;
     }
