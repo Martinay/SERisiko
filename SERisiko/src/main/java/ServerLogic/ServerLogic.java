@@ -46,6 +46,7 @@ public class ServerLogic implements IServerLogic {
     public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.DeletePlayer(player);
+        _state.Players.remove(player);
         
         return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), playerID);
     }

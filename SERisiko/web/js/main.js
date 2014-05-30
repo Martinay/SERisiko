@@ -17,7 +17,22 @@ function Main() {
     var game = "stopped";
     var gameListRefresher = $.timer(function(){main.updateGameList();}, 2000);
     var playerListRefresher = $.timer(function(){main.updatePlayerList();}, 2000);
-    var connection = new RisikoApi();
+    
+    //#InitConnection Function
+    var connection = null;
+    var etablishConnection = function(){
+        if (connection != null)
+            connection.close();
+        connection = new RisikoApi();
+
+        // Start ConnectionToServer
+        connection.onmessage = function(elem) { //get message from server
+            console.log( elem );
+            parseServerAnswers(elem);
+            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
+        };
+    };
+    etablishConnection();
 
     //#Preinitiator
     window.onload = function () {
@@ -28,13 +43,6 @@ function Main() {
         ctx.fillText("SE_RISK", 50, 65);
         
         this.gameWindow = new GameWindow(canvas, ctx);
-    };
-    
-    // Start ConnectionToServer
-    connection.onmessage = function(elem) { //get message from server
-        console.log( elem );
-        parseServerAnswers(elem);
-        $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
     };
 
     //# Public Methods
@@ -57,9 +65,6 @@ function Main() {
             return false;
 
         connection.leaveLobby();
-        // delete playername from server
-        //connection.leaveServer(); not yet implemented
-        // delete playername from client
         thePlayerName = "";
         playerNameRegistered = false;
         document.getElementById("playerName").value = "Ihr Spielername";
@@ -72,6 +77,8 @@ function Main() {
         divs = document.getElementsByClassName('playerNameDisplay');
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
         this.sctTable.clear("availableGames");
+        
+        etablishConnection();
     };
 
     this.backToLobby = function(){
@@ -179,7 +186,7 @@ function Main() {
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
-    //# Private Methods
+    //# Private Methods    
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
         hideElement(document.getElementById("selectGame"))
