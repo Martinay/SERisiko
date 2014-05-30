@@ -164,8 +164,8 @@ viewBox="0 0 21000 29700"
     <script>
         rects = document.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
-            rect.onmouseover = new Function("this.setAttribute('opacity', '0.75');");
-            rect.onmouseout = new Function("this.setAttribute('opacity','1)');");
+            rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
+            rect.onmouseout = new Function("this.setAttribute('opacity','1)'); this.style='cursor: default';");
             rect.onclick = new Function("alert('Finger weg von ' + this.id + '!!!');");
         });
     </script>
