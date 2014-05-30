@@ -1,14 +1,17 @@
 ﻿<html>
 <head>
     <!-- root dir -->
-    <base href="http://localhost">
+    <base href="http://localhost:4502">
 
     <!-- javascripts -->
-    <script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.timer.js"></script>
+    <script src="js/extern/jquery-2.1.1.min.js"></script>
+    <script src="js/extern/bootstrap.min.js"></script>
+    <script src="js/extern/jquery.timer.js"></script>
+    
     <script src="js/RisikoApi.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/SelectableTable.js"></script>
+    <script src="js/SvgFunctions.js"></script>
+    <script src="js/Main.js"></script>
 
     <!-- style sheets -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -26,10 +29,10 @@
             </tr>   
             <tr>
                 <td>
-                    <input id="playerName" value="Ihr Spielername" onkeyup="main.checkForKey('playerName', event.keyCode)">
+                    <input id="playerName" value="Ihr Spielername" onkeyup="Main.checkForKey('playerName', event.keyCode)">
                 </td>
                 <td>
-                    <button onClick="main.setPlayerName()">Go</button>
+                    <button onClick="Main.setPlayerName()">Go</button>
                 </td>
             </tr>
         </table>
@@ -56,8 +59,8 @@
                 </th>	
             </tr>
             <tr>
-                <td><button  name="deletePlayerName" onClick='main.deletePlayerName();'>Zurück</button></td>
-                <td><button  name="showCreatetNewGame" onClick='main.showCreateNewGame()'>neues Spiel erstellen</button></td>
+                <td><button  name="deletePlayerName" onClick='Main.deletePlayerName();'>Zurück</button></td>
+                <td><button  name="showCreatetNewGame" onClick='Main.showCreateNewGame()'>neues Spiel erstellen</button></td>
             </tr>
         </table>
     </div>
@@ -74,15 +77,15 @@
             </tr>
             <tr>
                 <td>Anzahl der Spieler:</td>
-                <td><input id="playerCount" value="6" size="26" onkeyup="this.value = main.minmax(this.value, 2, 6)"></td>
+                <td><input id="playerCount" value="6" size="26" onkeyup="this.value = Main.minmax(this.value, 2, 6)"></td>
             </tr>
             <tr>
                 <td>Einstellungen des Spiels:</td>
                 <td><input id="playSettings" value="Spieleinstellungen" size="26"></td>
             </tr>
             <tr>
-                <th><button  name="backToLobby" onClick='main.backToLobby()'>Zurück</button></th>
-                <th><button  name="createtNewGame" onClick="main.createNewGame()">neues Spiel erstellen</button></th>
+                <th><button  name="backToLobby" onClick='Main.backToLobby()'>Zurück</button></th>
+                <th><button  name="createtNewGame" onClick="Main.createNewGame()">neues Spiel erstellen</button></th>
             </tr>
         </table>
     </div>
@@ -100,20 +103,28 @@
                 </tr>
                 <tr>
                     <th style="padding-top: 10px;">
-                        <button  name="readyToPlay" onClick='main.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
-                        <button  name="backToLobby" onClick='main.backToLobby()'>Spiel verlassen</button>
+                        <button  name="readyToPlay" onClick='Main.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
+                        <button  name="backToLobby" onClick='Main.backToLobby()'>Spiel verlassen</button>
                     </th>
                 </tr>
             </table>
         </div>
         <div id="GameScreen">
-            <h3 class="playerNameDisplay" style="text-align: center;"> Teste </h3>
-            <canvas id='screen' width='800' height='480'></canvas><br><br>
+            <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
+            <!--[if IE]>
+            <object classid="clsid:25336920-03F9-11CF-8FD0-00AA00686F13" data="maps/map_dhbw.html" width="800" height="800">
+            <p>backup content</p>
+            </object>
+            <![endif]-->
+
+            <!--[if !IE]> <-->
+            <object type="text/html" data="maps/map_dhbw.html" width="800" height="800"></object><br>
+            <!--> <![endif]-->
         </div>
-    </div><br><br>
+    </div>
     <hr>
     <!-- Results -->
-    <button  name="clearServerAnswers" onClick='main.clearServerAnswers()'>Serverantworten leeren</button>
+    <button  name="clearServerAnswers" onClick='Main.clearServerAnswers()'>Serverantworten leeren</button>
     <div id="serverAnswers"></div>
     <hr>
     <!-- Loading Overlay -->
