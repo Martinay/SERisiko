@@ -50,12 +50,12 @@ function SelectableTable(list){
             var td = document.createElement('td');
             td.appendChild(document.createTextNode(cells[i]));
             td.id = "cell_"+rows+","+(parseInt(i)+1);
-            //td.onclick = new Function("Main.sctTable.selectRow('"+rows+"')");
-            //td.ondblclick = new Function("Main.setGame()");
+            //td.onclick = new Function("Core.sctTable.selectRow('"+rows+"')");
+            //td.ondblclick = new Function("Core.setGame()");
             
             // parse game id form server list
             
-            td.onclick = new Function("Main.setGame('"+rows+"')");
+            td.onclick = new Function("Core.setGame('"+rows+"')");
             newTr.appendChild(td);
         }
         tb.appendChild(newTr);
