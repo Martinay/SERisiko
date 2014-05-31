@@ -9,17 +9,17 @@ public class ServerLogic implements IServerLogic {
     private ServerState _state = new ServerState();
 
     @Override
-    public MapChangeMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
         return null;
     }
 
     @Override
-    public MapChangeMessage Move(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Move(int playerID, int countryFromID, int countryToID, int units) {
         return null;
     }
 
     @Override
-    public MapChangeMessage PlaceUnits(int playerID, int countryID, int units) {
+    public MapChangedMessage PlaceUnits(int playerID, int countryID, int units) {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class ServerLogic implements IServerLogic {
         _state.Lobby.DeletePlayer(player);
         _state.Players.remove(player);
         
-        return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), playerID);
+        return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
     }
 
     @Override
@@ -71,10 +71,10 @@ public class ServerLogic implements IServerLogic {
         if (game.Players.size()== 0)
         {
             _state.Lobby.RemoveGame(game);
-            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),playerID, _state.Lobby.GetPlayerIDs(),gameId);
+            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player, _state.Lobby.GetPlayerIDs(),game);
         }
 
-        return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),playerID);
+        return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game.ID);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ServerLogic implements IServerLogic {
 
         return MessageCreator.CreateReadyStateChangedMessage(
                 _state.Lobby.GetGameByPlayerId(playerID).GetPlayerIds(),
-                playerID,
+                player,
                 state);
     }
 

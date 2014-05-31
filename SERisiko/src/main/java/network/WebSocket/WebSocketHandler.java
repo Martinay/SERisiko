@@ -3,18 +3,19 @@ package Network.WebSocket;
 
 import ServerApi.GameClient;
 import ServerApi.RisikoServerResponse;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.webbitserver.BaseWebSocketHandler;
 import org.webbitserver.WebSocketConnection;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -23,9 +24,9 @@ import org.webbitserver.WebSocketConnection;
  */
 public class WebSocketHandler extends BaseWebSocketHandler {
 
-    protected HashMap <Integer, GameClient>clientList = new <Integer, GameClient>HashMap();
+    protected HashMap <Integer, GameClient>clientList = new HashMap<Integer, GameClient>();
 
-    private final HashMap <String, Method>apiCmdList = new <String, Method>HashMap();
+    private final HashMap <String, Method>apiCmdList = new HashMap<String, Method>();
     
     public WebSocketHandler() {
         super();

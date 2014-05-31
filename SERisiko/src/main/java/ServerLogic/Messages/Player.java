@@ -1,7 +1,8 @@
 package ServerLogic.Messages;
 
-import java.util.HashMap;
 import ServerApi.ApiResponseObject;
+
+import java.util.HashMap;
 
 public class Player implements ApiResponseObject {
     public int ID;
@@ -16,7 +17,7 @@ public class Player implements ApiResponseObject {
 
     public <String, Object> HashMap getResponseData() {
 
-        HashMap apiData = new <String, Object>HashMap();
+        HashMap apiData = new HashMap<String, Object>();
         
         apiData.put("id", ID);
         apiData.put("name", Name);
