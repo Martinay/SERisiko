@@ -40,9 +40,19 @@ class MessageCreator {
         return message;
     }
 
+    //Join wasn't successful
+    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate) {
+
+        NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.Successful = false;
+        return message;
+    }
+
     static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, List<Player> playersInGame) {
         NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
+        message.Successful = true;
         message.PlayersInGame = playersInGame;
         return message;
     }
