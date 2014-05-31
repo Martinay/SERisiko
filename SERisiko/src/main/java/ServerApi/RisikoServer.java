@@ -4,7 +4,12 @@ import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
 import ServerLogic.ServerLogic;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
+import ServerLogic.Messages.Game;
+import ServerLogic.Messages.GameCreatedMessage;
+import ServerLogic.Messages.GameStartedMessage;
 import ServerLogic.Messages.PlayerLeftLobbyMessage;
+import ServerLogic.Messages.PlayerLeftMessage;
+import java.util.List;
 
 
 
@@ -59,20 +64,23 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
- 
+        
+        
         
         return response;
     }
 
     public WebSocketResponse joinGame(GameClient gameClient, Long gameIndex) {
         System.out.println("Join Game: " + gameIndex);
+                
+        int clientId = gameClient.getIdentifyer();
         
-        gameClient.sendMessage("TestMessage An client");
-        
+        GameCreatedMessage message = gameManager.JoinGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
-        
-        
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
         return response;
     }
@@ -80,10 +88,14 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse leaveGame(GameClient gameClient) {
         System.out.println("leave game");
         
+        int clientId = gameClient.getIdentifyer();
         
+        PlayerLeftMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
-        
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
         
         return response;
@@ -92,9 +104,14 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse createGame(GameClient gameClient, String gamename) {
         System.out.println("Create Game");
         
+        int clientId = gameClient.getIdentifyer();
         
+        GameCreatedMessage message = gameManager.CreateGame(clientId, gamename);
         
         RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
         
         
@@ -102,11 +119,16 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
 
     public WebSocketResponse startGame(GameClient gameClient) {
-        System.out.println("StartGame");
+        System.out.println("Create Game");
         
+        int clientId = gameClient.getIdentifyer();
         
+        GameStartedMessage message = gameManager.StartGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
         
         
@@ -116,11 +138,18 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse listOpenGames(GameClient gameClient) {
         System.out.println("List Games");
         
+        int clientId = gameClient.getIdentifyer();
         
+        List<Game> message = gameManager.GetGamesInLobby();
         
         RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( "GameList" );
+        response.addTargetClient( clientId );
         
-        
+        for(int i = 0; i< message.size(); i++) {
+            response.addChangedObject( message.get(i) );
+        }
         
         return response;
     }

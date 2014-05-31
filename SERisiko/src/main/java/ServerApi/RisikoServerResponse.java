@@ -1,7 +1,6 @@
 
 package ServerApi;
 
-import ServerApi.ApiResponseObject;
 import java.util.LinkedList;
 import java.util.List;
 import Network.WebSocket.WebSocketResponse;
