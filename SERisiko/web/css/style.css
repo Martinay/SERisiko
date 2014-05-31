@@ -1,37 +1,37 @@
 /** Spielernamen setzten **/
 
 #setPlayerName{
-	display: block;
-	/*display: none;*/
+    display: block;
+    /*display: none;*/
 }
 
 /** Spiel ausw�hlen Tabelle **/
 
 
 #availableGames{
-	border: 1px solid #2C6ED5;
-	background-color: #C4D3F6;
-	width: 800px;
+    border: 1px solid #2C6ED5;
+    background-color: #C4D3F6;
+    width: 800px;
 }
 
 #availableGames td, th {
-	border: 1px solid #FFFFFF;
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 16px;
-	font-weight: normal;
-	width: 200px; 
-	text-align: center;
+    border: 1px solid #FFFFFF;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    width: 200px; 
+    text-align: center;
 }
 
 #availableGames td{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #availableGames th{
-	background-color: #6D93E1;
-	color: #FFFFFF;
-	width: 200px; 
-	text-align: center;
+    background-color: #6D93E1;
+    color: #FFFFFF;
+    width: 200px; 
+    text-align: center;
 }
 
 #availableGames caption {
@@ -39,78 +39,78 @@
 }
 
 #tableSelectGame{
-	margin: 0px auto;
-	width: 800px;
+    margin: 0px auto;
+    width: 800px;
 }
 
 /** Komplett Spiel ausw�hlen **/
 
 #selectGame{
-	display: none;
+    display: none;
 }
 
 #tableSelectGame td, th {
-	font-family: Verdana, Arial, sans-serif;
-	font-size: 16px;
-	font-weight: normal;
-	width: 200px; 
-	text-align: center;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    width: 200px; 
+    text-align: center;
 }
 
 #tableLogin{
-	margin: 0px auto;
-	width: 400px;
+    margin: 0px auto;
+    width: 400px;
 }
 
 /** Neues Spiel erstellen **/
 
 #newGame{
-	/*display: block;*/
-	display: none;
-	width: 450px;
-	margin: 0px auto;
+    /*display: block;*/
+    display: none;
+    width: 450px;
+    margin: 0px auto;
 }
 
 #newGame td{
-	padding: 3px;
+    padding: 3px;
 }
 
 #newGame th{
-	padding: 10px 0px;
+    padding: 10px 0px;
 }
 
 /** Spiel Spielen **/
 
 #Game{
-	/*display: block;*/
-	display: none;
-	margin: 0px auto;
-	width: 90%;
+    /*display: block;*/
+    display: none;
+    margin: 0px auto;
+    width: 90%;
 }
 
 #gameOptions{
-	display: block;
-	float: right;
-	width: 300px;
+    display: block;
+    float: right;
+    width: 300px;
 }
 
 #screen { 
-	background-color: #FCF;
+    background-color: #FCF;
 }
 
 #GameScreen { 
-	display: block; 
-	float: left;
+    display: block; 
+    float: left;
+    overflow: hidden;
 }
 
 #PlayerList{
-	padding: 5px;
-	border: 3px solid black;
-	width: 200px;
-	height: 400px;
-	text-align: center;
+    padding: 5px;
+    border: 3px solid black;
+    width: 200px;
+    height: 400px;
+    text-align: center;
 }
-
 /**anderes **/
 hr{
     color: #000000;

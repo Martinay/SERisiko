@@ -11,6 +11,7 @@ function Core() {
     //#Public Vars
     this.gameList = new GameList();
     this.sctTable = new SelectableTable(this.gameList);
+    this.svgHandler = new SvgFunctions();
     
     //#Private Vars
     var thePlayerName = "";
@@ -88,6 +89,7 @@ function Core() {
         if(this.sctTable != null){
             //alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
             //alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
+            this.svgHandler.init(document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0]);
             joinGame(this.sctTable, id);
         }
         else
@@ -179,7 +181,7 @@ function Core() {
     //# Private Methods    
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
-        hideElement(document.getElementById("selectGame"))
+        hideElement(document.getElementById("selectGame"));
         gameListRefresher.pause();
         game = "running";
         table.selectRow(0);
@@ -230,7 +232,6 @@ function Core() {
                 //nothing
         }  
     };
-    
     var sleep = function(milliseconds) {
       var start = new Date().getTime();
       for (var i = 0; i < 1e7; i++) {

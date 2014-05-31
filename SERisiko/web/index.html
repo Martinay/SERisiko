@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/style.css">
+    
+    <title>SE_RISK</title>
 </head>
 <body>
     <br />
@@ -112,18 +114,24 @@
         <div id="GameScreen">
             <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
             <!--[if IE]>
-            <object classid="clsid:25336920-03F9-11CF-8FD0-00AA00686F13" data="maps/map_dhbw.html" width="800" height="800">
+            <object id="svg_obj" classid="clsid:25336920-03F9-11CF-8FD0-00AA00686F13" data="maps/map_dhbw.html" width="700" height="800">
             <p>backup content</p>
             </object>
             <![endif]-->
 
             <!--[if !IE]> <-->
-            <object type="text/html" data="maps/map_dhbw.html" width="800" height="800"></object><br>
+            <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>
             <!--> <![endif]-->
+            <button  name="zoomOut" onClick='Core.svgHandler.zoomOut()'>Zoom out</button>
+            <button  name="zoomIn" onClick='Core.svgHandler.zoomIn()'>Zoom in</button>
+            <button  name="moveLeft" onClick='Core.svgHandler.moveLeft()'>Links</button>
+            <button  name="moveRight" onClick='Core.svgHandler.moveRight()'>Rechts</button>
+            <button  name="moveUp" onClick='Core.svgHandler.moveUp()'>Hoch</button>
+            <button  name="moveDown" onClick='Core.svgHandler.moveDown()'>Runter</button>
         </div>
-    </div>
-    <hr>
+    </div><br><br>
     <!-- Results -->
+    <hr>
     <button  name="clearServerAnswers" onClick='Core.clearServerAnswers()'>Serverantworten leeren</button>
     <div id="serverAnswers"></div>
     <hr>
