@@ -26,10 +26,14 @@ function SvgFunctions(){
     var xPos = 0;
     var yPos = 0;
     
-    var scale_tmp = 0;
-    
     //# Public Methods
     this.init = function(doc){
+        scaleLevel = 1;
+        scaleAmp = 0.1;
+        movAmp = 50;
+        xPos = 0;
+        yPos = 0;
+        
         svgDoc = doc;
         rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
@@ -40,25 +44,25 @@ function SvgFunctions(){
     };
         
     this.zoomOut = function(){
-        scale_tmp = scaleLevel;
+        //var scale_tmp = scaleLevel;
         scaleLevel -= scaleAmp;
-        
+        /*
         xPos = -(scale_tmp-scaleLevel)*getCenter()[0];
         yPos = -(scale_tmp-scaleLevel)*getCenter()[1];
         xPos /= 3.54;
         yPos /= 3.54;
-        
+        */
         transform();
     };
     this.zoomIn = function(){
-        scale_tmp = scaleLevel;
+        //var scale_tmp = scaleLevel;
         scaleLevel += scaleAmp;
-        
+        /*
         xPos = -(scale_tmp-scaleLevel)*getCenter()[0];
         yPos = -(scale_tmp-scaleLevel)*getCenter()[1];
         xPos /= 3.54;
         yPos /= 3.54;
-        
+        */
         transform();
     };
     this.moveLeft = function(){

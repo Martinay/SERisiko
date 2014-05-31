@@ -242,21 +242,6 @@ function Core() {
     };
 }
 
-function GameWindow(cv, ct){
-    //#Public Vars
-
-    //#Private Vars
-    var canvas = cv;
-    var ctx = ct;
-
-    //# Public Methods
-    this.clear = function(){
-        // clear stuff
-    };
-
-    //# Private Methods
-}
-
 function GameList(){
     //#Public Vars
 
