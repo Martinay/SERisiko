@@ -64,7 +64,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
+        response.addChangedObject( message.Player );
         
         
         return response;
@@ -81,6 +81,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
+        response.addChangedObject( message.NewGame );
         
         return response;
     }
@@ -96,7 +97,8 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
+        response.addChangedObject( message.Player );
+
         
         return response;
     }
@@ -112,7 +114,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
+        response.addChangedObject( message.NewGame );
         
         
         return response;
@@ -129,7 +131,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
+        response.addChangedObject( message.DeleteGameFromLobbyMessage.Game );
         
         
         return response;
