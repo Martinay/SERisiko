@@ -55,7 +55,7 @@ function SelectableTable(list){
             
             // parse game id form server list
             
-            td.onclick = new Function("Core.setGame('"+rows+"')");
+            td.onclick = new Function("Core.setGame("+rows+")");
             newTr.appendChild(td);
         }
         tb.appendChild(newTr);

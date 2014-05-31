@@ -75,8 +75,11 @@ function Core() {
         etablishConnection();
     };
 
-    this.backToLobby = function(){
+    this.leaveGame = function(){
         connection.leaveGame();
+    }
+
+    this.backToLobby = function(){
         //check response
         connection.joinLobby();
         
@@ -92,7 +95,10 @@ function Core() {
         if(this.sctTable != null){
             //alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
             //alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
-            this.svgHandler.init(document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0]);
+            
+            var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+            this.svgHandler.init(svg);
+
             joinGame(this.sctTable, id);
         }
         else

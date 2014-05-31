@@ -44,25 +44,21 @@ function SvgFunctions(){
     };
         
     this.zoomOut = function(){
-        //var scale_tmp = scaleLevel;
+        var scale_tmp = scaleLevel;
         scaleLevel -= scaleAmp;
-        /*
-        xPos = -(scale_tmp-scaleLevel)*getCenter()[0];
-        yPos = -(scale_tmp-scaleLevel)*getCenter()[1];
-        xPos /= 3.54;
-        yPos /= 3.54;
-        */
+        
+        xPos = -(scale_tmp-scaleLevel)*(getCenter()[0]/3.54);
+        yPos = -(scale_tmp-scaleLevel)*(getCenter()[1]/3.54);
+        
         transform();
     };
     this.zoomIn = function(){
-        //var scale_tmp = scaleLevel;
+        var scale_tmp = scaleLevel;
         scaleLevel += scaleAmp;
-        /*
-        xPos = -(scale_tmp-scaleLevel)*getCenter()[0];
-        yPos = -(scale_tmp-scaleLevel)*getCenter()[1];
-        xPos /= 3.54;
-        yPos /= 3.54;
-        */
+        
+        xPos = -(scale_tmp-scaleLevel)*(getCenter()[0]/3.54);
+        yPos = -(scale_tmp-scaleLevel)*(getCenter()[1]/3.54);
+ 
         transform();
     };
     this.moveLeft = function(){
