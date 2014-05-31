@@ -125,4 +125,12 @@ public class ServerLogic implements IServerLogic {
     public List<Game> GetGamesInLobby() {
         return _state.Lobby.GetOpenGames();
     }
+
+    public GameCreatedMessage JoinGame(int clientId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public PlayerLeftMessage LeaveGame(int clientId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
