@@ -5,11 +5,11 @@ import ServerLogic.Messages.*;
 import java.util.List;
 
 class MessageCreator {
-    static ReadyStateChangedMessage CreateReadyStateChangedMessage(List<Integer> idsToUpdate, int playerId, boolean readyState)
+    static ReadyStateChangedMessage CreateReadyStateChangedMessage(List<Integer> idsToUpdate, Player player, boolean readyState)
     {
         ReadyStateChangedMessage message = new ReadyStateChangedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.PlayerId = playerId;
+        message.Player = player;
         message.ReadyState = readyState;
         return message;
     }
@@ -23,20 +23,20 @@ class MessageCreator {
         return message;
     }
 
-    static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, int gameId)
+    static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game)
     {
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
         message.GameStarted = true;
-        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, gameId);
+        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
         return message;
     }
 
-    static DeleteGameFromLobbyMessage CreateDeleteGameFromLobbyMessage(List<Integer> playerIdsInLobby,int gameId)
+    static DeleteGameFromLobbyMessage CreateDeleteGameFromLobbyMessage(List<Integer> playerIdsInLobby,Game game)
     {
         DeleteGameFromLobbyMessage message = new DeleteGameFromLobbyMessage();
         message.PlayerIDsToUpdate = playerIdsInLobby;
-        message.GameId = gameId;
+        message.Game = game;
         return message;
     }
 
@@ -47,18 +47,18 @@ class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, int playerId) {
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player) {
         PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.PlayerID = playerId;
+        message.Player = player;
         return message;
     }
 
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, int playerId, List<Integer> playerIdsInLobby, int gameId) {
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player, List<Integer> playerIdsInLobby, Game game) {
         PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.PlayerID = playerId;
-        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, gameId);
+        message.Player = player;
+        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
         return message;
     }
 
@@ -69,10 +69,10 @@ class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftLobbyMessage CreatePlayerLeftLobbyMessage(List<Integer> idsToUpdate, int playerID) {
+    public static PlayerLeftLobbyMessage CreatePlayerLeftLobbyMessage(List<Integer> idsToUpdate, Player player) {
         PlayerLeftLobbyMessage message = new PlayerLeftLobbyMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.PlayerID = playerID;
+        message.Player = player;
 
         return message;
     }

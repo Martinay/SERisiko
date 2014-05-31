@@ -1,5 +1,5 @@
 package ServerLogic.Messages;
 
 public class EndTurnMessage {
-    public int NewActivePlayer;
+    public Player NewActivePlayer;
 }

@@ -1,12 +1,13 @@
 
 package ServerApi;
 
-import java.util.LinkedList;
-import java.util.List;
 import Network.WebSocket.WebSocketResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -14,11 +15,11 @@ import org.json.simple.JSONValue;
  */
 public class RisikoServerResponse implements WebSocketResponse {
     
-    private final LinkedList <String>errorList = new <String>LinkedList();
+    private final LinkedList <String>errorList = new LinkedList<String>();
     
-    private final LinkedList <ApiResponseObject>objectList = new <ApiResponseObject>LinkedList();
+    private final LinkedList <ApiResponseObject>objectList = new LinkedList<ApiResponseObject>();
     
-    private final LinkedList <Integer>clientList = new <Integer>LinkedList();
+    private final LinkedList <Integer>clientList = new LinkedList<Integer>();
     
     private int state = 0;
 
