@@ -16,8 +16,8 @@ function Core() {
     //#Private Vars
     var thePlayerName = "";
     var game = "stopped";
-    var gameListRefresher = $.timer(function(){Core.updateGameList();}, 2000);
-    var playerListRefresher = $.timer(function(){Core.updatePlayerList();}, 2000);
+    //var gameListRefresher = $.timer(function(){Core.updateGameList();}, 2000);
+    //var playerListRefresher = $.timer(function(){Core.updatePlayerList();}, 2000);
     
     //#InitConnection Function
     var connection = null;
@@ -35,7 +35,8 @@ function Core() {
     };
     etablishConnection();
     //# Load Map... done by html object    
-
+    
+    
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
@@ -46,6 +47,8 @@ function Core() {
         // create Player on Server + joinLobby
         connection.joinServer(thePlayerName); // includes joinlobby
         //connection.joinLobby(thePlayerName);
+        
+        this.updateGameList();
         
         //wait for answer
         showElement(document.getElementById("loading_overlay"));
@@ -63,7 +66,7 @@ function Core() {
         // revert menu
         showElement(document.getElementById("setPlayerName"));
         hideElement(document.getElementById("selectGame"));
-        gameListRefresher.pause();
+        //gameListRefresher.pause();
 
         divs = document.getElementsByClassName('playerNameDisplay');
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
@@ -81,8 +84,8 @@ function Core() {
         hideElement(document.getElementById("game"));
         hideElement(document.getElementById("newGame"));
         game = "stopped";
-        gameListRefresher.play();
-        playerListRefresher.pause();
+        //gameListRefresher.play();
+        //playerListRefresher.pause();
     };
 
     this.setGame = function(id){
@@ -99,7 +102,7 @@ function Core() {
     this.showCreateNewGame = function(){
         showElement(document.getElementById("newGame"));
         hideElement(document.getElementById("selectGame"));
-        gameListRefresher.pause();
+        //gameListRefresher.pause();
     };
 
     this.createNewGame = function(){
@@ -182,11 +185,11 @@ function Core() {
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
         hideElement(document.getElementById("selectGame"));
-        gameListRefresher.pause();
+        //gameListRefresher.pause();
         game = "running";
         table.selectRow(0);
         
-        playerListRefresher.play();
+        //playerListRefresher.play();
         
         connection.leaveLobby();
         connection.joinGame(id);
@@ -221,7 +224,7 @@ function Core() {
                     divs = document.getElementsByClassName('playerNameDisplay');
                     [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
 
-                    gameListRefresher.play();
+                    //gameListRefresher.play();
                 }
                 else{
                     alert("Error: Bad response from Server");
@@ -240,21 +243,6 @@ function Core() {
         }
       }
     };
-}
-
-function GameWindow(cv, ct){
-    //#Public Vars
-
-    //#Private Vars
-    var canvas = cv;
-    var ctx = ct;
-
-    //# Public Methods
-    this.clear = function(){
-        // clear stuff
-    };
-
-    //# Private Methods
 }
 
 function GameList(){
