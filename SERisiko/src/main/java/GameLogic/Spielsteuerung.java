@@ -20,11 +20,7 @@ public class Spielsteuerung {
 	//Zustandsvariabeln
 	
 	private int hinzuzufuegende_Armeen;
-	
-	/**
-	 * @param args
-	 */
-	
+
 	public Spielsteuerung( Spieler[] dieSpieler){
 		ist_erste_runde=true;
 

@@ -48,7 +48,6 @@ class ServerGame extends Game {
 
     public void Start()
     {
-
     }
 
 }
