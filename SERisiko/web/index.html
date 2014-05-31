@@ -1,19 +1,24 @@
 ﻿<html>
 <head>
     <!-- root dir -->
-    <base href="http://localhost:4502">
+    <base href="http://localhost">
 
     <!-- javascripts -->
-    <script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.timer.js"></script>
+    <script src="js/extern/jquery-2.1.1.min.js"></script>
+    <script src="js/extern/bootstrap.min.js"></script>
+    <script src="js/extern/jquery.timer.js"></script>
+    
     <script src="js/RisikoApi.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/SelectableTable.js"></script>
+    <script src="js/SvgFunctions.js"></script>
+    <script src="js/Core.js"></script>
 
     <!-- style sheets -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/style.css">
+    
+    <title>SE_RISK</title>
 </head>
 <body>
     <br />
@@ -26,10 +31,10 @@
             </tr>   
             <tr>
                 <td>
-                    <input id="playerName" value="Ihr Spielername" onkeyup="main.checkForKey('playerName', event.keyCode)">
+                    <input id="playerName" value="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)">
                 </td>
                 <td>
-                    <button onClick="main.setPlayerName()">Go</button>
+                    <button onClick="Core.setPlayerName()">Go</button>
                 </td>
             </tr>
         </table>
@@ -56,8 +61,8 @@
                 </th>	
             </tr>
             <tr>
-                <td><button  name="deletePlayerName" onClick='main.deletePlayerName();'>Zurück</button></td>
-                <td><button  name="showCreatetNewGame" onClick='main.showCreateNewGame()'>neues Spiel erstellen</button></td>
+                <td><button  name="deletePlayerName" onClick='Core.deletePlayerName();'>Zurück</button></td>
+                <td><button  name="showCreatetNewGame" onClick='Core.showCreateNewGame()'>neues Spiel erstellen</button></td>
             </tr>
         </table>
     </div>
@@ -70,19 +75,19 @@
             </tr>
             <tr>
                 <td>Name des Spiels:</td>
-                <td><input id="playName" value="Spielname" size="26"></td>
+                <td><input id="gameName" value="Spielname" size="26"></td>
             </tr>
             <tr>
                 <td>Anzahl der Spieler:</td>
-                <td><input id="playerCount" value="6" size="26" onkeyup="this.value = main.minmax(this.value, 2, 6)"></td>
+                <td><input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)"></td>
             </tr>
             <tr>
                 <td>Einstellungen des Spiels:</td>
-                <td><input id="playSettings" value="Spieleinstellungen" size="26"></td>
+                <td><input id="gameSettings" value="Spieleinstellungen" size="26"></td>
             </tr>
             <tr>
-                <th><button  name="backToLobby" onClick='main.backToLobby()'>Zurück</button></th>
-                <th><button  name="createtNewGame" onClick="main.createNewGame()">neues Spiel erstellen</button></th>
+                <th><button  name="backToLobby" onClick='Core.backToLobby()'>Zurück</button></th>
+                <th><button  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button></th>
             </tr>
         </table>
     </div>
@@ -100,20 +105,34 @@
                 </tr>
                 <tr>
                     <th style="padding-top: 10px;">
-                        <button  name="readyToPlay" onClick='main.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
-                        <button  name="backToLobby" onClick='main.backToLobby()'>Spiel verlassen</button>
+                        <button  name="readyToPlay" onClick='Core.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
+                        <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
                     </th>
                 </tr>
             </table>
         </div>
         <div id="GameScreen">
-            <h3 class="playerNameDisplay" style="text-align: center;"> Teste </h3>
-            <canvas id='screen' width='800' height='480'></canvas><br><br>
+            <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
+            <!--[if IE]>
+            <object id="svg_obj" classid="clsid:25336920-03F9-11CF-8FD0-00AA00686F13" data="maps/map_dhbw.html" width="700" height="800">
+            <p>backup content</p>
+            </object>
+            <![endif]-->
+
+            <!--[if !IE]> <-->
+            <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>
+            <!--> <![endif]-->
+            <button  name="zoomOut" onClick='Core.svgHandler.zoomOut()'>Zoom out</button>
+            <button  name="zoomIn" onClick='Core.svgHandler.zoomIn()'>Zoom in</button>
+            <button  name="moveLeft" onClick='Core.svgHandler.moveLeft()'>Links</button>
+            <button  name="moveRight" onClick='Core.svgHandler.moveRight()'>Rechts</button>
+            <button  name="moveUp" onClick='Core.svgHandler.moveUp()'>Hoch</button>
+            <button  name="moveDown" onClick='Core.svgHandler.moveDown()'>Runter</button>
         </div>
     </div><br><br>
-    <hr>
     <!-- Results -->
-    <button  name="clearServerAnswers" onClick='main.clearServerAnswers()'>Serverantworten leeren</button>
+    <hr>
+    <button  name="clearServerAnswers" onClick='Core.clearServerAnswers()'>Serverantworten leeren</button>
     <div id="serverAnswers"></div>
     <hr>
     <!-- Loading Overlay -->
