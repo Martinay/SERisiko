@@ -102,6 +102,15 @@
     display: block; 
     float: left;
     overflow: hidden;
+    position: relative;
+    width: 710px;
+    height: 550px;
+}
+
+#gameMap {
+    width: 700px;
+    height: 550px;
+    position: absolute;
 }
 
 #PlayerList{
@@ -127,6 +136,7 @@ hr{
     background: #000;
     opacity: 0.8;
     filter: alpha(opacity=80);
+    position: absolute;
 }
 #loading_message{
     margin: 0px auto;
