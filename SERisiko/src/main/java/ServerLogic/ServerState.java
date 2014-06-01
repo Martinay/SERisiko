@@ -22,7 +22,7 @@ class ServerState {
             }
         }
         
-        throw new RuntimeException("PlayerID Not Found");
+        throw new RuntimeException("PlayerID not Found");
     }
     
 }
