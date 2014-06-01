@@ -7,14 +7,12 @@ public class Spielsteuerung {
 
 	
 	private boolean ist_erste_runde;
-	private Spieler aktueller_Spieler;
+	public Spieler aktueller_Spieler;
 	
-	private Land zuletzt_geklicktes_Land;
-	
-	private Spielwelt dieSpielwelt;
+	public Spielwelt DieSpielwelt;
 	private Spieler[] dieSpieler;
 	
-	private Spielzustaende Zustand;
+	public Spielzustaende Zustand;
 	
 	
 	//Zustandsvariabeln
@@ -25,7 +23,7 @@ public class Spielsteuerung {
 		ist_erste_runde=true;
 
 		this.dieSpieler = dieSpieler;
-		this.dieSpielwelt = spielfeld_data.init_spielwelt_europa(dieSpieler);
+		this.DieSpielwelt = spielfeld_data.init_spielwelt_europa(dieSpieler);
 		
 		this.aktueller_Spieler=dieSpieler[0];
 		
@@ -33,7 +31,7 @@ public class Spielsteuerung {
 	}
 	
 	
-	public Client_Response zustandssteuerung(Spiel_Ereigniss Ereigniss){
+	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
 		
 		switch (Zustand) {
 		
@@ -96,13 +94,13 @@ public class Spielsteuerung {
 	
 	
 	private Client_Response armeen_hinzufuegen_betreten(){
-		int max_Armeen=(dieSpielwelt.gib_anz_Laender(aktueller_Spieler)/2);
+		int max_Armeen=(DieSpielwelt.gib_anz_Laender(aktueller_Spieler)/2);
 		hinzuzufuegende_Armeen=max_Armeen;
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
-		return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 	}
 	
-	private Client_Response armeen_hinzufuegen(Spiel_Ereigniss Ereigniss){ 
+	private Client_Response armeen_hinzufuegen(SpielEreigniss Ereigniss){
 		
 		if (Ereigniss.phasenwechsel){
 				
@@ -114,12 +112,12 @@ public class Spielsteuerung {
 				Ereigniss.erstesLand.mehr_Armeen(Ereigniss.anz_Armeen);
 				hinzuzufuegende_Armeen=hinzuzufuegende_Armeen-Ereigniss.anz_Armeen;
 			}else{
-				return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, true);
+				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
 			}
 		
 			if (hinzuzufuegende_Armeen<=0) return armeen_hinzufuegen_verlassen();
 			
-			return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+			return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 		}
 	}
 	
@@ -149,21 +147,21 @@ public class Spielsteuerung {
 		
 	private Client_Response angriff_betreten(){
 		Zustand=Spielzustaende.Angriff;
-		return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 	}
 		
-	private Client_Response angriff(Spiel_Ereigniss Ereigniss){
+	private Client_Response angriff(SpielEreigniss Ereigniss){
 		if (Ereigniss.phasenwechsel){
 			
 			return angriff_verlassen();
 				
 		}else{
-			if (dieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
+			if (DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
 				int [] wuerfel_erg = wuerfele(Ereigniss.anz_Armeen ,Ereigniss.zweitesLand);
-				dieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0],wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);	
-				return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+				DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0],wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
+				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 			}else{
-				return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, true);
+				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
 			}
 			
 		}
@@ -177,15 +175,15 @@ public class Spielsteuerung {
 	
 	private Client_Response verschieben_betreten(){
 		Zustand=Spielzustaende.Verschieben;
-		return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 	}
 		
-	private Client_Response verschieben(Spiel_Ereigniss Ereigniss){
+	private Client_Response verschieben(SpielEreigniss Ereigniss){
 		if (Ereigniss.phasenwechsel){
 			return verschieben_verlassen();	
 		}else{
-			dieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
-			return new Client_Response(dieSpielwelt, Zustand, aktueller_Spieler, false);
+			DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
+			return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 		}
 	}
 			

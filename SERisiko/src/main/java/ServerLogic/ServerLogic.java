@@ -10,22 +10,40 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
-        return null;
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        game.Attack(countryFromID, countryToID, units);
+
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryFromID, countryToID);
+    }
+
+    @Override
+    public void EndAttack(int playerID) {
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        game.EndAttack();
     }
 
     @Override
     public MapChangedMessage Move(int playerID, int countryFromID, int countryToID, int units) {
-        return null;
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        game.Move(countryFromID, countryToID, units);
+
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryFromID, countryToID);
     }
 
     @Override
     public MapChangedMessage PlaceUnits(int playerID, int countryID, int units) {
-        return null;
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        game.PlaceUnits(countryID, units);
+
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryID);
     }
 
     @Override
     public EndTurnMessage EndTurn(int playerID) {
-        return null;
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        Player nextPlayer = game.EndTurn();
+
+        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), nextPlayer);
     }
 
     @Override
@@ -47,7 +65,8 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.DeletePlayer(player);
         _state.Players.remove(player);
-        
+        PlayerMapper.Remove(player);
+
         return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
     }
 
@@ -56,9 +75,12 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         ServerGame game = _state.Lobby.GetGameById(gameId);
 
+        if (game.MaxPlayer<=game.GetPlayerCount())
+            return MessageCreator.CreateNewPlayerJoinedMessage(Arrays.asList(playerID));
+
         game.Players.add(player);
 
-        return MessageCreator.CreateNewPlayerJoinedMessage(game.GetPlayerIds(),game.Players);
+        return MessageCreator.CreateNewPlayerJoinedMessage(game.GetPlayerIds(), game.Players);
     }
 
     @Override
@@ -74,7 +96,7 @@ public class ServerLogic implements IServerLogic {
             return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player, _state.Lobby.GetPlayerIDs(),game);
         }
 
-        return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player);
+        return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(), player);
     }
 
     @Override
@@ -84,7 +106,7 @@ public class ServerLogic implements IServerLogic {
 
         _state.Lobby.AddGame(game);
 
-    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(),game);
+    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(), game);
     }
 
     @Override
@@ -97,7 +119,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(), game);
     }
 
     @Override
@@ -126,10 +148,12 @@ public class ServerLogic implements IServerLogic {
         return _state.Lobby.GetOpenGames();
     }
 
+    @Deprecated
     public GameCreatedMessage JoinGame(int clientId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Deprecated
     public PlayerLeftMessage LeaveGame(int clientId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

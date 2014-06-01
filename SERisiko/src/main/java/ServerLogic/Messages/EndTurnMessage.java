@@ -1,5 +1,5 @@
 package ServerLogic.Messages;
 
-public class EndTurnMessage {
+public class EndTurnMessage extends MessageBase {
     public Player NewActivePlayer;
 }

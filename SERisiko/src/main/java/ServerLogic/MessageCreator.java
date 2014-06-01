@@ -1,7 +1,9 @@
 package ServerLogic;
 
+import GameLogic.Land;
 import ServerLogic.Messages.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 class MessageCreator {
@@ -91,6 +93,47 @@ class MessageCreator {
         AddNewPlayerToLobbyMessage message = new AddNewPlayerToLobbyMessage();
         message.Player = player;
         message.PlayerIDsToUpdate = idsToUpdate;
+        return message;
+    }
+
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, int countryFromID, int countryToID) {
+
+        MapChangedMessage message = CreateMapChangedMessage(idsToUpdate, countryFromID);
+
+        message.MapChange.add(CreateMapChange(countryToID));
+
+        return message;
+    }
+
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, int countryID) {
+        MapChangedMessage message = new MapChangedMessage();
+
+        List<MapChange> mapChange = Arrays.asList(CreateMapChange(countryID));
+
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.MapChange = mapChange;
+
+        return message;
+    }
+
+    private static MapChange CreateMapChange(int countryId)
+    {
+        Land country = CountryMapper.GetCountryById(countryId);
+
+        MapChange mapChange = new MapChange();
+        mapChange.CountryID = countryId;
+        mapChange.OwnedPlayer = PlayerMapper.Map(country.gib_besitzer());
+        mapChange.Units = country.gib_anzahl_armeen();
+
+        return mapChange;
+    }
+
+    public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, Player nextPlayer) {
+        EndTurnMessage message = new EndTurnMessage();
+
+        message.NewActivePlayer = nextPlayer;
+        message.PlayerIDsToUpdate = idsToUpdate;
+
         return message;
     }
 }
