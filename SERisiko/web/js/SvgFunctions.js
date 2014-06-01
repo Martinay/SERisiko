@@ -51,6 +51,8 @@ function SvgFunctions(){
         yPos = -(scale_tmp-scaleLevel)*(getCenter()[1]/3.54);
         
         transform();
+        
+        //svgSetScale(svgDoc, scaleLevel, scale_tmp);
     };
     this.zoomIn = function(){
         var scale_tmp = scaleLevel;
@@ -78,6 +80,32 @@ function SvgFunctions(){
         transform();
     };
     
+    /*
+    function svgSetScale(svg, amount, oldAmount){ 
+        var box = svg.getBBox(); 
+        var cx = box.x + box.width/2; 
+        var cy = box.y + box.height/2; 
+        //$(element).attr("data-scale", amount); 
+        
+        svg.setAttribute("transform", "translate(" + cx + " " + cy + ") scale(" + amount + ") translate(" + (-cx) + " " + (-cy) + ")"); 
+        
+        var diffAmount = amount / oldAmount; 
+        
+        var scrollX = $('#svg-container').scrollLeft(); 
+        var scrollY = $('#svg-container').scrollTop(); 
+        var middle = getScrollCenter(); 
+        
+        var diffX = scrollX - middle[0]; 
+        var diffY = scrollY - middle[1]; 
+        
+        var diffActualX = (diffAmount * diffX) - diffX; 
+        var diffActualY = (diffAmount * diffY) - diffY; 
+        
+        $('#svg-container').scrollLeft(scrollX + diffActualX); 
+        $('#svg-container').scrollTop(scrollY + diffActualY); 
+    }*/
+
+
     //# Private Methods
     var transform = function(){
         svgDoc.setAttribute("transform", "translate(" + xPos + "," + yPos + ")scale(" + scaleLevel + "," + scaleLevel + ")");
