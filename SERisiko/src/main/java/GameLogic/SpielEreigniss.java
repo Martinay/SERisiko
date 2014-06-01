@@ -1,5 +1,5 @@
 package GameLogic;
-public class Spiel_Ereigniss {
+public class SpielEreigniss {
 
 	public int anz_Armeen;
 	public Land erstesLand;
@@ -8,7 +8,7 @@ public class Spiel_Ereigniss {
 	
 	//public Spieler aktueller_Spieler;
 	
-	public Spiel_Ereigniss(int anz_Armeen, Land erstesLand, Land zweitesLand, boolean phasenwechsel){
+	public SpielEreigniss(int anz_Armeen, Land erstesLand, Land zweitesLand, boolean phasenwechsel){
 		this.anz_Armeen=anz_Armeen;
 		this.erstesLand=erstesLand;
 		this.zweitesLand=zweitesLand;

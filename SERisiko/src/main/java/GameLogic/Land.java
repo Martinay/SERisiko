@@ -1,29 +1,21 @@
 package GameLogic;
 
-import java.awt.*;
-
-
 public class Land {
 	
 	private Spieler besitzer; //Spieler mit Armeen auf Land
-	private final String bezeichnung; // z.B. Deutschland
+    private int id;
+    private final String bezeichnung; // z.B. Deutschland
 	private int anzahl_armeen;
 	
 	private Land[] angrenzendeLaender;
-	private Polygon abmessungen;
 	
 	
-	public Land (Spieler besitzer,String bezeichnung, Polygon abmessungen){
+	public Land (Spieler besitzer,String bezeichnung, int Id){
 		this.besitzer=besitzer;
-		this.anzahl_armeen=1;
+        id = Id;
+        this.anzahl_armeen=1;
 		this.bezeichnung=bezeichnung;
-		this.abmessungen= abmessungen;
 		this.angrenzendeLaender=new Land[0];
-	}
-	
-	
-	public Polygon gib_Polygon(){
-		return abmessungen;
 	}
 	
 	public int gib_anzahl_armeen(){

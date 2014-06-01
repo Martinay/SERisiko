@@ -1,6 +1,6 @@
 package GameLogic;
 
-class Spielwelt {
+public class Spielwelt {
 
 	private Land [] dieLaender;
 	
@@ -10,7 +10,7 @@ class Spielwelt {
 	}
 	
 	
-	protected Land[] gibLaender(){
+	public Land[] gibLaender(){
 		return dieLaender;
 	}
 	

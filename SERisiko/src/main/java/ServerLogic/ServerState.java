@@ -24,5 +24,18 @@ class ServerState {
         
         throw new RuntimeException("PlayerID not Found");
     }
+
+    public ServerGame GetActiveGameByPlayerId(int playerID)
+    {
+        for (ServerGame game : ActiveGames) {
+                    for (Player player : game.Players)
+                    {
+                        if (player.ID == playerID)
+                            return game;
+            }
+        }
+
+        throw new RuntimeException("Game not Found");
+    }
     
 }
