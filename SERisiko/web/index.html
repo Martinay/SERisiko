@@ -113,22 +113,15 @@
         </div>
         <div id="GameScreen">
             <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
-            <!--[if IE]>
-            <object id="svg_obj" classid="clsid:25336920-03F9-11CF-8FD0-00AA00686F13" data="maps/map_dhbw.html" width="700" height="800">
-            <p>backup content</p>
-            </object>
-            <![endif]-->
-
-            <!--[if !IE]> <-->
-            <!-- <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>-->
             <div id="gameMap">
-                <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"></object>
+                <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="550">
+                    <img src="maps/map_dhbw.jpg" width="700"/>
+                </object>
             </div>
                 <!-- Loading Overlay -->
                 <div id="loading_overlay">
                     <div id="loading_message">Waiting for Server... <img id="loading" src="img/loading_overlay.gif"></div>
                 </div>
-            <!--> <![endif]-->
         </div>
     </div><br><br>
     <!-- Results -->
