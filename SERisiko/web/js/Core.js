@@ -100,6 +100,8 @@ function Core() {
             this.svgHandler.init(svg);
 
             joinGame(this.sctTable, id);
+            
+            this.updatePlayerList();
         }
         else
             alert("Error! no gameTable");
@@ -168,14 +170,14 @@ function Core() {
         // parse message
         var players = [ // pseudo test data
                         {"name" : "Hans von Massow", "rdy" : 1},
-                        {"name" : "Maism�ller", "rdy" : 1},
+                        {"name" : "Maismüller", "rdy" : 1},
                         {"name" : "Karl-Heinz", "rdy" : 0},
                         {"name" : "Philipp", "rdy" : 1},
                         {"name" : "Alex", "rdy" : 0},
                         {"name" : "Nerv", "rdy" : 1}
                         ];			  	  
-        var rdy = '<img id="Ready" src="img/Gruener-Haken.jpg" width="15" align="right"/>';
-        var notRdy = '';
+        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
+        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
 
         document.getElementById("PlayerList").innerHTML = "";
         for(var i = 0; i < 6; i++){

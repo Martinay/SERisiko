@@ -121,7 +121,13 @@
 
             <!--[if !IE]> <-->
             <!-- <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>-->
-            <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="500"></object><br>
+            <div id="gameMap">
+                <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"></object>
+            </div>
+                <!-- Loading Overlay -->
+                <div id="loading_overlay">
+                    <div id="loading_message">Waiting for Server... <img id="loading" src="img/loading_overlay.gif"></div>
+                </div>
             <!--> <![endif]-->
         </div>
     </div><br><br>
@@ -130,7 +136,5 @@
     <button  name="clearServerAnswers" onClick='Core.clearServerAnswers()'>Serverantworten leeren</button>
     <div id="serverAnswers"></div>
     <hr>
-    <!-- Loading Overlay -->
-    <div id="loading_overlay"><div id="loading_message">Waiting for Server... <img id="loading" src="img/loading_overlay.gif"></div></div>
 </body>
 </html>
