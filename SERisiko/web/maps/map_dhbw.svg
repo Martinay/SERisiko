@@ -1,4 +1,5 @@
-<html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
 viewBox="5000 5000 11812 11706" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
@@ -60,105 +61,135 @@ viewBox="5000 5000 11812 11706" xmlns:xlink="http://www.w3.org/1999/xlink">
  </defs>
 <g id="viewport" transform="translate(200,200)">
   <metadata id="CorelCorpID_0Corel-Layer"/>
-  <rect id="P13" class="fil0 str0" x="13329" y="12449" width="811" height="8307"/>
-  <rect id="P15" class="fil0 str0" x="14141" y="19913" width="6368" height="843"/>
-  <rect id="P14" class="fil0 str0" x="135" y="19913" width="13194" height="843"/>
-  <rect id="P9" class="fil0 str0" x="10825" y="11749" width="4921" height="700"/>
-  <rect id="P8" class="fil0 str0" x="10825" y="11049" width="4921" height="700"/>
+ 
+  <!-- Gebäude Verbindungen-->
+  <line class="fil5 str1" x1="3205" y1="19057" x2="3205" y2= "19913" /><!--C1 - P14-->
+  <line class="fil5 str1" x1="12562" y1="14630" x2="13329" y2= "14630" /><!--A1 - P13-->
+  <line class="fil5 str1" x1="16416" y1="19057" x2="16416" y2= "19913" /><!--D3 - P15-->
+  <line class="fil5 str1" x1="1732" y1="15388" x2="4677" y2= "15388" /><!--B2 - C4-->
+  <line class="fil5 str1" x1="3496" y1="11711" x2="3496" y2= "11967" /><!--B5- P1-->
+  <line class="fil5 str1" x1="17730" y1="13237" x2="17730" y2= "13069" /><!--D7 - P12-->
+  <line class="fil5 str1" x1="19719" y1="10370" x2="19719" y2= "10547" /><!--E4 - P11-->
+  <line class="fil5 str1" x1="14229" y1="9003" x2="15040" y2= "9003" /><!--E1 - P7-->
+  <line class="fil5 str1" x1="6838" y1="14304" x2="6336" y2= "14304" /><!--B3 - P3-->
+  <line class="fil5 str1" x1="14141" y1="14630" x2="15014" y2= "14630" /><!--D1-P13-->
+  
+<!-- Gebäude A-->
+  <text x="8934" y="19544"  class="fil6 fnt0">Gebäude A</text>
+  
+  <rect id="A1" class="fil3 str0" x="11257" y="13854" width="1305" height="2152"/>
+  <rect id="A2" class="fil3 str0" x="11257" y="16006" width="1305" height="1535"/>
+  <rect id="A3" class="fil3 str0" x="10604" y="17540" width="1958" height="1535"/>
+  <rect id="A4" class="fil3 str0" x="7570" y="17205" width="3034" height="917"/>
+  <rect id="A5" class="fil3 str0" x="7570" y="18122" width="3034" height="953"/>
+  <rect id="A6" class="fil3 str0" x="6336" y="18202" width="1235" height="510"/>
+  
+  <text x="11296" y="14212"  class="fil6 fnt1">A1</text>
+  <text x="11296" y="16364"  class="fil6 fnt1">A2</text>
+  <text x="10650" y="17906"  class="fil6 fnt1">A3</text>
+  <text x="7598" y="17552"  class="fil6 fnt1">A4</text>
+  <text x="7599" y="18470"  class="fil6 fnt1">A5</text>
+  <text x="6351" y="18537"  class="fil6 fnt1">A6</text>
+ 
+<!-- Gebäude B & C-->
+  <text x="2322" y="16636"  class="fil6 fnt0">Gebäude </text>
+  <text x="2640" y="17109"  class="fil6 fnt0">B &amp; C</text>
+  
+<!-- Gebäude B-->
+
+  <rect id="B1" class="fil4 str0" x="4677" y="17470" width="1658" height="1587"/>
+  <rect id="B2" class="fil4 str0" x="4677" y="13536" width="829" height="3933"/>
+  <rect id="B3" class="fil4 str0" x="5507" y="13536" width="829" height="3933"/>
+  <rect id="B4" class="fil4 str0" x="4677" y="11967" width="1658" height="1570"/>
+  <rect id="B5" class="fil4 str0" x="1731" y="11967" width="2946" height="1217"/>
+  
+  <text x="4725" y="17837"  class="fil6 fnt1">B1</text>
+  <text x="4702" y="13881"  class="fil6 fnt1">B2</text>
+  <text x="5552" y="13881"  class="fil6 fnt1">B3</text>
+  <text x="4725" y="12333"  class="fil6 fnt1">B4</text>
+  <text x="1786" y="12322"  class="fil6 fnt2">B5</text>
+
+<!-- Gebäude C-->
+    
+  <rect id="C1" class="fil4 str0" x="1732" y="18334" width="2946" height="723"/>
+  <rect id="C2" class="fil4 str0" x="109" y="17364" width="1623" height="1693"/>
+  <rect id="C3" class="fil4 str0" x="109" y="13413" width="811" height="3951"/>
+  <rect id="C4" class="fil4 str0" x="920" y="13413" width="811" height="3951"/>
+  <rect id="C5" class="fil4 str0" x="109" y="11967" width="1622" height="1446"/>
+  
+  <text x="1753" y="18675"  class="fil6 fnt2">C1</text>
+  <text x="158" y="17732"  class="fil6 fnt1">C2</text>
+  <text x="133" y="13757"  class="fil6 fnt1">C3</text>
+  <text x="945" y="13757"  class="fil6 fnt1">C4</text>
+  <text x="152" y="12329"  class="fil6 fnt1">C5</text>
+  
+<!-- Gebäude D-->
+  <text x="16827" y="16336"  class="fil6 fnt0">Gebäude </text>
+  <text x="17595" y="16809"  class="fil6 fnt0">D</text>
+  
+  <rect id="D1" class="fil2 str0" x="15014" y="13237" width="1640" height="2099"/>
+  <rect id="D2" class="fil2 str0" x="15014" y="15336" width="1640" height="2858"/>
+  <rect id="D3" class="fil2 str0" x="15014" y="18193" width="2805" height="864"/>
+  <rect id="D4" class="fil2 str0" x="17818" y="18193" width="2681" height="864"/>
+  <rect id="D5" class="fil2 str0" x="18806" y="15441" width="1693" height="2752"/>
+  <rect id="D6" class="fil2 str0" x="18806" y="13237" width="1693" height="2205"/>
+  <rect id="D7" class="fil2 str0" x="16654" y="13237" width="2152" height="1411"/>
+  
+  <text x="15063" y="13605"  class="fil6 fnt1">D1</text>
+  <text x="15063" y="15704"  class="fil6 fnt1">D2</text>
+  <text x="15040" y="18538"  class="fil6 fnt1">D3</text>
+  <text x="17844" y="18538"  class="fil6 fnt1">D4</text>
+  <text x="18857" y="15827"  class="fil6 fnt1">D5</text>
+  <text x="18857" y="13607"  class="fil6 fnt1">D6</text>
+  <text x="16697" y="13598"  class="fil6 fnt1">D7</text>
+    
+<!-- Gebäude E--> 
+  <text x="16566" y="7558"  class="fil6 fnt0">Gebäude E</text> 
+    
+  <rect id="E1" class="fil1 str0" x="15040" y="7795" width="1393" height="2575"/>
+  <rect id="E2" class="fil1 str0" x="16434" y="7795" width="2461" height="1288"/>
+  <rect id="E3" class="fil1 str0" x="16434" y="9083" width="2461" height="1288"/> 
+  <rect id="E4" class="fil1 str0" x="18894" y="7795" width="1649" height="2575"/>
+    
+  <text x="15082" y="8156"  class="fil6 fnt2">E1</text>
+  <text x="16472" y="8153"  class="fil6 fnt2">E2</text>
+  <text x="16472" y="9441"  class="fil6 fnt1">E3</text>
+  <text x="18944" y="8164"  class="fil6 fnt1">E4</text>
+  
+<!-- Parklatz P -->
+  <text x="8000" y="10703"  class="fil6 fnt0">Parkplatz</text>
+  
+  <rect id="P1" class="fil0 str0" x="153" y="11049" width="6685" height="662"/>
   <rect id="P2" class="fil0 str0" x="6838" y="11049" width="3986" height="1808"/>
   <rect id="P3" class="fil0 str0" x="6838" y="12857" width="1499" height="2893"/>
-  <rect id="P6" class="fil0 str0" x="6838" y="15750" width="3986" height="1129"/>
-  <rect id="P5" class="fil0 str0" x="9572" y="12857" width="1252" height="2893"/>
   <rect id="P4" class="fil0 str0" x="8338" y="12857" width="1235" height="2893"/>
-  <rect id="P1" class="fil0 str0" x="153" y="11049" width="6685" height="662"/>
-  <rect id="P9" class="fil0 str0" x="13285" y="6651" width="944" height="4397"/>
+  <rect id="P5" class="fil0 str0" x="9572" y="12857" width="1252" height="2893"/>
+  <rect id="P6" class="fil0 str0" x="6838" y="15750" width="3986" height="1129"/>
+  <rect id="P7" class="fil0 str0" x="13285" y="6651" width="944" height="4397"/>
+  <rect id="P8" class="fil0 str0" x="10825" y="11049" width="4921" height="700"/>
+  <rect id="P9" class="fil0 str0" x="10825" y="11749" width="4921" height="700"/>
   <rect id="P10" class="fil0 str0" x="15746" y="10547" width="1482" height="2522"/>
   <rect id="P11" class="fil0 str0" x="17228" y="10547" width="3334" height="1358"/>
   <rect id="P12" class="fil0 str0" x="17228" y="11905" width="3334" height="1164"/>
-  <rect id="E1" class="fil1 str0" x="15040" y="7795" width="1393" height="2575"/>
-  <rect id="E2" class="fil1 str0" x="16434" y="7795" width="2461" height="1288"/>
-  <rect id="E4" class="fil1 str0" x="18894" y="7795" width="1649" height="2575"/>
-  <rect id="E3" class="fil1 str0" x="16434" y="9083" width="2461" height="1288"/>
-  <rect id="D1" class="fil2 str0" x="15014" y="13237" width="1640" height="2099"/>
-  <rect id="D7" class="fil2 str0" x="16654" y="13237" width="2152" height="1411"/>
-  <rect id="D6" class="fil2 str0" x="18806" y="13237" width="1693" height="2205"/>
-  <rect id="D5" class="fil2 str0" x="18806" y="15441" width="1693" height="2752"/>
-  <rect id="D4" class="fil2 str0" x="17818" y="18193" width="2681" height="864"/>
-  <rect id="D3" class="fil2 str0" x="15014" y="18193" width="2805" height="864"/>
-  <rect id="D2" class="fil2 str0" x="15014" y="15336" width="1640" height="2858"/>
-  <rect id="A3" class="fil3 str0" x="10604" y="17540" width="1958" height="1535"/>
-  <rect id="A2" class="fil3 str0" x="11257" y="16006" width="1305" height="1535"/>
-  <rect id="A1" class="fil3 str0" x="11257" y="13854" width="1305" height="2152"/>
-  <rect id="A5" class="fil3 str0" x="7570" y="18122" width="3034" height="953"/>
-  <rect id="A5" class="fil3 str0" x="7570" y="17205" width="3034" height="917"/>
-  <rect id="A6" class="fil3 str0" x="6336" y="18202" width="1235" height="510"/>
-  <rect id="B1" class="fil4 str0" x="4677" y="17470" width="1658" height="1587"/>
-  <rect id="C1" class="fil4 str0" x="1732" y="18334" width="2946" height="723"/>
-  <rect id="B3" class="fil4 str0" x="5507" y="13536" width="829" height="3933"/>
-  <rect id="B4" class="fil4 str0" x="4677" y="11967" width="1658" height="1570"/>
-  <rect id="B2" class="fil4 str0" x="4677" y="13536" width="829" height="3933"/>
-  <rect id="B5" class="fil4 str0" x="1749" y="11967" width="2928" height="1217"/>
-  <rect id="C5" class="fil4 str0" x="109" y="11967" width="1640" height="1446"/>
-  <rect id="C3" class="fil4 str0" x="109" y="13413" width="811" height="3951"/>
-  <rect id="C2" class="fil4 str0" x="109" y="17364" width="1623" height="1693"/>
-  <rect id="C4" class="fil4 str0" x="920" y="13413" width="811" height="3951"/>
-  <line class="fil5 str1" x1="3205" y1="19057" x2="3205" y2= "19913" />
-  <line class="fil5 str1" x1="12562" y1="14630" x2="13329" y2= "14630" />
-  <line class="fil5 str1" x1="16416" y1="19057" x2="16416" y2= "19913" />
-  <line class="fil5 str1" x1="1732" y1="15388" x2="4677" y2= "15388" />
-  <line class="fil5 str1" x1="3496" y1="11711" x2="3496" y2= "11967" />
-  <line class="fil5 str1" x1="17730" y1="13237" x2="17730" y2= "13069" />
-  <line class="fil5 str1" x1="19719" y1="10370" x2="19719" y2= "10547" />
-  <line class="fil5 str1" x1="14229" y1="9003" x2="15040" y2= "9003" />
-  <line class="fil5 str1" x1="6838" y1="14304" x2="6336" y2= "14304" />
-  <line class="fil5 str1" x1="14141" y1="14630" x2="15014" y2= "14630" />
-  <text x="2422" y="16636"  class="fil6 fnt0">Gebäude </text>
-  <text x="2740" y="17109"  class="fil6 fnt0">B &amp; C</text>
-  <text x="8934" y="19544"  class="fil6 fnt0">Gebäude A</text>
-  <text x="16877" y="16336"  class="fil6 fnt0">Gebäude </text>
-  <text x="17595" y="16809"  class="fil6 fnt0">D</text>
-  <text x="16466" y="7408"  class="fil6 fnt0">Gebäude E</text>
-  <text x="7145" y="10703"  class="fil6 fnt0">Gebäude Parkplatz</text>
-  <text x="152" y="12329"  class="fil6 fnt1">C5</text>
-  <text x="945" y="13757"  class="fil6 fnt1">C4</text>
-  <text x="133" y="13757"  class="fil6 fnt1">C3</text>
-  <text x="158" y="17732"  class="fil6 fnt1">C2</text>
-  <text x="1753" y="18675"  class="fil6 fnt2">C1</text>
-  <text x="1786" y="12322"  class="fil6 fnt2">B5</text>
-  <text x="4702" y="13881"  class="fil6 fnt1">B2</text>
-  <text x="4725" y="12333"  class="fil6 fnt1">B4</text>
-  <text x="4725" y="17837"  class="fil6 fnt1">B1</text>
-  <text x="7598" y="17552"  class="fil6 fnt1">A4</text>
-  <text x="7599" y="18470"  class="fil6 fnt1">A5</text>
-  <text x="10650" y="17906"  class="fil6 fnt1">A3</text>
-  <text x="11296" y="14212"  class="fil6 fnt1">A1</text>
-  <text x="15063" y="13605"  class="fil6 fnt1">D1</text>
-  <text x="15063" y="15704"  class="fil6 fnt1">D2</text>
-  <text x="11296" y="16364"  class="fil6 fnt1">A2</text>
-  <text x="6351" y="18537"  class="fil6 fnt1">A6</text>
-  <text x="15040" y="18538"  class="fil6 fnt1">D3</text>
-  <text x="17844" y="18538"  class="fil6 fnt1">D4</text>
-  <text x="18857" y="13607"  class="fil6 fnt1">D6</text>
-  <text x="16697" y="13598"  class="fil6 fnt1">D7</text>
-  <text x="18944" y="8164"  class="fil6 fnt1">E4</text>
-  <text x="16472" y="9441"  class="fil6 fnt1">E3</text>
-  <text x="15082" y="8156"  class="fil6 fnt2">E1</text>
-  <text x="16472" y="8153"  class="fil6 fnt2">E2</text>
+  <rect id="P13" class="fil0 str0" x="13329" y="12449" width="811" height="8307"/>
+  <rect id="P14" class="fil0 str0" x="135" y="19913" width="13194" height="843"/>
+  <rect id="P15" class="fil0 str0" x="14141" y="19913" width="6368" height="843"/>
+  
   <text x="173" y="11388"  class="fil6 fnt1">P1</text>
-  <text x="10846" y="11389"  class="fil6 fnt1">P8</text>
-  <text x="13314" y="6999"  class="fil6 fnt2">P9</text>
   <text x="6892" y="11422"  class="fil6 fnt1">P2</text>
   <text x="6883" y="13222"  class="fil6 fnt1">P3</text>
   <text x="8375" y="13214"  class="fil6 fnt1">P4</text>
   <text x="9610" y="13214"  class="fil6 fnt1">P5</text>
-  <text x="17262" y="12259"  class="fil6 fnt2">P12</text>
-  <text x="17268" y="10907"  class="fil6 fnt1">P11</text>
-  <text x="15790" y="10910"  class="fil6 fnt1">P10</text>
   <text x="6872" y="16103"  class="fil6 fnt1">P6</text>
+  <text x="13314" y="6999"  class="fil6 fnt2">P7</text>
+  <text x="10846" y="11389"  class="fil6 fnt1">P8</text>
+  <text x="10846" y="12089"  class="fil6 fnt1">P9</text>
+  <text x="15790" y="10910"  class="fil6 fnt1">P10</text>
+  <text x="17268" y="10907"  class="fil6 fnt1">P11</text>
+  <text x="17262" y="12259"  class="fil6 fnt2">P12</text>
+  <text x="13354" y="12793"  class="fil6 fnt1">P13</text>
   <text x="161" y="20321"  class="fil6 fnt0">P14</text>
   <text x="14166" y="20257"  class="fil6 fnt1">P15</text>
-  <text x="10846" y="12089"  class="fil6 fnt1">P9</text>
-  <text x="13354" y="12793"  class="fil6 fnt1">P13</text>
+  
  </g>
 </svg>
-</html>

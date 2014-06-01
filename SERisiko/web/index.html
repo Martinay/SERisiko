@@ -1,7 +1,7 @@
 ﻿<html>
 <head>
     <!-- root dir -->
-    <base href="http://localhost">
+    <base href="http://localhost:80">
 
     <!-- javascripts -->
     <script src="js/extern/jquery-2.1.1.min.js"></script>
@@ -120,14 +120,9 @@
             <![endif]-->
 
             <!--[if !IE]> <-->
-            <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>
+            <!-- <object id="svg_obj" type="text/html" data="maps/map_dhbw.html" width="700" height="800" ></object><br>-->
+            <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="500"></object><br>
             <!--> <![endif]-->
-            <button  name="zoomOut" onClick='Core.svgHandler.zoomOut()'>Zoom out</button>
-            <button  name="zoomIn" onClick='Core.svgHandler.zoomIn()'>Zoom in</button>
-            <button  name="moveLeft" onClick='Core.svgHandler.moveLeft()'>Links</button>
-            <button  name="moveRight" onClick='Core.svgHandler.moveRight()'>Rechts</button>
-            <button  name="moveUp" onClick='Core.svgHandler.moveUp()'>Hoch</button>
-            <button  name="moveDown" onClick='Core.svgHandler.moveDown()'>Runter</button>
         </div>
     </div><br><br>
     <!-- Results -->
