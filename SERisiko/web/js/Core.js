@@ -85,6 +85,7 @@ function Core() {
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
+        hideElement(document.getElementById("GameScreen"));
         hideElement(document.getElementById("newGame"));
         game = "stopped";
         //gameListRefresher.play();
@@ -192,6 +193,7 @@ function Core() {
     //# Private Methods    
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
+        showElement(document.getElementById("GameScreen"));
         hideElement(document.getElementById("selectGame"));
         //gameListRefresher.pause();
         game = "running";

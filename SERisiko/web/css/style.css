@@ -99,7 +99,7 @@
 }
 
 #GameScreen { 
-    display: block; 
+    display: none; 
     float: left;
     overflow: hidden;
     position: relative;
@@ -141,4 +141,8 @@ hr{
 #loading_message{
     margin: 0px auto;
     color: #ffffff;
+}
+
+h3.playerNameDisplay{
+    
 }

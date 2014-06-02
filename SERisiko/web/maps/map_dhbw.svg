@@ -62,6 +62,9 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
    <clipPath id="id0">
     <rect id="" x="438" y="598" width="6113" height="3116"/>
    </clipPath>
+   <clipPath id="id1">
+    <rect id="" x="0" y="0" width="20879" height="14605"/>
+   </clipPath>
  </defs>
  <g id="viewport">
   <metadata id="CorelCorpID_0Corel-Layer"/>
@@ -190,6 +193,8 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
     
   <g style="clip-path:url(#id0)">
    <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
+  </g>
+  <g id="MapUnit" style="clip-path:url(#id1)">
   </g>
  </g>
 </svg>
