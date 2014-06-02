@@ -89,7 +89,7 @@
 }
 
 #gameOptions{
-    display: block;
+    display: none;
     float: right;
     width: 300px;
 }
@@ -143,6 +143,6 @@ hr{
     color: #ffffff;
 }
 
-h3.playerNameDisplay{
+.playerNameDisplay{
     
 }

@@ -1,5 +1,5 @@
  <!DOCTYPE html>
-<html xml:lang="de-de" lang="de-de" dir="ltr" >
+<html xml:lang="de-de" lang="de-de">
 <head>
     <!-- root dir -->
     <base href="http://localhost:80" />
@@ -93,42 +93,53 @@
         </table>
     </div>
     <div id="game"> 
-        <div id="gameOptions">
-            <table>
-                <tr>
-                    <th id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </th>
-                </tr>
-                <tr>
-                    <th style="padding-bottom: 10px;">Ihre Mitspieler</th>
-                </tr>
-                <tr>
-                    <td id="PlayerList"></td>
-                </tr>
-                <tr>
-                    <th style="padding-top: 10px;">
-                        <button  name="readyToPlay" onClick='Core.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
-                        <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
-                    </th>
-                </tr>
-            </table>
-        </div>
-        <div id="GameScreen">
-            <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
-            <div id="gameMap">
-                <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="550">
-                    <img src="maps/map_dhbw.jpg" width="700" alt="Playmap - DHBW"/>
-                </object>
-            </div>
-                <!-- Loading Overlay -->
-                <div id="loading_overlay">
-                    <div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>
-                </div>
-        </div>
-    </div><br><br>
+        <table style="margin: 0px auto;">
+            <tr>
+                <td>
+                    <div id="GameScreen">
+                        <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
+                        <div id="gameMap">
+                            <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="550">
+                                <img src="maps/map_dhbw.jpg" width="700" alt="Playmap - DHBW"/>
+                            </object>
+                        </div>
+                            <!-- Loading Overlay -->
+                            <div id="loading_overlay">
+                                <div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>
+                            </div>
+                    </div> 
+                </td>
+                <td>
+                    <div id="gameOptions">
+                        <table>
+                            <tr>
+                                <th id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </th>
+                            </tr>
+                            <tr>
+                                <th style="padding-bottom: 10px;">Ihre Mitspieler</th>
+                            </tr>
+                            <tr>
+                                <td id="PlayerList"></td>
+                            </tr>
+                            <tr>
+                                <th style="padding-top: 10px;">
+                                    <button  name="readyToPlay" onClick='Core.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
+                                    <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br /><br/>
     <!-- Results -->
-    <hr>
-    <button  name="clearServerAnswers" onClick='Core.clearServerAnswers()'>Serverantworten leeren</button>
-    <div id="serverAnswers"></div>
-    <hr>
+    <hr />
+    <div id ="ZumTesten">
+        <button  name="clearServerAnswers" onClick='Core.clearServerAnswers()'>Serverantworten leeren</button>
+        <div id="serverAnswers"></div>
+    </div>
+    <hr />
 </body>
 </html>
