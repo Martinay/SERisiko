@@ -14,11 +14,6 @@
  *       Zentimeter    cm           35,43
  *       Inch          in           90 
  */
-
-var countAttack = 0;
-var attacker = "";
-var defender = "";
-
 function SvgFunctions(){
     //#Public Vars    
     
@@ -29,6 +24,10 @@ function SvgFunctions(){
     var movAmp = 50;
     var xPos = 0;
     var yPos = 0;
+    
+    var countAttack = 0;
+    var attacker = "";
+    var defender = "";
     
     //# Public Methods
     this.init = function(doc){
@@ -43,8 +42,8 @@ function SvgFunctions(){
         [].slice.call(rects).forEach(function(rect){
             rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
             rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
-            //rect.onclick = new Function("setUnit(this.id, 10);");
-            rect.onclick = new Function("Attack(this.id);");
+            //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
+            rect.onclick = new Function("Core.svgHandler.attack(this.id);");
         });
     };
         
@@ -109,6 +108,51 @@ function SvgFunctions(){
         $('#svg-container').scrollLeft(scrollX + diffActualX); 
         $('#svg-container').scrollTop(scrollY + diffActualY); 
     }*/
+    
+    this.setUnit = function(id, count){
+        var theRect = svgDoc.getElementById(id);
+
+        var xPosition = parseInt(theRect.getAttribute("x")) + theRect.getAttribute("width")/2;
+        var yPosition = parseInt(theRect.getAttribute("y")) + theRect.getAttribute("height")/2;
+
+        var addUnits = svgDoc.getElementById("MapUnit");
+
+        count = parseInt(count);
+
+        while (count > 0) {
+            if(count > 9) {
+                 addUnits.innerHTML = addUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Einstein.jpeg"/>\n';
+                 count = count - 10;
+            } else {
+                if(count > 4) {
+                    addUnits.innerHTML = addUnits.innerHTML + '<image id="professor.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Professor.png"/>\n';
+                    count = count - 5;
+                } else {
+                        addUnits.innerHTML = addUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/student.png"/>\n';
+                        count = count - 1;
+                }
+            }
+        }
+    }
+
+    this.attack = function(id){
+        var theRect = svgDoc.getElementById(id);
+
+        if(countAttack === 0){
+            attacker = id;
+            theRect.onmouseout = new Function("this.setAttribute('opacity','0.5');");
+            this.setUnit(id, 1);
+            countAttack++;
+        } else {  
+            defender = id;
+            theRect = svgDoc.getElementById(attacker);
+            theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
+            theRect.setAttribute('opacity','1');
+            countAttack = 0;
+            alert("Von: " + attacker + " Nach: " + defender);
+            showAttack();
+        }
+    }
 
 
     //# Private Methods
@@ -122,59 +166,10 @@ function SvgFunctions(){
         
         return [width / 2 + xPos, height/2 + yPos];
     };
-}
-
-function setUnit(id, count){
-
-    var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-    var theRect = svg.getElementById(id);
-    
-    var xPosition = parseInt(theRect.getAttribute("x")) + theRect.getAttribute("width")/2;
-    var yPosition = parseInt(theRect.getAttribute("y")) + theRect.getAttribute("height")/2;
-    
-    var AddUnits = svg.getElementById("MapUnit");
-    
-    count = parseInt(count);
-    
-    while (count > 0) {
-        if(count > 9) {
-             AddUnits.innerHTML = AddUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Einstein.jpeg"/>\n';
-             count = count - 10;
-        } else {
-            if(count > 4) {
-                AddUnits.innerHTML = AddUnits.innerHTML + '<image id="professor.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Professor.png"/>\n';
-                count = count - 5;
-            } else {
-                    AddUnits.innerHTML = AddUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/student.png"/>\n';
-                    count = count - 1;
-            }
-        }
+        
+    var showAttack = function(){
+        document.getElementById("loading_overlay").style.display = "block";
+        var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
+        setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
     }
-}
-
-function Attack(id){
-    
-    var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-    var theRect = svg.getElementById(id);
-    
-    if(countAttack === 0){
-        attacker = id;
-        theRect.onmouseout = new Function("this.setAttribute('opacity','0.5');");
-        setUnit(id, 1);
-        countAttack++;
-    } else {  
-        defender = id;
-        theRect = svg.getElementById(attacker);
-        theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
-        theRect.setAttribute('opacity','1');
-        countAttack = 0;
-        alert("Von: " + attacker + " Nach: " + defender);
-        ShowAttack();
-    }
-}
-
-function ShowAttack(){
-    document.getElementById("loading_overlay").style.display = "block";
-    var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
-    setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
 }
