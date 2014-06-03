@@ -1,14 +1,10 @@
 package ServerApi;
 
-import ServerLogic.Messages.AddNewPlayerToLobbyMessage;
-import ServerLogic.ServerLogic;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
-import ServerLogic.Messages.Game;
-import ServerLogic.Messages.GameCreatedMessage;
-import ServerLogic.Messages.GameStartedMessage;
-import ServerLogic.Messages.PlayerLeftLobbyMessage;
-import ServerLogic.Messages.PlayerLeftMessage;
+import ServerLogic.Messages.*;
+import ServerLogic.ServerLogic;
+
 import java.util.List;
 
 
@@ -103,12 +99,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
-    public WebSocketResponse createGame(GameClient gameClient, String gamename) {
+    public WebSocketResponse createGame(GameClient gameClient, String gamename, int maxPlayer) {
         System.out.println("Create Game");
         
         int clientId = gameClient.getIdentifyer();
         
-        GameCreatedMessage message = gameManager.CreateGame(clientId, gamename);
+        GameCreatedMessage message = gameManager.CreateGame(clientId, gamename, maxPlayer);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);

@@ -15,7 +15,7 @@ interface RisikoWebSocketApi {
     public WebSocketResponse leaveLobby(GameClient gameClient);
     public WebSocketResponse joinGame(GameClient gameClient, Long gameIndex);
     public WebSocketResponse leaveGame(GameClient gameClient);
-    public WebSocketResponse createGame(GameClient gameClient,String gamename);
+    public WebSocketResponse createGame(GameClient gameClient,String gamename, int maxPlayer);
     public WebSocketResponse startGame(GameClient gameClient);
     public WebSocketResponse listOpenGames(GameClient gameClient);
     public WebSocketResponse listPlayers(GameClient gameClient);    

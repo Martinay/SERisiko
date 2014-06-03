@@ -49,6 +49,15 @@ public class ServerLogic implements IServerLogic {
     @Override
     public void CreatePlayer(int playerID, String playerName) {
         _state.Players.add(new Player(playerID, playerName));
+
+        if (_state.Players.size() == 1)
+            InitializeSomeGame(_state.Players.get(0));
+    }
+
+    private void InitializeSomeGame(Player player) {
+        CreateGame(player.ID,"Fick", 6);
+        CreateGame(player.ID,"dich", 3);
+        CreateGame(player.ID,"Donner", 8);
     }
 
     @Override
@@ -100,9 +109,9 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public GameCreatedMessage CreateGame(int playerID, String gameName) {
+    public GameCreatedMessage CreateGame(int playerID, String gameName, int maxPlayer) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = GameCreator.Create(player, gameName);
+        ServerGame game = GameCreator.Create(player, gameName, maxPlayer);
 
         _state.Lobby.AddGame(game);
 

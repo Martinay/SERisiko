@@ -22,7 +22,7 @@ public interface IServerLogic {
 
     NewPlayerJoinedMessage JoinGame(int playerID, int GameID);
     PlayerLeftMessage LeaveGame(int playerID, int GameID);
-    GameCreatedMessage CreateGame(int playerID, String GameName);
+    GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
     List<Player> GetPlayersInGame(int GameID);
 

@@ -17,10 +17,11 @@ class ServerGame extends Game {
     List<Player> Players = new LinkedList<Player>();
     Spielsteuerung _spiel;
 
-    ServerGame(Player player, String name, int id) {
+    ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
         Name = name;
         ID = id;
+        MaxPlayer = maxPlayer;
     }
 
     @Override
