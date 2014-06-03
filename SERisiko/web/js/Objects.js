@@ -21,7 +21,7 @@ function GameList(){
 
     this.addGame = function(data){
         amount++;
-        games.push(new GameObject(data.name, data.id, data.player));
+        games.push(new GameObject(data.name, data.id, data.playerCount, data.maxPlayer));
     };
 
     this.getGames = function(){
@@ -58,7 +58,7 @@ function GameObject(name, id, actualP, maxP){
     var gameName = name;
     var gameId = id;
     var actualPlayers = actualP;
-    var maxPlayers = maxP || 6;
+    var maxPlayers = maxP;
 
     //# Public Methods
     this.getGameName = function(){

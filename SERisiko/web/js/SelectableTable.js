@@ -34,7 +34,7 @@ function SelectableTable(){
             newTr.appendChild(td);
         // add players
             var td = document.createElement('td');
-            td.appendChild(document.createTextNode(data.player+"/6"));
+            td.appendChild(document.createTextNode(data.playerCount+"/"+data.maxPlayer));
             td.id = "cell_"+rows+",3";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);    
