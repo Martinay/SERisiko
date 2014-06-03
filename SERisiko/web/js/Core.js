@@ -43,15 +43,11 @@ function Core() {
 
         // create Player on Server + joinLobby
         connection.joinServer(thePlayerName); // includes joinlobby
-        //connection.joinLobby(thePlayerName);
         
         this.updateGameList();
     };
 
     this.deletePlayerName = function(){
-        if(thePlayerName == "")
-            return false;
-
         connection.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
@@ -244,7 +240,7 @@ function Core() {
                     alert("Error: Bad response from Server");               
                 }
                 break;
-            case "GameCreateMessage":
+            case "GameCreatedMessage":
                  if(message.state == 1){
                     //verify 
                     hideElement(document.getElementById("newGame"));
