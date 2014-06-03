@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="208.788mm" height="146.05mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 20879 14605"  xmlns:xlink="http://www.w3.org/1999/xlink"
- xmlns:dc="http://purl.org/dc/elements/1.1/"
- xmlns:cc="http://creativecommons.org/ns#"
- xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
- xmlns:svg="http://www.w3.org/2000/svg"
- xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
- xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
- sodipodi:version="0.32"
- inkscape:version="0.48.1 r9760"
- sodipodi:docname="stock_student.svg"
- inkscape:export-filename="/home/jimmac/src/cvs/gnome/gnome-icon-theme/48x48/stock/generic/stock_person.png"
- inkscape:export-xdpi="90"
- inkscape:export-ydpi="90"
- inkscape:output_extension="org.inkscape.output.svg.inkscape">
+viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
  <defs>
   <script xlink:href="/js/extern/SVGPan.js"/>
   <font id="FontID0" horiz-adv-x="666" font-variant="normal" style="fill-rule:nonzero" font-style="normal" font-weight="400">
@@ -57,32 +44,15 @@ viewBox="0 0 20879 14605"  xmlns:xlink="http://www.w3.org/1999/xlink"
   <style type="text/css">
    <![CDATA[
     @font-face { font-family:"Arial";src:url("#FontID0") format(svg)}
-    .str0 {stroke:#2B2A29;stroke-width:20}                                     
+    .str0 {stroke:#2B2A29;stroke-width:20}
     .str1 {stroke:#2B2A29;stroke-width:20;stroke-dasharray:40.000000 20.000000}
-    
-    .str3 {stroke:white;stroke-width:21.77;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.196078}
-.str1 -> -str6 {stroke:white;stroke-width:26.46;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0.643137}
-    .str4 {stroke:#888A85;stroke-width:26.46}
-.str0 -> .str5 {stroke:#888A85;stroke-width:26.46;stroke-linecap:round;stroke-linejoin:round}
-    .str2 {stroke:#888A85;stroke-width:19.77;stroke-linecap:round;stroke-linejoin:round}
-    
-    
-    
-    .fil5 {fill:none}           
-    .fil0 {fill:#B2B3B3}        
+    .fil5 {fill:none}
+    .fil0 {fill:#B2B3B3}
     .fil6 {fill:#2B2A29}
-    .fil1 {fill:#F5B5D2}        
-    .fil3 {fill:#F08683}        
+    .fil1 {fill:#F5B5D2}
+    .fil3 {fill:#F08683}
     .fil2 {fill:#E51A4B}
     .fil4 {fill:#E31E24}
-    
-    
-    .fil7 {fill:lime}
-    .fil8 {fill:lime;fill-opacity:0.196078}
-    .fil9 {fill:lime;fill-rule:nonzero;fill-opacity:0.349020}
-    .fil10 {fill:lime;fill-opacity:0.643137}
-    
-    
     .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
     .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
     .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
@@ -92,24 +62,12 @@ viewBox="0 0 20879 14605"  xmlns:xlink="http://www.w3.org/1999/xlink"
    <clipPath id="id0">
     <rect id="" x="438" y="598" width="6113" height="3116"/>
    </clipPath>
+   <clipPath id="id1">
+    <rect id="" x="10" y="10" width="20859" height="14585"/>
+   </clipPath>
  </defs>
- 
- <g id="student_Clipart_svg_File.svg">
-    <path class="fil9" d="M10734 2233l697 0c71,0 128,57 128,128l0 0c0,70 -57,127 -128,127l-697 1c-70,-1 -128,-58 -128,-128l0 0c0,-71 58,-128 128,-128z"/>
-    <path id="path4308" class="fil7 str5" d="M10910 2449l379 0c107,0 213,-40 252,-152 37,-106 6,-309 -234,-473l-448 0c-239,151 -269,358 -214,479 56,124 151,146 265,146l0 0z" sodipodi:nodetypes="cczcczc" inkscape:connector-curvature="0"/>
-    <path id="path4314" class="fil10 str6" d="M10901 2421l388 -1c97,0 194,-36 229,-137 34,-97 -3,-281 -221,-431l-426 -9c-218,138 -260,326 -209,445 51,119 125,132 239,133z" sodipodi:nodetypes="cczcczc" inkscape:connector-curvature="0"/>
-    <path id="path4318" class="fil7" d="M11398 1766c0,170 -139,309 -310,309 -170,0 -309,-139 -309,-309 0,-171 139,-310 309,-310 171,0 310,139 310,310z" sodipodi:ry="8.6620579" sodipodi:rx="8.6620579" sodipodi:cy="19.008621" sodipodi:cx="31.112698" sodipodi:type="arc"/>
-    <path id="path4320" class="fil7 str2" d="M11402 1641c0,171 -138,309 -309,309 -171,0 -309,-138 -309,-309 0,-171 138,-309 309,-309 171,0 309,138 309,309z" sodipodi:type="arc" sodipodi:cx="31.112698" sodipodi:cy="19.008621" sodipodi:rx="8.6620579" sodipodi:ry="8.6620579"/>
-    <path id="path4322" class="fil8 str3" d="M11374 1641c0,155 -126,281 -281,281 -155,0 -281,-126 -281,-281 0,-155 126,-281 281,-281 155,0 281,126 281,281z" sodipodi:ry="8.6620579" sodipodi:rx="8.6620579" sodipodi:cy="19.008621" sodipodi:cx="31.112698" sodipodi:type="arc"/>
-    <polygon id="path3713" class="fil7" points="10961,1303 10961,1404 11101,1423 11235,1398 11236,1301 10961,1303 " inkscape:connector-curvature="0"/>
-    <path id="path3703" class="fil5 str4" d="M10963 1297l0 103c0,0 103,-1 145,39" sodipodi:nodetypes="ccs" inkscape:connector-curvature="0"/>
-    <path id="path3708" class="fil5 str4" d="M11236 1297l0 103c0,0 -104,-1 -146,39" sodipodi:nodetypes="ccs" inkscape:connector-curvature="0"/>
-    <polygon id="path3701" class="fil7 str4" points="10745,1274 11094,1350 11434,1274 11094,1216 " sodipodi:nodetypes="ccccc" inkscape:connector-curvature="0"/>
-    <polyline id="path3796" class="fil5 str4" points="10792,1294 10792,1358 10759,1391 " sodipodi:nodetypes="ccc" inkscape:connector-curvature="0"/>
-    <line id="path3800" class="fil5 str4" x1="10792" y1="1358" x2="10825" y2= "1391"  sodipodi:nodetypes="cc" inkscape:connector-curvature="0"/>
- </g>
- 
  <g id="viewport">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
     <!-- Gebäude A -->
   <text x="9007" y="13014"  class="fil6 fnt0">Gebäude A</text>
 
@@ -235,8 +193,10 @@ viewBox="0 0 20879 14605"  xmlns:xlink="http://www.w3.org/1999/xlink"
   
   <g style="clip-path:url(#id0)">
    <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
+   <image id="player_blue.png" x="438" y="598" width="893" height="1000" xlink:href="/img/player_Img/player_blue.png" />
   </g>
-  <g id="MapUnit" style="clip-path:url(#id1)">
+  <g style="clip-path:url(#id1)" id="MapUnit" >
+    <image id="player_blue.png" x="438" y="598" width="893" height="1000" xlink:href="/img/player_Img/player_blue.png" />
   </g>
  </g>
 </svg>

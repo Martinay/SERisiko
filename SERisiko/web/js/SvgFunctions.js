@@ -108,7 +108,7 @@ function SvgFunctions(){
                             rect.setAttribute('opacity','1');
                             rect.style='cursor: default';
                     });
-                    this.init(svgDoc);
+                    this.refreshOwnerRights();
                 }
             }
             if(countAttack === 1){
@@ -138,10 +138,11 @@ function SvgFunctions(){
                 rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
                 //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
                 rect.onclick = new Function("Core.svgHandler.attack(this.id);");
+                
                 myLands.push(rect.getAttribute("id"));
             }
         });        
-    }
+    };
     
     //# Private Methods
     var showAttack = function(){

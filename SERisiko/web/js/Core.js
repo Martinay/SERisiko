@@ -74,8 +74,6 @@ function Core() {
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
-        hideElement(document.getElementById("GameScreen"));
-        hideElement(document.getElementById("gameOptions"));
     };
     
     this.leaveCreateGame = function(){
@@ -162,9 +160,9 @@ function Core() {
         var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
         var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
 
-        document.getElementById("PlayerList").innerHTML = "";
+        document.getElementById("playerList").innerHTML = "";
         for(var i = 0; i < 6; i++){
-            $("#PlayerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
+            $("#playerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
         }
     };
     
@@ -179,8 +177,6 @@ function Core() {
     //# Private Methods    
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
-        showElement(document.getElementById("GameScreen"));
-        showElement(document.getElementById("gameOptions"));
         hideElement(document.getElementById("selectGame"));
         
         connection.leaveLobby();
