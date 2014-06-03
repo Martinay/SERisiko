@@ -190,11 +190,12 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <line class="fil5 str1" x1="14303" y1="2473" x2="15114" y2= "2473" /><!-- E1-P7 -->
   <line class="fil5 str1" x1="6912" y1="7774" x2="6409" y2= "7774" /><!-- B3-P3 -->
   <line class="fil5 str1" x1="14215" y1="8100" x2="15088" y2= "8100" /><!-- D1-P13 -->
-    
+  
   <g style="clip-path:url(#id0)">
    <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
   </g>
   <g id="MapUnit" style="clip-path:url(#id1)">
+        <image x="10" y="20" width="1000" height="1000" xlink:href="img\student_Clipart_svg_File.svg" />
   </g>
  </g>
 </svg>

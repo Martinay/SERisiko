@@ -43,7 +43,8 @@ function SvgFunctions(){
             }
         });
     };
-        
+    
+    /*
     this.setUnit = function(id, count){
         var theRect = svgDoc.getElementById(id);
 
@@ -76,7 +77,7 @@ function SvgFunctions(){
                 }
             }
         }
-    };
+    };*/
 
     this.attack = function(id){
         var theRect = svgDoc.getElementById(id);
@@ -84,7 +85,7 @@ function SvgFunctions(){
         if(countAttack === 0){
             neighborLands = theRect.getAttribute("neighbor").split(",");
             attacker = id;
-            theRect.onmouseout = new Function("this.setAttribute('opacity','0.5');");
+            theRect.setAttribute('opacity','0.3');
             //this.setUnit(id, 16);
             countAttack++;
             for (var i = 0; i < myLands.length; i++) {
@@ -96,9 +97,10 @@ function SvgFunctions(){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
                 if(theRect.getAttribute("Owner") !=  "Ihr SpielernaG"){
-                    theRect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
-                    theRect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
+                    theRect.onmouseover = new Function("this.setAttribute('opacity', '0.5'); this.style='cursor: pointer';");
+                    theRect.onmouseout = new Function("this.setAttribute('opacity','0.75'); this.style='cursor: default';");
                     theRect.onclick = new Function("Core.svgHandler.attack(this.id);");
+                    theRect.setAttribute('opacity','0.75');
                 }
             }
         } else { 
@@ -110,6 +112,15 @@ function SvgFunctions(){
                     theRect.setAttribute('opacity','1');
                     countAttack = 0;
                     showAttack();
+                    rects = svgDoc.getElementsByTagName("rect");
+                    [].slice.call(rects).forEach(function(rect){
+                            rect.onmouseover = "";
+                            rect.onmouseout = "";
+                            rect.onclick = "";
+                            rect.setAttribute('opacity','1');
+                            rect.style='cursor: default';
+                    });
+                    this.init(svgDoc);
                 }
             }
             if(countAttack === 1){
@@ -124,22 +135,11 @@ function SvgFunctions(){
 
 
     //# Private Methods
-    var transform = function(){
-        svgDoc.setAttribute("transform", "translate(" + xPos + "," + yPos + ")scale(" + scaleLevel + "," + scaleLevel + ")");
-    };
-    
-    var getCenter = function(){
-        var width = svgDoc.getBBox().width;
-        var height = svgDoc.getBBox().height;
-        
-        return [width / 2 + xPos, height/2 + yPos];
-    };
-        
     var showAttack = function(){
         document.getElementById("loading_overlay").style.display = "block";
         var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
-        setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
-        setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},10000);
-        setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},10000);
+        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
+        setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
+        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},10000);
     };
 }
