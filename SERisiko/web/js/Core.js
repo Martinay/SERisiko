@@ -176,6 +176,10 @@ function Core() {
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
+    this.getPlayerName = function(){
+        return thePlayerName;        
+    }
+    
     //# Private Methods    
     var joinGame = function(table, id){
         showElement(document.getElementById("game"));
@@ -185,6 +189,19 @@ function Core() {
         
         connection.leaveLobby();
         connection.joinGame(id);
+        
+        // give me some lands test
+            svgHandler.setNewLandOwner("D2" ,thePlayerName);
+            svgHandler.setNewLandOwner("D6" ,thePlayerName);
+            svgHandler.setNewLandOwner("E1" ,thePlayerName);
+            svgHandler.setNewLandOwner("E3" ,thePlayerName);
+            svgHandler.setNewLandOwner("C4" ,thePlayerName);
+            svgHandler.setNewLandOwner("B5" ,thePlayerName);
+            svgHandler.setNewLandOwner("A1" ,thePlayerName);
+            svgHandler.setNewLandOwner("A5" ,thePlayerName);
+            svgHandler.setNewLandOwner("P4" ,thePlayerName);
+            svgHandler.setNewLandOwner("P12" ,thePlayerName);
+        //#
     };
     var hideElement = function(element){
         element.style.display = "none";

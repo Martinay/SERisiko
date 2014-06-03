@@ -71,11 +71,11 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Gebäude A -->
   <text x="9007" y="13014"  class="fil6 fnt0">Gebäude A</text>
 
-  <rect id="A1" class="fil3 str0" x="11331" y="7324" width="1305" height="2152" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A2,P13"/>
+  <rect id="A1" class="fil3 str0" x="11331" y="7324" width="1305" height="2152" Owner="" Unitcount="1" neighbor="A2,P13"/>
   <rect id="A2" class="fil3 str0" x="11331" y="9476" width="1305" height="1535" Owner="" Unitcount="1" neighbor="A1,A3"/>
   <rect id="A4" class="fil3 str0" x="7644" y="10675" width="3034" height="917" Owner="" Unitcount="1" neighbor="A2,A4,A5"/>
   <rect id="A3" class="fil3 str0" x="10678" y="11011" width="1958" height="1535" Owner="" Unitcount="1" neighbor="A3,A5"/>
-  <rect id="A5" class="fil3 str0" x="7644" y="11593" width="3034" height="953" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A3,A4,A6"/>
+  <rect id="A5" class="fil3 str0" x="7644" y="11593" width="3034" height="953" Owner="" Unitcount="1" neighbor="A3,A4,A6"/>
   <rect id="A6" class="fil3 str0" x="6409" y="11673" width="1235" height="510" Owner="" Unitcount="1" neighbor="A5,B1"/>
   
   <text x="11370" y="7683"  class="fil6 fnt2">A1</text>
@@ -93,11 +93,11 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect id="B2" class="fil4 str0" x="4751" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B3,B4,C4"/>
   <rect id="B3" class="fil4 str0" x="5580" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B2,B4,P3"/>
   <rect id="B4" class="fil4 str0" x="4751" y="5437" width="1658" height="1570" Owner="" Unitcount="1" neighbor="B2,B3,B5"/>
-  <rect id="B5" class="fil4 str0" x="1806" y="5437" width="2946" height="1217" Owner="Ihr SpielernaG" Unitcount="1" neighbor="B4,C5,P1"/>
+  <rect id="B5" class="fil4 str0" x="1806" y="5437" width="2946" height="1217" Owner="" Unitcount="1" neighbor="B4,C5,P1"/>
   <rect id="C1" class="fil4 str0" x="1806" y="11804" width="2946" height="723" Owner="" Unitcount="1" neighbor="C2,B1,P14"/>
   <rect id="C2" class="fil4 str0" x="183" y="10834" width="1623" height="1693" Owner="" Unitcount="1" neighbor="C1,C3,C4"/>
   <rect id="C3" class="fil4 str0" x="183" y="6883" width="811" height="3951" Owner="" Unitcount="1" neighbor="C2,C4,C5"/>
-  <rect id="C4" class="fil4 str0" x="994" y="6883" width="811" height="3951" Owner="Ihr SpielernaG" Unitcount="1" neighbor="C2,C3,C5,B2"/>
+  <rect id="C4" class="fil4 str0" x="994" y="6883" width="811" height="3951" Owner="" Unitcount="1" neighbor="C2,C3,C5,B2"/>
   <rect id="C5" class="fil4 str0" x="183" y="5437" width="1623" height="1431" Owner="" Unitcount="1" neighbor="C3,C4,B5"/>
 
   <text x="4799" y="11307"  class="fil6 fnt2">B1</text>
@@ -116,11 +116,11 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <text x="17651" y="10279"  class="fil6 fnt0">D</text>
   
   <rect id="D1" class="fil2 str0" x="15088" y="6707" width="1640" height="2099" Owner="" Unitcount="1" neighbor="D2,D7,P13"/>
-  <rect id="D2" class="fil2 str0" x="15088" y="8806" width="1640" height="2858" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D1,D3"/>
+  <rect id="D2" class="fil2 str0" x="15088" y="8806" width="1640" height="2858" Owner="" Unitcount="1" neighbor="D1,D3"/>
   <rect id="D3" class="fil2 str0" x="15088" y="11663" width="2805" height="864" Owner="" Unitcount="1" neighbor="D2,D4,P15"/>
   <rect id="D4" class="fil2 str0" x="17892" y="11663" width="2681" height="864" Owner="" Unitcount="1" neighbor="D3,D5"/>
   <rect id="D5" class="fil2 str0" x="18880" y="8912" width="1693" height="2752" Owner="" Unitcount="1" neighbor="D4,D6"/>
-  <rect id="D6" class="fil2 str0" x="18880" y="6707" width="1693" height="2205" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D5,D7"/>
+  <rect id="D6" class="fil2 str0" x="18880" y="6707" width="1693" height="2205" Owner="" Unitcount="1" neighbor="D5,D7"/>
   <rect id="D7" class="fil2 str0" x="16728" y="6707" width="2152" height="1411" Owner="" Unitcount="1" neighbor="D1,D6,P12"/>
 
   <text x="15137" y="7075"  class="fil6 fnt2">D1</text>
@@ -134,9 +134,9 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Gebäude E -->
   <text x="16633" y="1071"  class="fil6 fnt1">Gebäude E</text>
     
-  <rect id="E1" class="fil1 str0" x="15114" y="1265" width="1393" height="2575" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E2,E3,P7"/>
+  <rect id="E1" class="fil1 str0" x="15114" y="1265" width="1393" height="2575" Owner="" Unitcount="1" neighbor="E2,E3,P7"/>
   <rect id="E2" class="fil1 str0" x="16508" y="1265" width="2461" height="1288" Owner="" Unitcount="1" neighbor="E1,E3,E4"/>
-  <rect id="E3" class="fil1 str0" x="16508" y="2553" width="2461" height="1288" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E1,E2,E4"/> 
+  <rect id="E3" class="fil1 str0" x="16508" y="2553" width="2461" height="1288" Owner="" Unitcount="1" neighbor="E1,E2,E4"/> 
   <rect id="E4" class="fil1 str0" x="18968" y="1265" width="1649" height="2575" Owner="" Unitcount="1" neighbor="E2,E3,P11"/>
 
   <text x="15156" y="1626"  class="fil6 fnt3">E1</text>
@@ -150,7 +150,7 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect id="P1" class="fil0 str0" x="227" y="4519" width="6685" height="662" Owner="" Unitcount="1" neighbor="P2,B5"/>
   <rect id="P2" class="fil0 str0" x="6912" y="4519" width="3986" height="1808" Owner="" Unitcount="1" neighbor="P1,P3,P4,P5,P8,P9"/>
   <rect id="P3" class="fil0 str0" x="6912" y="6327" width="1499" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6,B3"/>
-  <rect id="P4" class="fil0 str0" x="8411" y="6327" width="1235" height="2893" Owner="Ihr SpielernaG" Unitcount="1" neighbor="P2,P3,P5,P6"/>
+  <rect id="P4" class="fil0 str0" x="8411" y="6327" width="1235" height="2893" Owner="" Unitcount="1" neighbor="P2,P3,P5,P6"/>
   <rect id="P5" class="fil0 str0" x="9646" y="6327" width="1252" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6"/>
   <rect id="P6" class="fil0 str0" x="6912" y="9220" width="3986" height="1129" Owner="" Unitcount="1" neighbor="P3,P4,P5"/>
   <rect id="P7" class="fil0 str0" x="13359" y="122" width="944" height="4397" Owner="" Unitcount="1" neighbor="P8,E1"/> 
@@ -158,7 +158,7 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect id="P9" class="fil0 str0" x="10898" y="5219" width="4921" height="700" Owner="" Unitcount="1" neighbor="P2,P8,P10,P13"/>
   <rect id="P10" class="fil0 str0" x="15820" y="4017" width="1482" height="2522" Owner="" Unitcount="1" neighbor="P8,P9,P11,P12"/>
   <rect id="P11" class="fil0 str0" x="17301" y="4017" width="3334" height="1358" Owner="" Unitcount="1" neighbor="P10,P12,E4"/>
-  <rect id="P12" class="fil0 str0" x="17301" y="5375" width="3334" height="1164" Owner="Ihr SpielernaG" Unitcount="1" neighbor="P10,P11,D7"/>
+  <rect id="P12" class="fil0 str0" x="17301" y="5375" width="3334" height="1164" Owner="" Unitcount="1" neighbor="P10,P11,D7"/>
   <rect id="P13" class="fil0 str0" x="13403" y="5919" width="811" height="8307" Owner="" Unitcount="1" neighbor="P9,P14,P15,A1,D1"/>
   <rect id="P14" class="fil0 str0" x="209" y="13383" width="13194" height="843" Owner="" Unitcount="1" neighbor="C1,P13"/>
   <rect id="P15" class="fil0 str0" x="14215" y="13383" width="6368" height="843" Owner="" Unitcount="1" neighbor="P13,D3"/>

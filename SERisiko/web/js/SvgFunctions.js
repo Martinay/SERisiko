@@ -33,7 +33,7 @@ function SvgFunctions(){
         svgDoc = doc;
         rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") === "Ihr SpielernaG"){
+            if(rect.getAttribute("Owner") === Core.getPlayerName()){
                 rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
                 rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
                 //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
@@ -96,7 +96,7 @@ function SvgFunctions(){
             }
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
-                if(theRect.getAttribute("Owner") !=  "Ihr SpielernaG"){
+                if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
                     theRect.onmouseover = new Function("this.setAttribute('opacity', '0.5'); this.style='cursor: pointer';");
                     theRect.onmouseout = new Function("this.setAttribute('opacity','0.75'); this.style='cursor: default';");
                     theRect.onclick = new Function("Core.svgHandler.attack(this.id);");
@@ -133,7 +133,15 @@ function SvgFunctions(){
         }
     };
 
-
+    this.setNewLandOwner = function(landId, playerName){
+        // parse playerId to Playername....
+        svgDoc.getEelementById(landId).setAttribute('Owner', playerName);  
+    };
+    
+    this.setLandUnitcount = function(landId, count){
+        svgDoc.getEelementById(landId).setAttribute('Unicount', count);  
+    };
+    
     //# Private Methods
     var showAttack = function(){
         document.getElementById("loading_overlay").style.display = "block";
