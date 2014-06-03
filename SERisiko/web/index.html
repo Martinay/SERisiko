@@ -33,7 +33,7 @@
             </tr>   
             <tr>
                 <td>
-                    <input id="playerName" value="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)" />
+                    <input id="playerName" value="" placeholder="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)" />
                 </td>
                 <td>
                     <button onClick="Core.setPlayerName()">Go</button>
@@ -83,7 +83,7 @@
                 <td><input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)"></td>
             </tr>
             <tr>
-                <th><button  name="backToLobby" onClick='Core.backToLobby()'>Zurück</button></th>
+                <th><button  name="leaveCreateGame" onClick="Core.leaveCreateGame()">Zurück</button></th>
                 <th><button  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button></th>
             </tr>
         </table>

@@ -70,7 +70,7 @@ function Core() {
 
     this.leaveGame = function(){
         connection.leaveGame();
-    }
+    };
 
     this.backToLobby = function(){
         //check response
@@ -80,8 +80,16 @@ function Core() {
         hideElement(document.getElementById("game"));
         hideElement(document.getElementById("GameScreen"));
         hideElement(document.getElementById("gameOptions"));
-        hideElement(document.getElementById("newGame"));
     };
+    
+    this.leaveCreateGame = function(){
+        showElement(document.getElementById("selectGame"));
+        hideElement(document.getElementById("newGame"));
+        
+        //cleanup
+        document.getElementById("gameName").value = "Spielname";
+        document.getElementById("maxPlayers").value = "6";
+    }
 
     this.setGame = function(id){
         if(this.sctTable != null){
@@ -106,9 +114,7 @@ function Core() {
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
         //parse data to server
-        connection.createGame(gameName, maxPlayers);
-        
-        //wait for server response....
+        connection.createGame(gameName, parseInt(maxPlayers));
     };
 
     this.updateGameList = function(){
@@ -226,7 +232,7 @@ function Core() {
                     //verify 
                     hideElement(document.getElementById("newGame"));
 
-                    Core.setGame(message.data.ServerGame.id);
+                    Core.setGame(message.data[0].ServerGame.id);
 
                     //cleanup
                     document.getElementById("gameName").value = "Spielname";

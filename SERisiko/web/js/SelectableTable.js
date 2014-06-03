@@ -23,13 +23,13 @@ function SelectableTable(){
         // add name
             var td = document.createElement('td');
             td.appendChild(document.createTextNode(data.name));
-            td.id = "cell_1"+rows+",1";    
+            td.id = "cell_"+rows+",1";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);
         // add id
             var td = document.createElement('td');
             td.appendChild(document.createTextNode(data.id));
-            td.id = "cell_"+data.id+",2";    
+            td.id = "cell_"+rows+",2";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);
         // add players
