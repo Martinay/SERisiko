@@ -99,12 +99,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
-    public WebSocketResponse createGame(GameClient gameClient, String gamename, int maxPlayer) {
+    public WebSocketResponse createGame(GameClient gameClient, String gamename, Long maxPlayer) {
         System.out.println("Create Game");
         
         int clientId = gameClient.getIdentifyer();
         
-        GameCreatedMessage message = gameManager.CreateGame(clientId, gamename, maxPlayer);
+        GameCreatedMessage message = gameManager.CreateGame(clientId, gamename, maxPlayer.intValue() );
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
