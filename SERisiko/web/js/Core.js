@@ -187,16 +187,18 @@ function Core() {
         connection.joinGame(id);
         
         // give me some lands test
-            svgHandler.setNewLandOwner("D2" ,thePlayerName);
-            svgHandler.setNewLandOwner("D6" ,thePlayerName);
-            svgHandler.setNewLandOwner("E1" ,thePlayerName);
-            svgHandler.setNewLandOwner("E3" ,thePlayerName);
-            svgHandler.setNewLandOwner("C4" ,thePlayerName);
-            svgHandler.setNewLandOwner("B5" ,thePlayerName);
-            svgHandler.setNewLandOwner("A1" ,thePlayerName);
-            svgHandler.setNewLandOwner("A5" ,thePlayerName);
-            svgHandler.setNewLandOwner("P4" ,thePlayerName);
-            svgHandler.setNewLandOwner("P12" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("D2" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("D6" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("E1" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("E3" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("C4" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("B5" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("A1" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("A5" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("P4" ,thePlayerName);
+            Core.svgHandler.setNewLandOwner("P12" ,thePlayerName);
+            
+            Core.svgHandler.refreshOwnerRights();
         //#
     };
     var hideElement = function(element){

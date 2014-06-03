@@ -27,21 +27,9 @@ function SvgFunctions(){
     var defender = "";
     
     //# Public Methods
-    this.init = function(doc){
-        var i = 0;
-        
+    this.init = function(doc){       
         svgDoc = doc;
-        rects = svgDoc.getElementsByTagName("rect");
-        [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") === Core.getPlayerName()){
-                rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
-                rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
-                //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
-                rect.onclick = new Function("Core.svgHandler.attack(this.id);");
-                myLands[i] = rect.getAttribute("id");
-                i++;
-            }
-        });
+        this.refreshOwnerRights();
     };
     
     /*
@@ -135,12 +123,25 @@ function SvgFunctions(){
 
     this.setNewLandOwner = function(landId, playerName){
         // parse playerId to Playername....
-        svgDoc.getEelementById(landId).setAttribute('Owner', playerName);  
+        svgDoc.getElementById(landId).setAttribute('Owner', playerName);  
     };
     
     this.setLandUnitcount = function(landId, count){
-        svgDoc.getEelementById(landId).setAttribute('Unicount', count);  
+        svgDoc.getElementById(landId).setAttribute('Unicount', count);  
     };
+    
+    this.refreshOwnerRights = function (){
+        rects = svgDoc.getElementsByTagName("rect");
+        [].slice.call(rects).forEach(function(rect){
+            if(rect.getAttribute("Owner") === Core.getPlayerName()){
+                rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
+                rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
+                //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
+                rect.onclick = new Function("Core.svgHandler.attack(this.id);");
+                myLands.push(rect.getAttribute("id"));
+            }
+        });        
+    }
     
     //# Private Methods
     var showAttack = function(){
