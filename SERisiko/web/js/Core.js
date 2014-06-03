@@ -10,14 +10,11 @@ var Core = new Core();
 function Core() {
     //#Public Vars
     this.gameList = new GameList();
-    this.sctTable = new SelectableTable(this.gameList);
+    this.sctTable = new SelectableTable();
     this.svgHandler = new SvgFunctions();
     
     //#Private Vars
     var thePlayerName = "";
-    var game = "stopped";
-    //var gameListRefresher = $.timer(function(){Core.updateGameList();}, 2000);
-    //var playerListRefresher = $.timer(function(){Core.updatePlayerList();}, 2000);
     
     //#InitConnection Function
     var connection = null;
@@ -49,9 +46,6 @@ function Core() {
         //connection.joinLobby(thePlayerName);
         
         this.updateGameList();
-        
-        //wait for answer
-        showElement(document.getElementById("loading_overlay"));
     };
 
     this.deletePlayerName = function(){
@@ -66,7 +60,6 @@ function Core() {
         // revert menu
         showElement(document.getElementById("setPlayerName"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
 
         divs = document.getElementsByClassName('playerNameDisplay');
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
@@ -88,16 +81,10 @@ function Core() {
         hideElement(document.getElementById("GameScreen"));
         hideElement(document.getElementById("gameOptions"));
         hideElement(document.getElementById("newGame"));
-        game = "stopped";
-        //gameListRefresher.play();
-        //playerListRefresher.pause();
     };
 
     this.setGame = function(id){
         if(this.sctTable != null){
-            //alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
-            //alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
-            
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
 
@@ -112,30 +99,22 @@ function Core() {
     this.showCreateNewGame = function(){
         showElement(document.getElementById("newGame"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
     };
 
     this.createNewGame = function(){
         //check game settings....
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
-        var gameSettings = document.getElementById("gameSettings").value;
         //parse data to server
-        connection.createGame();
-        //verify 
-        var idFromServer = 123;
-        hideElement(document.getElementById("newGame"));
-        document.getElementById("gameName").value = "Spielname";
-        document.getElementById("maxPlayers").value = "6";
-        document.getElementById("gameSettings").value = "Spieleinstellungen";
+        connection.createGame(gameName, maxPlayers);
         
-        this.setGame(idFromServer);
+        //wait for server response....
     };
 
     this.updateGameList = function(){
         if(this.sctTable != null){
             this.sctTable.clear("availableGames");
-            getGameList(this.sctTable, this.gameList);
+            getGameList();
         }
         else
             alert("Error! no gameTable");	
@@ -197,11 +176,6 @@ function Core() {
         showElement(document.getElementById("GameScreen"));
         showElement(document.getElementById("gameOptions"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
-        game = "running";
-        table.selectRow(0);
-        
-        //playerListRefresher.play();
         
         connection.leaveLobby();
         connection.joinGame(id);
@@ -213,13 +187,11 @@ function Core() {
         element.style.display = "block";
     };
 
-    var getGameList = function(table, list){
-        // get gameslist from server
-        connection.listOpenGames();
+    var getGameList = function(){
         
-        list.addGame(["Game 1", "DHBW", "1/6", "n/a"], table);
-        list.addGame(["Game 42", "World", "0/6", "n/a"], table);
-        list.addGame(["Game 3", "DHBW", "4/6", "n/a"], table);
+        // should be parsed by server...
+        Core.gameList.clear();
+        connection.listOpenGames();
     };
     
     var parseServerAnswers = function(elem){
@@ -228,19 +200,40 @@ function Core() {
         switch(message.type){
             case "AddNewPlayerToLobbyMessage":
                 if(message.state == 1){
-                    hideElement(document.getElementById("loading_overlay"));      
-
                     // create Player on Client
                     hideElement(document.getElementById("setPlayerName"));
                     showElement(document.getElementById("selectGame"));
                     divs = document.getElementsByClassName('playerNameDisplay');
                     [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-
-                    //gameListRefresher.play();
                 }
                 else{
-                    alert("Error: Bad response from Server");
-                    hideElement(document.getElementById("loading_overlay"));                    
+                    alert("Error: Bad response from Server");               
+                }
+                break;
+            case "GameList":
+                if(message.state == 1){
+                    for(var i = 0; i < message.data.length; i++){
+                        Core.sctTable.addRow("availableGames", message.data[i].ServerGame);
+                        Core.gameList.addGame(message.data[i].ServerGame); 
+                    }
+                }
+                else{
+                    alert("Error: Bad response from Server");               
+                }
+                break;
+            case "GameCreateMessage":
+                 if(message.state == 1){
+                    //verify 
+                    hideElement(document.getElementById("newGame"));
+
+                    Core.setGame(message.data.ServerGame.id);
+
+                    //cleanup
+                    document.getElementById("gameName").value = "Spielname";
+                    document.getElementById("maxPlayers").value = "6";
+                }
+                else{
+                    alert("Error: Bad response from Server");               
                 }
                 break;
             default:
@@ -255,75 +248,5 @@ function Core() {
         }
       }
     };
-}
-
-function GameList(){
-    //#Public Vars
-
-    //#Private Vars
-    var amount = 0;
-    var games = new Array();
-
-    //# Public Methods
-    this.clear = function(){
-        games = [];
-        amount = 0;
-    };
-
-    this.addGame = function(data, table){
-        table.addRow("availableGames", data);
-        amount++;
-        games.push(parseData(data));
-    };
-
-    this.getGames = function(){
-        if(games != null)
-            return games;
-        else
-            alert('no games found');
-    };
-
-    this.getGameAmount = function(){
-        return amount;
-    };
-
-    this.getGame = function(index){
-        return games[index];
-    };
-
-    //# Private Methods
-    var parseData = function(data){
-        var game = new GameObject(data[0], data[1], data[2], data[3]);
-        return game;
-    };
-}
-
-function GameObject(name, number, mp, maxP, set){
-    //#Public Vars
-
-    //#Private Vars
-    var gameName = name;
-    var gameId = number;
-    var map = mp;
-    var maxPlayers = maxP;
-    var settings = set;
-
-    //# Public Methods
-    this.getGameName = function(){
-        return gameName;
-    };
-    this.getMaxPlayers = function(){
-        return maxPlayers;
-    };
-    this.getSettings = function(){
-        return settings;
-    };
-    this.getMap = function(){
-        return map;
-    };
-    this.getGameId = function(){
-        return gameId;
-    }
-    //# Private Methods
 }
 // ---------------------- #
