@@ -191,7 +191,7 @@ function handleMouseWheel(evt) {
 	
 	var p = getEventPoint(evt);
 
-        if ((z < 1 && zoomState < -10) || (z > 1 && zoomState > 10))
+        if ((z < 1 && zoomState >= 0) || (z > 1 && zoomState < -20))
             return;
         
 	p = p.matrixTransform(g.getCTM().inverse());
@@ -207,9 +207,9 @@ function handleMouseWheel(evt) {
 	stateTf = stateTf.multiply(k.inverse());
         
         if(z < 1)
-            zoomState--;
-        else
             zoomState++;
+        else
+            zoomState--;
 }
 
 /**
