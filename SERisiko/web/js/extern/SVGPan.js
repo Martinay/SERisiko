@@ -81,7 +81,7 @@ var zoomScale = 0.2; // Zoom sensitivity
 /// END OF CONFIGURATION 
 
 var root = document.documentElement;
-
+var zoomState = 0;
 var state = 'none', svgRoot = null, stateTarget, stateOrigin, stateTf;
 
 setupHandlers(root);
@@ -186,13 +186,16 @@ function handleMouseWheel(evt) {
 		delta = evt.detail / -9; // Mozilla
 
 	var z = Math.pow(1 + zoomScale, delta);
-
+        
 	var g = getRoot(svgDoc);
 	
 	var p = getEventPoint(evt);
 
+        if ((z < 1 && zoomState < -10) || (z > 1 && zoomState > 10))
+            return;
+        
 	p = p.matrixTransform(g.getCTM().inverse());
-
+        
 	// Compute new scale matrix in current mouse position
 	var k = root.createSVGMatrix().translate(p.x, p.y).scale(z).translate(-p.x, -p.y);
 
@@ -202,6 +205,11 @@ function handleMouseWheel(evt) {
 		stateTf = g.getCTM().inverse();
 
 	stateTf = stateTf.multiply(k.inverse());
+        
+        if(z < 1)
+            zoomState--;
+        else
+            zoomState++;
 }
 
 /**
