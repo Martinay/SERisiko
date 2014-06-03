@@ -8,6 +8,32 @@ public class ServerLogic implements IServerLogic {
 
     private ServerState _state = new ServerState();
 
+    public ServerLogic() {
+        SetExampleData();
+    }
+
+    private void SetExampleData() {
+        CreatePlayer(1,"Player1");
+        CreatePlayer(2,"Player2");
+        CreatePlayer(3,"Player3");
+        CreatePlayer(4,"Player4");
+        CreatePlayer(5,"Player5");
+
+        Player player1 = _state.Players.get(0);
+        Player player2 = _state.Players.get(1);
+        Player player3 = _state.Players.get(2);
+        Player player4 = _state.Players.get(3);
+        Player player5 = _state.Players.get(4);
+
+        CreateGame(player1.ID,"Game1", 6);
+        Game game1 = _state.Lobby.GetGameByPlayerId(player1.ID);
+        JoinGame(player2.ID,game1.ID);
+        CreateGame(player3.ID,"Game2", 3);
+
+        JoinLobby(player4.ID);
+        JoinLobby(player5.ID);
+    }
+
     @Override
     public MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
@@ -49,15 +75,6 @@ public class ServerLogic implements IServerLogic {
     @Override
     public void CreatePlayer(int playerID, String playerName) {
         _state.Players.add(new Player(playerID, playerName));
-
-        if (_state.Players.size() == 1)
-            InitializeSomeGame(_state.Players.get(0));
-    }
-
-    private void InitializeSomeGame(Player player) {
-        CreateGame(player.ID,"Fick", 6);
-        CreateGame(player.ID,"dich", 3);
-        CreateGame(player.ID,"Donner", 8);
     }
 
     @Override
