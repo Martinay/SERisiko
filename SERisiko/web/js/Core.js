@@ -15,9 +15,6 @@ function Core() {
     
     //#Private Vars
     var thePlayerName = "";
-    var game = "stopped";
-    //var gameListRefresher = $.timer(function(){Core.updateGameList();}, 2000);
-    //var playerListRefresher = $.timer(function(){Core.updatePlayerList();}, 2000);
     
     //#InitConnection Function
     var connection = null;
@@ -63,7 +60,6 @@ function Core() {
         // revert menu
         showElement(document.getElementById("setPlayerName"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
 
         divs = document.getElementsByClassName('playerNameDisplay');
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
@@ -85,16 +81,10 @@ function Core() {
         hideElement(document.getElementById("GameScreen"));
         hideElement(document.getElementById("gameOptions"));
         hideElement(document.getElementById("newGame"));
-        game = "stopped";
-        //gameListRefresher.play();
-        //playerListRefresher.pause();
     };
 
     this.setGame = function(id){
         if(this.sctTable != null){
-            //alert("Joining to " + document.getElementById('cell_'+this.sctTable.getSelectedRow()+',1').innerHTML + " ...");
-            //alert("Joining to " + document.getElementById('cell_'+id+',1').innerHTML + " ...");
-            
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
 
@@ -109,7 +99,6 @@ function Core() {
     this.showCreateNewGame = function(){
         showElement(document.getElementById("newGame"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
     };
 
     this.createNewGame = function(){
@@ -119,7 +108,7 @@ function Core() {
         //parse data to server
         connection.createGame(gameName, maxPlayers);
         
-        // wait for server response....
+        //wait for server response....
     };
 
     this.updateGameList = function(){
@@ -187,11 +176,6 @@ function Core() {
         showElement(document.getElementById("GameScreen"));
         showElement(document.getElementById("gameOptions"));
         hideElement(document.getElementById("selectGame"));
-        //gameListRefresher.pause();
-        game = "running";
-        table.selectRow(0);
-        
-        //playerListRefresher.play();
         
         connection.leaveLobby();
         connection.joinGame(id);
@@ -204,7 +188,9 @@ function Core() {
     };
 
     var getGameList = function(){
-        // get gameslist from server
+        
+        // should be parsed by server...
+        Core.gameList.clear();
         connection.listOpenGames();
     };
     
@@ -219,8 +205,6 @@ function Core() {
                     showElement(document.getElementById("selectGame"));
                     divs = document.getElementsByClassName('playerNameDisplay');
                     [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-
-                    //gameListRefresher.play();
                 }
                 else{
                     alert("Error: Bad response from Server");               
@@ -264,75 +248,5 @@ function Core() {
         }
       }
     };
-}
-
-function GameList(){
-    //#Public Vars
-
-    //#Private Vars
-    var amount = 0;
-    var games = new Array();
-
-    //# Public Methods
-    this.clear = function(){
-        games = [];
-        amount = 0;
-    };
-
-    this.addGame = function(data){
-        amount++;
-        games.push(new GameObject(data.name, data.id, data.player));
-    };
-
-    this.getGames = function(){
-        if(games != null)
-            return games;
-        else
-            alert('no games found');
-    };
-
-    this.getGameAmount = function(){
-        return amount;
-    };
-
-    this.getGame = function(index){
-        return games[index];
-    };
-    this.deleteGame = function(index){
-        if(index < amount){
-            for(var i = 0; i < amount; i++){
-                if(games[i].getGameId() == index){
-                    games.splice(index, 1);
-                }
-            }
-        }
-    };
-
-    //# Private Methods
-}
-
-function GameObject(name, id, actualP, maxP){
-    //#Public Vars
-
-    //#Private Vars
-    var gameName = name;
-    var gameId = id;
-    var actualPlayers = actualP;
-    var maxPlayers = maxP || 6;
-
-    //# Public Methods
-    this.getGameName = function(){
-        return gameName;
-    };
-     this.actualPlayers = function(){
-        return actualPlayers;
-    };
-    this.getMaxPlayers = function(){
-        return maxPlayers;
-    };
-    this.getGameId = function(){
-        return gameId;
-    }
-    //# Private Methods
 }
 // ---------------------- #
