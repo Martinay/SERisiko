@@ -5,13 +5,12 @@
  * @author Alexander Santana Losada
  */
 
-function SelectableTable(list){
+function SelectableTable(){
     //#Public Vars
 
     //#Private Vars
     var currentRow = -1;
     var rows = 0;
-    var gameList = list;
 
     //# Public Methods
     this.selectRow = function(newRow){
@@ -33,31 +32,33 @@ function SelectableTable(list){
             currentRow = newRow;
     };
 
-    this.getSelectedRow = function(){
-        return currentRow;
-    };
-
     this.getRows = function(){
         return rows;
     };
 
-    this.addRow = function(tableId, cells){
+    this.addRow = function(tableId, data){
         rows++;
-        var tb   = document.getElementById(tableId)
-                                                .getElementsByTagName('tbody')[0];
+        var tb   = document.getElementById(tableId).getElementsByTagName('tbody')[0];
         var newTr = document.createElement('tr');
-        for (var i = 0; i < cells.length; i++) {
+        // add name
             var td = document.createElement('td');
-            td.appendChild(document.createTextNode(cells[i]));
-            td.id = "cell_"+rows+","+(parseInt(i)+1);
-            //td.onclick = new Function("Core.sctTable.selectRow('"+rows+"')");
-            //td.ondblclick = new Function("Core.setGame()");
-            
-            // parse game id form server list
-            
-            td.onclick = new Function("Core.setGame("+rows+")");
+            td.appendChild(document.createTextNode(data.name));
+            td.id = "cell_1"+rows+",1";    
+            td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);
-        }
+        // add id
+            var td = document.createElement('td');
+            td.appendChild(document.createTextNode(data.id));
+            td.id = "cell_"+rows+",2";    
+            td.onclick = new Function("Core.setGame("+data.id+")");
+            newTr.appendChild(td);
+        // add players
+            var td = document.createElement('td');
+            td.appendChild(document.createTextNode(data.player+"/6"));
+            td.id = "cell_"+rows+",3";    
+            td.onclick = new Function("Core.setGame("+data.id+")");
+            newTr.appendChild(td);    
+        //#
         tb.appendChild(newTr);
     };
 
@@ -70,7 +71,6 @@ function SelectableTable(list){
             document.getElementById(tableId).deleteRow(1);
         rows = 0;
         currentRow = -1;
-        gameList.clear();
     };
     //# Private Methods
 }

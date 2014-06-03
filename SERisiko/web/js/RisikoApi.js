@@ -58,8 +58,8 @@ var RisikoApi = function() {
     socket.leaveGame = function() {
         socket.call("leaveGame");
     };
-    socket.createGame = function() {
-        socket.call("createGame");
+    socket.createGame = function(gameName, maxPlayers) {
+        socket.call("createGame", gameName, maxPlayers);
     };
     socket.startGame = function() {
         socket.call("startGame");

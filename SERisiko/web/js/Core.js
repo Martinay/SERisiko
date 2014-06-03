@@ -10,7 +10,7 @@ var Core = new Core();
 function Core() {
     //#Public Vars
     this.gameList = new GameList();
-    this.sctTable = new SelectableTable(this.gameList);
+    this.sctTable = new SelectableTable();
     this.svgHandler = new SvgFunctions();
     
     //#Private Vars
@@ -49,9 +49,6 @@ function Core() {
         //connection.joinLobby(thePlayerName);
         
         this.updateGameList();
-        
-        //wait for answer
-        showElement(document.getElementById("loading_overlay"));
     };
 
     this.deletePlayerName = function(){
@@ -119,23 +116,16 @@ function Core() {
         //check game settings....
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
-        var gameSettings = document.getElementById("gameSettings").value;
         //parse data to server
-        connection.createGame();
-        //verify 
-        var idFromServer = 123;
-        hideElement(document.getElementById("newGame"));
-        document.getElementById("gameName").value = "Spielname";
-        document.getElementById("maxPlayers").value = "6";
-        document.getElementById("gameSettings").value = "Spieleinstellungen";
+        connection.createGame(gameName, maxPlayers);
         
-        this.setGame(idFromServer);
+        // wait for server response....
     };
 
     this.updateGameList = function(){
         if(this.sctTable != null){
             this.sctTable.clear("availableGames");
-            getGameList(this.sctTable, this.gameList);
+            getGameList();
         }
         else
             alert("Error! no gameTable");	
@@ -213,13 +203,9 @@ function Core() {
         element.style.display = "block";
     };
 
-    var getGameList = function(table, list){
+    var getGameList = function(){
         // get gameslist from server
         connection.listOpenGames();
-        
-        list.addGame(["Game 1", "DHBW", "1/6", "n/a"], table);
-        list.addGame(["Game 42", "World", "0/6", "n/a"], table);
-        list.addGame(["Game 3", "DHBW", "4/6", "n/a"], table);
     };
     
     var parseServerAnswers = function(elem){
@@ -228,8 +214,6 @@ function Core() {
         switch(message.type){
             case "AddNewPlayerToLobbyMessage":
                 if(message.state == 1){
-                    hideElement(document.getElementById("loading_overlay"));      
-
                     // create Player on Client
                     hideElement(document.getElementById("setPlayerName"));
                     showElement(document.getElementById("selectGame"));
@@ -239,8 +223,33 @@ function Core() {
                     //gameListRefresher.play();
                 }
                 else{
-                    alert("Error: Bad response from Server");
-                    hideElement(document.getElementById("loading_overlay"));                    
+                    alert("Error: Bad response from Server");               
+                }
+                break;
+            case "GameList":
+                if(message.state == 1){
+                    for(var i = 0; i < message.data.length; i++){
+                        Core.sctTable.addRow("availableGames", message.data[i].ServerGame);
+                        Core.gameList.addGame(message.data[i].ServerGame); 
+                    }
+                }
+                else{
+                    alert("Error: Bad response from Server");               
+                }
+                break;
+            case "GameCreateMessage":
+                 if(message.state == 1){
+                    //verify 
+                    hideElement(document.getElementById("newGame"));
+
+                    Core.setGame(message.data.ServerGame.id);
+
+                    //cleanup
+                    document.getElementById("gameName").value = "Spielname";
+                    document.getElementById("maxPlayers").value = "6";
+                }
+                else{
+                    alert("Error: Bad response from Server");               
                 }
                 break;
             default:
@@ -270,10 +279,9 @@ function GameList(){
         amount = 0;
     };
 
-    this.addGame = function(data, table){
-        table.addRow("availableGames", data);
+    this.addGame = function(data){
         amount++;
-        games.push(parseData(data));
+        games.push(new GameObject(data.name, data.id, data.player));
     };
 
     this.getGames = function(){
@@ -290,36 +298,37 @@ function GameList(){
     this.getGame = function(index){
         return games[index];
     };
+    this.deleteGame = function(index){
+        if(index < amount){
+            for(var i = 0; i < amount; i++){
+                if(games[i].getGameId() == index){
+                    games.splice(index, 1);
+                }
+            }
+        }
+    };
 
     //# Private Methods
-    var parseData = function(data){
-        var game = new GameObject(data[0], data[1], data[2], data[3]);
-        return game;
-    };
 }
 
-function GameObject(name, number, mp, maxP, set){
+function GameObject(name, id, actualP, maxP){
     //#Public Vars
 
     //#Private Vars
     var gameName = name;
-    var gameId = number;
-    var map = mp;
-    var maxPlayers = maxP;
-    var settings = set;
+    var gameId = id;
+    var actualPlayers = actualP;
+    var maxPlayers = maxP || 6;
 
     //# Public Methods
     this.getGameName = function(){
         return gameName;
     };
+     this.actualPlayers = function(){
+        return actualPlayers;
+    };
     this.getMaxPlayers = function(){
         return maxPlayers;
-    };
-    this.getSettings = function(){
-        return settings;
-    };
-    this.getMap = function(){
-        return map;
     };
     this.getGameId = function(){
         return gameId;

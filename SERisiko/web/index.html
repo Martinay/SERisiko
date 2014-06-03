@@ -52,9 +52,8 @@
                         <table id="availableGames">
                             <tr>
                                 <th>Name</th>
-                                <th>Map</th>
+                                <th>Id</th>
                                 <th>Player</th>
-                                <th>Settings</th>
                             </tr>
                         </table>
                     </div>
@@ -81,10 +80,6 @@
             <tr>
                 <td>Anzahl der Spieler:</td>
                 <td><input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)"></td>
-            </tr>
-            <tr>
-                <td>Einstellungen des Spiels:</td>
-                <td><input id="gameSettings" value="Spieleinstellungen" size="26"></td>
             </tr>
             <tr>
                 <th><button  name="backToLobby" onClick='Core.backToLobby()'>Zurück</button></th>
