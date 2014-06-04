@@ -23,7 +23,23 @@ public class Spielsteuerung {
 		ist_erste_runde=true;
 
 		this.dieSpieler = dieSpieler;
-		this.DieSpielwelt = spielfeld_data.init_spielwelt_europa(dieSpieler);
+		
+		Land[] laender= new Land[0];
+		
+		for (int i=0; i<kontinente.length; i++){
+			Land[] newLaender = new Land[laender.length+kontinente[i].GETLands().length];
+			
+			for (int j=0; j<laender.length; j++){
+				newLaender[j]=laender[j];
+			}
+			
+			for (int j=0; j<kontinente[i].GETLands().length; j++){
+				newLaender[j+laender.length]=kontinente[i].GETLands()[j];
+			}	
+			laender=newLaender;
+		}
+		
+		dieSpielwelt = new Spielwelt(laender);
 		
 		this.aktueller_Spieler=dieSpieler[0];
 		
