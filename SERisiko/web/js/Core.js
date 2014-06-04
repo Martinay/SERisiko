@@ -51,7 +51,7 @@ function Core() {
         connection.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
-        document.getElementById("playerName").value = "Ihr Spielername";
+        document.getElementById("playerName").value = "";
 
         // revert menu
         showElement(document.getElementById("setPlayerName"));
