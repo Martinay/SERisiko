@@ -271,11 +271,11 @@ function Core() {
         showElement(document.getElementById("mutex"));
         document.getElementById("selectUnitAmount_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' id='unitAmount' style='margin-left: 20px;'></select> \
+                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
         $(function() {
-            var select = $( "#insertSliderAfter" );
-            var slider = $( "<div id='slider'></div>" ).insertAfter( select ).slider({
+            var select = $( "#unitAmount" );
+            var slider = $( "<div id='slider'></div>" ).insertAfter( "#insertSliderAfter" ).slider({
                 min: minValue,
                 max: maxValue,
                 range: "min",
