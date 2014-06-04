@@ -24,7 +24,7 @@ public interface IServerLogic {
     PlayerLeftMessage LeaveGame(int playerID, int GameID);
     GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
-    List<Player> GetPlayersInGame(int GameID);
+    List<Player> GetPlayersInGame(int playerID);
 
     ReadyStateChangedMessage ChangeReadyStatus(int playerID, boolean state);
 

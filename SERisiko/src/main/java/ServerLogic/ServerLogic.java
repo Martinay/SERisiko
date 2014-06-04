@@ -165,8 +165,8 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public List<Player> GetPlayersInGame(int gameId) {
-        return _state.Lobby.GetGameById(gameId).Players;
+    public List<Player> GetPlayersInGame(int playerID) {
+        return _state.Lobby.GetGameByPlayerId(playerID).Players;
     }
 
     @Override
