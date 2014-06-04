@@ -279,8 +279,8 @@ function Core() {
     
     this.createSlider = function(id, idAfter, minValue, maxValue){
         $(function() {
-            var select = $( id );
-            var slider = $( "<div id='slider'></div>" ).insertAfter( idAfter ).slider({
+            var select = $( "#" + id );
+            var slider = $( "<div id='slider'></div>" ).insertAfter( "#" + idAfter ).slider({
                 min: minValue,
                 max: maxValue,
                 range: "min",
@@ -289,11 +289,11 @@ function Core() {
                     select[ 0 ].selectedIndex = ui.value - 1;
                 }
             });
-            $( id ).change(function() {
+            $( "#" + id ).change(function() {
                 slider.slider( "value", this.selectedIndex + 1 );
             });
         });
-        var sel = $( id ).get(0);
+        var sel = $( "#" + id ).get(0);
         while (sel.options.length > 0) {
             sel.remove(sel.options.length - 1);
         }
@@ -312,7 +312,7 @@ function Core() {
                         <label for='unitAmount'>Anzahl Einheiten</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
-        Core.createSlider("#unitAmount", "#insertSliderAfter", minValue, maxValue);
+        Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
         
     };
     
