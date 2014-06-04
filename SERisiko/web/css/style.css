@@ -119,9 +119,8 @@ hr{
 #loading_overlay {
     display: none;
     position: relative;
-    background: #000;
-    opacity: 0.9;
-    filter: alpha(opacity=80);
+    background: #404040; /* Fallback IE 6-8 */
+    background: rgba(0, 0, 0, .95);
     margin-top: -670px;
     height: 670px;
     padding-top: 150px;
@@ -136,12 +135,11 @@ hr{
 #bottom_overlay{
     display: none;
     position: absolute;
-    background: #000;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    background: #404040; /* Fallback IE 6-8 */
+    background: rgba(0, 0, 0, .95);
     height: 70px;
     margin-top: -70px;
-    width: 950px;
+    width: 946px;
 }
 
 #mutex {
@@ -167,4 +165,15 @@ label[for=unitAmount]{
 #textAttack{
     font-size: 16px;
     color: #FFFFFF;
+}
+
+#showAttack{
+    margin-top: -100px; 
+}
+
+#showAttack table{
+    font-size: 30px;
+    color: #FFFFFF;
+    width: 90%;
+    margin: 0px auto;
 }

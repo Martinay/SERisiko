@@ -178,10 +178,11 @@ function Core() {
     
     this.getPlayerName = function(){
         return thePlayerName;        
-    }
+    };
     
     this.setUnitAmount = function(){
-        hideElement(document.getElementById("bottom_overlay"));
+        //hideElement(document.getElementById("bottom_overlay"));
+        $( "#bottom_overlay" ).slideUp( "slow");
         hideElement(document.getElementById("mutex"));
         
         var select = document.getElementById("unitAmount");
@@ -265,7 +266,8 @@ function Core() {
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
-        showElement(document.getElementById("bottom_overlay"));
+        //showElement(document.getElementById("bottom_overlay"));
+        $( "#bottom_overlay" ).slideDown( "slow");
         showElement(document.getElementById("mutex"));
         document.getElementById("bottom_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten</label> \

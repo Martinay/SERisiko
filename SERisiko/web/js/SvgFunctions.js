@@ -135,10 +135,21 @@ function SvgFunctions(root){
         });        
     };
     
-    this.closeOverlay = function (){
+    this.showAttack = function (){
+        //var OverlayString = '<div id="showAttack">\n<table id="attackerTable">\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150" style="margin: 10px 0px;"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150" style="margin-bottom: 50px;"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
+        var OverlayString = '<div id="showAttack"><canvas width="300" height="300" id="canvas_id" style="border: 1px solid rgb(51, 51, 51);"></div>';
+        document.getElementById("loading_overlay").innerHTML = OverlayString + "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.svgHandler.rotate()'>Angriff Abbrechen</button>";
+        initCanvas();
+    };
+    
+    this.abortAttack = function (){
         document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';
         document.getElementById("loading_overlay").style.display = "none";    
     };
+    
+    this.rotate = function (){
+        initCanvas();
+    }
     
     //# Private Methods
     var selectAmountUnit = function(attacker){
@@ -150,7 +161,7 @@ function SvgFunctions(root){
         document.getElementById("loading_overlay").innerHTML = "\
             <label for='unitAmount'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
             <select value='1' name='unitAmount' id='unitAmount' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
-            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.svgHandler.closeOverlay()'>Angriff Starten</button>";
+            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.svgHandler.showAttack()'>Angriff Starten</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
      };
     
@@ -204,4 +215,26 @@ function SvgFunctions(root){
             }
         });
     };
+    
+    var initCanvas = function(){
+        var objCanvas = document.getElementById("canvas_id");
+        // Falls das Objekt unterstützt wird
+        if(objCanvas.getContext){
+          // Kontext
+          objContext = objCanvas.getContext('2d');
+
+          var objImg = new Image();
+          // onload-Event vor dem Zuweisen der Quelle (wg. Opera)
+          objImg.onload = function(){ rotateIt(objContext, objImg, 120);}
+          objImg.src = "/img/paper.png";  // Breite: 120 px, Höhe: 120px
+        }else{
+          // Sonstiger Code
+        } 
+    };
+    
+    var rotateIt = function(objContext, objImg, lngPhi){
+        objContext.translate(300, 300);           // Ursprung verschieben
+        objContext.rotate((lngPhi*Math.PI/180));  // Context drehen
+        objContext.drawImage(objImg, -150, -150);   // Bild zentriert zeichnen
+    }
 }
