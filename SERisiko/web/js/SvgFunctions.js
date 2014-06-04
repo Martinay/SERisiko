@@ -154,7 +154,8 @@ function SvgFunctions(){
         //setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},500);
         document.getElementById("loading_overlay").innerHTML = "Bitte wählen Sie, mit wie vielen Einheiten Sie Angreigen möchten:<br><select name='unitAmountAttack' value='1' id='unitAmountAttack' style='margin-left: 20px;'></select>";
-        //Core.createSlider("unitAmountAttack", "loading_overlay", 0, 10);
+       // Core.createSlider("unitAmountAttack", "loading_overlay", 0, 10);
+
     };
     
     var initUnitOnMap = function(){
