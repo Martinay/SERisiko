@@ -186,6 +186,7 @@ function Core() {
         
         var select = document.getElementById("unitAmount");
         alert(select.options[select.selectedIndex].value);
+        document.getElementById("bottom_overlay").innerHTML = "";
     };
     
     //# Private Methods    
