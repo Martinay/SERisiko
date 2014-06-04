@@ -143,6 +143,7 @@ function Core() {
         // send to server : player ready
         // connection.setPlayerReady(); not yet implemented
         this.updatePlayerList();
+        initUnitAmountSelector(1, 10);
     };
 
     this.updatePlayerList = function(){
@@ -173,6 +174,13 @@ function Core() {
     this.getPlayerName = function(){
         return thePlayerName;        
     }
+    
+    this.setUnitAmount = function(){
+        hideElement(document.getElementById("selectUnitAmount_overlay"));
+        
+        var select = document.getElementById("unitAmount");
+        alert(select.options[select.selectedIndex].value);
+    };
     
     //# Private Methods    
     var joinGame = function(table, id){
@@ -257,6 +265,36 @@ function Core() {
                 //nothing
         }  
     };
+    
+    var initUnitAmountSelector = function(minValue, maxValue){
+        showElement(document.getElementById("selectUnitAmount_overlay"));
+        $(function() {
+            var select = $( "#unitAmount" );
+            var slider = $( "<div id='slider'></div>" ).insertAfter( select ).slider({
+                min: minValue,
+                max: maxValue,
+                range: "min",
+                value: select[ 0 ].selectedIndex + 1,
+                slide: function( event, ui ) {
+                    select[ 0 ].selectedIndex = ui.value - 1;
+                }
+            });
+            $( "#unitAmount" ).change(function() {
+                slider.slider( "value", this.selectedIndex + 1 );
+            });
+        });
+        var sel = $('#unitAmount').get(0);
+        while (sel.options.length > 0) {
+            sel.remove(sel.options.length - 1);
+        }
+        for(var i = minValue; i <= maxValue; i++){
+            var opt = document.createElement('option');
+            opt.text = i;
+            opt.value = i;
+            sel.add(opt, null);
+        }
+    };
+    
     var sleep = function(milliseconds) {
       var start = new Date().getTime();
       for (var i = 0; i < 1e7; i++) {

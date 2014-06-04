@@ -8,6 +8,8 @@
     <script src="js/extern/jquery-2.1.1.min.js"></script>
     <script src="js/extern/bootstrap.min.js"></script>
     <script src="js/extern/jquery.timer.js"></script>
+    <script src="js/extern/jquery-ui.js"></script>
+    <script src="js/extern/raphael-min.js"></script>
     
     <script src="js/RisikoApi.js"></script>
     <script src="js/Objects.js"></script>
@@ -16,8 +18,9 @@
     <script src="js/Core.js"></script>
 
     <!-- style sheets -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/extern/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/extern/bootstrap/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/extern/ui-lightness/jquery-ui.min.css">
     <link rel="stylesheet" href="css/style.css" />
     
     <title>SE_RISK</title>
@@ -59,9 +62,15 @@
                     <img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/>
                 </object>
             </div>
-                <!-- Loading Overlay -->
+            <!-- Loading Overlay -->
             <div id="loading_overlay">
                 <div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>
+            </div>
+            <!-- Select Unit Amount Overlay -->
+            <div id ="selectUnitAmount_overlay">
+                <label for="unitAmount">Anzahl Einheiten</label>
+                <select name="unitAmount" id="unitAmount"></select><br>
+                <button  name="setUnitAmount" onClick='Core.setUnitAmount()'>OK</button>
             </div>
         </div> 
         <div id="gameOptions">
