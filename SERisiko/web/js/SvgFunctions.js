@@ -14,13 +14,14 @@
  *       Zentimeter    cm           35,43
  *       Inch          in           90 
  */
-function SvgFunctions(){
+function SvgFunctions(root){
     //#Public Vars    
     
     //#Private Vars
     var svgDoc = null;
     var neighborLands = null;
     var myLands = new Array();
+    var document = root;
     
     //# Public Methods
     this.init = function(doc){       
@@ -146,11 +147,12 @@ function SvgFunctions(){
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},500);
-        document.getElementById("loading_overlay").innerHTML = "<span id='textAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</span><select name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>";
-        
-        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
-        document.getElementById("loading_overlay").innerHTML = document.getElementById("loading_overlay").innerHTML + "<button  name='StartAttack' onClick='Core.svgHandler.closeOverlay()'>Angriff Starten</button>";
-    };
+        document.getElementById("loading_overlay").innerHTML = "\
+            <label for='unitAmount'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
+            <select value='1' name='unitAmount' id='unitAmount' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
+            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.svgHandler.closeOverlay()'>Angriff Starten</button>";
+        Core.createSlider("unitAmount", "insertSliderAfter", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
+     };
     
     var initUnitOnMap = function(){
         var rects = svgDoc.getElementsByTagName("rect");

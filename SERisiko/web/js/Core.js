@@ -11,7 +11,7 @@ function Core() {
     //#Public Vars
     this.gameList = new GameList();
     this.sctTable = new SelectableTable();
-    this.svgHandler = new SvgFunctions();
+    this.svgHandler = new SvgFunctions(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
@@ -260,7 +260,7 @@ function Core() {
             sel.add(opt, null);
         }
         slider.slider( "value", maxValue );
-        sel.selectedIndex = maxValue;
+        select.val(maxValue);
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
@@ -271,7 +271,6 @@ function Core() {
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
-        
     };
     
     var sleep = function(milliseconds) {
