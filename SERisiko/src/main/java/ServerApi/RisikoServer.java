@@ -70,14 +70,18 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("Join Game: " + gameIndex);
                 
         int clientId = gameClient.getIdentifyer();
+        int gameId = gameIndex.intValue();
         
-        GameCreatedMessage message = gameManager.JoinGame(clientId);
+        NewPlayerJoinedMessage message = gameManager.JoinGame(clientId, gameId );
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        response.addChangedObject( message.NewGame );
+        
+        for(int i = 0; i< message.PlayersInGame.size(); i++) {
+            response.addChangedObject( message.PlayersInGame.get(i) );
+        }        
         
         return response;
     }
@@ -86,7 +90,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("leave game");
         
         int clientId = gameClient.getIdentifyer();
-        
+
         PlayerLeftMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
