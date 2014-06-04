@@ -131,7 +131,7 @@ hr{
 }
 
 /** selectUnitAmount Overlay **/
-#selectUnitAmount_overlay{
+#bottom_overlay{
     display: none;
     position: absolute;
     background: #000;

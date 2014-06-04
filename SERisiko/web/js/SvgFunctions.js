@@ -77,6 +77,11 @@ function SvgFunctions(){
             theRect.setAttribute('opacity','0.3');
             //this.setUnit(id, 16);
             countAttack++;
+            Core.showElement(document.getElementById("mutex"));
+            Core.showElement(document.getElementById("bottom_overlay"));
+            
+            $( "" ).insertAfter( "#bottom_overlay" );
+            
             for (var i = 0; i < myLands.length; i++) {
                 theRect = svgDoc.getElementById(myLands[i]);
                 theRect.onmouseover = new Function("");

@@ -176,7 +176,7 @@ function Core() {
     }
     
     this.setUnitAmount = function(){
-        hideElement(document.getElementById("selectUnitAmount_overlay"));
+        hideElement(document.getElementById("bottom_overlay"));
         hideElement(document.getElementById("mutex"));
         
         var select = document.getElementById("unitAmount");
@@ -206,9 +206,19 @@ function Core() {
             Core.svgHandler.refreshOwnerRights();
         //#
     };
+    
+    this.hideElement = function(element){
+        element.style.display = "none";
+    };
+    
+    this.showElement = function(element){
+        element.style.display = "block";
+    };
+    
     var hideElement = function(element){
         element.style.display = "none";
     };
+    
     var showElement = function(element){
         element.style.display = "block";
     };
@@ -268,9 +278,9 @@ function Core() {
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
-        showElement(document.getElementById("selectUnitAmount_overlay"));
+        showElement(document.getElementById("bottom_overlay"));
         showElement(document.getElementById("mutex"));
-        document.getElementById("selectUnitAmount_overlay").innerHTML = "\
+        document.getElementById("bottom_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
