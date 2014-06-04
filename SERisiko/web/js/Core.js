@@ -268,6 +268,10 @@ function Core() {
     
     var initUnitAmountSelector = function(minValue, maxValue){
         showElement(document.getElementById("selectUnitAmount_overlay"));
+        document.getElementById("selectUnitAmount_overlay").innerHTML = "\
+                        <label for='unitAmount'>Anzahl Einheiten</label> \
+                        <select name='unitAmount' id='unitAmount'></select><br> \
+                        <button  name='setUnitAmount' onClick='Core.setUnitAmount()'>OK</button>";
         $(function() {
             var select = $( "#unitAmount" );
             var slider = $( "<div id='slider'></div>" ).insertAfter( select ).slider({
