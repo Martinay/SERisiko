@@ -124,6 +124,8 @@ hr{
     filter: alpha(opacity=80);
     margin-top: -670px;
     height: 670px;
+    padding-top: 150px;
+    text-align: center;
 }
 #loading_message{
     margin: 0px auto;
@@ -159,5 +161,10 @@ hr{
 label[for=unitAmount]{
     margin-top: 10px;
     margin-left: 2.5%;
+    color: #FFFFFF;
+}
+
+#textAttack{
+    font-size: 16px;
     color: #FFFFFF;
 }

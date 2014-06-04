@@ -261,6 +261,9 @@ function Core() {
             opt.value = i;
             sel.add(opt, null);
         }
+        $( "#" + id ).change(function() {
+            slider.slider( "value", maxValue );
+        });
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
