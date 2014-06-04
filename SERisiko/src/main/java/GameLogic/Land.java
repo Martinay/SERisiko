@@ -8,9 +8,10 @@ public class Land {
 	private int anzahl_armeen;
 	
 	private Land[] angrenzendeLaender;
-	
-	
-	public Land (Spieler besitzer,String bezeichnung, int Id){
+    Kontinent Kontinent;
+
+
+    public Land (Spieler besitzer,String bezeichnung, int Id){
 		this.besitzer=besitzer;
         id = Id;
         this.anzahl_armeen=1;

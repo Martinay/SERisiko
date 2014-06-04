@@ -19,7 +19,7 @@ public class Spielsteuerung {
 	
 	private int hinzuzufuegende_Armeen;
 
-	public Spielsteuerung( Spieler[] dieSpieler){
+	public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
 		ist_erste_runde=true;
 
 		this.dieSpieler = dieSpieler;

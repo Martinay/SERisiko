@@ -5,7 +5,7 @@ import ServerLogic.Messages.Player;
 
 import java.util.HashMap;
 
-public class PlayerMapper {
+class PlayerMapper {
 
     private static HashMap<Spieler,Player> _mappingSP = new HashMap<Spieler, Player>();
     private static HashMap<Player,Spieler> _mappingPS = new HashMap<Player, Spieler>();
