@@ -238,7 +238,7 @@ function Core() {
     this.createSlider = function(id, idAfter, minValue, maxValue){
         $(function() {
             var select = $( "#" + id );
-            var slider = $( "<div id='slider'></div>" ).insertAfter( idAfter ).slider({
+            var slider = $( "<div id='slider'></div>" ).insertAfter( "#" + idAfter ).slider({
                 min: minValue,
                 max: maxValue,
                 range: "min",
