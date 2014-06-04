@@ -277,16 +277,10 @@ function Core() {
         }  
     };
     
-    var initUnitAmountSelector = function(minValue, maxValue){
-        showElement(document.getElementById("bottom_overlay"));
-        showElement(document.getElementById("mutex"));
-        document.getElementById("bottom_overlay").innerHTML = "\
-                        <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
+    this.createSlider = function(id, idAfter, minValue, maxValue){
         $(function() {
-            var select = $( "#unitAmount" );
-            var slider = $( "<div id='slider'></div>" ).insertAfter( "#insertSliderAfter" ).slider({
+            var select = $( id );
+            var slider = $( "<div id='slider'></div>" ).insertAfter( idAfter ).slider({
                 min: minValue,
                 max: maxValue,
                 range: "min",
@@ -295,11 +289,11 @@ function Core() {
                     select[ 0 ].selectedIndex = ui.value - 1;
                 }
             });
-            $( "#unitAmount" ).change(function() {
+            $( id ).change(function() {
                 slider.slider( "value", this.selectedIndex + 1 );
             });
         });
-        var sel = $('#unitAmount').get(0);
+        var sel = $( id ).get(0);
         while (sel.options.length > 0) {
             sel.remove(sel.options.length - 1);
         }
@@ -309,6 +303,17 @@ function Core() {
             opt.value = i;
             sel.add(opt, null);
         }
+    };
+    
+    var initUnitAmountSelector = function(minValue, maxValue){
+        showElement(document.getElementById("bottom_overlay"));
+        showElement(document.getElementById("mutex"));
+        document.getElementById("bottom_overlay").innerHTML = "\
+                        <label for='unitAmount'>Anzahl Einheiten</label> \
+                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
+                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
+        Core.createSlider("#unitAmount", "#insertSliderAfter", minValue, maxValue);
+        
     };
     
     var sleep = function(milliseconds) {

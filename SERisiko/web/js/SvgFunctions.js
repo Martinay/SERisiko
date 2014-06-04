@@ -77,10 +77,6 @@ function SvgFunctions(){
             theRect.setAttribute('opacity','0.3');
             //this.setUnit(id, 16);
             countAttack++;
-            Core.showElement(document.getElementById("mutex"));
-            Core.showElement(document.getElementById("bottom_overlay"));
-            
-            $( "" ).insertAfter( "#bottom_overlay" );
             
             for (var i = 0; i < myLands.length; i++) {
                 theRect = svgDoc.getElementById(myLands[i]);
@@ -154,9 +150,12 @@ function SvgFunctions(){
     var showAttack = function(){
         document.getElementById("loading_overlay").style.display = "block";
         var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
-        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
+        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
-        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},10000);
+        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},500);
+        setTimeout(function(){document.getElementById("loading_overlay").innerHTML = "Bitte wählen Sie, mit wie vielen Einheiten Sie Angreigen möchten:<br><select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select>";}, 500);
+        setTimeout(function(){Core.showElement(document.getElementById("bottom_overlay"));},500);
+        Core.createSlider("unitAmount", "bottom_overlay", 0, 10);
     };
     
     var initUnitOnMap = function(){
