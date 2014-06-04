@@ -177,6 +177,7 @@ function Core() {
     
     this.setUnitAmount = function(){
         hideElement(document.getElementById("selectUnitAmount_overlay"));
+        hideElement(document.getElementById("mutex"));
         
         var select = document.getElementById("unitAmount");
         alert(select.options[select.selectedIndex].value);
