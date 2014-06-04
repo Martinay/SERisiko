@@ -1,7 +1,7 @@
 package ServerLogic.Messages;
 
 public class MapChange {
-    public int CountryID;
+    public String CountryID;
     public int Units;
     public Player OwnedPlayer;
 }

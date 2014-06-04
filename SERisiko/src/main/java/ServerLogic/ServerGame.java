@@ -2,6 +2,7 @@
 package ServerLogic;
 
 import GameLogic.*;
+import ServerLogic.Map.MapCreator;
 import ServerLogic.Messages.Game;
 import ServerLogic.Messages.Player;
 
@@ -15,7 +16,7 @@ import java.util.List;
 class ServerGame extends Game {
     
     List<Player> Players = new LinkedList<Player>();
-    Spielsteuerung _spiel;
+    private Spielsteuerung _spiel;
 
     ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
@@ -31,13 +32,13 @@ class ServerGame extends Game {
 
     public List<Integer> GetPlayerIds()
     {
-        List<Integer> IDs = new LinkedList<Integer>();
+        List<Integer> iDs = new LinkedList<Integer>();
 
         for (Player player : Players) {
-            IDs.add(player.ID);
+            iDs.add(player.ID);
         }
 
-        return IDs;
+        return iDs;
     }
 
     public boolean AreAllPlayerReady()
@@ -59,11 +60,13 @@ class ServerGame extends Game {
             PlayerMapper.Add(spieler,player);
         }
 
-       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray());
+        Kontinent[] kontinents = (Kontinent[]) MapCreator.GetKontinets().toArray();
+
+       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
         CountryMapper.CreateCountryMapping(_spiel.DieSpielwelt.gibLaender());
      }
 
-    public void Attack(int countryFromID, int countryToID, int units) {
+    public void Attack(String countryFromID, String countryToID, int units) {
 
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return;
@@ -83,7 +86,7 @@ class ServerGame extends Game {
         _spiel.zustandssteuerung(ereignis);
     }
 
-    public void Move(int countryFromID, int countryToID, int units) {
+    public void Move(String countryFromID, String countryToID, int units) {
         if (_spiel.Zustand != Spielzustaende.Verschieben)
             return;
 
@@ -94,7 +97,7 @@ class ServerGame extends Game {
         _spiel.zustandssteuerung(ereignis);
     }
 
-    public void PlaceUnits(int countryID, int units) {
+    public void PlaceUnits(String countryID, int units) {
         if (_spiel.Zustand != Spielzustaende.Armeen_hinzufuegen)
             return;
 

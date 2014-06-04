@@ -35,7 +35,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Attack(countryFromID, countryToID, units);
 
@@ -49,7 +49,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage Move(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Move(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Move(countryFromID, countryToID, units);
 
@@ -57,7 +57,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage PlaceUnits(int playerID, int countryID, int units) {
+    public MapChangedMessage PlaceUnits(int playerID, String countryID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.PlaceUnits(countryID, units);
 
@@ -172,15 +172,5 @@ public class ServerLogic implements IServerLogic {
     @Override
     public List<Game> GetGamesInLobby() {
         return _state.Lobby.GetOpenGames();
-    }
-
-    @Deprecated
-    public GameCreatedMessage JoinGame(int clientId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Deprecated
-    public PlayerLeftMessage LeaveGame(int clientId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
