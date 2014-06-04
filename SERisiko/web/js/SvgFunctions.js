@@ -30,6 +30,7 @@ function SvgFunctions(){
     this.init = function(doc){       
         svgDoc = doc;
         this.refreshOwnerRights();
+        initUnitOnMap();
     };
     
     /*
@@ -131,7 +132,7 @@ function SvgFunctions(){
     };
     
     this.refreshOwnerRights = function (){
-        rects = svgDoc.getElementsByTagName("rect");
+        var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
             if(rect.getAttribute("Owner") === Core.getPlayerName()){
                 rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
@@ -151,5 +152,57 @@ function SvgFunctions(){
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},2000);
         setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},10000);
+    };
+    
+    var initUnitOnMap = function(){
+        var rects = svgDoc.getElementsByTagName("rect");
+        var xPosition = 0;
+        var yPosition = 0;
+        var height = 0;
+        var width = 0;
+        var CountryHeight = 0;
+        var CountryWidth = 0;
+        var mapUnitID = svgDoc.getElementById("MapUnit");
+        var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
+        var rectID = "";
+        
+        [].slice.call(rects).forEach(function(rect){
+            rectID = rect.getAttribute("id");
+            if(rectID !== ""){
+                TextBottom = false;
+                CountryHeight = parseInt(rect.getAttribute("height"));
+                CountryWidth = parseInt(rect.getAttribute("width"));
+                if(CountryWidth < 800){
+                    width = CountryWidth * 0.677;
+                    height = CountryWidth * 0.9;
+                }else{
+                    height = 800;
+                    if(CountryHeight < height){
+                        width = CountryHeight * 0.8;
+                        height = CountryHeight * 0.6;
+                    } else{
+                        width = height * 0.75;
+                    }
+                }
+                if(height == 800 && !("B3B2C3C4P7P13".indexOf(rectID) > -1)){
+                    xPosition = (parseInt(rect.getAttribute("x")) + CountryWidth/2) - (width / 2) - 150;
+                }else{
+                    xPosition = (parseInt(rect.getAttribute("x")) + CountryWidth/2) - (width / 2);
+                }
+                
+                yPosition = (parseInt(rect.getAttribute("y")) + CountryHeight/2) - (height / 2);
+                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" />';
+                
+                if(CountryWidth > 1234){
+                    xPosition = xPosition + width * 1.4 ;
+                    yPosition = yPosition + height/2 + 130;
+                } else {
+                    xPosition = xPosition + width/2 ;
+                    yPosition = yPosition + height * 1.5;
+                }
+               
+                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">99</text>';
+            }
+        });
     };
 }
