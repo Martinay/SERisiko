@@ -21,7 +21,6 @@ function SvgFunctions(){
     var svgDoc = null;
     var neighborLands = null;
     var myLands = new Array();
-    var countAttack = 0;
     
     //# Public Methods
     this.init = function(doc){       
@@ -65,40 +64,40 @@ function SvgFunctions(){
         }
     };*/
 
-    this.attack = function(id){
+    this.identifyAttacker = function(id){
+        var theRect = svgDoc.getElementById(id);
+        
+        neighborLands = theRect.getAttribute("neighbor").split(",");
+            
+        theRect.setAttribute('opacity','0.3');
+            //this.setUnit(id, 16);
+
+        for (var i = 0; i < myLands.length; i++) {
+            theRect = svgDoc.getElementById(myLands[i]);
+            theRect.onmouseover = new Function("");
+            theRect.onmouseout = new Function("");
+            theRect.onclick = new Function("");
+        }
+        for (var i = 0; i < neighborLands.length; i++) {
+            theRect = svgDoc.getElementById(neighborLands[i]);
+            if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
+                theRect.onmouseover = new Function("this.setAttribute('opacity', '0.5'); this.style='cursor: pointer';");
+                theRect.onmouseout = new Function("this.setAttribute('opacity','0.75'); this.style='cursor: default';");
+                theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
+                theRect.setAttribute('opacity','0.75');
+            }
+        }
+    };
+    
+    this.identifyDestination = function(id, attacker){
         var theRect = svgDoc.getElementById(id);
 
-        if(countAttack === 0){
-            neighborLands = theRect.getAttribute("neighbor").split(",");
-            var attacker = id;
-            theRect.setAttribute('opacity','0.3');
-            //this.setUnit(id, 16);
-            countAttack++;
-
-            for (var i = 0; i < myLands.length; i++) {
-                theRect = svgDoc.getElementById(myLands[i]);
-                theRect.onmouseover = new Function("");
-                theRect.onmouseout = new Function("");
-                theRect.onclick = new Function("");
-            }
-            for (var i = 0; i < neighborLands.length; i++) {
-                theRect = svgDoc.getElementById(neighborLands[i]);
-                if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
-                    theRect.onmouseover = new Function("this.setAttribute('opacity', '0.5'); this.style='cursor: pointer';");
-                    theRect.onmouseout = new Function("this.setAttribute('opacity','0.75'); this.style='cursor: default';");
-                    theRect.onclick = new Function("Core.svgHandler.attack(this.id);");
-                    theRect.setAttribute('opacity','0.75');
-                }
-            }
-        } else { 
-            for (var i = 0; i < neighborLands.length; i++) {
-                if(id === neighborLands[i]){
-                    var defender = id;
+        for (var i = 0; i < neighborLands.length; i++) {
+            if(id == neighborLands[i]){
                     theRect = svgDoc.getElementById(attacker);
                     theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
                     theRect.setAttribute('opacity','1');
-                    countAttack = 0;
-                    showAttack(attacker);
+                    selectAmountUnit(attacker);
                     var rects = svgDoc.getElementsByTagName("rect");
                     [].slice.call(rects).forEach(function(rect){
                             rect.onmouseover = "";
@@ -110,14 +109,6 @@ function SvgFunctions(){
                     this.refreshOwnerRights();
                 }
             }
-            if(countAttack === 1){
-                countAttack = 0;
-                theRect = svgDoc.getElementById(attacker);
-                theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
-                theRect.setAttribute('opacity','1');
-                Alert("Dieser Angriff ist nicht möglich!!!");
-            }
-        }
     };
 
     this.setNewLandOwner = function(landId, playerName){
@@ -136,24 +127,29 @@ function SvgFunctions(){
                 rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
                 rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
                 //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
-                rect.onclick = new Function("Core.svgHandler.attack(this.id);");
+                rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
                 
                 myLands.push(rect.getAttribute("id"));
             }
         });        
     };
     
+    this.closeOverlay = function (){
+        document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';
+        document.getElementById("loading_overlay").style.display = "none";    
+    };
+    
     //# Private Methods
-    var showAttack = function(attacker){
+    var selectAmountUnit = function(attacker){
         document.getElementById("loading_overlay").style.display = "block";
-        var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
+        //var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},500);
         document.getElementById("loading_overlay").innerHTML = "<span id='textAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</span><select name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>";
         
         Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
-        document.getElementById("loading_overlay").innerHTML = document.getElementById("loading_overlay").innerHTML + "<button  name='StartAttack' onClick='Core.SvbackToLobby()'>Angriff Starten</button>";
+        document.getElementById("loading_overlay").innerHTML = document.getElementById("loading_overlay").innerHTML + "<button  name='StartAttack' onClick='Core.svgHandler.closeOverlay()'>Angriff Starten</button>";
     };
     
     var initUnitOnMap = function(){
