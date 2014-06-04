@@ -236,20 +236,18 @@ function Core() {
     };
     
     this.createSlider = function(id, idAfter, minValue, maxValue){
-        $(function() {
-            var select = $( "#" + id );
-            var slider = $( "<div id='slider'></div>" ).insertAfter( "#" + idAfter ).slider({
-                min: minValue,
-                max: maxValue,
-                range: "min",
-                value: select[ 0 ].selectedIndex + 1,
-                slide: function( event, ui ) {
-                    select[ 0 ].selectedIndex = ui.value - 1;
-                }
-            });
-            $( "#" + id ).change(function() {
-                slider.slider( "value", this.selectedIndex + 1 );
-            });
+        var select = $( "#" + id );
+        var slider = $( "<div id='slider'></div>" ).insertAfter( "#" + idAfter ).slider({
+            min: minValue,
+            max: maxValue,
+            range: "min",
+            value: select[ 0 ].selectedIndex + 1,
+            slide: function( event, ui ) {
+                select[ 0 ].selectedIndex = ui.value - 1;
+            }
+        });
+        $( "#" + id ).change(function() {
+            slider.slider( "value", this.selectedIndex + 1 );
         });
         var sel = $( "#" + id ).get(0);
         while (sel.options.length > 0) {
@@ -261,9 +259,7 @@ function Core() {
             opt.value = i;
             sel.add(opt, null);
         }
-        $( "#" + id ).change(function() {
-            slider.slider( "value", maxValue );
-        });
+        slider.slider( "value", maxValue );
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
