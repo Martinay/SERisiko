@@ -21,10 +21,7 @@ function SvgFunctions(){
     var svgDoc = null;
     var neighborLands = null;
     var myLands = new Array();
-    
     var countAttack = 0;
-    var attacker = "";
-    var defender = "";
     
     //# Public Methods
     this.init = function(doc){       
@@ -73,11 +70,11 @@ function SvgFunctions(){
 
         if(countAttack === 0){
             neighborLands = theRect.getAttribute("neighbor").split(",");
-            attacker = id;
+            var attacker = id;
             theRect.setAttribute('opacity','0.3');
             //this.setUnit(id, 16);
             countAttack++;
-            
+
             for (var i = 0; i < myLands.length; i++) {
                 theRect = svgDoc.getElementById(myLands[i]);
                 theRect.onmouseover = new Function("");
@@ -96,12 +93,12 @@ function SvgFunctions(){
         } else { 
             for (var i = 0; i < neighborLands.length; i++) {
                 if(id === neighborLands[i]){
-                    defender = id;
+                    var defender = id;
                     theRect = svgDoc.getElementById(attacker);
                     theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
                     theRect.setAttribute('opacity','1');
                     countAttack = 0;
-                    showAttack();
+                    showAttack(attacker);
                     var rects = svgDoc.getElementsByTagName("rect");
                     [].slice.call(rects).forEach(function(rect){
                             rect.onmouseover = "";
@@ -147,7 +144,7 @@ function SvgFunctions(){
     };
     
     //# Private Methods
-    var showAttack = function(){
+    var showAttack = function(attacker){
         document.getElementById("loading_overlay").style.display = "block";
         var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
         //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},1000);
@@ -156,13 +153,7 @@ function SvgFunctions(){
         document.getElementById("loading_overlay").innerHTML = "<span id='textAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</span><select name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>";
         
         Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
-        for (var i=0; i < document.getElementById("unitAmountAttack").options.length; i++){
-            if (document.getElementById("unitAmountAttack").options[i].text == svgDoc.getElementById(attacker).getAttribute("Unitcount")) {
-                document.getElementById("unitAmountAttack").options[i].selected = true;
-            } else {
-                document.getElementById("unitAmountAttack").options[i].selected = false;
-            }
-        }
+        document.getElementById("loading_overlay").innerHTML = document.getElementById("loading_overlay").innerHTML + "<button  name='StartAttack' onClick='Core.SvbackToLobby()'>Angriff Starten</button>";
     };
     
     var initUnitOnMap = function(){

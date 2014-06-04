@@ -260,6 +260,7 @@ function Core() {
             sel.add(opt, null);
         }
         slider.slider( "value", maxValue );
+        sel.selectedIndex = maxValue;
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
