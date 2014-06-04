@@ -118,15 +118,12 @@ hr{
 /** loading overlay **/
 #loading_overlay {
     display: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
+    position: relative;
     background: #000;
-    opacity: 0.8;
+    opacity: 0.9;
     filter: alpha(opacity=80);
-    position: absolute;
+    margin-top: -670px;
+    height: 670px;
 }
 #loading_message{
     margin: 0px auto;
@@ -137,16 +134,30 @@ hr{
 #selectUnitAmount_overlay{
     display: none;
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
     background: #000;
     opacity: 0.8;
     filter: alpha(opacity=80);
-    position: absolute;
+    height: 70px;
+    margin-top: -70px;
+    width: 950px;
 }
 
-.playerNameDisplay{
-    
+#mutex {
+    display: none;
+    position: relative;
+    background: #000;
+    opacity: 0.0;
+    margin-top: -670px;
+    height: 670px;
+}
+
+#slider{
+    width: 95%;
+    margin: 10px auto;
+}
+
+label[for=unitAmount]{
+    margin-top: 10px;
+    margin-left: 2.5%;
+    color: #FFFFFF;
 }

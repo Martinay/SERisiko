@@ -268,12 +268,13 @@ function Core() {
     
     var initUnitAmountSelector = function(minValue, maxValue){
         showElement(document.getElementById("selectUnitAmount_overlay"));
+        showElement(document.getElementById("mutex"));
         document.getElementById("selectUnitAmount_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' id='unitAmount'></select><br> \
-                        <button  name='setUnitAmount' onClick='Core.setUnitAmount()'>OK</button>";
+                        <select name='unitAmount' id='unitAmount' style='margin-left: 20px;'></select> \
+                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
         $(function() {
-            var select = $( "#unitAmount" );
+            var select = $( "#insertSliderAfter" );
             var slider = $( "<div id='slider'></div>" ).insertAfter( select ).slider({
                 min: minValue,
                 max: maxValue,
