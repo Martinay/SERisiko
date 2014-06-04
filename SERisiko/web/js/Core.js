@@ -12,6 +12,7 @@ function Core() {
     this.gameList = new GameList();
     this.sctTable = new SelectableTable();
     this.svgHandler = new SvgFunctions();
+    this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
     var thePlayerName = "";
@@ -26,7 +27,7 @@ function Core() {
         // Start ConnectionToServer
         connection.onmessage = function(elem) { //get message from server
             console.log( elem );
-            parseServerAnswers(elem);
+            Core.serverAnswerParserHandler.parseServerAnswers(elem);
             $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
         };
     };
@@ -45,6 +46,10 @@ function Core() {
         connection.joinServer(thePlayerName); // includes joinlobby
         
         this.updateGameList();
+    };
+    
+    this.getPlayerName = function(){
+        return thePlayerName;
     };
 
     this.deletePlayerName = function(){
@@ -230,56 +235,9 @@ function Core() {
         connection.listOpenGames();
     };
     
-    var parseServerAnswers = function(elem){
-        var message = JSON.parse(elem.data);
-        
-        switch(message.type){
-            case "AddNewPlayerToLobbyMessage":
-                if(message.state == 1){
-                    // create Player on Client
-                    hideElement(document.getElementById("setPlayerName"));
-                    showElement(document.getElementById("selectGame"));
-                    divs = document.getElementsByClassName('playerNameDisplay');
-                    [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            case "GameList":
-                if(message.state == 1){
-                    for(var i = 0; i < message.data.length; i++){
-                        Core.sctTable.addRow("availableGames", message.data[i].ServerGame);
-                        Core.gameList.addGame(message.data[i].ServerGame); 
-                    }
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            case "GameCreatedMessage":
-                 if(message.state == 1){
-                    //verify 
-                    hideElement(document.getElementById("newGame"));
-
-                    Core.setGame(message.data[0].ServerGame.id);
-
-                    //cleanup
-                    document.getElementById("gameName").value = "Spielname";
-                    document.getElementById("maxPlayers").value = "6";
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            default:
-                //nothing
-        }  
-    };
-    
     this.createSlider = function(id, idAfter, minValue, maxValue){
         $(function() {
-            var select = $( id );
+            var select = $( "#" + id );
             var slider = $( "<div id='slider'></div>" ).insertAfter( idAfter ).slider({
                 min: minValue,
                 max: maxValue,
@@ -289,11 +247,11 @@ function Core() {
                     select[ 0 ].selectedIndex = ui.value - 1;
                 }
             });
-            $( id ).change(function() {
+            $( "#" + id ).change(function() {
                 slider.slider( "value", this.selectedIndex + 1 );
             });
         });
-        var sel = $( id ).get(0);
+        var sel = $( "#" + id ).get(0);
         while (sel.options.length > 0) {
             sel.remove(sel.options.length - 1);
         }
@@ -312,7 +270,7 @@ function Core() {
                         <label for='unitAmount'>Anzahl Einheiten</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
-        Core.createSlider("#unitAmount", "#insertSliderAfter", minValue, maxValue);
+        Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
         
     };
     
