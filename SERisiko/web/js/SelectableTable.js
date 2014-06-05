@@ -5,11 +5,12 @@
  * @author Alexander Santana Losada
  */
 
-function SelectableTable(){
+function SelectableTable(doc){
     //#Public Vars
 
     //#Private Vars
     var rows = 0;
+    var root = doc;
 
     //# Public Methods
      this.getRows = function(){
@@ -18,23 +19,23 @@ function SelectableTable(){
 
     this.addRow = function(tableId, data){
         rows++;
-        var tb   = document.getElementById(tableId).getElementsByTagName('tbody')[0];
-        var newTr = document.createElement('tr');
+        var tb   = root.getElementById(tableId).getElementsByTagName('tbody')[0];
+        var newTr = root.createElement('tr');
         // add name
-            var td = document.createElement('td');
-            td.appendChild(document.createTextNode(data.name));
+            var td = root.createElement('td');
+            td.appendChild(root.createTextNode(data.name));
             td.id = "cell_"+rows+",1";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);
         // add id
-            var td = document.createElement('td');
-            td.appendChild(document.createTextNode(data.id));
+            var td = root.createElement('td');
+            td.appendChild(root.createTextNode(data.id));
             td.id = "cell_"+rows+",2";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);
         // add players
-            var td = document.createElement('td');
-            td.appendChild(document.createTextNode(data.playerCount+"/"+data.maxPlayer));
+            var td = root.createElement('td');
+            td.appendChild(root.createTextNode(data.playerCount+"/"+data.maxPlayer));
             td.id = "cell_"+rows+",3";    
             td.onclick = new Function("Core.setGame("+data.id+")");
             newTr.appendChild(td);    
@@ -43,13 +44,13 @@ function SelectableTable(){
     };
 
     this.deleteRow = function (tableId, rowID){
-        document.getElementById(tableId).deleteRow(rowID);
+        root.getElementById(tableId).deleteRow(rowID);
         rows--;
     };
     
     this.clear = function(tableId){
         for(var i = 0; i < rows; i++)
-            document.getElementById(tableId).deleteRow(1);
+            root.getElementById(tableId).deleteRow(1);
         rows = 0;
     };
     //# Private Methods

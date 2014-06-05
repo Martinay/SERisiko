@@ -10,7 +10,7 @@ var Core = new Core();
 function Core() {
     //#Public Vars
     this.gameList = new GameList();
-    this.sctTable = new SelectableTable();
+    this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
