@@ -69,11 +69,8 @@ function Core() {
         etablishConnection();
     };
 
-    this.leaveGame = function(){
-        connection.leaveGame();
-    };
-
     this.backToLobby = function(){
+        connection.leaveGame();
         //check response
         connection.joinLobby();
         
