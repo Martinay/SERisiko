@@ -113,7 +113,7 @@ viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect id="P1" class="fil0 str0" x="227" y="4519" width="6685" height="662" Owner="" Unitcount="1" neighbor="P2,B5"/>
   <rect id="P2" class="fil0 str0" x="6912" y="4519" width="3986" height="1808" Owner="" Unitcount="1" neighbor="P1,P3,P4,P5,P8,P9"/>
   <rect id="P3" class="fil0 str0" x="6912" y="6327" width="1499" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6,B3"/>
-  <rect id="P4" class="fil0 str0" x="8411" y="6327" width="1235" height="2893" Owner="Ihr SpielernaG" Unitcount="7" neighbor="P2,P3,P5,P6"/>
+  <rect id="P4" class="fil0 str0" x="8411" y="6327" width="1235" height="2893" Owner="Ihr SpielernaG" Unitcount="4" neighbor="P2,P3,P5,P6"/>
   <rect id="P5" class="fil0 str0" x="9646" y="6327" width="1252" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6"/>
   <rect id="P6" class="fil0 str0" x="6912" y="9220" width="3986" height="1129" Owner="" Unitcount="1" neighbor="P3,P4,P5"/>
   <rect id="P7" class="fil0 str0" x="13359" y="122" width="944" height="4397" Owner="" Unitcount="1" neighbor="P8,E1"/> 

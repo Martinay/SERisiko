@@ -162,6 +162,11 @@ label[for=unitAmount]{
     color: #FFFFFF;
 }
 
+label[for=unitAmountMove]{
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
 label[for=unitAmountAttack]{
     font-size: 16px;
     color: #FFFFFF;

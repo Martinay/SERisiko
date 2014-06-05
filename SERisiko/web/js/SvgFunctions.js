@@ -134,9 +134,9 @@ function SvgFunctions(root){
     
     this.showAttack = function (DefendId){
         var select = document.getElementById("unitAmountAttack");
-        var countAttack = select.options[select.selectedIndex].value;
+        var countAttack = parseInt(select.options[select.selectedIndex].value);
        
-        //var countDefend = svgDoc.getElementById(DefendId).getAttribute("UnitCount");
+        var countDefend = parseInt(svgDoc.getElementById(DefendId).getAttribute("Unitcount"));
         
         if(countAttack + countDefend < 5){
             if(countDefend > 2){
@@ -145,7 +145,15 @@ function SvgFunctions(root){
                 rotate = (countDefend + countAttack) * 19;
             }
         } else {
-            rotate = 95;
+            if(countDefend < 2){
+                rotate = 76;
+            } else {
+                if(countDefend > 2){
+                    rotate = (2 + countAttack) * 19;
+                } else {
+                    rotate = 95;
+                }
+            }
         }
         var OverlayString = '<div id="showAttack">\n\
                                 <table id="attackerTable">\n\
@@ -180,17 +188,25 @@ function SvgFunctions(root){
                             </div>\n'+
                             "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.svgHandler.abortAttack()'>Angriff Abbrechen</button>";
         document.getElementById("loading_overlay").innerHTML = OverlayString;
-        showEndAttack("yes");
+        
+        setTimeout(function(){Core.svgHandler.showEndAttack("yes", countAttack);},3500);
     };
     
-    this.showEndAttack = function (arg){
+    this.showEndAttack = function (arg, Count){
         if(arg == "yes"){
-            document.getElementById("showAttack").innerHTML = "<span style='color:green;'>Sie haben gewonnen!</span>"
-            
+            document.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
+                                                                    <label for='unitAmountMove'> Bitte wählen Sie, wie viele Einheiten verschoben werden sollen:</label>\
+                                                                    <select value='1' name='unitAmountMove' id='unitAmountMove' style='margin-bottom: 20px; margin-left: 60px;'></select><br/><br/>\
+                                                                    <button style='margin-top: 20px;' name='AttackFinish' onClick='Core.svgHandler.MoveUnitAfterAttack()'>Einheiten verschieben</button>";
+            Core.createSlider("unitAmountMove", "unitAmountMove", 1, Count);
         } else {
-            document.getElementById("showAttack").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>"
+            document.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>"
         }
     };
+    
+    this.MoveUnitAfterAttack = function (){
+         this.abortAttack();
+    }
     
     this.abortAttack = function (){
         document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
@@ -207,7 +223,7 @@ function SvgFunctions(root){
         document.getElementById("loading_overlay").innerHTML = "\
             <label for='unitAmountAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
             <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
-            <button name='setUnitAmount' onClick='Core.svgHandler.showAttack("+defender+")'>Angriff Starten</button>";
+            <button name='setUnitAmount' onClick='Core.svgHandler.showAttack(\""+defender+"\")'>Angriff Starten</button>";
         Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
      };
     
