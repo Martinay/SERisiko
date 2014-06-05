@@ -20,7 +20,6 @@ function SvgFunctions(root){
     //#Private Vars
     var svgDoc = null;
     var neighborLands = null;
-    var myLands = new Array();
     var document = root;
     var i = 0;
     
@@ -67,19 +66,11 @@ function SvgFunctions(root){
     };*/
 
     this.identifyAttacker = function(id){
+        this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
-        
         neighborLands = theRect.getAttribute("neighbor").split(",");
-            
         theRect.setAttribute('opacity','0.3');
-            //this.setUnit(id, 16);
-
-        for (var i = 0; i < myLands.length; i++) {
-            theRect = svgDoc.getElementById(myLands[i]);
-            theRect.onmouseover = new Function("");
-            theRect.onmouseout = new Function("");
-            theRect.onclick = new Function("");
-        }
+        //this.setUnit(id, 16);
         for (var i = 0; i < neighborLands.length; i++) {
             theRect = svgDoc.getElementById(neighborLands[i]);
             if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
@@ -92,23 +83,17 @@ function SvgFunctions(root){
     };
     
     this.identifyDestination = function(id, attacker){
+        this.setRectsOnClickNull();
+        var theRect = svgDoc.getElementById(attacker);
+        theRect.setAttribute('opacity','0.5');
         var theRect = svgDoc.getElementById(id);
-
+        theRect.setAttribute('opacity','0.5');
         for (var i = 0; i < neighborLands.length; i++) {
-            if(id == neighborLands[i]){
-                    theRect = svgDoc.getElementById(attacker);
+            if(id != neighborLands[i]){
+                    theRect = svgDoc.getElementById(neighborLands[i]);
                     theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
                     theRect.setAttribute('opacity','1');
                     selectAmountUnit(attacker);
-                    var rects = svgDoc.getElementsByTagName("rect");
-                    [].slice.call(rects).forEach(function(rect){
-                            rect.onmouseover = "";
-                            rect.onmouseout = "";
-                            rect.onclick = "";
-                            rect.setAttribute('opacity','1');
-                            rect.style='cursor: default';
-                    });
-                    this.refreshOwnerRights();
                 }
             }
     };
@@ -122,6 +107,17 @@ function SvgFunctions(root){
         svgDoc.getElementById(landId).setAttribute('Unicount', count);  
     };
     
+    this.setRectsOnClickNull = function(){
+         var rects = svgDoc.getElementsByTagName("rect");
+        [].slice.call(rects).forEach(function(rect){
+            rect.onmouseover = "";
+            rect.onmouseout = "";
+            rect.onclick = "";
+            rect.setAttribute('opacity','1');
+            rect.style='cursor: default';
+        });
+    }
+    
     this.refreshOwnerRights = function (){
         var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
@@ -130,40 +126,57 @@ function SvgFunctions(root){
                 rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
                 //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
                 rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
-                
-                myLands.push(rect.getAttribute("id"));
             }
         });        
     };
     
     this.showAttack = function (){
-        var OverlayString = '<div id="showAttack">\n<table id="attackerTable">\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<canvas width="150" height="150" id="canvas_A1"></canvas><br />\n<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n<canvas width="150" height="150" id="canvas_A3"></canvas>\n</td>\n<td>\n<canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n<canvas width="150" height="150" id="canvas_D2"></canvas>\n</td>\n</tr>\n</table>\n</div>\n';
-        document.getElementById("loading_overlay").innerHTML = OverlayString + "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.svgHandler.abortAttack()'>Angriff Abbrechen</button>";
-        this.drawCanvas("A1");
-        this.drawCanvas("A2");
-        this.drawCanvas("A3");
-        this.drawCanvas("D1");
-        this.drawCanvas("D2");
+        var OverlayString = '<div id="showAttack">\n\
+                                <table id="attackerTable">\n\
+                                    <tr>\n\n\
+                                        <td>Attacker:</td>\n\
+                                        <td>Defender:</td>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <td>\n\
+                                            <canvas width="150" height="150" id="canvas_A1"></canvas><br />\n\
+                                            <canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n\
+                                            <canvas width="150" height="150" id="canvas_A3"></canvas>\n\
+                                        </td>\n\
+                                        <td>\n\
+                                            <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n\
+                                            <canvas width="150" height="150" id="canvas_D2"></canvas>\n\
+                                        </td>\n\
+                                    </tr>\n\
+                                </table>\n\
+                            </div>\n'+
+                            "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.svgHandler.abortAttack()'>Angriff Abbrechen</button>";
+        document.getElementById("loading_overlay").innerHTML = OverlayString;
+        this.drawPicOnCanvas("A1");
+        this.drawPicOnCanvas("A2");
+        this.drawPicOnCanvas("A3");
+        this.drawPicOnCanvas("D1");
+        this.drawPicOnCanvas("D2");
     };
     
     
     this.abortAttack = function (){
-        document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';
-        document.getElementById("loading_overlay").style.display = "none";    
+        document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
+                                                                    <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif">\n\
+                                                                </div>';
+        document.getElementById("loading_overlay").style.display = "none";
+        this.setRectsOnClickNull();
+        this.refreshOwnerRights();
     };
     
     //# Private Methods
     var selectAmountUnit = function(attacker){
         document.getElementById("loading_overlay").style.display = "block";
-        //var OverlayString = '<div id="ShowAttack">\n<table>\n<tr>\n<td>Attacker:</td>\n<td>Defender:</td>\n</tr>\n<tr>\n<td>\n<img id="AttackPNG1" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG2" alt="Attack" src="img/paper.png" height="150"><br />\n<img id="AttackPNG3" alt="Attack" src="img/paper.png" height="150">\n</td>\n<td>\n<img id="DefendPNG1" alt="Defend" src="img/paper.png" height="150"><br />\n<img id="DefendPNG2" alt="Defend" src="img/paper.png" height="150">\n</td>\n</tr>\n</table>\n</div>\n';
-        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = OverlayString;},1000);
-        //setTimeout(function(){document.getElementById("loading_overlay").style.display = "none";},1000);
-        //setTimeout(function(){document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>';},500);
         document.getElementById("loading_overlay").innerHTML = "\
-            <span id='textAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</span>\
-            <select value='1' name='unitAmount' id='unitAmount' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
+            <label for='unitAmountAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
+            <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
             <button name='setUnitAmount' onClick='Core.svgHandler.showAttack()'>Angriff Starten</button>";
-        Core.createSlider("unitAmount", "unitAmount", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
+        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
      };
     
     var initUnitOnMap = function(){
@@ -217,8 +230,8 @@ function SvgFunctions(root){
         });
     };
     
-    this.drawCanvas = function(id){
-        if (i < 180){
+    this.drawPicOnCanvas = function(id){
+        if (i < 90){
             var canvas = document.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
@@ -226,7 +239,7 @@ function SvgFunctions(root){
                     var context = canvas.getContext('2d');
                     context.beginPath();    
                     context.rect(0, 0, 150, 150);    
-                    context.fillStyle = 'rgba(0, 0, 0, .95)';
+                    context.fillStyle = 'rgba(0, 0, 0, .9)';
                     context.fill();
                     context.translate(75, 75);
                     context.rotate(20*Math.PI/180);
@@ -236,7 +249,16 @@ function SvgFunctions(root){
             }
             img.src = '/img/paper.png';
             i++;
-            setTimeout(function(){Core.svgHandler.drawCanvas(id);},100);
+            setTimeout(function(){Core.svgHandler.drawPicOnCanvas(id);},100);
+       }else{
+            var canvas = document.getElementById('canvas_' + id);
+                if(canvas.getContext){
+                    var context = canvas.getContext('2d');
+                    context.font = '40pt Arial';
+                    context.textAlign = 'center';
+                    context.fillStyle = 'red';
+                    context.fillText((1 + parseInt(Math.random() * (6))), 75, 90);
+                }
        }
     };
 }

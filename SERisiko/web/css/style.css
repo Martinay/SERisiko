@@ -162,7 +162,7 @@ label[for=unitAmount]{
     color: #FFFFFF;
 }
 
-#textAttack{
+label[for=unitAmountAttack]{
     font-size: 16px;
     color: #FFFFFF;
 }
