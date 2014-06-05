@@ -22,6 +22,8 @@ function SvgFunctions(root){
     var neighborLands = null;
     var document = root;
     var i = 0;
+    var counter = 0;
+    var rotate = 0;
     
     //# Public Methods
     this.init = function(doc){       
@@ -93,7 +95,7 @@ function SvgFunctions(root){
                     theRect = svgDoc.getElementById(neighborLands[i]);
                     theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
                     theRect.setAttribute('opacity','1');
-                    selectAmountUnit(attacker);
+                    selectAmountUnit(attacker, id);
                 }
             }
     };
@@ -130,7 +132,21 @@ function SvgFunctions(root){
         });        
     };
     
-    this.showAttack = function (){
+    this.showAttack = function (DefendId){
+        var select = document.getElementById("unitAmountAttack");
+        var countAttack = select.options[select.selectedIndex].value;
+       
+        //var countDefend = svgDoc.getElementById(DefendId).getAttribute("UnitCount");
+        
+        if(countAttack + countDefend < 5){
+            if(countDefend > 2){
+                   rotate = (2 + countAttack) * 19;
+            } else {
+                rotate = (countDefend + countAttack) * 19;
+            }
+        } else {
+            rotate = 95;
+        }
         var OverlayString = '<div id="showAttack">\n\
                                 <table id="attackerTable">\n\
                                     <tr>\n\n\
@@ -139,26 +155,42 @@ function SvgFunctions(root){
                                     </tr>\n\
                                     <tr>\n\
                                         <td>\n\
-                                            <canvas width="150" height="150" id="canvas_A1"></canvas><br />\n\
-                                            <canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n\
-                                            <canvas width="150" height="150" id="canvas_A3"></canvas>\n\
-                                        </td>\n\
+                                            <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
+        this.drawPicOnCanvas("A1");                                    
+        if(countAttack > 1){
+            OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
+            this.drawPicOnCanvas("A2");
+            if(countAttack > 2){
+                OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
+                this.drawPicOnCanvas("A3");
+            }
+        }
+        OverlayString = OverlayString + '</td>\n\
                                         <td>\n\
-                                            <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n\
-                                            <canvas width="150" height="150" id="canvas_D2"></canvas>\n\
-                                        </td>\n\
+                                            <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
+        
+        this.drawPicOnCanvas("D1");
+        if(countDefend > 1){
+            OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
+            this.drawPicOnCanvas("D2");
+        }
+        OverlayString = OverlayString + '</td>\n\
                                     </tr>\n\
                                 </table>\n\
                             </div>\n'+
                             "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.svgHandler.abortAttack()'>Angriff Abbrechen</button>";
         document.getElementById("loading_overlay").innerHTML = OverlayString;
-        this.drawPicOnCanvas("A1");
-        this.drawPicOnCanvas("A2");
-        this.drawPicOnCanvas("A3");
-        this.drawPicOnCanvas("D1");
-        this.drawPicOnCanvas("D2");
+        showEndAttack("yes");
     };
     
+    this.showEndAttack = function (arg){
+        if(arg == "yes"){
+            document.getElementById("showAttack").innerHTML = "<span style='color:green;'>Sie haben gewonnen!</span>"
+            
+        } else {
+            document.getElementById("showAttack").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>"
+        }
+    };
     
     this.abortAttack = function (){
         document.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
@@ -170,12 +202,12 @@ function SvgFunctions(root){
     };
     
     //# Private Methods
-    var selectAmountUnit = function(attacker){
+    var selectAmountUnit = function(attacker, defender){
         document.getElementById("loading_overlay").style.display = "block";
         document.getElementById("loading_overlay").innerHTML = "\
             <label for='unitAmountAttack'> Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
             <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
-            <button name='setUnitAmount' onClick='Core.svgHandler.showAttack()'>Angriff Starten</button>";
+            <button name='setUnitAmount' onClick='Core.svgHandler.showAttack("+defender+")'>Angriff Starten</button>";
         Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
      };
     
@@ -231,7 +263,7 @@ function SvgFunctions(root){
     };
     
     this.drawPicOnCanvas = function(id){
-        if (i < 90){
+        if (i < rotate){
             var canvas = document.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
@@ -246,11 +278,12 @@ function SvgFunctions(root){
                     context.translate(-75, -75);
                     context.drawImage(img, 0, 0, 150, 150);
                 }
-            }
+            };
             img.src = '/img/paper.png';
             i++;
             setTimeout(function(){Core.svgHandler.drawPicOnCanvas(id);},100);
        }else{
+            counter++;
             var canvas = document.getElementById('canvas_' + id);
                 if(canvas.getContext){
                     var context = canvas.getContext('2d');
@@ -259,6 +292,10 @@ function SvgFunctions(root){
                     context.fillStyle = 'red';
                     context.fillText((1 + parseInt(Math.random() * (6))), 75, 90);
                 }
+            if(counter == 5){
+                counter = 0;
+                i = 0;
+            }
        }
     };
 }
