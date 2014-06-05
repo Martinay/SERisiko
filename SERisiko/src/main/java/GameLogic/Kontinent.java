@@ -12,4 +12,8 @@ public class Kontinent {
         _laender.add(land);
         land.Kontinent = this;
     }
+
+    Object GETLands() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

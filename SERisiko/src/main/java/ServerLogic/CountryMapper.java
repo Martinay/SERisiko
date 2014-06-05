@@ -13,7 +13,7 @@ class CountryMapper {
             _countryMapping.put(i,lands[i]);
     }
 
-    public static Land GetCountryById(int id) {
+    public static Land GetCountryById(String id) {
         return _countryMapping.get(id);
     }
 }
