@@ -20,6 +20,14 @@ public class Spielsteuerung {
 	private int hinzuzufuegende_Armeen;
 
 	public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
+            /**
+             * 
+             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             * !!!!!!!!!!!!!                                                !!!!!!!!!!!!!
+             * !!!!!!!!!!!!!    KEINEN FEHLERHAFTEN CODE COMITTEN DANKE     !!!!!!!!!!!!!
+             * !!!!!!!!!!!!!                                                !!!!!!!!!!!!!
+             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             * 
 		ist_erste_runde=true;
 
 		this.dieSpieler = dieSpieler;
@@ -44,6 +52,7 @@ public class Spielsteuerung {
 		this.aktueller_Spieler=dieSpieler[0];
 		
 		armeen_hinzufuegen_betreten();
+                */
 	}
 	
 	
