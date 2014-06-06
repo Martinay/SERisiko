@@ -1,220 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="208.788mm" height="146.05mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
-viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
- <defs>
-  <script xlink:href="/js/extern/SVGPan.js"/>
-  <style type="text/css">
-   <![CDATA[
-    @font-face { font-family:"Arial";src:url("#FontID0") format(svg)}
-    .str0 {stroke:#2B2A29;stroke-width:20}
-    .str1 {stroke:#2B2A29;stroke-width:20;stroke-dasharray:40.000000 20.000000}
-    .fil5 {fill:none}
-    .fil0 {fill:#B2B3B3}
-    .fil6 {fill:#2B2A29}
-    .fil1 {fill:#F5B5D2}
-    .fil3 {fill:#F08683}
-    .fil2 {fill:#E51A4B}
-    .fil4 {fill:#E31E24}
-    .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
-    .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
-    .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
-    .fnt0 {font-weight:normal;font-size:423.33px;font-family:'Arial'}
-   ]]>
-  </style>
-   <clipPath id="id0">
-    <rect id="" x="438" y="598" width="6113" height="3116"/>
-   </clipPath>
-   <clipPath id="id1">
-    <rect id="" x="0" y="0" width="20879" height="14605"/>
-   </clipPath>
-   <clipPath id="id2">
-    <rect id="" x="0" y="0" width="20879" height="14605"/>
-   </clipPath>
- </defs>
- <g id="viewport">
-    <metadata id="CorelCorpID_0Corel-Layer"/>
-      <!-- Gebäude A -->
-    <text x="9007" y="13014"  class="fil6 fnt0">Gebäude A</text>
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="208.788mm" height="146.05mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 20879 14605" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <script xlink:href="/js/extern/SVGPan.js"/>
+        <style type="text/css">
+            <![CDATA[
+                @font-face { font-family:"Arial";src:url("#FontID0") format(svg)}
+                .str0 {stroke:#2B2A29;stroke-width:20}
+                .str1 {stroke:#2B2A29;stroke-width:20;stroke-dasharray:40.000000 20.000000}
+                .fil5 {fill:none}
+                .fil0 {fill:#B2B3B3}
+                .fil6 {fill:#2B2A29}
+                .fil1 {fill:#F5B5D2}
+                .fil3 {fill:#F08683}
+                .fil2 {fill:#E51A4B}
+                .fil4 {fill:#E31E24}
+                .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
+                .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
+                .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
+                .fnt0 {font-weight:normal;font-size:423.33px;font-family:'Arial'}
+            ]]>
+        </style>
+        <clipPath id="id0">
+            <rect id="" x="438" y="598" width="6113" height="3116"/>
+        </clipPath>
+        <clipPath id="id1">
+            <rect id="" x="0" y="0" width="20879" height="14605"/>
+        </clipPath>
+        <clipPath id="id2">
+            <rect id="" x="0" y="0" width="20879" height="14605"/>
+        </clipPath>
+    </defs>
+    <g id="viewport">
+<!-- Gebäude A -->
+        <text x="9007" y="13014"  class="fil6 fnt0">Gebäude A</text>
 
-    <rect id="A1_back" class="fil3 str0" x="11331" y="7324" width="1305" height="2152"/>
-    <rect id="A2_back" class="fil3 str0" x="11331" y="9476" width="1305" height="1535"/>
-    <rect id="A4_back" class="fil3 str0" x="7644" y="10675" width="3034" height="917"/>
-    <rect id="A3_back" class="fil3 str0" x="10678" y="11011" width="1958" height="1535"/>
-    <rect id="A5_back" class="fil3 str0" x="7644" y="11593" width="3034" height="953"/>
-    <rect id="A6_back" class="fil3 str0" x="6409" y="11673" width="1235" height="510"/>
+        <rect id="A1_back" class="fil3 str0" x="11331" y="7324" width="1305" height="2152"/>
+        <rect id="A2_back" class="fil3 str0" x="11331" y="9476" width="1305" height="1535"/>
+        <rect id="A4_back" class="fil3 str0" x="7644" y="10675" width="3034" height="917"/>
+        <rect id="A3_back" class="fil3 str0" x="10678" y="11011" width="1958" height="1535"/>
+        <rect id="A5_back" class="fil3 str0" x="7644" y="11593" width="3034" height="953"/>
+        <rect id="A6_back" class="fil3 str0" x="6409" y="11673" width="1235" height="510"/>
 
-    <text x="11370" y="7683"  class="fil6 fnt2">A1</text>
-    <text x="11370" y="9835"  class="fil6 fnt2">A2</text>
-    <text x="10724" y="11376"  class="fil6 fnt2">A3</text>
-    <text x="7672" y="11022"  class="fil6 fnt2">A4</text>
-    <text x="7673" y="11941"  class="fil6 fnt2">A5</text>
-    <text x="6425" y="12007"  class="fil6 fnt2">A6</text>
+        <text x="11370" y="7683"  class="fil6 fnt2">A1</text>
+        <text x="11370" y="9835"  class="fil6 fnt2">A2</text>
+        <text x="10724" y="11376"  class="fil6 fnt2">A3</text>
+        <text x="7672" y="11022"  class="fil6 fnt2">A4</text>
+        <text x="7673" y="11941"  class="fil6 fnt2">A5</text>
+        <text x="6425" y="12007"  class="fil6 fnt2">A6</text>
 
-      <!-- Gebäude B&C -->
-    <text x="2408" y="10014"  class="fil6 fnt0">Gebäude </text>
-    <text x="2726" y="10487"  class="fil6 fnt0">B &amp; C</text>
+<!-- Gebäude B&C -->
+        <text x="2408" y="10014"  class="fil6 fnt0">Gebäude </text>
+        <text x="2726" y="10487"  class="fil6 fnt0">B &amp; C</text>
 
-    <rect id="B1_back" class="fil4 str0" x="4751" y="10940" width="1658" height="1587"/>
-    <rect id="B2_back" class="fil4 str0" x="4751" y="7007" width="829" height="3933"/>
-    <rect id="B3_back" class="fil4 str0" x="5580" y="7007" width="829" height="3933"/>
-    <rect id="B4_back" class="fil4 str0" x="4751" y="5437" width="1658" height="1570"/>
-    <rect id="B5_back" class="fil4 str0" x="1806" y="5437" width="2946" height="1217"/>
-    <rect id="C1_back" class="fil4 str0" x="1806" y="11804" width="2946" height="723"/>
-    <rect id="C2_back" class="fil4 str0" x="183" y="10834" width="1623" height="1693"/>
-    <rect id="C3_back" class="fil4 str0" x="183" y="6883" width="811" height="3951"/>
-    <rect id="C4_back" class="fil4 str0" x="994" y="6883" width="811" height="3951"/>
-    <rect id="C5_back" class="fil4 str0" x="183" y="5437" width="1623" height="1431"/>
+        <rect id="B1_back" class="fil4 str0" x="4751" y="10940" width="1658" height="1587"/>
+        <rect id="B2_back" class="fil4 str0" x="4751" y="7007" width="829" height="3933"/>
+        <rect id="B3_back" class="fil4 str0" x="5580" y="7007" width="829" height="3933"/>
+        <rect id="B4_back" class="fil4 str0" x="4751" y="5437" width="1658" height="1570"/>
+        <rect id="B5_back" class="fil4 str0" x="1806" y="5437" width="2946" height="1217"/>
+        <rect id="C1_back" class="fil4 str0" x="1806" y="11804" width="2946" height="723"/>
+        <rect id="C2_back" class="fil4 str0" x="183" y="10834" width="1623" height="1693"/>
+        <rect id="C3_back" class="fil4 str0" x="183" y="6883" width="811" height="3951"/>
+        <rect id="C4_back" class="fil4 str0" x="994" y="6883" width="811" height="3951"/>
+        <rect id="C5_back" class="fil4 str0" x="183" y="5437" width="1623" height="1431"/>
 
-    <text x="4799" y="11307"  class="fil6 fnt2">B1</text>
-    <text x="4776" y="7351"  class="fil6 fnt2">B2</text>
-    <text x="5605" y="7351"  class="fil6 fnt2">B3</text>
-    <text x="4798" y="5803"  class="fil6 fnt2">B4</text>
-    <text x="1842" y="5793"  class="fil6 fnt3">B5</text>
-    <text x="1827" y="12145"  class="fil6 fnt3">C1</text>
-    <text x="232" y="11202"  class="fil6 fnt2">C2</text>
-    <text x="207" y="7227"  class="fil6 fnt2">C3</text>
-    <text x="1019" y="7227"  class="fil6 fnt2">C4</text>
-    <text x="226" y="5799"  class="fil6 fnt2">C5</text>
+        <text x="4799" y="11307"  class="fil6 fnt2">B1</text>
+        <text x="4776" y="7351"  class="fil6 fnt2">B2</text>
+        <text x="5605" y="7351"  class="fil6 fnt2">B3</text>
+        <text x="4798" y="5803"  class="fil6 fnt2">B4</text>
+        <text x="1842" y="5793"  class="fil6 fnt3">B5</text>
+        <text x="1827" y="12145"  class="fil6 fnt3">C1</text>
+        <text x="232" y="11202"  class="fil6 fnt2">C2</text>
+        <text x="207" y="7227"  class="fil6 fnt2">C3</text>
+        <text x="1019" y="7227"  class="fil6 fnt2">C4</text>
+        <text x="226" y="5799"  class="fil6 fnt2">C5</text>
 
-      <!-- Gebäude D -->
-    <text x="16933" y="9806"  class="fil6 fnt0">Gebäude </text>
-    <text x="17651" y="10279"  class="fil6 fnt0">D</text>
+<!-- Gebäude D -->
+        <text x="16933" y="9806"  class="fil6 fnt0">Gebäude </text>
+        <text x="17651" y="10279"  class="fil6 fnt0">D</text>
 
-    <rect id="D1_back" class="fil2 str0" x="15088" y="6707" width="1640" height="2099"/>
-    <rect id="D2_back" class="fil2 str0" x="15088" y="8806" width="1640" height="2858"/>
-    <rect id="D3_back" class="fil2 str0" x="15088" y="11663" width="2805" height="864"/>
-    <rect id="D4_back" class="fil2 str0" x="17892" y="11663" width="2681" height="864"/>
-    <rect id="D5_back" class="fil2 str0" x="18880" y="8912" width="1693" height="2752"/>
-    <rect id="D6_back" class="fil2 str0" x="18880" y="6707" width="1693" height="2205"/>
-    <rect id="D7_back" class="fil2 str0" x="16728" y="6707" width="2152" height="1411"/>
+        <rect id="D1_back" class="fil2 str0" x="15088" y="6707" width="1640" height="2099"/>
+        <rect id="D2_back" class="fil2 str0" x="15088" y="8806" width="1640" height="2858"/>
+        <rect id="D3_back" class="fil2 str0" x="15088" y="11663" width="2805" height="864"/>
+        <rect id="D4_back" class="fil2 str0" x="17892" y="11663" width="2681" height="864"/>
+        <rect id="D5_back" class="fil2 str0" x="18880" y="8912" width="1693" height="2752"/>
+        <rect id="D6_back" class="fil2 str0" x="18880" y="6707" width="1693" height="2205"/>
+        <rect id="D7_back" class="fil2 str0" x="16728" y="6707" width="2152" height="1411"/>
 
-    <text x="15137" y="7075"  class="fil6 fnt2">D1</text>
-    <text x="15137" y="9174"  class="fil6 fnt2">D2</text>
-    <text x="15114" y="12009"  class="fil6 fnt2">D3</text>
-    <text x="17918" y="12008"  class="fil6 fnt2">D4</text>
-    <text x="18931" y="9282"  class="fil6 fnt2">D5</text>
-    <text x="18931" y="7077"  class="fil6 fnt2">D6</text>
-    <text x="16771" y="7068"  class="fil6 fnt2">D7</text>
+        <text x="15137" y="7075"  class="fil6 fnt2">D1</text>
+        <text x="15137" y="9174"  class="fil6 fnt2">D2</text>
+        <text x="15114" y="12009"  class="fil6 fnt2">D3</text>
+        <text x="17918" y="12008"  class="fil6 fnt2">D4</text>
+        <text x="18931" y="9282"  class="fil6 fnt2">D5</text>
+        <text x="18931" y="7077"  class="fil6 fnt2">D6</text>
+        <text x="16771" y="7068"  class="fil6 fnt2">D7</text>
 
-      <!-- Gebäude E -->
-    <text x="16633" y="1071"  class="fil6 fnt1">Gebäude E</text>
+<!-- Gebäude E -->
+        <text x="16633" y="1071"  class="fil6 fnt1">Gebäude E</text>
 
-    <rect id="E1_back" class="fil1 str0" x="15114" y="1265" width="1393" height="2575"/>
-    <rect id="E2_back" class="fil1 str0" x="16508" y="1265" width="2461" height="1288"/>
-    <rect id="E3_back" class="fil1 str0" x="16508" y="2553" width="2461" height="1288"/> 
-    <rect id="E4_back" class="fil1 str0" x="18968" y="1265" width="1649" height="2575"/>
+        <rect id="E1_back" class="fil1 str0" x="15114" y="1265" width="1393" height="2575"/>
+        <rect id="E2_back" class="fil1 str0" x="16508" y="1265" width="2461" height="1288"/>
+        <rect id="E3_back" class="fil1 str0" x="16508" y="2553" width="2461" height="1288"/> 
+        <rect id="E4_back" class="fil1 str0" x="18968" y="1265" width="1649" height="2575"/>
 
-    <text x="15156" y="1626"  class="fil6 fnt3">E1</text>
-    <text x="16546" y="1623"  class="fil6 fnt3">E2</text>
-    <text x="16546" y="2911"  class="fil6 fnt2">E3</text>
-    <text x="19018" y="1634"  class="fil6 fnt2">E4</text>
+        <text x="15156" y="1626"  class="fil6 fnt3">E1</text>
+        <text x="16546" y="1623"  class="fil6 fnt3">E2</text>
+        <text x="16546" y="2911"  class="fil6 fnt2">E3</text>
+        <text x="19018" y="1634"  class="fil6 fnt2">E4</text>
 
-      <!-- Parkplatz P -->
-    <text x="7219" y="4173"  class="fil6 fnt0">Parkplatz</text>
+<!-- Parkplatz P -->
+        <text x="7219" y="4173"  class="fil6 fnt0">Parkplatz</text>
 
-    <rect id="P1_back" class="fil0 str0" x="227" y="4519" width="6685" height="662"/>
-    <rect id="P2_back" class="fil0 str0" x="6912" y="4519" width="3986" height="1808"/>
-    <rect id="P3_back" class="fil0 str0" x="6912" y="6327" width="1499" height="2893"/>
-    <rect id="P4_back" class="fil0 str0" x="8411" y="6327" width="1235" height="2893"/>
-    <rect id="P5_back" class="fil0 str0" x="9646" y="6327" width="1252" height="2893"/>
-    <rect id="P6_back" class="fil0 str0" x="6912" y="9220" width="3986" height="1129"/>
-    <rect id="P7_back" class="fil0 str0" x="13359" y="122" width="944" height="4397"/> 
-    <rect id="P8_back" class="fil0 str0" x="10898" y="4519" width="4921" height="700"/>
-    <rect id="P9_back" class="fil0 str0" x="10898" y="5219" width="4921" height="700"/>
-    <rect id="P10_back" class="fil0 str0" x="15820" y="4017" width="1482" height="2522"/>
-    <rect id="P11_back" class="fil0 str0" x="17301" y="4017" width="3334" height="1358"/>
-    <rect id="P12_back" class="fil0 str0" x="17301" y="5375" width="3334" height="1164"/>
-    <rect id="P13_back" class="fil0 str0" x="13403" y="5919" width="811" height="8307"/>
-    <rect id="P14_back" class="fil0 str0" x="209" y="13383" width="13194" height="843"/>
-    <rect id="P15_back" class="fil0 str0" x="14215" y="13383" width="6368" height="843"/>
+        <rect id="P1_back" class="fil0 str0" x="227" y="4519" width="6685" height="662"/>
+        <rect id="P2_back" class="fil0 str0" x="6912" y="4519" width="3986" height="1808"/>
+        <rect id="P3_back" class="fil0 str0" x="6912" y="6327" width="1499" height="2893"/>
+        <rect id="P4_back" class="fil0 str0" x="8411" y="6327" width="1235" height="2893"/>
+        <rect id="P5_back" class="fil0 str0" x="9646" y="6327" width="1252" height="2893"/>
+        <rect id="P6_back" class="fil0 str0" x="6912" y="9220" width="3986" height="1129"/>
+        <rect id="P7_back" class="fil0 str0" x="13359" y="122" width="944" height="4397"/> 
+        <rect id="P8_back" class="fil0 str0" x="10898" y="4519" width="4921" height="700"/>
+        <rect id="P9_back" class="fil0 str0" x="10898" y="5219" width="4921" height="700"/>
+        <rect id="P10_back" class="fil0 str0" x="15820" y="4017" width="1482" height="2522"/>
+        <rect id="P11_back" class="fil0 str0" x="17301" y="4017" width="3334" height="1358"/>
+        <rect id="P12_back" class="fil0 str0" x="17301" y="5375" width="3334" height="1164"/>
+        <rect id="P13_back" class="fil0 str0" x="13403" y="5919" width="811" height="8307"/>
+        <rect id="P14_back" class="fil0 str0" x="209" y="13383" width="13194" height="843"/>
+        <rect id="P15_back" class="fil0 str0" x="14215" y="13383" width="6368" height="843"/>
 
-    <text x="247" y="4858"  class="fil6 fnt2">P1</text>
-    <text x="6966" y="4893"  class="fil6 fnt2">P2</text>
-    <text x="6957" y="6692"  class="fil6 fnt2">P3</text>
-    <text x="8448" y="6684"  class="fil6 fnt2">P4</text>
-    <text x="9684" y="6684"  class="fil6 fnt2">P5</text>
-    <text x="6946" y="9573"  class="fil6 fnt2">P6</text>
-    <text x="13387" y="469"  class="fil6 fnt3">P7</text>
-    <text x="10919" y="4859"  class="fil6 fnt2">P8</text>
-    <text x="10919" y="5559"  class="fil6 fnt2">P9</text>
-    <text x="15864" y="4381"  class="fil6 fnt2">P10</text>
-    <text x="17342" y="4377"  class="fil6 fnt2">P11</text>
-    <text x="17336" y="5729"  class="fil6 fnt3">P12</text>
-    <text x="13428" y="6263"  class="fil6 fnt2">P13</text>
-    <text x="235" y="13792"  class="fil6 fnt0">P14</text>
-    <text x="14240" y="13728"  class="fil6 fnt2">P15</text>
+        <text x="247" y="4858"  class="fil6 fnt2">P1</text>
+        <text x="6966" y="4893"  class="fil6 fnt2">P2</text>
+        <text x="6957" y="6692"  class="fil6 fnt2">P3</text>
+        <text x="8448" y="6684"  class="fil6 fnt2">P4</text>
+        <text x="9684" y="6684"  class="fil6 fnt2">P5</text>
+        <text x="6946" y="9573"  class="fil6 fnt2">P6</text>
+        <text x="13387" y="469"  class="fil6 fnt3">P7</text>
+        <text x="10919" y="4859"  class="fil6 fnt2">P8</text>
+        <text x="10919" y="5559"  class="fil6 fnt2">P9</text>
+        <text x="15864" y="4381"  class="fil6 fnt2">P10</text>
+        <text x="17342" y="4377"  class="fil6 fnt2">P11</text>
+        <text x="17336" y="5729"  class="fil6 fnt3">P12</text>
+        <text x="13428" y="6263"  class="fil6 fnt2">P13</text>
+        <text x="235" y="13792"  class="fil6 fnt0">P14</text>
+        <text x="14240" y="13728"  class="fil6 fnt2">P15</text>
 
-   <!-- Raum Verbindungslininen-->
-    <line class="fil5 str1" x1="3279" y1="12528" x2="3279" y2= "13383" /><!-- C1-P14 -->
-    <line class="fil5 str1" x1="12636" y1="8100" x2="13403" y2= "8100" /><!-- A1-P13 -->
-    <line class="fil5 str1" x1="16490" y1="12528" x2="16490" y2= "13383" /><!-- D4-P15 -->
-    <line class="fil5 str1" x1="1806" y1="8859" x2="4751" y2= "8859" /><!--B2-C4  -->
-    <line class="fil5 str1" x1="3570" y1="5181" x2="3570" y2= "5437" /><!-- B5-P1  -->
-    <line class="fil5 str1" x1="17804" y1="6707" x2="17804" y2= "6539" /><!-- D7-P12  -->
-    <line class="fil5 str1" x1="19793" y1="3840" x2="19793" y2= "4017" /><!-- E4-P11  -->
-    <line class="fil5 str1" x1="14303" y1="2473" x2="15114" y2= "2473" /><!-- E1-P7 -->
-    <line class="fil5 str1" x1="6912" y1="7774" x2="6409" y2= "7774" /><!-- B3-P3 -->
-    <line class="fil5 str1" x1="14215" y1="8100" x2="15088" y2= "8100" /><!-- D1-P13 -->
+<!-- Raum Verbindungslininen-->
+        <line class="fil5 str1" x1="3279" y1="12528" x2="3279" y2= "13383" /><!-- C1-P14 -->
+        <line class="fil5 str1" x1="12636" y1="8100" x2="13403" y2= "8100" /><!-- A1-P13 -->
+        <line class="fil5 str1" x1="16490" y1="12528" x2="16490" y2= "13383" /><!-- D4-P15 -->
+        <line class="fil5 str1" x1="1806" y1="8859" x2="4751" y2= "8859" /><!--B2-C4  -->
+        <line class="fil5 str1" x1="3570" y1="5181" x2="3570" y2= "5437" /><!-- B5-P1  -->
+        <line class="fil5 str1" x1="17804" y1="6707" x2="17804" y2= "6539" /><!-- D7-P12  -->
+        <line class="fil5 str1" x1="19793" y1="3840" x2="19793" y2= "4017" /><!-- E4-P11  -->
+        <line class="fil5 str1" x1="14303" y1="2473" x2="15114" y2= "2473" /><!-- E1-P7 -->
+        <line class="fil5 str1" x1="6912" y1="7774" x2="6409" y2= "7774" /><!-- B3-P3 -->
+        <line class="fil5 str1" x1="14215" y1="8100" x2="15088" y2= "8100" /><!-- D1-P13 -->
   
-    <g style="clip-path:url(#id0)">
-        <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
-    </g>
-    <g id="MapUnit" style="clip-path:url(#id1)">
-    </g>
-    <g id="UnitCountCountry" style="clip-path:url(#id1)">
-    </g>
-    <g id="mapOverlay" style="clip-path:url(#id2)">
-        <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A2,P13"/>
-        <rect id="A2" class="fil6 str0" fill-opacity="0.0" x="11331" y="9476" width="1305" height="1535" Owner="" Unitcount="1" neighbor="A1,A3"/>
-        <rect id="A4" class="fil6 str0" fill-opacity="0.0" x="7644" y="10675" width="3034" height="917" Owner="" Unitcount="1" neighbor="A2,A4,A5"/>
-        <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" Owner="" Unitcount="1" neighbor="A3,A5"/>
-        <rect id="A5" class="fil6 str0" fill-opacity="0.0" x="7644" y="11593" width="3034" height="953" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A3,A4,A6"/>
-        <rect id="A6" class="fil6 str0" fill-opacity="0.0" x="6409" y="11673" width="1235" height="510" Owner="" Unitcount="1" neighbor="A5,B1"/>
+        <g style="clip-path:url(#id0)">
+            <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
+        </g>
+        <g id="MapUnit" style="clip-path:url(#id1)"></g>
+        <g id="UnitCountCountry" style="clip-path:url(#id1)"></g>
+        <g id="mapOverlay" style="clip-path:url(#id2)">
+            <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A2,P13"/>
+            <rect id="A2" class="fil6 str0" fill-opacity="0.0" x="11331" y="9476" width="1305" height="1535" Owner="" Unitcount="1" neighbor="A1,A3"/>
+            <rect id="A4" class="fil6 str0" fill-opacity="0.0" x="7644" y="10675" width="3034" height="917" Owner="" Unitcount="1" neighbor="A2,A4,A5"/>
+            <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" Owner="" Unitcount="1" neighbor="A3,A5"/>
+            <rect id="A5" class="fil6 str0" fill-opacity="0.0" x="7644" y="11593" width="3034" height="953" Owner="Ihr SpielernaG" Unitcount="1" neighbor="A3,A4,A6"/>
+            <rect id="A6" class="fil6 str0" fill-opacity="0.0" x="6409" y="11673" width="1235" height="510" Owner="" Unitcount="1" neighbor="A5,B1"/>
 
-        <rect id="B1" class="fil6 str0" fill-opacity="0.0" x="4751" y="10940" width="1658" height="1587" Owner="" Unitcount="1" neighbor="B2,B3,C1"/>
-        <rect id="B2" class="fil6 str0" fill-opacity="0.0" x="4751" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B3,B4,C4"/>
-        <rect id="B3" class="fil6 str0" fill-opacity="0.0" x="5580" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B2,B4,P3"/>
-        <rect id="B4" class="fil6 str0" fill-opacity="0.0" x="4751" y="5437" width="1658" height="1570" Owner="" Unitcount="1" neighbor="B2,B3,B5"/>
-        <rect id="B5" class="fil6 str0" fill-opacity="0.0" x="1806" y="5437" width="2946" height="1217" Owner="Ihr SpielernaG" Unitcount="1" neighbor="B4,C5,P1"/>
-        <rect id="C1" class="fil6 str0" fill-opacity="0.0" x="1806" y="11804" width="2946" height="723" Owner="" Unitcount="1" neighbor="C2,B1,P14"/>
-        <rect id="C2" class="fil6 str0" fill-opacity="0.0" x="183" y="10834" width="1623" height="1693" Owner="" Unitcount="1" neighbor="C1,C3,C4"/>
-        <rect id="C3" class="fil6 str0" fill-opacity="0.0" x="183" y="6883" width="811" height="3951" Owner="" Unitcount="1" neighbor="C2,C4,C5"/>
-        <rect id="C4" class="fil6 str0" fill-opacity="0.0" x="994" y="6883" width="811" height="3951" Owner="Ihr SpielernaG" Unitcount="1" neighbor="C2,C3,C5,B2"/>
-        <rect id="C5" class="fil6 str0" fill-opacity="0.0" x="183" y="5437" width="1623" height="1431" Owner="" Unitcount="1" neighbor="C3,C4,B5"/>
+            <rect id="B1" class="fil6 str0" fill-opacity="0.0" x="4751" y="10940" width="1658" height="1587" Owner="" Unitcount="1" neighbor="B2,B3,C1"/>
+            <rect id="B2" class="fil6 str0" fill-opacity="0.0" x="4751" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B3,B4,C4"/>
+            <rect id="B3" class="fil6 str0" fill-opacity="0.0" x="5580" y="7007" width="829" height="3933" Owner="" Unitcount="1" neighbor="B1,B2,B4,P3"/>
+            <rect id="B4" class="fil6 str0" fill-opacity="0.0" x="4751" y="5437" width="1658" height="1570" Owner="" Unitcount="1" neighbor="B2,B3,B5"/>
+            <rect id="B5" class="fil6 str0" fill-opacity="0.0" x="1806" y="5437" width="2946" height="1217" Owner="Ihr SpielernaG" Unitcount="1" neighbor="B4,C5,P1"/>
+            <rect id="C1" class="fil6 str0" fill-opacity="0.0" x="1806" y="11804" width="2946" height="723" Owner="" Unitcount="1" neighbor="C2,B1,P14"/>
+            <rect id="C2" class="fil6 str0" fill-opacity="0.0" x="183" y="10834" width="1623" height="1693" Owner="" Unitcount="1" neighbor="C1,C3,C4"/>
+            <rect id="C3" class="fil6 str0" fill-opacity="0.0" x="183" y="6883" width="811" height="3951" Owner="" Unitcount="1" neighbor="C2,C4,C5"/>
+            <rect id="C4" class="fil6 str0" fill-opacity="0.0" x="994" y="6883" width="811" height="3951" Owner="Ihr SpielernaG" Unitcount="1" neighbor="C2,C3,C5,B2"/>
+            <rect id="C5" class="fil6 str0" fill-opacity="0.0" x="183" y="5437" width="1623" height="1431" Owner="" Unitcount="1" neighbor="C3,C4,B5"/>
 
-          <!-- Gebäude D -->
-        <rect id="D1" class="fil6 str0" fill-opacity="0.0" x="15088" y="6707" width="1640" height="2099" Owner="" Unitcount="1" neighbor="D2,D7,P13"/>
-        <rect id="D2" class="fil6 str0" fill-opacity="0.0" x="15088" y="8806" width="1640" height="2858" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D1,D3"/>
-        <rect id="D3" class="fil6 str0" fill-opacity="0.0" x="15088" y="11663" width="2805" height="864" Owner="" Unitcount="1" neighbor="D2,D4,P15"/>
-        <rect id="D4" class="fil6 str0" fill-opacity="0.0" x="17892" y="11663" width="2681" height="864" Owner="" Unitcount="1" neighbor="D3,D5"/>
-        <rect id="D5" class="fil6 str0" fill-opacity="0.0" x="18880" y="8912" width="1693" height="2752" Owner="" Unitcount="1" neighbor="D4,D6"/>
-        <rect id="D6" class="fil6 str0" fill-opacity="0.0" x="18880" y="6707" width="1693" height="2205" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D5,D7"/>
-        <rect id="D7" class="fil6 str0" fill-opacity="0.0" x="16728" y="6707" width="2152" height="1411" Owner="" Unitcount="1" neighbor="D1,D6,P12"/>
+              <!-- Gebäude D -->
+            <rect id="D1" class="fil6 str0" fill-opacity="0.0" x="15088" y="6707" width="1640" height="2099" Owner="" Unitcount="1" neighbor="D2,D7,P13"/>
+            <rect id="D2" class="fil6 str0" fill-opacity="0.0" x="15088" y="8806" width="1640" height="2858" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D1,D3"/>
+            <rect id="D3" class="fil6 str0" fill-opacity="0.0" x="15088" y="11663" width="2805" height="864" Owner="" Unitcount="1" neighbor="D2,D4,P15"/>
+            <rect id="D4" class="fil6 str0" fill-opacity="0.0" x="17892" y="11663" width="2681" height="864" Owner="" Unitcount="1" neighbor="D3,D5"/>
+            <rect id="D5" class="fil6 str0" fill-opacity="0.0" x="18880" y="8912" width="1693" height="2752" Owner="" Unitcount="1" neighbor="D4,D6"/>
+            <rect id="D6" class="fil6 str0" fill-opacity="0.0" x="18880" y="6707" width="1693" height="2205" Owner="Ihr SpielernaG" Unitcount="1" neighbor="D5,D7"/>
+            <rect id="D7" class="fil6 str0" fill-opacity="0.0" x="16728" y="6707" width="2152" height="1411" Owner="" Unitcount="1" neighbor="D1,D6,P12"/>
 
-          <!-- Gebäude E -->
-        <rect id="E1" class="fil6 str0" fill-opacity="0.0" x="15114" y="1265" width="1393" height="2575" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E2,E3,P7"/>
-        <rect id="E2" class="fil6 str0" fill-opacity="0.0" x="16508" y="1265" width="2461" height="1288" Owner="" Unitcount="1" neighbor="E1,E3,E4"/>
-        <rect id="E3" class="fil6 str0" fill-opacity="0.0" x="16508" y="2553" width="2461" height="1288" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E1,E2,E4"/> 
-        <rect id="E4" class="fil6 str0" fill-opacity="0.0" x="18968" y="1265" width="1649" height="2575" Owner="" Unitcount="1" neighbor="E2,E3,P11"/>
+              <!-- Gebäude E -->
+            <rect id="E1" class="fil6 str0" fill-opacity="0.0" x="15114" y="1265" width="1393" height="2575" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E2,E3,P7"/>
+            <rect id="E2" class="fil6 str0" fill-opacity="0.0" x="16508" y="1265" width="2461" height="1288" Owner="" Unitcount="1" neighbor="E1,E3,E4"/>
+            <rect id="E3" class="fil6 str0" fill-opacity="0.0" x="16508" y="2553" width="2461" height="1288" Owner="Ihr SpielernaG" Unitcount="1" neighbor="E1,E2,E4"/> 
+            <rect id="E4" class="fil6 str0" fill-opacity="0.0" x="18968" y="1265" width="1649" height="2575" Owner="" Unitcount="1" neighbor="E2,E3,P11"/>
 
-          <!-- Parkplatz P -->
-        <rect id="P1" class="fil6 str0" fill-opacity="0.0" x="227" y="4519" width="6685" height="662" Owner="" Unitcount="1" neighbor="P2,B5"/>
-        <rect id="P2" class="fil6 str0" fill-opacity="0.0" x="6912" y="4519" width="3986" height="1808" Owner="" Unitcount="1" neighbor="P1,P3,P4,P5,P8,P9"/>
-        <rect id="P3" class="fil6 str0" fill-opacity="0.0" x="6912" y="6327" width="1499" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6,B3"/>
-        <rect id="P4" class="fil6 str0" fill-opacity="0.0" x="8411" y="6327" width="1235" height="2893" Owner="Ihr SpielernaG" Unitcount="4" neighbor="P2,P3,P5,P6"/>
-        <rect id="P5" class="fil6 str0" fill-opacity="0.0" x="9646" y="6327" width="1252" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6"/>
-        <rect id="P6" class="fil6 str0" fill-opacity="0.0" x="6912" y="9220" width="3986" height="1129" Owner="" Unitcount="1" neighbor="P3,P4,P5"/>
-        <rect id="P7" class="fil6 str0" fill-opacity="0.0" x="13359" y="122" width="944" height="4397" Owner="" Unitcount="1" neighbor="P8,E1"/> 
-        <rect id="P8" class="fil6 str0" fill-opacity="0.0" x="10898" y="4519" width="4921" height="700" Owner="" Unitcount="1" neighbor="P2,P7,P9,P10"/>
-        <rect id="P9" class="fil6 str0" fill-opacity="0.0" x="10898" y="5219" width="4921" height="700" Owner="" Unitcount="1" neighbor="P2,P8,P10,P13"/>
-        <rect id="P10" class="fil6 str0" fill-opacity="0.0" x="15820" y="4017" width="1482" height="2522" Owner="" Unitcount="1" neighbor="P8,P9,P11,P12"/>
-        <rect id="P11" class="fil6 str0" fill-opacity="0.0" x="17301" y="4017" width="3334" height="1358" Owner="" Unitcount="1" neighbor="P10,P12,E4"/>
-        <rect id="P12" class="fil6 str0" fill-opacity="0.0" x="17301" y="5375" width="3334" height="1164" Owner="Ihr SpielernaG" Unitcount="1" neighbor="P10,P11,D7"/>
-        <rect id="P13" class="fil6 str0" fill-opacity="0.0" x="13403" y="5919" width="811" height="8307" Owner="" Unitcount="1" neighbor="P9,P14,P15,A1,D1"/>
-        <rect id="P14" class="fil6 str0" fill-opacity="0.0" x="209" y="13383" width="13194" height="843" Owner="" Unitcount="1" neighbor="C1,P13"/>
-        <rect id="P15" class="fil6 str0" fill-opacity="0.0" x="14215" y="13383" width="6368" height="843" Owner="" Unitcount="1" neighbor="P13,D3"/>
+              <!-- Parkplatz P -->
+            <rect id="P1" class="fil6 str0" fill-opacity="0.0" x="227" y="4519" width="6685" height="662" Owner="" Unitcount="1" neighbor="P2,B5"/>
+            <rect id="P2" class="fil6 str0" fill-opacity="0.0" x="6912" y="4519" width="3986" height="1808" Owner="" Unitcount="1" neighbor="P1,P3,P4,P5,P8,P9"/>
+            <rect id="P3" class="fil6 str0" fill-opacity="0.0" x="6912" y="6327" width="1499" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6,B3"/>
+            <rect id="P4" class="fil6 str0" fill-opacity="0.0" x="8411" y="6327" width="1235" height="2893" Owner="Ihr SpielernaG" Unitcount="4" neighbor="P2,P3,P5,P6"/>
+            <rect id="P5" class="fil6 str0" fill-opacity="0.0" x="9646" y="6327" width="1252" height="2893" Owner="" Unitcount="1" neighbor="P2,P4,P6"/>
+            <rect id="P6" class="fil6 str0" fill-opacity="0.0" x="6912" y="9220" width="3986" height="1129" Owner="" Unitcount="1" neighbor="P3,P4,P5"/>
+            <rect id="P7" class="fil6 str0" fill-opacity="0.0" x="13359" y="122" width="944" height="4397" Owner="" Unitcount="1" neighbor="P8,E1"/> 
+            <rect id="P8" class="fil6 str0" fill-opacity="0.0" x="10898" y="4519" width="4921" height="700" Owner="" Unitcount="1" neighbor="P2,P7,P9,P10"/>
+            <rect id="P9" class="fil6 str0" fill-opacity="0.0" x="10898" y="5219" width="4921" height="700" Owner="" Unitcount="1" neighbor="P2,P8,P10,P13"/>
+            <rect id="P10" class="fil6 str0" fill-opacity="0.0" x="15820" y="4017" width="1482" height="2522" Owner="" Unitcount="1" neighbor="P8,P9,P11,P12"/>
+            <rect id="P11" class="fil6 str0" fill-opacity="0.0" x="17301" y="4017" width="3334" height="1358" Owner="" Unitcount="1" neighbor="P10,P12,E4"/>
+            <rect id="P12" class="fil6 str0" fill-opacity="0.0" x="17301" y="5375" width="3334" height="1164" Owner="Ihr SpielernaG" Unitcount="1" neighbor="P10,P11,D7"/>
+            <rect id="P13" class="fil6 str0" fill-opacity="0.0" x="13403" y="5919" width="811" height="8307" Owner="" Unitcount="1" neighbor="P9,P14,P15,A1,D1"/>
+            <rect id="P14" class="fil6 str0" fill-opacity="0.0" x="209" y="13383" width="13194" height="843" Owner="" Unitcount="1" neighbor="C1,P13"/>
+            <rect id="P15" class="fil6 str0" fill-opacity="0.0" x="14215" y="13383" width="6368" height="843" Owner="" Unitcount="1" neighbor="P13,D3"/>
+        </g>
     </g>
-  
- </g>
 </svg>
