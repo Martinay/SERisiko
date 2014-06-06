@@ -10,6 +10,7 @@ var Core = new Core();
 function Core() {
     //#Public Vars
     this.gameList = new GameList();
+    this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
@@ -92,9 +93,7 @@ function Core() {
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
 
-            joinGame(this.sctTable, id);
-            
-            this.updatePlayerList();
+            connection.joinGame(id);
         }
         else
             alert("Error! no gameTable");
@@ -143,31 +142,14 @@ function Core() {
 
     this.readyToPlay = function(){		
         // send to server : player ready
-        // connection.setPlayerReady(); not yet implemented
-        this.updatePlayerList();
+        connection.setPlayerState(true);
+        this.listPlayers();
         initUnitAmountSelector(1, 10);
     };
-
-    this.updatePlayerList = function(){
-        // get playerlsit from server // get ready state of pl from server
+    
+    this.listPlayers = function(){
         connection.listPlayers();
-        // parse message
-        var players = [ // pseudo test data
-                        {"name" : "Hans von Massow", "rdy" : 1},
-                        {"name" : "Maismüller", "rdy" : 1},
-                        {"name" : "Karl-Heinz", "rdy" : 0},
-                        {"name" : "Philipp", "rdy" : 1},
-                        {"name" : "Alex", "rdy" : 0},
-                        {"name" : "Nerv", "rdy" : 1}
-                        ];			  	  
-        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
-        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
-
-        document.getElementById("playerList").innerHTML = "";
-        for(var i = 0; i < 6; i++){
-            $("#playerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
-        }
-    };
+    }
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
@@ -187,30 +169,7 @@ function Core() {
         document.getElementById("bottom_overlay").innerHTML = "";
     };
     
-    //# Private Methods    
-    var joinGame = function(table, id){
-        showElement(document.getElementById("game"));
-        hideElement(document.getElementById("selectGame"));
-        
-        connection.leaveLobby();
-        connection.joinGame(id);
-        
-        // give me some lands test
-            Core.svgHandler.setNewLandOwner("D2" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("D6" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("E1" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("E3" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("C4" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("B5" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("A1" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("A5" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("P4" ,thePlayerName);
-            Core.svgHandler.setNewLandOwner("P12" ,thePlayerName);
-            
-            Core.svgHandler.refreshOwnerRights();
-        //#
-    };
-    
+    //# Private Methods  
     this.hideElement = function(element){
         element.style.display = "none";
     };
