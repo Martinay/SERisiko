@@ -24,6 +24,7 @@ function SvgFunctions(root){
     var i = 0;
     var counter = 0;
     var rotate = 0;
+    var countRotate = 18;
     
     //# Public Methods
     this.init = function(doc){       
@@ -71,13 +72,14 @@ function SvgFunctions(root){
         this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
         neighborLands = theRect.getAttribute("neighbor").split(",");
+        theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
         //this.setUnit(id, 16);
         for (var i = 0; i < neighborLands.length; i++) {
             theRect = svgDoc.getElementById(neighborLands[i]);
             if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
-                theRect.onmouseover = new Function("this.setAttribute('opacity', '0.5'); this.style='cursor: pointer';");
-                theRect.onmouseout = new Function("this.setAttribute('opacity','0.75'); this.style='cursor: default';");
+                theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
+                theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                 theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
                 theRect.setAttribute('opacity','0.75');
             }
@@ -86,14 +88,14 @@ function SvgFunctions(root){
     
     this.identifyDestination = function(id, attacker){
         this.setRectsOnClickNull();
-        var theRect = svgDoc.getElementById(attacker);
+        var theRect = svgDoc.getElementById(attacker + "_back");
         theRect.setAttribute('opacity','0.5');
-        var theRect = svgDoc.getElementById(id);
+        var theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.5');
         for (var i = 0; i < neighborLands.length; i++) {
             if(id != neighborLands[i]){
-                    theRect = svgDoc.getElementById(neighborLands[i]);
-                    theRect.onmouseout = new Function("this.setAttribute('opacity','1');");
+                    theRect = svgDoc.getElementById(neighborLands[i] + "_back");
+                    theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     theRect.setAttribute('opacity','1');
                     selectAmountUnit(attacker, id);
                 }
@@ -124,12 +126,19 @@ function SvgFunctions(root){
         var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
             if(rect.getAttribute("Owner") === Core.getPlayerName()){
-                rect.onmouseover = new Function("this.setAttribute('opacity', '0.75'); this.style='cursor: pointer';");
-                rect.onmouseout = new Function("this.setAttribute('opacity','1'); this.style='cursor: default';");
+                rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
+                rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                 //rect.onclick = new Function("Core.svgHandler.setUnit(this.id, 10);");
                 rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
             }
         });        
+    };
+    
+    this.setOpacityOnRect = function (id, opacity, cursor){
+        var rect = svgDoc.getElementById(id + "_back");
+        rect.setAttribute('opacity', opacity);
+        rect = svgDoc.getElementById(id);
+        rect.style = 'cursor: ' + cursor;
     };
     
     this.showAttack = function (DefendId){
@@ -140,18 +149,18 @@ function SvgFunctions(root){
         
         if(countAttack + countDefend < 5){
             if(countDefend > 2){
-                   rotate = (2 + countAttack) * 19;
+                   rotate = (2 + countAttack) * countRotate;
             } else {
-                rotate = (countDefend + countAttack) * 19;
+                rotate = (countDefend + countAttack) * countRotate;
             }
         } else {
             if(countDefend < 2){
-                rotate = 76;
+                rotate = ( 1 + 3) * countRotate;
             } else {
                 if(countDefend > 2){
-                    rotate = (2 + countAttack) * 19;
+                    rotate = (2 + countAttack) * countRotate;
                 } else {
-                    rotate = 95;
+                    rotate = 5 * countRotate;
                 }
             }
         }
@@ -164,23 +173,23 @@ function SvgFunctions(root){
                                     <tr>\n\
                                         <td>\n\
                                             <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
-        this.drawPicOnCanvas("A1");                                    
+        setTimeout(function(){Core.svgHandler.drawPicOnCanvas("A1");},50)                                    
         if(countAttack > 1){
             OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
-            this.drawPicOnCanvas("A2");
+            setTimeout(function(){Core.svgHandler.drawPicOnCanvas("A2");},50) 
             if(countAttack > 2){
                 OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
-                this.drawPicOnCanvas("A3");
+                setTimeout(function(){Core.svgHandler.drawPicOnCanvas("A3");},50) 
             }
         }
         OverlayString = OverlayString + '</td>\n\
                                         <td>\n\
                                             <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
         
-        this.drawPicOnCanvas("D1");
+        setTimeout(function(){Core.svgHandler.drawPicOnCanvas("D1");},50) 
         if(countDefend > 1){
             OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
-            this.drawPicOnCanvas("D2");
+            setTimeout(function(){Core.svgHandler.drawPicOnCanvas("D2");},50) 
         }
         OverlayString = OverlayString + '</td>\n\
                                     </tr>\n\
@@ -241,7 +250,7 @@ function SvgFunctions(root){
         
         [].slice.call(rects).forEach(function(rect){
             rectID = rect.getAttribute("id");
-            if(rectID !== ""){
+            if(rectID != "" && rectID.indexOf("_back") == -1){
                 countryHeight = parseInt(rect.getAttribute("height"));
                 countryWidth = parseInt(rect.getAttribute("width"));
                 if(countryWidth < 800){
@@ -297,7 +306,7 @@ function SvgFunctions(root){
             };
             img.src = '/img/paper.png';
             i++;
-            setTimeout(function(){Core.svgHandler.drawPicOnCanvas(id);},100);
+            setTimeout(function(){Core.svgHandler.drawPicOnCanvas(id);},50);
        }else{
             counter++;
             var canvas = document.getElementById('canvas_' + id);
@@ -308,7 +317,7 @@ function SvgFunctions(root){
                     context.fillStyle = 'red';
                     context.fillText((1 + parseInt(Math.random() * (6))), 75, 90);
                 }
-            if(counter == 5){
+            if(counter == (rotate/18)){
                 counter = 0;
                 i = 0;
             }
