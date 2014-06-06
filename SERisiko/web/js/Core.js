@@ -16,6 +16,7 @@ function Core() {
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
+    var thePlayerId = -1;
     var thePlayerName = "";
     
     //#InitConnection Function
@@ -169,28 +170,12 @@ function Core() {
         document.getElementById("bottom_overlay").innerHTML = "";
     };
     
-    //# Private Methods  
     this.hideElement = function(element){
         element.style.display = "none";
     };
     
     this.showElement = function(element){
         element.style.display = "block";
-    };
-    
-    var hideElement = function(element){
-        element.style.display = "none";
-    };
-    
-    var showElement = function(element){
-        element.style.display = "block";
-    };
-
-    var getGameList = function(){
-        
-        // should be parsed by server...
-        Core.gameList.clear();
-        connection.listOpenGames();
     };
     
     this.createSlider = function(id, idAfter, minValue, maxValue){
@@ -219,6 +204,39 @@ function Core() {
         }
         slider.slider( "value", maxValue );
         select.val(maxValue);
+    };
+    
+    this.updatePlayerList = function(){
+        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
+        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
+
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+            $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
+        }
+    };
+    
+    this.setPlayerId = function(id){
+        thePlayerId = id;
+    };
+    
+    this.getPlayerId = function(){
+        return thePlayerId;
+    };
+    
+    //# Private Methods  
+    var hideElement = function(element){
+        element.style.display = "none";
+    };
+    
+    var showElement = function(element){
+        element.style.display = "block";
+    };
+
+    var getGameList = function(){
+        // should be parsed by server...
+        Core.gameList.clear();
+        connection.listOpenGames();
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){

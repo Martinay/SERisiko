@@ -7,7 +7,7 @@
 
 function ServerAnswerParser(doc){
     //#Public Vars
-    //
+
     //#Private Vars
     var root = doc;
     
@@ -45,11 +45,14 @@ function ServerAnswerParser(doc){
     //# Private Methods
     var handleAddNewPlayerToLobbyMessage = function(message){
          if(message.state == 1){
-            // create Player on Client
-            Core.hideElement(root.getElementById("setPlayerName"));
-            Core.showElement(root.getElementById("selectGame"));
-            var divs = root.getElementsByClassName('playerNameDisplay');
-            [].slice.call(divs).forEach(function(div){div.innerHTML = Core.getPlayerName();});
+            //is it me?
+            if(Core.getPlayerId() == -1 || message.data[0].Player.id == Core.getPlayerId()){
+                // create Player on Client
+                Core.hideElement(root.getElementById("setPlayerName"));
+                Core.showElement(root.getElementById("selectGame"));
+                var divs = root.getElementsByClassName('playerNameDisplay');
+                [].slice.call(divs).forEach(function(div){div.innerHTML = Core.getPlayerName();});
+            }
         }
         else{
             alert("Error: Bad response from Server");               
@@ -68,14 +71,17 @@ function ServerAnswerParser(doc){
     };
     var handleGameCreatedMessage = function(message){
         if(message.state == 1){
+            //is it me?
+            //if(message.data[0].Player.id == Core.getPlayerId()){
             //verify 
-            Core.hideElement(root.getElementById("newGame"));
+                Core.hideElement(root.getElementById("newGame"));
 
-            Core.setGame(message.data[0].ServerGame.id);
+                Core.setGame(message.data[0].ServerGame.id);
 
-            //cleanup
-            root.getElementById("gameName").value = "Spielname";
-            root.getElementById("maxPlayers").value = "6";
+                //cleanup
+                root.getElementById("gameName").value = "Spielname";
+                root.getElementById("maxPlayers").value = "6";
+            //}
         }
         else{
             alert("Error: Bad response from Server");               
@@ -105,19 +111,17 @@ function ServerAnswerParser(doc){
     };
     
     var handlePlayerListMessage = function(message){
-        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
-        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
-        
-        // cleanup   && later maybe just changes??=????
+        // cleanup
         root.getElementById("playerList").innerHTML = "";
         Core.playerList.clear();
         
         // parse message			  	  
         if(message.state == 1){
             for(var i = 0; i < message.data.length; i++){
-                $("#playerList").append(message.data[i].Player.name + ((message.data[i].Player.ready == 1)? rdy : notRdy) + "<br>"); 
-                Core.playerList.addPlayer(message.data[i].Player.name, message.data[i].Player.id, message.data[i].Player.ready);
+                var player = new PlayerObject(message.data[i].Player.name, message.data[i].Player.id, message.data[i].Player.ready);
+                Core.playerList.addPlayer(player);
             }
+            Core.updatePlayerList();
         }
         else{
             alert("Error: Bad response from Server");               
@@ -126,7 +130,9 @@ function ServerAnswerParser(doc){
     
     var handleReadyStateChangedMessage = function(message){
         if(message.state == 1){
-            Core.listPlayers();
+            var player = new Objects.PlayerObject(message.data[i].Player.name, message.data[i].Player.id, message.data[i].Player.ready);
+            Core.playerList.updatePlayer(message.data[i].Player.id, player);    
+            Core.updatePlayerList();
         }
         else{
             alert("Error: Bad response from Server");               
@@ -136,7 +142,7 @@ function ServerAnswerParser(doc){
     var handlePlayerLeftMessage = function(message){
         if(message.state == 1){
             Core.playerList.deletePlayerById(message.data[0].Player.id);
-            Core.listPlayers();
+            Core.updatePlayerList();
         }
         else{
             alert("Error: Bad response from Server");               

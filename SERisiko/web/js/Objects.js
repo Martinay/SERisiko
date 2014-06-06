@@ -90,9 +90,9 @@ function PlayerList(){
         amount = 0;
     };
 
-    this.addPlayer = function(data){
+    this.addPlayer = function(player){
         amount++;
-        players.push(new PlayerObject(data.name, data.id, data.ready));
+        players.push(player);
     };
 
     this.getPlayers = function(){
@@ -109,6 +109,15 @@ function PlayerList(){
     this.getPlayer = function(index){
         return players[index];
     };
+    
+    this.getPlayerById = function(id){
+       for(var i = 0; i < amount; i++){
+            if(players[i].getPlayerId() == id){
+                return players[i];
+            }
+        }
+        return new PlayerObject("Player not found", -1, false);
+    }
 
     this.deletePlayerById = function(id){
         for(var i = 0; i < amount; i++){
@@ -117,7 +126,11 @@ function PlayerList(){
             }
         }
     };
-
+    
+    this.updatePlayer = function(id, player){
+       this.deletePlayerById(id);
+       this.addPlayer(player);
+    };
     //# Private Methods
 }
 
@@ -130,7 +143,7 @@ function PlayerObject(name, id, rdy){
     var readyState = rdy;
 
     //# Public Methods
-    this.getPLayerName = function(){
+    this.getPlayerName = function(){
         return playerName;
     };
      this.getReadyState = function(){
