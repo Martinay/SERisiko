@@ -3,7 +3,6 @@ package GameLogic;
 public class Land {
 	
 	private Spieler besitzer; //Spieler mit Armeen auf Land
-    private int id;
     private final String bezeichnung; // z.B. Deutschland
 	private int anzahl_armeen;
 	
@@ -11,9 +10,7 @@ public class Land {
     Kontinent Kontinent;
 
 
-    public Land (Spieler besitzer,String bezeichnung, int Id){
-		this.besitzer=besitzer;
-        id = Id;
+    public Land (String bezeichnung){
         this.anzahl_armeen=1;
 		this.bezeichnung=bezeichnung;
 		this.angrenzendeLaender=new Land[0];
@@ -31,7 +28,7 @@ public class Land {
 		anzahl_armeen = anzahl_armeen+Math.abs(Anz);
 	}	
 	
-	protected String gib_bezeichnung(){
+	public String gib_bezeichnung(){
 		return bezeichnung;
 	}
 	
@@ -43,7 +40,7 @@ public class Land {
 		return false;
 	}
 	
-	protected void neuerBesitzer(Spieler newBesitzer){
+	public void neuerBesitzer(Spieler newBesitzer){
 		besitzer = newBesitzer;
 	}
 	
@@ -54,7 +51,7 @@ public class Land {
 		return false;
 	}
 	
-	protected void setze_angrenzende_Laender(Land[] Laender){
+	public void setze_angrenzende_Laender(Land[] Laender){
 		angrenzendeLaender=Laender;
 	}
 	

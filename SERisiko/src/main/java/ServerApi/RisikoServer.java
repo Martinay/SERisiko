@@ -95,7 +95,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
 
-        PlayerLeftMessage message = gameManager.LeaveGame(clientId,0);
+        PlayerLeftMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
