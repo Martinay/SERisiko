@@ -2,7 +2,8 @@
 package ServerLogic;
 
 import GameLogic.*;
-import ServerLogic.Map.MapCreator;
+import ServerLogic.Map.Interfaces.IMapLoader;
+import ServerLogic.Map.MapLoader;
 import ServerLogic.Messages.Game;
 import ServerLogic.Messages.Player;
 
@@ -15,8 +16,9 @@ import java.util.List;
  */
 class ServerGame extends Game {
     
-    List<Player> Players = new LinkedList<Player>();
+    List<Player> Players = new LinkedList<>();
     private Spielsteuerung _spiel;
+    private IMapLoader _mapLoader = new MapLoader();
 
     ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
@@ -32,7 +34,7 @@ class ServerGame extends Game {
 
     public List<Integer> GetPlayerIds()
     {
-        List<Integer> iDs = new LinkedList<Integer>();
+        List<Integer> iDs = new LinkedList<>();
 
         for (Player player : Players) {
             iDs.add(player.ID);
@@ -52,7 +54,7 @@ class ServerGame extends Game {
 
     public void Start()
     {
-        List<Spieler> spielerList = new LinkedList<Spieler>();
+        List<Spieler> spielerList = new LinkedList<>();
 
         for (Player player : Players) {
             Spieler spieler = new Spieler(player.ID);
@@ -60,7 +62,7 @@ class ServerGame extends Game {
             PlayerMapper.Add(spieler,player);
         }
 
-        Kontinent[] kontinents = (Kontinent[]) MapCreator.GetKontinets().toArray();
+        Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();
 
        _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
         CountryMapper.CreateCountryMapping(_spiel.DieSpielwelt.gibLaender());

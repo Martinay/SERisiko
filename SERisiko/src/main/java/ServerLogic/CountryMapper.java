@@ -6,11 +6,11 @@ import java.util.HashMap;
 
 class CountryMapper {
 
-    static HashMap<Integer,Land> _countryMapping = new HashMap<Integer, Land>();
+    static HashMap<String, Land> _countryMapping = new HashMap<>();
 
     public static void CreateCountryMapping(Land[] lands) {
         for (int i = 0; i<lands.length; i++)
-            _countryMapping.put(i,lands[i]);
+            _countryMapping.put(String.valueOf(i),lands[i]);
     }
 
     public static Land GetCountryById(String id) {

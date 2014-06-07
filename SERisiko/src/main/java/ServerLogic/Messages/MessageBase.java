@@ -1,11 +1,9 @@
 package ServerLogic.Messages;
 
-import ServerApi.ApiResponseObject;
-
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class MessageBase implements ApiResponseObject {
+public abstract class MessageBase {
         
-    public List<Integer> PlayerIDsToUpdate = new LinkedList<Integer>();
+    public List<Integer> PlayerIDsToUpdate = new LinkedList<>();
 }
