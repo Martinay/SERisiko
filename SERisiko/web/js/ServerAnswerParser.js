@@ -98,7 +98,8 @@ function ServerAnswerParser(doc){
                 Core.svgHandler.refreshOwnerRights();
             //#
 
-            root.getElementById("startGame").innerHTML = '<button  id="optionsInGame" name="optionsInGame" onClick="Core.startGame()" style="margin-bottom: 10px;">Bereit zum Spielen</button>';
+            root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.startGame()" style="margin-bottom: 10px;">Spielstarten</button>';
+            root.getElementById("startGameBtn").disabled = true;
             //cleanup
             root.getElementById("maxPlayers").value = "6";
         }
@@ -139,9 +140,11 @@ function ServerAnswerParser(doc){
             if(message.data[0].Player.ready == true){
                 root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
                 root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
+                root.getElementById("startGameBtn").disabled = false;
             } else {
                 root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
                 root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
+                root.getElementById("startGameBtn").disabled = true;
             }
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
