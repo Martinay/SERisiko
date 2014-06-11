@@ -65,7 +65,7 @@ class ServerGame extends Game {
         Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();
 
        _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
-        CountryMapper.CreateCountryMapping(_spiel.DieSpielwelt.gibLaender());
+        CountryMapper.CreateCountryMapping(kontinents);
      }
 
     public void Attack(String countryFromID, String countryToID, int units) {
@@ -76,16 +76,14 @@ class ServerGame extends Game {
         Land from = CountryMapper.GetCountryById(countryFromID);
         Land to = CountryMapper.GetCountryById(countryToID);
 
-        SpielEreigniss ereignis = new SpielEreigniss(units,from, to, false);
-        _spiel.zustandssteuerung(ereignis);
+        InteractWithGameLogic(units, from, to, false);
     }
 
     public void EndAttack() {
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return;
 
-        SpielEreigniss ereignis = new SpielEreigniss(1,null, null, true);
-        _spiel.zustandssteuerung(ereignis);
+        InteractWithGameLogic(1, null, null, true);
     }
 
     public void Move(String countryFromID, String countryToID, int units) {
@@ -95,8 +93,7 @@ class ServerGame extends Game {
         Land from = CountryMapper.GetCountryById(countryFromID);
         Land to = CountryMapper.GetCountryById(countryToID);
 
-        SpielEreigniss ereignis = new SpielEreigniss(units,from, to, false);
-        _spiel.zustandssteuerung(ereignis);
+        InteractWithGameLogic(units, from, to, false);
     }
 
     public void PlaceUnits(String countryID, int units) {
@@ -105,19 +102,34 @@ class ServerGame extends Game {
 
         Land land = CountryMapper.GetCountryById(countryID);
 
-        SpielEreigniss ereignis = new SpielEreigniss(units,land, null, false);
-        _spiel.zustandssteuerung(ereignis);
+        InteractWithGameLogic(units, land, null, false);
     }
 
     public Player EndTurn() {
-        SpielEreigniss ereignis = new SpielEreigniss(1,null, null, true);
-        _spiel.zustandssteuerung(ereignis);
-        if (_spiel.Zustand != Spielzustaende.Angriff)
-            _spiel.zustandssteuerung(ereignis);
 
-        if (_spiel.Zustand != Spielzustaende.Verschieben)
-            _spiel.zustandssteuerung(ereignis);
+        Client_Response gameResponse = InteractWithGameLogic(1,null,null, true);
+        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Angriff) {
+            gameResponse = InteractWithGameLogic(1,null,null, true);
+        }
 
-        return PlayerMapper.Map(_spiel.aktueller_Spieler);
+        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Verschieben) {
+            gameResponse = InteractWithGameLogic(1,null,null, true);
+        }
+
+        return PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
+    }
+
+    private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState )
+    {
+        SpielEreigniss ereignis = new SpielEreigniss(units, erstesLand, zweitesLand, changeState );
+        Client_Response gameResponse = _spiel.zustandssteuerung(ereignis);
+        CheckForError(gameResponse);
+        return gameResponse;
+    }
+
+    private void CheckForError(Client_Response gameResponse)
+    {
+        if (gameResponse.ist_ein_fehler_aufgetreten())
+            throw new RuntimeException("Unknown Error in GameLogic in" + gameResponse.gib_aktuellen_Zustand());
     }
 }

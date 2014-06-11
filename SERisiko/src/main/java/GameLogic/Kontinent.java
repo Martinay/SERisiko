@@ -13,7 +13,7 @@ public class Kontinent {
         land.Kontinent = this;
     }
 
-    Object GETLands() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Land[] GETLands() {
+        return _laender.toArray(new Land[_laender.size()-1]);
     }
 }
