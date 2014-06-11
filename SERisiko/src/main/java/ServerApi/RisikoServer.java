@@ -202,7 +202,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     
     //game
-    public WebSocketResponse attack(GameClient gameClient, Long source, Long target, Long value) {
+    public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }    
     
@@ -222,11 +222,11 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
    
 
-    public WebSocketResponse move(GameClient gameClient, Long source, Long target, Long value) {
+    public WebSocketResponse move(GameClient gameClient, String source, String target, Long value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public WebSocketResponse set(GameClient gameClient, Long target, Long value) {
+    public WebSocketResponse set(GameClient gameClient, String target, Long value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -71,34 +71,10 @@ function ServerAnswerParser(doc){
         if(message.data[1].Player.id == Core.getPlayerId()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
-            var svg = root.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-            Core.svgHandler.init(svg);
-            Core.combatHandler.init(svg);   
-            
-             // cleanup
-            root.getElementById("playerList").innerHTML = "";
-            Core.playerList.clear();
-            Core.listPlayers();
-            //verify 
-            Core.showElement(root.getElementById("game"));
-            Core.hideElement(root.getElementById("selectGame"));
+            Core.prepareJoinedGame();
 
-            // give me some lands test
-                Core.svgHandler.setNewLandOwner("D2" , Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("D6" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E3" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("C4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("B5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P12" ,Core.getPlayerName());
-
-                Core.svgHandler.refreshOwnerRights();
-            //#
-
-            root.getElementById("startGame").innerHTML = '<button  id="optionsInGame" name="optionsInGame" onClick="Core.startGame()" style="margin-bottom: 10px;">Bereit zum Spielen</button>';
+            root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.connectionHandler.startGame();" style="margin-bottom: 10px;">Spielstarten</button>';
+            root.getElementById("startGameBtn").disabled = true;
             //cleanup
             root.getElementById("maxPlayers").value = "6";
         }
@@ -112,7 +88,7 @@ function ServerAnswerParser(doc){
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-           
+           Core.prepareJoinedGame();
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
@@ -136,12 +112,23 @@ function ServerAnswerParser(doc){
     var handleReadyStateChangedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
+            
+            
+
             if(message.data[0].Player.ready == true){
                 root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
-                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(false); };
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = false;
+                }
+                root.getElementById("backToLobbyBtn").disabled = true;
             } else {
                 root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
-                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(true); };
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = true;
+                }
+                root.getElementById("backToLobbyBtn").disabled = false;
             }
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
@@ -164,6 +151,6 @@ function ServerAnswerParser(doc){
     
     var handlePlayerCreatedMessage = function(message){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
-        Core.joinLobby();
+        Core.connectionHandler.joinLobby();
     };
 }

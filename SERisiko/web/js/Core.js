@@ -21,49 +21,25 @@ function Core() {
     var thePlayerName = "";
     
     //#InitConnection Function
-    var connection = null;
-    var etablishConnection = function(){
-        if (connection != null)
-            connection.close();
-        connection = new RisikoApi();
-
-        // Start ConnectionToServer
-        connection.onmessage = function(elem) { //get message from server
-            console.log( JSON.parse(elem.data) );
-            Core.serverAnswerParserHandler.parseServerAnswers(elem);
-            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
-        };
-    };
-    etablishConnection();
-    //# Load Map... done by html object    
-    
+    this.connectionHandler = new Connection();
     
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "" || name == "Ihr Spielername")
+        if(name == "")
             return false;
         thePlayerName = name;
 
         // create Player on Server + joinLobby
-        connection.joinServer(thePlayerName); // includes joinlobby
+        this.connectionHandler.joinServer(thePlayerName); // includes joinlobby
     };
-    
-    this.joinLobby = function(){
-        connection.joinLobby();
-        this.updateGameList();
-    };
-    
-    this.startGame = function(){
-        connection.startGame();
-    }
     
     this.getPlayerName = function(){
         return thePlayerName;
     };
 
     this.deletePlayerName = function(){
-        connection.leaveLobby();
+        this.connectionHandler.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
         document.getElementById("playerName").value = "";
@@ -76,13 +52,13 @@ function Core() {
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
         this.sctTable.clear("availableGames");
         
-        etablishConnection();
+        this.connectionHandler.init();
     };
 
     this.backToLobby = function(){
-        connection.leaveGame();
+        this.connectionHandler.leaveGame();
         //check response
-        connection.joinLobby();
+        this.connectionHandler.joinLobby();
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -110,16 +86,36 @@ function Core() {
         if(gameName === "")
             return;
         //parse data to server
-        connection.createGame(gameName, parseInt(maxPlayers));
+        this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
     };
+    
+    this.prepareJoinedGame = function(){
+        var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+        this.svgHandler.init(svg);
+        this.combatHandler.init(svg);   
 
-    this.updateGameList = function(){
-        if(this.sctTable != null){
-            this.sctTable.clear("availableGames");
-            getGameList();
-        }
-        else
-            alert("Error! no gameTable");	
+         // cleanup
+        document.getElementById("playerList").innerHTML = "";
+        this.playerList.clear();
+        this.connectionHandler.listPlayers()
+        //verify 
+        this.showElement(document.getElementById("game"));
+        this.hideElement(document.getElementById("selectGame"));
+
+        // give me some lands test
+            this.svgHandler.setNewLandOwner("D2" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D6" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("E1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("E3" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("C4" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("B5" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("A1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
+
+            this.svgHandler.refreshOwnerRights();
+        //#
     };
 
     this.minmax = function(value, min, max){
@@ -140,15 +136,6 @@ function Core() {
                     //nothing
         }
     };
-
-    this.readyToPlay = function(arg){		
-        // send to server : player ready
-        connection.setPlayerState(arg);
-    };
-    
-    this.listPlayers = function(){
-        connection.listPlayers();
-    }
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
@@ -229,12 +216,6 @@ function Core() {
     
     var showElement = function(element){
         element.style.display = "block";
-    };
-
-    var getGameList = function(){
-        // should be parsed by server...
-        Core.gameList.clear();
-        connection.listOpenGames();
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){

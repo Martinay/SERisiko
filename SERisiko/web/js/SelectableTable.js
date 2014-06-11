@@ -25,19 +25,19 @@ function SelectableTable(doc){
             var td = root.createElement('td');
             td.appendChild(root.createTextNode(data.name));
             td.id = "cell_"+rows+",1";    
-            td.onclick = new Function("Core.setGame("+data.id+")");
+            td.onclick = new Function("Core.connectionHandler.joinGame("+data.id+")");
             newTr.appendChild(td);
         // add id
             var td = root.createElement('td');
             td.appendChild(root.createTextNode(data.id));
             td.id = "cell_"+rows+",2";    
-            td.onclick = new Function("Core.setGame("+data.id+")");
+            td.onclick = new Function("Core.connectionHandler.joinGame("+data.id+")");
             newTr.appendChild(td);
         // add players
             var td = root.createElement('td');
             td.appendChild(root.createTextNode(data.playerCount+"/"+data.maxPlayer));
             td.id = "cell_"+rows+",3";    
-            td.onclick = new Function("Core.setGame("+data.id+")");
+            td.onclick = new Function("Core.connectionHandler.joinGame("+data.id+")");
             newTr.appendChild(td);    
         //#
         tb.appendChild(newTr);

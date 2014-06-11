@@ -23,10 +23,10 @@ interface RisikoWebSocketApi {
     public WebSocketResponse listPlayers(GameClient gameClient); 
     
     //game methods
-    public WebSocketResponse attack(GameClient gameClient, Long source, Long target, Long value);
+    public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value);
     public WebSocketResponse endAttack(GameClient gameClient);
-    public WebSocketResponse move(GameClient gameClient, Long source, Long target, Long value);
-    public WebSocketResponse set(GameClient gameClient, Long target, Long value);
+    public WebSocketResponse move(GameClient gameClient, String source, String target, Long value);
+    public WebSocketResponse set(GameClient gameClient, String target, Long value);
     public WebSocketResponse endTurn(GameClient gameClient);   
     
 }

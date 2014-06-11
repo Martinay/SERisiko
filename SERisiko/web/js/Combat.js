@@ -13,11 +13,23 @@ function Combat(document){
         svgDoc = svgElement;
     };
     
-    this.showAttack = function (DefendId){
+    this.selectAmountUnit = function(attacker, defender){
+        root.getElementById("loading_overlay").style.display = "block";
+        root.getElementById("loading_overlay").innerHTML = "\
+            <label for='unitAmountAttack'> <div style='color: green;'> Sie greifen an, von " + attacker + " nach " + defender  + " </div><br />\
+                                                                        Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
+            <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
+            <button name='abortAttack' onClick='Core.combatHandler.abortAttack();'>Angriff Abbrechen</button>\
+            <button name='setUnitAmount' onClick='Core.combatHandler.showAttack(\""+attacker+"\",\""+defender+"\");' style='margin-left: 100px;'>Angriff Starten</button>";
+        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
+    };
+    
+    this.showAttack = function (AttackId, DefendId){
         var countRotate = 18;
         var rotate = 0;
         var select = root.getElementById("unitAmountAttack");
         var countAttack = parseInt(select.options[select.selectedIndex].value);
+        Core.connectionHandler.sendAttack(AttackId, DefendId, countAttack);
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(DefendId));
         if(countAttack + countDefend < 5){
             if(countDefend > 2){
@@ -70,20 +82,22 @@ function Combat(document){
                             "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Abbrechen</button>";
         root.getElementById("loading_overlay").innerHTML = OverlayString;
         
-        setTimeout(function(){Core.combatHandler.showEndAttack("yes", countAttack);},3500);
+        setTimeout(function(){Core.combatHandler.showEndAttack("yes");},3500);
     };
     
-    this.showEndAttack = function (arg, Count){
+    this.showEndAttack = function (arg){
         if(arg == "yes"){
-            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />";
+            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beenden</button>";
         } else {
-            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>";
+            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beende</button>";
         }
     };
     
-    this.MoveUnitAfterAttack = function (){
-         this.abortAttack();
-    };
+    this.endAttack = function (){
+        this.abortAttack();
+    }
     
     this.abortAttack = function (){
         root.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
@@ -92,16 +106,5 @@ function Combat(document){
         root.getElementById("loading_overlay").style.display = "none";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
-    };
-    
-    this.selectAmountUnit = function(attacker, defender){
-        root.getElementById("loading_overlay").style.display = "block";
-        root.getElementById("loading_overlay").innerHTML = "\
-            <label for='unitAmountAttack'> <div style='color: green;'> Sie greifen an, von " + attacker + " nach " + defender  + " </div><br />\
-                                                                        Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
-            <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
-            <button name='abortAttack' onClick='Core.combatHandler.abortAttack();'>Angriff Abbrechen</button>\
-            <button name='setUnitAmount' onClick='Core.combatHandler.showAttack(\""+defender+"\");' style='margin-left: 100px;'>Angriff Starten</button>";
-        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, svgDoc.getElementById(attacker).getAttribute("Unitcount"));
     };
 }
