@@ -24,6 +24,6 @@ interface RisikoWebSocketApi {
     public WebSocketResponse attack(GameClient gameClient, Long source, Long target, Long value);
     public WebSocketResponse move(GameClient gameClient, Long source, Long target, Long value);
     public WebSocketResponse set(GameClient gameClient, Long target, Long value);
-    public WebSocketResponse endTurn(GameClient gameClient);
-  
+    public WebSocketResponse endTurn(GameClient gameClient);   
+    
 }
