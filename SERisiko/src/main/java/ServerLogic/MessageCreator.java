@@ -74,10 +74,11 @@ class MessageCreator {
         return message;
     }
 
-    public static GameCreatedMessage CreateGameCreatedMessage(List<Integer> idsToUpdate, Game game) {
+    public static GameCreatedMessage CreateGameCreatedMessage(List<Integer> idsToUpdate, Game game, Player createdBy) {
         GameCreatedMessage message = new GameCreatedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.NewGame = game;
+        message.CreatedBy = createdBy;
         return message;
     }
 

@@ -132,7 +132,7 @@ public class ServerLogic implements IServerLogic {
 
         _state.Lobby.AddGame(game);
 
-    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(), game);
+    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(), game, player);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(), game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
     }
 
     @Override
