@@ -53,11 +53,11 @@ public class MessageCreator {
         return message;
     }
 
-    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, List<Player> playersInGame) {
+    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, Player player) {
         NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Successful = true;
-        message.PlayersInGame = playersInGame;
+        message.Player = player;
         return message;
     }
 

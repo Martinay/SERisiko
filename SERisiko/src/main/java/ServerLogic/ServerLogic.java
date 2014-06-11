@@ -116,7 +116,7 @@ public class ServerLogic implements IServerLogic {
 
         game.Players.add(player);
 
-        return MessageCreator.CreateNewPlayerJoinedMessage(game.GetPlayerIds(), game.Players);
+        return MessageCreator.CreateNewPlayerJoinedMessage(game.GetPlayerIds(), player);
     }
 
     @Override
