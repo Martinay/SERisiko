@@ -1,8 +1,9 @@
-package ServerLogic;
+package ServerLogic.Helper;
 
-import ServerLogic.Messages.Player;
+import ServerLogic.Model.Player;
+import ServerLogic.Model.ServerGame;
 
-class GameCreator {
+public class GameCreator {
 
     private static int _ID = 0;
 

@@ -1,6 +1,4 @@
-package ServerLogic;
-
-import ServerLogic.Messages.Player;
+package ServerLogic.Model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,10 +7,10 @@ import java.util.List;
  *
  * @author Martin
  */
-class ServerState {
-    List<Player> Players = new LinkedList<Player>();
-    Lobby Lobby = new Lobby();
-    List<ServerGame> ActiveGames = new LinkedList<ServerGame>();
+public class ServerState {
+    public List<Player> Players = new LinkedList<>();
+    public Lobby Lobby = new Lobby();
+    public List<ServerGame> ActiveGames = new LinkedList<>();
     
     public Player GetPlayer(int playerID)
     {

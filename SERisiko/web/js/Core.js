@@ -13,7 +13,7 @@ function Core() {
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
-    //this.combatHandler = new Combat(document);
+    this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
@@ -94,7 +94,7 @@ function Core() {
         if(this.sctTable != null){
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
-            //this.combatHandler.init(svg);
+            this.combatHandler.init(svg);
             
             connection.joinGame(parseInt(id));
         }
@@ -143,11 +143,18 @@ function Core() {
         }
     };
 
-    this.readyToPlay = function(){		
+    this.readyToPlay = function(arg){		
         // send to server : player ready
-        connection.setPlayerState(true);
-        this.listPlayers();
-        initUnitAmountSelector(1, 10);
+        if(arg == true){
+            connection.setPlayerState(true);
+            //initUnitAmountSelector(1, 10);
+            document.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
+            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
+        } else {
+            connection.setPlayerState(false);
+            document.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
+            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
+        }
     };
     
     this.listPlayers = function(){

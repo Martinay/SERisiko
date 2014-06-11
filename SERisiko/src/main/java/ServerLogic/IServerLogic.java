@@ -1,6 +1,8 @@
 package ServerLogic;
 
 import ServerLogic.Messages.*;
+import ServerLogic.Model.Game;
+import ServerLogic.Model.Player;
 
 import java.util.List;
 

@@ -1,13 +1,15 @@
-package ServerLogic;
+package ServerLogic.Helper;
 
 import GameLogic.Land;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.Game;
+import ServerLogic.Model.Player;
 
 import java.util.Arrays;
 import java.util.List;
 
-class MessageCreator {
-    static ReadyStateChangedMessage CreateReadyStateChangedMessage(List<Integer> idsToUpdate, Player player, boolean readyState)
+public class MessageCreator {
+    public static ReadyStateChangedMessage CreateReadyStateChangedMessage(List<Integer> idsToUpdate, Player player, boolean readyState)
     {
         ReadyStateChangedMessage message = new ReadyStateChangedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
@@ -17,7 +19,7 @@ class MessageCreator {
     }
 
     //Game wasn't started successfully
-    static GameStartedMessage CreateGameStartedMessage(List<Integer> idsToUpdate)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> idsToUpdate)
     {
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
@@ -25,7 +27,7 @@ class MessageCreator {
         return message;
     }
 
-    static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game)
     {
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
@@ -34,7 +36,7 @@ class MessageCreator {
         return message;
     }
 
-    static DeleteGameFromLobbyMessage CreateDeleteGameFromLobbyMessage(List<Integer> playerIdsInLobby,Game game)
+    public static DeleteGameFromLobbyMessage CreateDeleteGameFromLobbyMessage(List<Integer> playerIdsInLobby, Game game)
     {
         DeleteGameFromLobbyMessage message = new DeleteGameFromLobbyMessage();
         message.PlayerIDsToUpdate = playerIdsInLobby;
@@ -51,7 +53,7 @@ class MessageCreator {
         return message;
     }
 
-    static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, List<Player> playersInGame) {
+    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, List<Player> playersInGame) {
         NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Successful = true;
