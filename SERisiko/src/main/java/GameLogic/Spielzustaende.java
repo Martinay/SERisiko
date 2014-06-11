@@ -1,6 +1,6 @@
 package GameLogic;
 public enum Spielzustaende {
 
-	Armeen_hinzufuegen, Angriff, Verschieben, beendet
+	Armeen_hinzufuegen, Angriff, Verschieben, Beenden
 	
 }

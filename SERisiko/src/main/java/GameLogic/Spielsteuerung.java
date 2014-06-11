@@ -20,41 +20,17 @@ public class Spielsteuerung {
 	private int hinzuzufuegende_Armeen;
 
 	public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
-            /**
-             * 
-             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             * !!!!!!!!!!!!!                                                !!!!!!!!!!!!!
-             * !!!!!!!!!!!!!    KEINEN FEHLERHAFTEN CODE COMITTEN DANKE     !!!!!!!!!!!!!
-             * !!!!!!!!!!!!!                                                !!!!!!!!!!!!!
-             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             * 
 		ist_erste_runde=true;
 
 		this.dieSpieler = dieSpieler;
 		
-		Land[] laender= new Land[0];
-		
-		for (int i=0; i<kontinente.length; i++){
-			Land[] newLaender = new Land[laender.length+kontinente[i].GETLands().length];
-			
-			for (int j=0; j<laender.length; j++){
-				newLaender[j]=laender[j];
-			}
-			
-			for (int j=0; j<kontinente[i].GETLands().length; j++){
-				newLaender[j+laender.length]=kontinente[i].GETLands()[j];
-			}	
-			laender=newLaender;
-		}
-		
-		dieSpielwelt = new Spielwelt(laender);
+		DieSpielwelt = new Spielwelt(kontinente);
 		
 		this.aktueller_Spieler=dieSpieler[0];
 		
 		armeen_hinzufuegen_betreten();
-                */
 	}
-	
+       	
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
 		
@@ -68,9 +44,10 @@ public class Spielsteuerung {
 				
 			case Verschieben:
 					return verschieben(Ereigniss);
+                            
+                        default:        return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
 				
 		}
-                throw new RuntimeException("Invalid State");
 	}
 	
 	
@@ -119,7 +96,7 @@ public class Spielsteuerung {
 	
 	
 	private Client_Response armeen_hinzufuegen_betreten(){
-		int max_Armeen=(DieSpielwelt.gib_anz_Laender(aktueller_Spieler)/2);
+		int max_Armeen=(DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler));
 		hinzuzufuegende_Armeen=max_Armeen;
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
 		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
@@ -184,8 +161,12 @@ public class Spielsteuerung {
 			if (DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
 				int [] wuerfel_erg = wuerfele(Ereigniss.anz_Armeen ,Ereigniss.zweitesLand);
 				DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0],wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
-				
-				//if 
+                                
+                                if (pruefe_Spiel_ende()){
+                                    Zustand=Spielzustaende.Beenden;
+                                    return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                                }
+                                
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 			}else{
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
@@ -197,8 +178,15 @@ public class Spielsteuerung {
 	private Client_Response angriff_verlassen(){
 		return verschieben_betreten();
 	}
-	
-	
+        
+        private boolean pruefe_Spiel_ende(){
+		int count=0;
+		for (int i=0; i<dieSpieler.length; i++){
+			if (DieSpielwelt.gib_anz_Armeen_insgesamt(dieSpieler[i])>0) count++;
+		}
+		if (count>1)return false;
+				else return true;
+	}
 	
 	//verschieben*******************************************************************************
 	

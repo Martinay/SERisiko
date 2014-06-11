@@ -3,11 +3,35 @@ package GameLogic;
 public class Spielwelt {
 
 	private Land [] dieLaender;
+        private Kontinent[] dieKontinente;
 	
-	
-	protected Spielwelt(Land[] dieLaender){
-		this.dieLaender=dieLaender;
+	protected Spielwelt(Kontinent[] kontinente){
+		this.dieLaender=konvertKontinentToLandArray(kontinente);
+                dieKontinente=kontinente;
 	}
+        
+        
+        private Land[] konvertKontinentToLandArray(Kontinent[] kontinente){
+            
+            Land[] laender= new Land[0];
+                
+            for (int i=0; i<kontinente.length; i++){
+                
+                Land[] newLaender = new Land[laender.length+kontinente[i].GETLands().length];
+			
+                    for (int j=0; j<laender.length; j++){
+                        newLaender[j]=laender[j];
+                    }
+			
+                    for (int j=0; j<kontinente[i].GETLands().length; j++){
+			newLaender[j+laender.length]=kontinente[i].GETLands()[j];
+                    }	
+		laender=newLaender;
+            }
+            
+            return laender;
+            
+        }
 	
 	
 	public Land[] gibLaender(){
@@ -34,6 +58,21 @@ public class Spielwelt {
 		return anzahl;
 	}
 	
+        protected int gib_anz_neue_Armeen(Spieler aktueller_Spieler){
+            int anzahl = gib_anz_Armeen_insgesamt(aktueller_Spieler) / 2;
+            
+            for (int i=0; i<dieKontinente.length; i++){
+                Spieler besitzer=aktueller_Spieler;
+                for (int j=0; j<dieKontinente[i].GETLands().length; j++){
+                    if (dieKontinente[i].GETLands()[j].gib_besitzer()!= aktueller_Spieler) besitzer = dieKontinente[i].GETLands()[j].gib_besitzer();
+                }
+                if (besitzer == aktueller_Spieler){
+                    anzahl = anzahl + dieKontinente[i].GETAnzahlBonusArmeen();
+                }
+            }
+            
+            return anzahl;
+        }
 	
 	protected boolean pruefe_Attacke(Land angreifer, Land verteidiger, Spieler aktuellerSpieler){
 		if ((angreifer.gib_besitzer()==aktuellerSpieler) && (angreifer.gib_besitzer()!=verteidiger.gib_besitzer()) && (angreifer.gib_anzahl_armeen()>1)){
