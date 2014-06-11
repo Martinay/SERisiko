@@ -112,14 +112,23 @@ function ServerAnswerParser(doc){
     var handleReadyStateChangedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
+            
+            
+
             if(message.data[0].Player.ready == true){
                 root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
                 root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
-                root.getElementById("startGameBtn").disabled = false;
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = false;
+                }
+                root.getElementById("backToLobbyBtn").disabled = true;
             } else {
                 root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
                 root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
-                root.getElementById("startGameBtn").disabled = true;
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = true;
+                }
+                root.getElementById("backToLobbyBtn").disabled = false;
             }
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);

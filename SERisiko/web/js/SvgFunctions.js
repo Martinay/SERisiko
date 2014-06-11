@@ -121,7 +121,7 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            drawDigitOnCanvas(id);
+            drawDigitOnCanvas(id, (1 + parseInt(Math.random() * (6))));
             if(counter == (rotate/18)){
                 counter = 0;
                 i = 0;
@@ -131,14 +131,14 @@ function SvgFunctions(document){
         
     //Private Methods
     
-    var drawDigitOnCanvas = function(id){
+    var drawDigitOnCanvas = function(id, count){
         var canvas = root.getElementById('canvas_' + id);
         if(canvas.getContext){
             var context = canvas.getContext('2d');
             context.font = '40pt Arial';
             context.textAlign = 'center';
             context.fillStyle = 'red';
-            context.fillText((1 + parseInt(Math.random() * (6))), 75, 90);
+            context.fillText(count, 75, 90);
         }
     };
     

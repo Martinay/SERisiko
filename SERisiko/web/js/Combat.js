@@ -70,20 +70,26 @@ function Combat(document){
                             "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Abbrechen</button>";
         root.getElementById("loading_overlay").innerHTML = OverlayString;
         
-        setTimeout(function(){Core.combatHandler.showEndAttack("yes", countAttack);},3500);
+        setTimeout(function(){Core.combatHandler.showEndAttack("yes");},3500);
     };
     
-    this.showEndAttack = function (arg, Count){
+    this.showEndAttack = function (arg){
         if(arg == "yes"){
-            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />";
+            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beenden</button>";
         } else {
-            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>";
+            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beende</button>";
         }
     };
     
     this.MoveUnitAfterAttack = function (){
-         this.abortAttack();
+        this.abortAttack();
     };
+    
+    this.endAttack = function (){
+        this.abortAttack();
+    }
     
     this.abortAttack = function (){
         root.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
