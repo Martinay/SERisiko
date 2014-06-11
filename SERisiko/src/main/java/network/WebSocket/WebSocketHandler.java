@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Steve Kliebisch
  */
-public class WebSocketHandler extends BaseWebSocketHandler {
+public abstract class WebSocketHandler extends BaseWebSocketHandler {
 
     protected HashMap <Integer, GameClient>clientList = new HashMap<Integer, GameClient>();
 
@@ -50,12 +50,13 @@ public class WebSocketHandler extends BaseWebSocketHandler {
     public void onClose(WebSocketConnection connection) {
         
         //remove GameClient from clientList
+        GameClient gameClient = this.clientList.get(connection.hashCode());
         this.clientList.remove(connection.hashCode());
         connection.send("42");
         connection.close();
         System.out.println(connection.hashCode() + " disconnected");
         
-       
+        this.connectionTerminated(gameClient);
     }
 
     /**
@@ -140,4 +141,6 @@ public class WebSocketHandler extends BaseWebSocketHandler {
             Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    protected abstract void connectionTerminated(GameClient gameClient);
 }
