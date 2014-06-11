@@ -35,6 +35,10 @@ function Connection(){
             alert("Error! no gameTable");	
     };
     
+    this.createGame = function(gameName, maxPlayers){
+        connection.createGame(gameName, maxPlayers);
+    };
+    
     this.startGame = function(){
         connection.startGame();
     };
