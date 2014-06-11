@@ -1,11 +1,11 @@
-package ServerLogic;
+package ServerLogic.Helper;
 
 import GameLogic.Spieler;
-import ServerLogic.Messages.Player;
+import ServerLogic.Model.Player;
 
 import java.util.HashMap;
 
-class PlayerMapper {
+public class PlayerMapper {
 
     private static HashMap<Spieler,Player> _mappingSP = new HashMap<Spieler, Player>();
     private static HashMap<Player,Spieler> _mappingPS = new HashMap<Player, Spieler>();

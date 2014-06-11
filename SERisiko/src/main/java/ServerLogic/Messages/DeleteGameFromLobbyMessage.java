@@ -1,5 +1,5 @@
 package ServerLogic.Messages;
 
 public class DeleteGameFromLobbyMessage extends MessageBase {
-    public Game Game;
+    public ServerLogic.Model.Game Game;
 }

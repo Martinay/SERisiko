@@ -1,11 +1,11 @@
 
-package ServerLogic;
+package ServerLogic.Model;
 
 import GameLogic.*;
+import ServerLogic.Helper.CountryMapper;
+import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
-import ServerLogic.Messages.Game;
-import ServerLogic.Messages.Player;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  *
  * @author Martin
  */
-class ServerGame extends Game {
+public class ServerGame extends Game {
     
-    List<Player> Players = new LinkedList<>();
+    public List<Player> Players = new LinkedList<>();
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
 
-    ServerGame(Player player, String name, int id, int maxPlayer) {
+    public ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
         Name = name;
         ID = id;
@@ -59,7 +59,7 @@ class ServerGame extends Game {
         for (Player player : Players) {
             Spieler spieler = new Spieler(player.ID);
             spielerList.add(spieler);
-            PlayerMapper.Add(spieler,player);
+            PlayerMapper.Add(spieler, player);
         }
 
         Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();

@@ -1,4 +1,4 @@
-package ServerLogic.Messages;
+package ServerLogic.Model;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package ServerLogic;
+package ServerLogic.Helper;
 
 import GameLogic.Kontinent;
 import GameLogic.Land;
 
 import java.util.HashMap;
 
-class CountryMapper {
+public class CountryMapper {
 
     static HashMap<String, Land> _countryMapping = new HashMap<>();
 

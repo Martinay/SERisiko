@@ -1,12 +1,9 @@
-package ServerLogic;
-
-import ServerLogic.Messages.Game;
-import ServerLogic.Messages.Player;
+package ServerLogic.Model;
 
 import java.util.LinkedList;
 import java.util.List;
 
-class Lobby {
+public class Lobby {
     private List<Player> _players = new LinkedList<Player>();
     private List<ServerGame> _openGames = new LinkedList<ServerGame>();
 

@@ -3,6 +3,8 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.Game;
+import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
 
 import java.util.List;
