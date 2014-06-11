@@ -56,9 +56,9 @@ function GameObject(name, id, actualP, maxP){
 
     //#Private Vars
     var gameName = name;
-    var gameId = id;
-    var actualPlayers = actualP;
-    var maxPlayers = maxP;
+    var gameId = parseInt(id);
+    var actualPlayers = parseInt(actualP);
+    var maxPlayers = parseInt(maxP);
 
     //# Public Methods
     this.getGameName = function(){

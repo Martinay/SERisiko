@@ -184,6 +184,8 @@ public class Spielsteuerung {
 			if (DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
 				int [] wuerfel_erg = wuerfele(Ereigniss.anz_Armeen ,Ereigniss.zweitesLand);
 				DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0],wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
+				
+				if 
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 			}else{
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
@@ -195,6 +197,8 @@ public class Spielsteuerung {
 	private Client_Response angriff_verlassen(){
 		return verschieben_betreten();
 	}
+	
+	
 	
 	//verschieben*******************************************************************************
 	

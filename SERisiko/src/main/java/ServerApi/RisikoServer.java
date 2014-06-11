@@ -119,7 +119,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
         response.addChangedObject( message.NewGame );
-        
+        response.addChangedObject( message.CreatedBy );
         
         return response;
     }
@@ -229,5 +229,14 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse endTurn(GameClient gameClient) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    protected void connectionTerminated(GameClient gameClient) {
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        this.gameManager.LeaveLobby(clientId);
+    }
+    
 
 }
