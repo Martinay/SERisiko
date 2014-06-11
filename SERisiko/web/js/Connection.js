@@ -62,6 +62,10 @@ function Connection(){
     this.listOpenGames = function(){
         connection.listOpenGames();
     };
+    
+    this.sendAttack = function(attackerLandId, defenderLandId, amountAttackerUnits){
+        connection.attack(attackerLandId, defenderLandId, amountAttackerUnits);
+    };
 
 }
 

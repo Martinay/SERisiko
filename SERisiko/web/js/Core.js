@@ -106,7 +106,7 @@ function Core() {
             this.svgHandler.setNewLandOwner("D2" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("D6" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("E1" ,this.getPlayerName());
-            this.svgHandler.setNewLandOwner("E3" ,Core.getPlayerName());
+            this.svgHandler.setNewLandOwner("E3" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("C4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("B5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("A1" ,this.getPlayerName());
@@ -116,16 +116,6 @@ function Core() {
 
             this.svgHandler.refreshOwnerRights();
         //#
-    };
-    
-    this.updateGameList = function(){
-        if(this.sctTable != null){
-            this.sctTable.clear("availableGames");
-            this.gameList.clear();
-            this.connectionHandle.listOpenGame();
-        }
-        else
-            alert("Error! no gameTable");	
     };
 
     this.minmax = function(value, min, max){
