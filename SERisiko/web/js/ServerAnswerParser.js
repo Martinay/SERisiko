@@ -71,32 +71,7 @@ function ServerAnswerParser(doc){
         if(message.data[1].Player.id == Core.getPlayerId()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
-            var svg = root.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-            Core.svgHandler.init(svg);
-            Core.combatHandler.init(svg);   
-            
-             // cleanup
-            root.getElementById("playerList").innerHTML = "";
-            Core.playerList.clear();
-            Core.listPlayers();
-            //verify 
-            Core.showElement(root.getElementById("game"));
-            Core.hideElement(root.getElementById("selectGame"));
-
-            // give me some lands test
-                Core.svgHandler.setNewLandOwner("D2" , Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("D6" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E3" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("C4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("B5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P12" ,Core.getPlayerName());
-
-                Core.svgHandler.refreshOwnerRights();
-            //#
+            Core.prepareJoinedGame();
 
             root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.startGame()" style="margin-bottom: 10px;">Spielstarten</button>';
             root.getElementById("startGameBtn").disabled = true;
@@ -113,7 +88,7 @@ function ServerAnswerParser(doc){
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-           
+           Core.prepareJoinedGame();
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
