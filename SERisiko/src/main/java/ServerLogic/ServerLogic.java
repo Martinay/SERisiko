@@ -45,10 +45,13 @@ public class ServerLogic implements IServerLogic {
     @Override
     public AttackMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        game.Attack(countryFromID, countryToID, units);
+        Integer[] dices = game.Attack(countryFromID, countryToID, units);
 
-        Integer[] diceAttacker = Arrays.asList(6,4,3).toArray(new Integer[3]);
-        Integer[] diceDefender = Arrays.asList(5,4).toArray(new Integer[2]);
+        if (dices.length == 0)
+            return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, null, null);
+
+        Integer[] diceAttacker = Arrays.asList(dices[0],dices[1],dices[2]).toArray(new Integer[3]);
+        Integer[] diceDefender = Arrays.asList(dices[3],dices[4]).toArray(new Integer[2]);
         return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, diceAttacker, diceDefender);
     }
 

@@ -13,7 +13,7 @@ import java.net.URL;
 public class Server 
 {
     
-    private final static int  HTTP_SERVER_PORT = 80;
+    private final static int  HTTP_SERVER_PORT = 12345;
     private final static int  WEBSOCKET_SERVER_PORT = 8080;
     
     public static void main( String[] args )

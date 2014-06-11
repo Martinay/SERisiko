@@ -7,6 +7,8 @@ import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,21 +64,25 @@ public class ServerGame extends Game {
             PlayerMapper.Add(spieler, player);
         }
 
-        Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();
+        Collection<Kontinent> loadedContinents = _mapLoader.GetKontinets();
 
-       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
+        Kontinent[] kontinents = loadedContinents.toArray(new Kontinent[loadedContinents.size()-1]);
+
+       _spiel = new Spielsteuerung(spielerList.toArray(new Spieler[spielerList.size()-1]), kontinents);
         CountryMapper.CreateCountryMapping(kontinents);
      }
 
-    public void Attack(String countryFromID, String countryToID, int units) {
+    public Integer[] Attack(String countryFromID, String countryToID, int units) {
 
         if (_spiel.Zustand != Spielzustaende.Angriff)
-            return;
+            return new Integer[0];
 
         Land from = CountryMapper.GetCountryById(countryFromID);
         Land to = CountryMapper.GetCountryById(countryToID);
 
         InteractWithGameLogic(units, from, to, false);
+
+        return Arrays.asList(6,4,3,2,1).toArray(new Integer[5]);
     }
 
     public void EndAttack() {
