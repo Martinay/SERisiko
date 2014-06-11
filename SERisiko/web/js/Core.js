@@ -54,6 +54,10 @@ function Core() {
         this.updateGameList();
     };
     
+    this.startGame = function(){
+        connection.startGame();
+    }
+    
     this.getPlayerName = function(){
         return thePlayerName;
     };

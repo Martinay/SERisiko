@@ -73,9 +73,9 @@ function ServerAnswerParser(doc){
             Core.hideElement(root.getElementById("newGame"));
 
             Core.setGame(parseInt(message.data[0].ServerGame.id));
+            root.getElementById("startGame").innerHTML = '<button  id="optionsInGame" name="optionsInGame" onClick="Core.startGame()" style="margin-bottom: 10px;">Bereit zum Spielen</button>';
 
             //cleanup
-            root.getElementById("gameName").value = "Spielname";
             root.getElementById("maxPlayers").value = "6";
         }
         else{
