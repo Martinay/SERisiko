@@ -29,7 +29,7 @@ function Core() {
 
         // Start ConnectionToServer
         connection.onmessage = function(elem) { //get message from server
-            console.log( elem );
+            console.log( JSON.parse(elem.data) );
             Core.serverAnswerParserHandler.parseServerAnswers(elem);
             $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
         };
@@ -95,18 +95,6 @@ function Core() {
         //cleanup
         document.getElementById("gameName").value = "Spielname";
         document.getElementById("maxPlayers").value = "6";
-    }
-
-    this.setGame = function(id){
-        if(this.sctTable != null){
-            var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-            this.svgHandler.init(svg);
-            this.combatHandler.init(svg);
-            
-            connection.joinGame(parseInt(id));
-        }
-        else
-            alert("Error! no gameTable");
     };
 
     this.showCreateNewGame = function(){

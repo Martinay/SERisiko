@@ -71,24 +71,11 @@ function ServerAnswerParser(doc){
         if(message.data[1].Player.id == Core.getPlayerId()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
-
-            Core.setGame(parseInt(message.data[0].ServerGame.id));
-            root.getElementById("startGame").innerHTML = '<button  id="optionsInGame" name="optionsInGame" onClick="Core.startGame()" style="margin-bottom: 10px;">Bereit zum Spielen</button>';
-
-            //cleanup
-            root.getElementById("maxPlayers").value = "6";
-        }
-        else{
-            Core.sctTable.addRow("availableGames", message.data[0].ServerGame);
-            Core.gameList.addGame(message.data[0].ServerGame); 
-        }
-        
-    };
-    
-    var handleNewPlayerJoinedMessage = function(message){
-        //is it me?
-        if(message.data[0].Player.id == Core.getPlayerId()){
-            // cleanup
+            var svg = root.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+            Core.svgHandler.init(svg);
+            Core.combatHandler.init(svg);   
+            
+             // cleanup
             root.getElementById("playerList").innerHTML = "";
             Core.playerList.clear();
             Core.listPlayers();
@@ -110,6 +97,22 @@ function ServerAnswerParser(doc){
 
                 Core.svgHandler.refreshOwnerRights();
             //#
+
+            root.getElementById("startGame").innerHTML = '<button  id="optionsInGame" name="optionsInGame" onClick="Core.startGame()" style="margin-bottom: 10px;">Bereit zum Spielen</button>';
+            //cleanup
+            root.getElementById("maxPlayers").value = "6";
+        }
+        else{
+            Core.sctTable.addRow("availableGames", message.data[0].ServerGame);
+            Core.gameList.addGame(message.data[0].ServerGame); 
+        }
+        
+    };
+    
+    var handleNewPlayerJoinedMessage = function(message){
+        //is it me?
+        if(message.data[0].Player.id == Core.getPlayerId()){
+           
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
