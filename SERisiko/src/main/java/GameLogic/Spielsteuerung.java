@@ -185,7 +185,7 @@ public class Spielsteuerung {
 				int [] wuerfel_erg = wuerfele(Ereigniss.anz_Armeen ,Ereigniss.zweitesLand);
 				DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0],wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
 				
-				if 
+				//if 
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
 			}else{
 				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
