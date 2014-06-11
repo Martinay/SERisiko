@@ -26,7 +26,7 @@ function Core() {
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "")
+        if(name == "" || !validate(name))
             return false;
         thePlayerName = name;
 
@@ -83,7 +83,7 @@ function Core() {
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
         // validate name
-        if(gameName === "")
+        if(gameName === "" || !validate(name))
             return;
         //parse data to server
         this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
@@ -236,6 +236,15 @@ function Core() {
           break;
         }
       }
+    };
+    
+    var validate = function(str){
+        var nameRegex = /^[a-zA-Z0-9]+$/;
+        var valid = str.match(nameRegex);
+        if(valid === null){
+            return false;
+        }
+        return true;
     };
 }
 // ---------------------- #
