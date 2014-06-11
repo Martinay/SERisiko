@@ -13,6 +13,7 @@ function Core() {
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
+    //this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
@@ -93,8 +94,9 @@ function Core() {
         if(this.sctTable != null){
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
-
-            connection.joinGame(id);
+            //this.combatHandler.init(svg);
+            
+            connection.joinGame(parseInt(id));
         }
         else
             alert("Error! no gameTable");
