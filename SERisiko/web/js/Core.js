@@ -22,10 +22,6 @@ function Core() {
     
     //#InitConnection Function
     this.connectionHandler = new Connection();
-
-    connectionHandler.init();
-    //# Load Map... done by html object    
-    
     
     //# Public Methods
     this.setPlayerName = function(){
@@ -35,7 +31,7 @@ function Core() {
         thePlayerName = name;
 
         // create Player on Server + joinLobby
-        connectionHandler.joinSever(thePlayerName); // includes joinlobby
+        this.connectionHandler.joinServer(thePlayerName); // includes joinlobby
     };
     
     this.getPlayerName = function(){
@@ -43,7 +39,7 @@ function Core() {
     };
 
     this.deletePlayerName = function(){
-        connectionHandler.leaveLobby();
+        this.connectionHandler.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
         document.getElementById("playerName").value = "";
@@ -56,13 +52,13 @@ function Core() {
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
         this.sctTable.clear("availableGames");
         
-        connectionHandler.init();
+        this.connectionHandler.init();
     };
 
     this.backToLobby = function(){
-        connectionHandler.leaveGame();
+        this.connectionHandler.leaveGame();
         //check response
-        connectionHandler.joinLobby();
+        this.connectionHandler.joinLobby();
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -90,7 +86,7 @@ function Core() {
         if(gameName === "")
             return;
         //parse data to server
-        connectionHandler.createGame(gameName, parseInt(maxPlayers));
+        this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
     };
     
     this.prepareJoinedGame = function(){
@@ -101,7 +97,7 @@ function Core() {
          // cleanup
         document.getElementById("playerList").innerHTML = "";
         this.playerList.clear();
-        connectionHandler.listPlayers()
+        this.connectionHandler.listPlayers()
         //verify 
         this.showElement(document.getElementById("game"));
         this.hideElement(document.getElementById("selectGame"));
@@ -125,7 +121,8 @@ function Core() {
     this.updateGameList = function(){
         if(this.sctTable != null){
             this.sctTable.clear("availableGames");
-            getGameList();
+            this.gameList.clear();
+            this.connectionHandle.listOpenGame();
         }
         else
             alert("Error! no gameTable");	

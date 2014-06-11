@@ -18,6 +18,7 @@ function Connection(){
             $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
         };
     };
+    this.init();
     
     this.joinServer = function(thePlayerName){
         connection.joinServer(thePlayerName);
@@ -25,6 +26,13 @@ function Connection(){
     
     this.joinLobby = function(){
         connection.joinLobby();
+        if(Core.sctTable != null){
+            Core.sctTable.clear("availableGames");
+            Core.gameList.clear();
+            Core.connectionHandler.listOpenGames();
+        }
+        else
+            alert("Error! no gameTable");	
     };
     
     this.startGame = function(){
