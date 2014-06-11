@@ -110,9 +110,6 @@ function ServerAnswerParser(doc){
 
                 Core.svgHandler.refreshOwnerRights();
             //#
-            
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
-            Core.playerList.addPlayer(player);
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
