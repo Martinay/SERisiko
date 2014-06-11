@@ -10,10 +10,13 @@ var Core = new Core();
 function Core() {
     //#Public Vars
     this.gameList = new GameList();
-    this.sctTable = new SelectableTable();
-    this.svgHandler = new SvgFunctions();
+    this.playerList = new PlayerList();
+    this.sctTable = new SelectableTable(document);
+    this.svgHandler = new SvgFunctions(document);
+    this.serverAnswerParserHandler = new ServerAnswerParser(document);
     
     //#Private Vars
+    var thePlayerId = -1;
     var thePlayerName = "";
     
     //#InitConnection Function
@@ -26,7 +29,7 @@ function Core() {
         // Start ConnectionToServer
         connection.onmessage = function(elem) { //get message from server
             console.log( elem );
-            parseServerAnswers(elem);
+            Core.serverAnswerParserHandler.parseServerAnswers(elem);
             $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
         };
     };
@@ -43,19 +46,19 @@ function Core() {
 
         // create Player on Server + joinLobby
         connection.joinServer(thePlayerName); // includes joinlobby
-        //connection.joinLobby(thePlayerName);
         
         this.updateGameList();
     };
+    
+    this.getPlayerName = function(){
+        return thePlayerName;
+    };
 
     this.deletePlayerName = function(){
-        if(thePlayerName == "")
-            return false;
-
         connection.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
-        document.getElementById("playerName").value = "Ihr Spielername";
+        document.getElementById("playerName").value = "";
 
         // revert menu
         showElement(document.getElementById("setPlayerName"));
@@ -68,29 +71,30 @@ function Core() {
         etablishConnection();
     };
 
-    this.leaveGame = function(){
-        connection.leaveGame();
-    }
-
     this.backToLobby = function(){
+        connection.leaveGame();
         //check response
         connection.joinLobby();
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
-        hideElement(document.getElementById("GameScreen"));
-        hideElement(document.getElementById("gameOptions"));
-        hideElement(document.getElementById("newGame"));
     };
+    
+    this.leaveCreateGame = function(){
+        showElement(document.getElementById("selectGame"));
+        hideElement(document.getElementById("newGame"));
+        
+        //cleanup
+        document.getElementById("gameName").value = "Spielname";
+        document.getElementById("maxPlayers").value = "6";
+    }
 
     this.setGame = function(id){
         if(this.sctTable != null){
             var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
             this.svgHandler.init(svg);
 
-            joinGame(this.sctTable, id);
-            
-            this.updatePlayerList();
+            connection.joinGame(id);
         }
         else
             alert("Error! no gameTable");
@@ -106,9 +110,7 @@ function Core() {
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
         //parse data to server
-        connection.createGame(gameName, maxPlayers);
-        
-        //wait for server response....
+        connection.createGame(gameName, parseInt(maxPlayers));
     };
 
     this.updateGameList = function(){
@@ -141,105 +143,113 @@ function Core() {
 
     this.readyToPlay = function(){		
         // send to server : player ready
-        // connection.setPlayerReady(); not yet implemented
-        this.updatePlayerList();
+        connection.setPlayerState(true);
+        this.listPlayers();
+        initUnitAmountSelector(1, 10);
     };
-
-    this.updatePlayerList = function(){
-        // get playerlsit from server // get ready state of pl from server
+    
+    this.listPlayers = function(){
         connection.listPlayers();
-        // parse message
-        var players = [ // pseudo test data
-                        {"name" : "Hans von Massow", "rdy" : 1},
-                        {"name" : "Maismüller", "rdy" : 1},
-                        {"name" : "Karl-Heinz", "rdy" : 0},
-                        {"name" : "Philipp", "rdy" : 1},
-                        {"name" : "Alex", "rdy" : 0},
-                        {"name" : "Nerv", "rdy" : 1}
-                        ];			  	  
-        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
-        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
-
-        document.getElementById("PlayerList").innerHTML = "";
-        for(var i = 0; i < 6; i++){
-            $("#PlayerList").append(players[i].name + ((players[i].rdy == 1)? rdy : notRdy) + "<br>");
-        }
-    };
+    }
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
-    //# Private Methods    
-    var joinGame = function(table, id){
-        showElement(document.getElementById("game"));
-        showElement(document.getElementById("GameScreen"));
-        showElement(document.getElementById("gameOptions"));
-        hideElement(document.getElementById("selectGame"));
-        
-        connection.leaveLobby();
-        connection.joinGame(id);
+    this.getPlayerName = function(){
+        return thePlayerName;        
     };
+    
+    this.setUnitAmount = function(){
+        //hideElement(document.getElementById("bottom_overlay"));
+        $( "#bottom_overlay" ).slideUp( "slow");
+        hideElement(document.getElementById("mutex"));
+        
+        var select = document.getElementById("unitAmount");
+        alert(select.options[select.selectedIndex].value);
+        document.getElementById("bottom_overlay").innerHTML = "";
+    };
+    
+    this.hideElement = function(element){
+        element.style.display = "none";
+    };
+    
+    this.showElement = function(element){
+        element.style.display = "block";
+    };
+    
+    this.createSlider = function(id, idAfter, minValue, maxValue){
+        var select = $( "#" + id );
+        var slider = $( "<div id='slider'></div>" ).insertAfter( "#" + idAfter ).slider({
+            min: minValue,
+            max: maxValue,
+            range: "min",
+            value: select[ 0 ].selectedIndex + 1,
+            slide: function( event, ui ) {
+                select[ 0 ].selectedIndex = ui.value - 1;
+            }
+        });
+        $( "#" + id ).change(function() {
+            slider.slider( "value", this.selectedIndex + 1 );
+        });
+        var sel = $( "#" + id ).get(0);
+        while (sel.options.length > 0) {
+            sel.remove(sel.options.length - 1);
+        }
+        for(var i = minValue; i <= maxValue; i++){
+            var opt = document.createElement('option');
+            opt.text = i;
+            opt.value = i;
+            sel.add(opt, null);
+        }
+        slider.slider( "value", maxValue );
+        select.val(maxValue);
+    };
+    
+    this.updatePlayerList = function(){
+        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
+        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
+
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+            $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
+        }
+    };
+    
+    this.setPlayerId = function(id){
+        thePlayerId = id;
+    };
+    
+    this.getPlayerId = function(){
+        return thePlayerId;
+    };
+    
+    //# Private Methods  
     var hideElement = function(element){
         element.style.display = "none";
     };
+    
     var showElement = function(element){
         element.style.display = "block";
     };
 
     var getGameList = function(){
-        
         // should be parsed by server...
         Core.gameList.clear();
         connection.listOpenGames();
     };
     
-    var parseServerAnswers = function(elem){
-        var message = JSON.parse(elem.data);
-        
-        switch(message.type){
-            case "AddNewPlayerToLobbyMessage":
-                if(message.state == 1){
-                    // create Player on Client
-                    hideElement(document.getElementById("setPlayerName"));
-                    showElement(document.getElementById("selectGame"));
-                    divs = document.getElementsByClassName('playerNameDisplay');
-                    [].slice.call(divs).forEach(function(div){div.innerHTML = thePlayerName;});
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            case "GameList":
-                if(message.state == 1){
-                    for(var i = 0; i < message.data.length; i++){
-                        Core.sctTable.addRow("availableGames", message.data[i].ServerGame);
-                        Core.gameList.addGame(message.data[i].ServerGame); 
-                    }
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            case "GameCreateMessage":
-                 if(message.state == 1){
-                    //verify 
-                    hideElement(document.getElementById("newGame"));
-
-                    Core.setGame(message.data.ServerGame.id);
-
-                    //cleanup
-                    document.getElementById("gameName").value = "Spielname";
-                    document.getElementById("maxPlayers").value = "6";
-                }
-                else{
-                    alert("Error: Bad response from Server");               
-                }
-                break;
-            default:
-                //nothing
-        }  
+    var initUnitAmountSelector = function(minValue, maxValue){
+        //showElement(document.getElementById("bottom_overlay"));
+        $( "#bottom_overlay" ).slideDown( "slow");
+        showElement(document.getElementById("mutex"));
+        document.getElementById("bottom_overlay").innerHTML = "\
+                        <label for='unitAmount'>Anzahl Einheiten</label> \
+                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
+                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
+        Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
     };
+    
     var sleep = function(milliseconds) {
       var start = new Date().getTime();
       for (var i = 0; i < 1e7; i++) {

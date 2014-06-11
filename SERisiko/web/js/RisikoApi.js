@@ -46,6 +46,10 @@ var RisikoApi = function() {
         socket.call("joinServer", playerName);
     };
     
+    socket.leaveServer = function(playerName){
+        socket.call("leaveServer", playerName);
+    };
+    
     socket.joinLobby = function(){
         socket.call("joinLobby");
     };
@@ -55,16 +59,18 @@ var RisikoApi = function() {
     socket.joinGame = function(gameNumber) {
         socket.call("joinGame", gameNumber);
     };
-    socket.leaveGame = function() {
-        socket.call("leaveGame");
-    };
     socket.createGame = function(gameName, maxPlayers) {
         socket.call("createGame", gameName, maxPlayers);
+    };
+    socket.setPlayerState = function(state) {
+        socket.call("setPlayerState",state);
     };
     socket.startGame = function() {
         socket.call("startGame");
     };
-    
+    socket.leaveGame = function() {
+        socket.call("leaveGame");
+    };    
     socket.listOpenGames = function() {
         socket.call("listOpenGames");
     };    
@@ -73,8 +79,13 @@ var RisikoApi = function() {
     }; 
     
     
+    
+    
     socket.attack = function(source, target, value) {
         socket.call("attack", source, target, value);
+    }; 
+    socket.attack = function(source, target, value) {
+        socket.call("endAttack", source, target, value);
     }; 
     socket.move = function(source, target, value) {
         socket.call("move", source, target, value);

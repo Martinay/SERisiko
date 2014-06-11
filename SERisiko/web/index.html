@@ -8,16 +8,21 @@
     <script src="js/extern/jquery-2.1.1.min.js"></script>
     <script src="js/extern/bootstrap.min.js"></script>
     <script src="js/extern/jquery.timer.js"></script>
+    <script src="js/extern/jquery-ui.js"></script>
+    <script src="js/extern/raphael-min.js"></script>
     
     <script src="js/RisikoApi.js"></script>
     <script src="js/Objects.js"></script>
+    <script src="js/GameSteps.js"></script>
+    <script src="js/ServerAnswerParser.js"></script>
     <script src="js/SelectableTable.js"></script>
     <script src="js/SvgFunctions.js"></script>
     <script src="js/Core.js"></script>
 
     <!-- style sheets -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/extern/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/extern/bootstrap/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/extern/ui-lightness/jquery-ui.min.css">
     <link rel="stylesheet" href="css/style.css" />
     
     <title>SE_RISK</title>
@@ -25,109 +30,58 @@
 <body>
     <br />
     <div id="setPlayerName">
-        <table id="tableLogin">
-            <tr>
-                <td colspan="2">
-                    <h1>Bitte geben Sie Ihren Spielernamen ein</h1><br /><br />
-                </td>
-            </tr>   
-            <tr>
-                <td>
-                    <input id="playerName" value="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)" />
-                </td>
-                <td>
-                    <button onClick="Core.setPlayerName()">Go</button>
-                </td>
-            </tr>
-        </table>
+        <h1>Bitte geben Sie Ihren Spielernamen ein</h1><br /><br />
+        <input id="playerName" value="" placeholder="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)" />
+        <button onClick="Core.setPlayerName()">Go</button>
     </div>
     <div id="selectGame">
-        <table id="tableSelectGame">
-            <tr>
-                <td colspan="2"><h3 class="playerNameDisplay" style="text-align: center;"></h3></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <br>
-                    <div id="gameList">
-                        <table id="availableGames">
-                            <tr>
-                                <th>Name</th>
-                                <th>Id</th>
-                                <th>Player</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <br>
-                </td>	
-            </tr>
-            <tr>
-                <td><button  name="deletePlayerName" onClick='Core.deletePlayerName();'>Zurück</button></td>
-                <td><button  name="showCreatetNewGame" onClick='Core.showCreateNewGame()'>neues Spiel erstellen</button></td>
-            </tr>
-        </table>
+        <h3 class="playerNameDisplay" style="text-align: center;"></h3>
+            <div id="gameList">
+                <table id="availableGames">
+                    <tr>
+                        <th>Name</th>
+                        <th>Id</th>
+                        <th>Player</th>
+                    </tr>
+                </table>
+            </div>
+        <br>
+        <button style="margin-left: 105px; margin-right: 430px;" name="deletePlayerName" onClick='Core.deletePlayerName();'>Zurück</button>
+        <button  name="showCreatetNewGame" onClick='Core.showCreateNewGame()'>neues Spiel erstellen</button>
     </div>
     <div id="newGame">
-        <table>
-            <tr>
-                <td colspan="2">
-                    <h3 class="playerNameDisplay" style="text-align: center;"></h3>
-                </td>
-            </tr>
-            <tr>
-                <td>Name des Spiels:</td>
-                <td><input id="gameName" value="Spielname" size="26"></td>
-            </tr>
-            <tr>
-                <td>Anzahl der Spieler:</td>
-                <td><input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)"></td>
-            </tr>
-            <tr>
-                <th><button  name="backToLobby" onClick='Core.backToLobby()'>Zurück</button></th>
-                <th><button  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button></th>
-            </tr>
-        </table>
+        <h3 class="playerNameDisplay" style="text-align: center;"></h3>
+        Name des Spiels: <input id="gameName" value="Spielname" size="26" style="margin-left: 50px;"><br />
+        Anzahl der Spieler: <input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)" style="margin-left: 40px; margin-top: 5px;"><br />
+        <button style="margin-left: 25px; margin-top: 5px;" name="leaveCreateGame" onClick="Core.leaveCreateGame()">Zurück</button>
+        <button style="margin-left: 90px; margin-top: 5px;"  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button>
     </div>
     <div id="game"> 
-        <table style="margin: 0px auto;">
-            <tr>
-                <td>
-                    <div id="GameScreen">
-                        <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
-                        <div id="gameMap">
-                            <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml" width="700" height="550">
-                                <img src="maps/map_dhbw.jpg" width="700" alt="Playmap - DHBW"/>
-                            </object>
-                        </div>
-                            <!-- Loading Overlay -->
-                            <div id="loading_overlay">
-                                <div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>
-                            </div>
-                    </div> 
-                </td>
-                <td>
-                    <div id="gameOptions">
-                        <table>
-                            <tr>
-                                <th id="gameStatus"  style="padding-bottom: 20px;"> Warte auf Weitere Mitspieler </th>
-                            </tr>
-                            <tr>
-                                <th style="padding-bottom: 10px;">Ihre Mitspieler</th>
-                            </tr>
-                            <tr>
-                                <td id="PlayerList"></td>
-                            </tr>
-                            <tr>
-                                <th style="padding-top: 10px;">
-                                    <button  name="readyToPlay" onClick='Core.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button>
-                                    <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
-                                </th>
-                            </tr>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div id="GameScreen">
+            <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
+            <div id="gameMap">
+                <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml">
+                    <img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/>
+                </object>
+                <!-- Map Blocker -->
+                <div id='mutex'></div>
+                 <!-- Select Unit Amount Overlay -->
+                <div id ="bottom_overlay"></div>
+                <!-- Loading Overlay -->
+                <div id="loading_overlay">
+                    <div id="loading_message">Waiting for Server... <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif"></div>
+                </div>
+            </div>
+        </div> 
+        <div id="gameOptions">
+            <div id="gameStatus"> Warte auf Weitere Mitspieler </div>
+            <br>
+            Ihre Mitspieler<br />
+            <div id="playerList"></div><br />
+            <button  name="readyToPlay" onClick='Core.readyToPlay()' style="margin-bottom: 10px;">Bereit zum Spielen</button><br />
+            <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
+        </div>
+        <div style="clear:both"></div>
     </div>
     <br /><br/>
     <!-- Results -->

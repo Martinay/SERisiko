@@ -75,3 +75,82 @@ function GameObject(name, id, actualP, maxP){
     }
     //# Private Methods
 }
+
+
+function PlayerList(){
+    //#Public Vars
+
+    //#Private Vars
+    var amount = 0;
+    var players = new Array();
+
+    //# Public Methods
+    this.clear = function(){
+        players = [];
+        amount = 0;
+    };
+
+    this.addPlayer = function(player){
+        amount++;
+        players.push(player);
+    };
+
+    this.getPlayers = function(){
+        if(players != null)
+            return players;
+        else
+            alert('no players found');
+    };
+
+    this.getPlayerAmount = function(){
+        return amount;
+    };
+
+    this.getPlayer = function(index){
+        return players[index];
+    };
+    
+    this.getPlayerById = function(id){
+       for(var i = 0; i < amount; i++){
+            if(players[i].getPlayerId() == id){
+                return players[i];
+            }
+        }
+        return new PlayerObject("Player not found", -1, false);
+    }
+
+    this.deletePlayerById = function(id){
+        for(var i = 0; i < amount; i++){
+            if(players[i].getPlayerId() == id){
+                players.splice(i, 1);
+            }
+        }
+    };
+    
+    this.updatePlayer = function(id, player){
+       this.deletePlayerById(id);
+       this.addPlayer(player);
+    };
+    //# Private Methods
+}
+
+function PlayerObject(name, id, rdy){
+    //#Public Vars
+
+    //#Private Vars
+    var playerName = name;
+    var playerId = id;
+    var readyState = rdy;
+
+    //# Public Methods
+    this.getPlayerName = function(){
+        return playerName;
+    };
+     this.getReadyState = function(){
+        return readyState;
+    };
+    this.getPlayerId = function(){
+        return playerId;
+    }
+    //# Private Methods
+}

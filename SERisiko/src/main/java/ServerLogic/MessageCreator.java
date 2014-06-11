@@ -74,10 +74,11 @@ class MessageCreator {
         return message;
     }
 
-    public static GameCreatedMessage CreateGameCreatedMessage(List<Integer> idsToUpdate, Game game) {
+    public static GameCreatedMessage CreateGameCreatedMessage(List<Integer> idsToUpdate, Game game, Player createdBy) {
         GameCreatedMessage message = new GameCreatedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.NewGame = game;
+        message.CreatedBy = createdBy;
         return message;
     }
 
@@ -96,7 +97,7 @@ class MessageCreator {
         return message;
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, int countryFromID, int countryToID) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID) {
 
         MapChangedMessage message = CreateMapChangedMessage(idsToUpdate, countryFromID);
 
@@ -105,7 +106,7 @@ class MessageCreator {
         return message;
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, int countryID) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, String countryID) {
         MapChangedMessage message = new MapChangedMessage();
 
         List<MapChange> mapChange = Arrays.asList(CreateMapChange(countryID));
@@ -116,7 +117,7 @@ class MessageCreator {
         return message;
     }
 
-    private static MapChange CreateMapChange(int countryId)
+    private static MapChange CreateMapChange(String countryId)
     {
         Land country = CountryMapper.GetCountryById(countryId);
 

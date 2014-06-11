@@ -35,7 +35,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Attack(countryFromID, countryToID, units);
 
@@ -49,7 +49,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage Move(int playerID, int countryFromID, int countryToID, int units) {
+    public MapChangedMessage Move(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Move(countryFromID, countryToID, units);
 
@@ -57,7 +57,7 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage PlaceUnits(int playerID, int countryID, int units) {
+    public MapChangedMessage PlaceUnits(int playerID, String countryID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.PlaceUnits(countryID, units);
 
@@ -110,9 +110,9 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public PlayerLeftMessage LeaveGame(int playerID, int gameId) {
+    public PlayerLeftMessage LeaveGame(int playerID) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.Lobby.GetGameById(gameId);
+        ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
 
         game.Players.remove(player);
 
@@ -132,7 +132,7 @@ public class ServerLogic implements IServerLogic {
 
         _state.Lobby.AddGame(game);
 
-    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(), game);
+    return MessageCreator.CreateGameCreatedMessage(_state.Lobby.GetPlayerIDs(), game, player);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(), game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
     }
 
     @Override
@@ -165,22 +165,12 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public List<Player> GetPlayersInGame(int gameId) {
-        return _state.Lobby.GetGameById(gameId).Players;
+    public List<Player> GetPlayersInGame(int playerID) {
+        return _state.Lobby.GetGameByPlayerId(playerID).Players;
     }
 
     @Override
     public List<Game> GetGamesInLobby() {
         return _state.Lobby.GetOpenGames();
-    }
-
-    @Deprecated
-    public GameCreatedMessage JoinGame(int clientId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Deprecated
-    public PlayerLeftMessage LeaveGame(int clientId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

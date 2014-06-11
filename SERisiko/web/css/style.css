@@ -3,6 +3,8 @@
 #setPlayerName{
     display: block;
     /*display: none;*/
+    margin: 0px auto;
+    text-align: center;
 }
 
 /** Spiel ausw�hlen Tabelle **/
@@ -38,28 +40,12 @@
   color: #0055AA;
 }
 
-#tableSelectGame{
-    margin: 0px auto;
-    width: 800px;
-}
-
 /** Komplett Spiel ausw�hlen **/
 
 #selectGame{
     display: none;
-}
-
-#tableSelectGame td, th {
-    font-family: Verdana, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: normal;
-    width: 200px; 
-    text-align: center;
-}
-
-#tableLogin{
     margin: 0px auto;
-    width: 400px;
+    width: 800px;
 }
 
 /** Neues Spiel erstellen **/
@@ -81,7 +67,7 @@
 
 /** Spiel Spielen **/
 
-#Game{
+#game{
     /*display: block;*/
     display: none;
     margin: 0px auto;
@@ -89,36 +75,40 @@
 }
 
 #gameOptions{
-    display: none;
+    display: block;
     float: right;
-    width: 300px;
-}
-
-#screen { 
-    background-color: #FCF;
+    text-align: center;
 }
 
 #GameScreen { 
-    display: none; 
+    display: block; 
+    position: static;
+    width: 950px;
     float: left;
-    overflow: hidden;
-    position: relative;
-    width: 710px;
-    height: 600px;
+    min-height: 700px;
+}
+
+#svg_obj{
+    width: 100%;
+    height: 100%;
 }
 
 #gameMap {
-    width: 700px;
-    height: 550px;
-    position: absolute;
+    border: 2px solid black;
+    width: 100%;
 }
 
-#PlayerList{
-    padding: 5px;
+#gameStatus{
+    padding-top: 80px;
+}
+
+#playerList{
+    padding: 7px;
     border: 3px solid black;
-    width: 200px;
-    height: 400px;
+    width: 160px;
+    height: 140px;
     text-align: center;
+    margin: 0px auto;
 }
 /**anderes **/
 hr{
@@ -128,21 +118,67 @@ hr{
 /** loading overlay **/
 #loading_overlay {
     display: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background: #000;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
-    position: absolute;
+    position: relative;
+    background: #404040; /* Fallback IE 6-8 */
+    background: rgba(0, 0, 0, .95);
+    margin-top: -670px;
+    height: 670px;
+    padding-top: 150px;
+    text-align: center;
 }
 #loading_message{
     margin: 0px auto;
     color: #ffffff;
 }
 
-.playerNameDisplay{
-    
+/** selectUnitAmount Overlay **/
+#bottom_overlay{
+    display: none;
+    position: absolute;
+    background: #404040; /* Fallback IE 6-8 */
+    background: rgba(0, 0, 0, .95);
+    height: 70px;
+    margin-top: -70px;
+    width: 946px;
+}
+
+#mutex {
+    display: none;
+    position: relative;
+    background: #000;
+    opacity: 0.0;
+    margin-top: -670px;
+    height: 670px;
+}
+
+#slider{
+    width: 95%;
+    margin: 10px auto;
+}
+
+label[for=unitAmount]{
+    margin-top: 10px;
+    margin-left: 2.5%;
+    color: #FFFFFF;
+}
+
+label[for=unitAmountMove]{
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+label[for=unitAmountAttack]{
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+#showAttack{
+    margin-top: -100px; 
+}
+
+#showAttack table{
+    font-size: 30px;
+    color: #FFFFFF;
+    width: 90%;
+    margin: 0px auto;
 }

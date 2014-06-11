@@ -7,10 +7,10 @@ import java.util.List;
 public interface IServerLogic {
 
     //InGame
-    MapChangedMessage PlaceUnits(int playerID, int countryID, int units);
-    MapChangedMessage Attack(int playerID, int countryFromID, int countryToID, int units);
+    MapChangedMessage PlaceUnits(int playerID, String countryID, int units);
+    MapChangedMessage Attack(int playerID, String countryFromID, String countryToID, int units);
     void EndAttack(int playerID);
-    MapChangedMessage Move(int playerID, int countryFromID, int countryToID, int units);
+    MapChangedMessage Move(int playerID, String countryFromID, String countryToID, int units);
     EndTurnMessage EndTurn(int playerID);
 
     //Lobby
@@ -20,12 +20,12 @@ public interface IServerLogic {
     List<Game> GetGamesInLobby();
     List<Player> GetPlayersInLobby();
 
+    //LobbyGame
     NewPlayerJoinedMessage JoinGame(int playerID, int GameID);
-    PlayerLeftMessage LeaveGame(int playerID, int GameID);
+    PlayerLeftMessage LeaveGame(int playerID);
     GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
-    List<Player> GetPlayersInGame(int GameID);
-
+    List<Player> GetPlayersInGame(int playerID);
     ReadyStateChangedMessage ChangeReadyStatus(int playerID, boolean state);
 
 }

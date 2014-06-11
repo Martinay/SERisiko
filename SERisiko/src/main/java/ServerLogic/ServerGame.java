@@ -2,6 +2,8 @@
 package ServerLogic;
 
 import GameLogic.*;
+import ServerLogic.Map.Interfaces.IMapLoader;
+import ServerLogic.Map.MapLoader;
 import ServerLogic.Messages.Game;
 import ServerLogic.Messages.Player;
 
@@ -14,8 +16,9 @@ import java.util.List;
  */
 class ServerGame extends Game {
     
-    List<Player> Players = new LinkedList<Player>();
-    Spielsteuerung _spiel;
+    List<Player> Players = new LinkedList<>();
+    private Spielsteuerung _spiel;
+    private IMapLoader _mapLoader = new MapLoader();
 
     ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
@@ -31,13 +34,13 @@ class ServerGame extends Game {
 
     public List<Integer> GetPlayerIds()
     {
-        List<Integer> IDs = new LinkedList<Integer>();
+        List<Integer> iDs = new LinkedList<>();
 
         for (Player player : Players) {
-            IDs.add(player.ID);
+            iDs.add(player.ID);
         }
 
-        return IDs;
+        return iDs;
     }
 
     public boolean AreAllPlayerReady()
@@ -51,7 +54,7 @@ class ServerGame extends Game {
 
     public void Start()
     {
-        List<Spieler> spielerList = new LinkedList<Spieler>();
+        List<Spieler> spielerList = new LinkedList<>();
 
         for (Player player : Players) {
             Spieler spieler = new Spieler(player.ID);
@@ -59,11 +62,13 @@ class ServerGame extends Game {
             PlayerMapper.Add(spieler,player);
         }
 
-       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray());
+        Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();
+
+       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
         CountryMapper.CreateCountryMapping(_spiel.DieSpielwelt.gibLaender());
      }
 
-    public void Attack(int countryFromID, int countryToID, int units) {
+    public void Attack(String countryFromID, String countryToID, int units) {
 
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return;
@@ -83,7 +88,7 @@ class ServerGame extends Game {
         _spiel.zustandssteuerung(ereignis);
     }
 
-    public void Move(int countryFromID, int countryToID, int units) {
+    public void Move(String countryFromID, String countryToID, int units) {
         if (_spiel.Zustand != Spielzustaende.Verschieben)
             return;
 
@@ -94,7 +99,7 @@ class ServerGame extends Game {
         _spiel.zustandssteuerung(ereignis);
     }
 
-    public void PlaceUnits(int countryID, int units) {
+    public void PlaceUnits(String countryID, int units) {
         if (_spiel.Zustand != Spielzustaende.Armeen_hinzufuegen)
             return;
 

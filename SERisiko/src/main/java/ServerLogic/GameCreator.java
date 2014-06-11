@@ -8,7 +8,7 @@ class GameCreator {
 
     public static ServerGame Create(Player player, String gameName, int maxPlayer)
     {
-        return new ServerGame(player,gameName, GetNextID(), maxPlayer);
+        return new ServerGame(player, gameName, GetNextID(), maxPlayer);
     }
 
     private static int GetNextID()

@@ -29,8 +29,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage("");
         return this.joinLobby(gameClient);
-    }    
+    }  
     
+    public WebSocketResponse leaveServer(GameClient gameClient) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    } 
+
     public WebSocketResponse joinLobby(GameClient gameClient) {
         System.out.println("Join Lobby");
 
@@ -70,14 +74,18 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("Join Game: " + gameIndex);
                 
         int clientId = gameClient.getIdentifyer();
+        int gameId = gameIndex.intValue();
         
-        GameCreatedMessage message = gameManager.JoinGame(clientId);
+        NewPlayerJoinedMessage message = gameManager.JoinGame(clientId, gameId );
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        response.addChangedObject( message.NewGame );
+        
+        for(int i = 0; i< message.PlayersInGame.size(); i++) {
+            response.addChangedObject( message.PlayersInGame.get(i) );
+        }        
         
         return response;
     }
@@ -86,7 +94,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("leave game");
         
         int clientId = gameClient.getIdentifyer();
-        
+
         PlayerLeftMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
@@ -100,7 +108,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
 
     public WebSocketResponse createGame(GameClient gameClient, String gamename, Long maxPlayer) {
-        System.out.println("Create Game");
+        System.out.println("Create Game: " + gamename + '(' +maxPlayer+ ')');
         
         int clientId = gameClient.getIdentifyer();
         
@@ -115,9 +123,25 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         return response;
     }
-
+    
+    public WebSocketResponse setPlayerState(GameClient gameClient, Boolean state) {
+        System.out.println("set player state");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        ReadyStateChangedMessage message = gameManager.ChangeReadyStatus(clientId, state);
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+        response.addChangedObject( message.Player );
+        
+        return response;
+    }
+    
     public WebSocketResponse startGame(GameClient gameClient) {
-        System.out.println("Create Game");
+        System.out.println("Start Game");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -153,23 +177,46 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
 
     public WebSocketResponse listPlayers(GameClient gameClient) {
-        System.out.println("listPlayers");
+        System.out.println("List Players");
         
+        int clientId = gameClient.getIdentifyer();
         
+        List<Player> message = gameManager.GetPlayersInGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( "PlayerList" );
+        response.addTargetClient( clientId );
         
-        
+        for(int i = 0; i< message.size(); i++) {
+            response.addChangedObject( message.get(i) );
+        }
         
         return response;
     }
 
     
     
-    
+    //game
     public WebSocketResponse attack(GameClient gameClient, Long source, Long target, Long value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }    
+    
+    public  WebSocketResponse endAttack(GameClient gameClient) {
+        System.out.println("List Players");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        gameManager.EndAttack(clientId);
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( "AttackEndedMessage" );
+        response.addTargetClient( clientId );
+        
+        return response;    
     }
+   
 
     public WebSocketResponse move(GameClient gameClient, Long source, Long target, Long value) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
