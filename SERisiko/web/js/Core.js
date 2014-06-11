@@ -90,7 +90,8 @@ function Core() {
     };
     
     this.prepareJoinedGame = function(){
-        var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+        //var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+        var svg = document.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
         this.combatHandler.init(svg);   
 
