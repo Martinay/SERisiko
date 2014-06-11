@@ -83,7 +83,7 @@ function Core() {
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
         // validate name
-        if(gameName === "" || !validate(name))
+        if(gameName === "" || !validate(gameName))
             return;
         //parse data to server
         this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
