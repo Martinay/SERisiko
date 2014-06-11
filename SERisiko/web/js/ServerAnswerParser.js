@@ -73,7 +73,7 @@ function ServerAnswerParser(doc){
             Core.hideElement(root.getElementById("newGame"));
             Core.prepareJoinedGame();
 
-            root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.startGame()" style="margin-bottom: 10px;">Spielstarten</button>';
+            root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.connectionHandler.startGame();" style="margin-bottom: 10px;">Spielstarten</button>';
             root.getElementById("startGameBtn").disabled = true;
             //cleanup
             root.getElementById("maxPlayers").value = "6";
@@ -117,14 +117,14 @@ function ServerAnswerParser(doc){
 
             if(message.data[0].Player.ready == true){
                 root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
-                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(false); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = false;
                 }
                 root.getElementById("backToLobbyBtn").disabled = true;
             } else {
                 root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
-                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(true); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = true;
                 }
@@ -151,6 +151,6 @@ function ServerAnswerParser(doc){
     
     var handlePlayerCreatedMessage = function(message){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
-        Core.joinLobby();
+        Core.connectionHandler.joinLobby();
     };
 }

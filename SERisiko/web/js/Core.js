@@ -21,49 +21,29 @@ function Core() {
     var thePlayerName = "";
     
     //#InitConnection Function
-    var connection = null;
-    var etablishConnection = function(){
-        if (connection != null)
-            connection.close();
-        connection = new RisikoApi();
+    this.connectionHandler = new Connection();
 
-        // Start ConnectionToServer
-        connection.onmessage = function(elem) { //get message from server
-            console.log( JSON.parse(elem.data) );
-            Core.serverAnswerParserHandler.parseServerAnswers(elem);
-            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
-        };
-    };
-    etablishConnection();
+    connectionHandler.init();
     //# Load Map... done by html object    
     
     
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "" || name == "Ihr Spielername")
+        if(name == "")
             return false;
         thePlayerName = name;
 
         // create Player on Server + joinLobby
-        connection.joinServer(thePlayerName); // includes joinlobby
+        connectionHandler.joinSever(thePlayerName); // includes joinlobby
     };
-    
-    this.joinLobby = function(){
-        connection.joinLobby();
-        this.updateGameList();
-    };
-    
-    this.startGame = function(){
-        connection.startGame();
-    }
     
     this.getPlayerName = function(){
         return thePlayerName;
     };
 
     this.deletePlayerName = function(){
-        connection.leaveLobby();
+        connectionHandler.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
         document.getElementById("playerName").value = "";
@@ -76,13 +56,13 @@ function Core() {
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
         this.sctTable.clear("availableGames");
         
-        etablishConnection();
+        connectionHandler.init();
     };
 
     this.backToLobby = function(){
-        connection.leaveGame();
+        connectionHandler.leaveGame();
         //check response
-        connection.joinLobby();
+        connectionHandler.joinLobby();
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -110,15 +90,7 @@ function Core() {
         if(gameName === "")
             return;
         //parse data to server
-        connection.createGame(gameName, parseInt(maxPlayers));
-    };
-    
-    this.setGame = function(id){
-        if(this.sctTable != null){
-            connection.joinGame(parseInt(id));
-        }
-        else
-            alert("Error! no gameTable");
+        connectionHandler.createGame(gameName, parseInt(maxPlayers));
     };
     
     this.prepareJoinedGame = function(){
@@ -129,7 +101,7 @@ function Core() {
          // cleanup
         document.getElementById("playerList").innerHTML = "";
         this.playerList.clear();
-        this.listPlayers();
+        connectionHandler.listPlayers()
         //verify 
         this.showElement(document.getElementById("game"));
         this.hideElement(document.getElementById("selectGame"));
@@ -177,15 +149,6 @@ function Core() {
                     //nothing
         }
     };
-
-    this.readyToPlay = function(arg){		
-        // send to server : player ready
-        connection.setPlayerState(arg);
-    };
-    
-    this.listPlayers = function(){
-        connection.listPlayers();
-    }
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
@@ -266,12 +229,6 @@ function Core() {
     
     var showElement = function(element){
         element.style.display = "block";
-    };
-
-    var getGameList = function(){
-        // should be parsed by server...
-        Core.gameList.clear();
-        connection.listOpenGames();
     };
     
     var initUnitAmountSelector = function(minValue, maxValue){
