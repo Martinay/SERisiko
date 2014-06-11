@@ -6,11 +6,20 @@ public class Client_Response {
 	private Spielwelt dieSpielwelt;
 	private boolean fehler;
 	private Spieler aktuellerSpieler;
-	
+        
+        public int hinzufuegbare_Armeen; // nur gesetzt wenn im Zustand armeen hinzu
+        
+        public int[] angreifer_wuerfel;         // gesetzt nach Angriff auch nach Beendet
+        public int[] verteidiger_wuerfel;       // ich weiss das der public mist unschoen ist...
+                
 	protected Client_Response(Spielwelt dieSpielwelt, Spielzustaende aktuellerZustand, Spieler aktuellerSpieler, boolean fehler){
 		this.dieSpielwelt=dieSpielwelt;
 		this.aktuellerZustand=aktuellerZustand;
 		this.fehler=fehler;
+                
+                hinzufuegbare_Armeen=0;
+                angreifer_wuerfel=null;
+                verteidiger_wuerfel=null;       
 	}
 	
 	public Land[] gib_Laender(){
