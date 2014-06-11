@@ -70,7 +70,7 @@ function Combat(root){
                             "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Abbrechen</button>";
         document.getElementById("loading_overlay").innerHTML = OverlayString;
         
-        //setTimeout(function(){Core.combatHandler.showEndAttack("yes", countAttack);},3500);
+        setTimeout(function(){Core.combatHandler.showEndAttack("yes", countAttack);},3500);
     };
     
     this.showEndAttack = function (arg, Count){
@@ -96,7 +96,6 @@ function Combat(root){
         document.getElementById("loading_overlay").style.display = "none";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
-        Core.svgHandler.clearCanvas;
     };
     
     this.selectAmountUnit = function(attacker, defender){

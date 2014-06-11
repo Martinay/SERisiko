@@ -128,17 +128,6 @@ function SvgFunctions(root){
             }
        }
     };
-    
-    this.clearCanvas = function(){
-        var ids = new Array("A1", "A2", "A3", "D1", "D2");
-        ids.forEach(function(id){
-            var canvas = document.getElementById('canvas_' + id);
-            if(canvas.getContext){
-                var context = canvas.getContext('2d');
-                context.clearRect(0, 0, canvas.width, canvas.height);
-            }  
-        });
-    };
         
     //Private Methods
     
