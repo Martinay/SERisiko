@@ -146,4 +146,16 @@ public class MessageCreator {
         message.PlayerIDsToUpdate = Arrays.asList(player.ID);
         return message;
     }
+
+    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID, Integer[] diceAttacker, Integer[] diceDefender) {
+        AttackMessage message = new AttackMessage();
+
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.MapChange = Arrays.asList(CreateMapChange(countryFromID));
+        message.MapChange.add(CreateMapChange(countryToID));
+        message.DiceAttacker = diceAttacker;
+        message.DiceDefender = diceDefender;
+
+        return message;
+    }
 }
