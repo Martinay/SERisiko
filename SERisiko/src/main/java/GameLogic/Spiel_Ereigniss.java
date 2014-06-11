@@ -1,4 +1,7 @@
 package Gamelogic;
+
+import GameLogic.Land;
+
 public class Spiel_Ereigniss {
 
 	public int anz_Armeen;

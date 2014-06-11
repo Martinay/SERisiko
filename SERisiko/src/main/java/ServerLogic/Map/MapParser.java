@@ -108,7 +108,7 @@ public class MapParser implements IMapParser {
                         @Override
                         public void accept(Grouping<Object, ParseCountry> parseCountries) {
 
-                            final Kontinent continent = new Kontinent();
+                            final Kontinent continent = new Kontinent(0); //TODO
                             parseCountries.forEach(new Consumer<ParseCountry>() {
                                 @Override
                                 public void accept(ParseCountry parseCountry) {

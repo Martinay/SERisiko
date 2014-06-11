@@ -98,6 +98,7 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
+
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.DeletePlayer(player);
         _state.Players.remove(player);
