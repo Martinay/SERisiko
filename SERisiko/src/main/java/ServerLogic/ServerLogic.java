@@ -73,8 +73,10 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public void CreatePlayer(int playerID, String playerName) {
-        _state.Players.add(new Player(playerID, playerName));
+    public PlayerCreatedMessage CreatePlayer(int playerID, String playerName) {
+        Player player = new Player(playerID, playerName);
+        _state.Players.add(player);
+        return MessageCreator.CreatePlayerCreatedMessage(player);
     }
 
     @Override

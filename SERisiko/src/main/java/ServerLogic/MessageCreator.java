@@ -137,4 +137,11 @@ class MessageCreator {
 
         return message;
     }
+
+    public static PlayerCreatedMessage CreatePlayerCreatedMessage(Player player) {
+        PlayerCreatedMessage message = new PlayerCreatedMessage();
+        message.NewPlayer = player;
+        message.PlayerIDsToUpdate = Arrays.asList(player.ID);
+        return message;
+    }
 }

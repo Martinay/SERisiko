@@ -14,7 +14,7 @@ public interface IServerLogic {
     EndTurnMessage EndTurn(int playerID);
 
     //Lobby
-    void CreatePlayer(int playerID, String playerName);
+    PlayerCreatedMessage CreatePlayer(int playerID, String playerName);
     AddNewPlayerToLobbyMessage JoinLobby(int playerID);
     PlayerLeftLobbyMessage LeaveLobby(int playerID);
     List<Game> GetGamesInLobby();
