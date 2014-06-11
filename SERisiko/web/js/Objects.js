@@ -86,7 +86,7 @@ function PlayerList(){
 
     //# Public Methods
     this.clear = function(){
-        players = [];
+        players = new Array();
         amount = 0;
     };
 
@@ -123,6 +123,7 @@ function PlayerList(){
         for(var i = 0; i < amount; i++){
             if(players[i].getPlayerId() == id){
                 players.splice(i, 1);
+                amount--;
             }
         }
     };

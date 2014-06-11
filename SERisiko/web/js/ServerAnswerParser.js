@@ -37,8 +37,8 @@ function ServerAnswerParser(doc){
                 case "PlayerLeftMessage":
                     handlePlayerLeftMessage(message);
                     break;
-                case "JoinedServerMessage":
-                    handleJoinedServerMessage(message);
+                case "PlayerCreatedMessage":
+                    handlePlayerCreatedMessage(message);
                     break;
                 default:
                     //nothing
@@ -52,7 +52,7 @@ function ServerAnswerParser(doc){
     //# Private Methods
     var handleAddNewPlayerToLobbyMessage = function(message){
         //is it me?
-        if(message.data[0].Player.id == Core.getPlayerId() || true){
+        if(message.data[0].Player.id == Core.getPlayerId()){
             // create Player on Client
             Core.hideElement(root.getElementById("setPlayerName"));
             Core.showElement(root.getElementById("selectGame"));
@@ -68,7 +68,7 @@ function ServerAnswerParser(doc){
     };
     var handleGameCreatedMessage = function(message){
         //is it me?
-        if(message.data[1].Player.id == Core.getPlayerId() || true){
+        if(message.data[1].Player.id == Core.getPlayerId()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
 
@@ -87,7 +87,11 @@ function ServerAnswerParser(doc){
     
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
-        if(message.data[1].Player.id == Core.getPlayerId() || true){    
+        if(message.data[0].Player.id == Core.getPlayerId()){
+            // cleanup
+            root.getElementById("playerList").innerHTML = "";
+            Core.playerList.clear();
+            Core.listPlayers();
             //verify 
             Core.showElement(root.getElementById("game"));
             Core.hideElement(root.getElementById("selectGame"));
@@ -106,11 +110,14 @@ function ServerAnswerParser(doc){
 
                 Core.svgHandler.refreshOwnerRights();
             //#
-
-            Core.listPlayers();
+            
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.addPlayer(player);
         }
         else{
-            Core.listPlayers();
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.addPlayer(player);
+            Core.updatePlayerList();
         }
     };
     
@@ -118,7 +125,6 @@ function ServerAnswerParser(doc){
         // cleanup
         root.getElementById("playerList").innerHTML = "";
         Core.playerList.clear();
-        
         // parse message			  	  
         for(var i = 0; i < message.data.length; i++){
             var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready);
@@ -128,9 +134,27 @@ function ServerAnswerParser(doc){
     };
     
     var handleReadyStateChangedMessage = function(message){
-        var player = new Objects.PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready);
-        Core.playerList.updatePlayer(parseInt(message.data[i].Player.id), player);    
-        Core.updatePlayerList();
+        //is it me?
+        if(message.data[0].Player.id == Core.getPlayerId()){
+            if(message.data[0].Player.ready == true){
+                root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
+                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
+            } else {
+                root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
+                root.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
+            }
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
+            // cleanup
+            root.getElementById("playerList").innerHTML = "";
+            Core.updatePlayerList();
+        }
+        else{
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);   
+            root.getElementById("playerList").innerHTML = "";
+            Core.updatePlayerList(); 
+        }
     };
     
     var handlePlayerLeftMessage = function(message){
@@ -138,7 +162,8 @@ function ServerAnswerParser(doc){
         Core.updatePlayerList();
     };
     
-    var handleJoinedServerMessage = function(message){
+    var handlePlayerCreatedMessage = function(message){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
+        Core.joinLobby();
     };
 }

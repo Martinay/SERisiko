@@ -47,7 +47,10 @@ function Core() {
 
         // create Player on Server + joinLobby
         connection.joinServer(thePlayerName); // includes joinlobby
-        
+    };
+    
+    this.joinLobby = function(){
+        connection.joinLobby();
         this.updateGameList();
     };
     
@@ -111,6 +114,9 @@ function Core() {
         //check game settings....
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
+        // validate name
+        if(gameName === "")
+            return;
         //parse data to server
         connection.createGame(gameName, parseInt(maxPlayers));
     };
@@ -145,16 +151,7 @@ function Core() {
 
     this.readyToPlay = function(arg){		
         // send to server : player ready
-        if(arg == true){
-            connection.setPlayerState(true);
-            //initUnitAmountSelector(1, 10);
-            document.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
-            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
-        } else {
-            connection.setPlayerState(false);
-            document.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
-            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
-        }
+        connection.setPlayerState(arg);
     };
     
     this.listPlayers = function(){
