@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Lobby {
-    private List<Player> _players = new LinkedList<Player>();
+    private List<Player> _players = new LinkedList<>();
     private List<ServerGame> _openGames = new LinkedList<ServerGame>();
 
     public void AddGame(ServerGame game)
@@ -42,10 +42,9 @@ public class Lobby {
     public ServerGame GetGameById(int gameId)
     {
         for (ServerGame game : _openGames)
-        {
-                if (game.ID == gameId)
-                    return game;
-        }
+            if (game.ID == gameId)
+                return game;
+
         throw new RuntimeException("Game not found");
     }
 
@@ -61,7 +60,7 @@ public class Lobby {
     
     public List<Integer> GetPlayerIDs()
     {
-        List<Integer> IDs = new LinkedList<Integer>();
+        List<Integer> IDs = new LinkedList<>();
         
         for (Player player : _players) {
             IDs.add(player.ID);
