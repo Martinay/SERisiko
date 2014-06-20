@@ -2,6 +2,7 @@ package ServerLogic.Helper;
 
 import GameLogic.Land;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.EndTurn;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.Player;
 
@@ -131,10 +132,13 @@ public class MessageCreator {
         return mapChange;
     }
 
-    public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, Player nextPlayer) {
+    public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, EndTurn endTurn) {
         EndTurnMessage message = new EndTurnMessage();
 
-        message.NewActivePlayer = nextPlayer;
+        message.NewActivePlayer = endTurn.NextPlayer;
+        message.EndGame = endTurn.EndGame;
+        message.DefeatedPlayer = endTurn.DefeatedPlayer;
+        message.UnitsToPlaceNextPlayer =endTurn.UnitsToPlaceNextPlayer;
         message.PlayerIDsToUpdate = idsToUpdate;
 
         return message;

@@ -82,7 +82,7 @@ public class ServerGame extends Game {
 
         InteractWithGameLogic(units, from, to, false);
 
-        return Arrays.asList(6,4,3,2,1).toArray(new Integer[5]);
+        return Arrays.asList(6,4,3,2,1).toArray(new Integer[5]); //TODO
     }
 
     public void EndAttack() {
@@ -111,18 +111,19 @@ public class ServerGame extends Game {
         InteractWithGameLogic(units, land, null, false);
     }
 
-    public Player EndTurn() {
+    public EndTurn EndTurn() {
 
         Client_Response gameResponse = InteractWithGameLogic(1,null,null, true);
-        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Angriff) {
+        while(gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Beenden)
             gameResponse = InteractWithGameLogic(1,null,null, true);
-        }
 
-        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Verschieben) {
-            gameResponse = InteractWithGameLogic(1,null,null, true);
-        }
+        EndTurn response = new EndTurn();
+        response.NextPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
+        response.EndGame = gameResponse.gib_aktuellen_Zustand() == Spielzustaende.Beenden;
+        response.DefeatedPlayer = new LinkedList<Player>(); //TODO
+        response.UnitsToPlaceNextPlayer = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
 
-        return PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
+        return response;
     }
 
     private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState )

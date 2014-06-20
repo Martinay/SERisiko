@@ -4,10 +4,7 @@ import ServerLogic.Helper.GameCreator;
 import ServerLogic.Helper.MessageCreator;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.Game;
-import ServerLogic.Model.Player;
-import ServerLogic.Model.ServerGame;
-import ServerLogic.Model.ServerState;
+import ServerLogic.Model.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,9 +77,9 @@ public class ServerLogic implements IServerLogic {
     @Override
     public EndTurnMessage EndTurn(int playerID) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        Player nextPlayer = game.EndTurn();
+        EndTurn response = game.EndTurn();
 
-        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), nextPlayer);
+        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), response);
     }
 
     @Override
