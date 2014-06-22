@@ -19,11 +19,13 @@ import java.util.List;
 public class ServerGame extends Game {
     
     public List<Player> Players = new LinkedList<>();
+    public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
+        Creator = player;
         Name = name;
         ID = id;
         MaxPlayer = maxPlayer;

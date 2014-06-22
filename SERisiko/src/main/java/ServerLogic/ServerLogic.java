@@ -151,6 +151,10 @@ public class ServerLogic implements IServerLogic {
     @Override
     public GameStartedMessage StartGame(int playerID) {
         ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
+
+        if (playerID != game.Creator.ID)
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
+
         if (!game.AreAllPlayerReady())
             return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
 
