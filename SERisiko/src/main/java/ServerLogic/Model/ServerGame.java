@@ -6,6 +6,7 @@ import ServerLogic.Helper.CountryMapper;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
+import ServerLogic.Messages.GameLogicInteraction.EndTurn;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -91,7 +92,7 @@ public class ServerGame extends Game {
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return;
 
-        InteractWithGameLogic(1, null, null, true);
+        InteractWithGameLogic(0, null, null, true);
     }
 
     public void Move(String countryFromID, String countryToID, int units) {
@@ -126,6 +127,15 @@ public class ServerGame extends Game {
         response.UnitsToPlaceNextPlayer = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
 
         return response;
+    }
+
+    public Player GetCurrentPlayer()
+    {
+        return PlayerMapper.Map(_spiel.aktueller_Spieler);
+    }
+
+    public int GetNumberOfUnitsToPlace() {
+        return 5; //TODO
     }
 
     private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState )

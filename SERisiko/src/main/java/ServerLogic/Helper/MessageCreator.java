@@ -2,7 +2,7 @@ package ServerLogic.Helper;
 
 import GameLogic.Land;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.EndTurn;
+import ServerLogic.Messages.GameLogicInteraction.EndTurn;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.Player;
 
@@ -28,12 +28,14 @@ public class MessageCreator {
         return message;
     }
 
-    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game, Player player, int numberOfUnits)
     {
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
         message.GameStarted = true;
         message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
+        message.FirstPlayer = player;
+        message.NumberOfUnits = numberOfUnits;
         return message;
     }
 

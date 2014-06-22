@@ -4,6 +4,7 @@ import ServerLogic.Helper.GameCreator;
 import ServerLogic.Helper.MessageCreator;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Messages.*;
+import ServerLogic.Messages.GameLogicInteraction.EndTurn;
 import ServerLogic.Model.*;
 
 import java.util.Arrays;
@@ -95,7 +96,7 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.AddPlayer(player);
         
-    return MessageCreator.CreateAddNewPlayerToLobbyMessage(_state.Lobby.GetPlayerIDs(),player);
+    return MessageCreator.CreateAddNewPlayerToLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
     }
 
     @Override
@@ -168,7 +169,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game, game.GetCurrentPlayer(), game.GetNumberOfUnitsToPlace());
     }
 
     @Override

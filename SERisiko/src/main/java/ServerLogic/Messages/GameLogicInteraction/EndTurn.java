@@ -1,6 +1,6 @@
-package ServerLogic.Model;
+package ServerLogic.Messages.GameLogicInteraction;
 
-import GameLogic.Spieler;
+import ServerLogic.Model.Player;
 
 import java.util.List;
 
