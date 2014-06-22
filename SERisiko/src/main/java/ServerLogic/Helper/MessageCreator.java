@@ -62,6 +62,7 @@ public class MessageCreator {
         return message;
     }
 
+    //If Player who doesn't own the game leaves
     public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player) {
         PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
@@ -69,11 +70,25 @@ public class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player, List<Integer> playerIdsInLobby, Game game) {
+    //If no player is left in the game
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> playerIdsInLobby, Game game) {
         PlayerLeftMessage message = new PlayerLeftMessage();
-        message.PlayerIDsToUpdate = idsToUpdate;
-        message.Player = player;
         message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
+        return message;
+    }
+
+    //If Player who created the game leaves
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, List<Integer> playerIdsInLobby, Game game) {
+
+        PlayerLeftMessage message = new PlayerLeftMessage();
+        message.GameCreatorLeftGameMessage = CreateGameCreatorLeftGameMessage(idsToUpdate);
+        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby,game);
+        return message;
+    }
+
+    private static GameCreatorLeftGameMessage CreateGameCreatorLeftGameMessage(List<Integer> idsToUpdate) {
+        GameCreatorLeftGameMessage message = new GameCreatorLeftGameMessage();
+        message.PlayerIDsToUpdate = idsToUpdate;
         return message;
     }
 
@@ -162,4 +177,5 @@ public class MessageCreator {
 
         return message;
     }
+
 }

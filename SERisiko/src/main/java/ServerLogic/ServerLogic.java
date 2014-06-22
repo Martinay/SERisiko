@@ -132,7 +132,13 @@ public class ServerLogic implements IServerLogic {
         if (game.Players.size()== 0)
         {
             _state.Lobby.RemoveGame(game);
-            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player, _state.Lobby.GetPlayerIDs(),game);
+            return MessageCreator.CreatePlayerLeftMessage(_state.Lobby.GetPlayerIDs(),game);
+        }
+
+        if (game.Creator.ID == playerID)
+        {
+            _state.Lobby.RemoveGame(game);
+            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),_state.Lobby.GetPlayerIDs(),game);
         }
 
         return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(), player);
