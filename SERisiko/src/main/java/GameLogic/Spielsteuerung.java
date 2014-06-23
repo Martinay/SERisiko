@@ -13,6 +13,9 @@ public class Spielsteuerung {
 	private Spieler[] dieSpieler;
 	
 	public Spielzustaende Zustand;
+        
+        
+        private Client_Response aktueller_Response;
 	
 	
 	//Zustandsvariabeln
@@ -30,6 +33,10 @@ public class Spielsteuerung {
 		
 		armeen_hinzufuegen_betreten();
 	}
+        
+        public Client_Response gib_aktuellen_Zustand(){
+            return aktueller_Response;
+        }
        	
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
@@ -45,7 +52,7 @@ public class Spielsteuerung {
 			case Verschieben:
 					return verschieben(Ereigniss);
                             
-                        default:        return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+                        default:        return aktueller_Response;
 				
 		}
 	}
@@ -102,6 +109,8 @@ public class Spielsteuerung {
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                 zwischen.hinzufuegbare_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
+               
+        aktueller_Response=zwischen;
 	return zwischen;
 	}
 	
@@ -117,12 +126,14 @@ public class Spielsteuerung {
 				Ereigniss.erstesLand.mehr_Armeen(Ereigniss.anz_Armeen);
 				hinzuzufuegende_Armeen=hinzuzufuegende_Armeen-Ereigniss.anz_Armeen;
 			}else{
-				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+                                aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+				return aktueller_Response;
 			}
 		
 			if (hinzuzufuegende_Armeen<=0) return armeen_hinzufuegen_verlassen();
 			
-			return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                        aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+			return aktueller_Response;
 		}
 	}
 	
@@ -152,7 +163,8 @@ public class Spielsteuerung {
 		
 	private Client_Response angriff_betreten(){
 		Zustand=Spielzustaende.Angriff;
-		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+		aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                return aktueller_Response;
 	}
 		
 	private Client_Response angriff(SpielEreigniss Ereigniss){
@@ -172,15 +184,18 @@ public class Spielsteuerung {
                                     Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                                     zwischen.angreifer_wuerfel=angreifer_wuerfel_array;
                                     zwischen.verteidiger_wuerfel=verteidiger_wuerfel_array;
+                                    aktueller_Response=zwischen;
                                     return zwischen;
                                 }
                                 
                                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                                     zwischen.angreifer_wuerfel=angreifer_wuerfel_array;
                                     zwischen.verteidiger_wuerfel=verteidiger_wuerfel_array;
-				return zwischen;
+				aktueller_Response = zwischen;
+                                return aktueller_Response;
 			}else{
-				return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+                                aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+				return aktueller_Response;
 			}
 			
 		}
@@ -203,7 +218,8 @@ public class Spielsteuerung {
 	
 	private Client_Response verschieben_betreten(){
 		Zustand=Spielzustaende.Verschieben;
-		return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+		return aktueller_Response;
 	}
 		
 	private Client_Response verschieben(SpielEreigniss Ereigniss){
@@ -211,7 +227,8 @@ public class Spielsteuerung {
 			return verschieben_verlassen();	
 		}else{
 			DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
-			return new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                        aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+			return aktueller_Response;
 		}
 	}
 			

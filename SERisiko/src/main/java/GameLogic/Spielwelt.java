@@ -38,7 +38,7 @@ public class Spielwelt {
 		return dieLaender;
 	}
 	
-	protected int gib_anz_Armeen_insgesamt(Spieler derSpieler){
+	public int gib_anz_Armeen_insgesamt(Spieler derSpieler){
 		int anzahl = 0;
 		
 		for (int i=0; i<dieLaender.length; i++){
