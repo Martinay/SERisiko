@@ -5,13 +5,13 @@
  * @author Alexander Santana Losada
  */
 
-function SvgFunctions(root){
+function SvgFunctions(document){
     //#Public Vars    
     
     //#Private Vars
     var svgDoc = null;
     var neighborLands = null;
-    var document = root;
+    var root = document;
     var i = 0;
     var counter = 0;
     
@@ -101,7 +101,7 @@ function SvgFunctions(root){
     
     this.drawRotatePaperOnCanvas = function(id, rotate){
         if (i < rotate){
-            var canvas = document.getElementById('canvas_' + id);
+            var canvas = root.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
                 if(canvas.getContext){
@@ -121,7 +121,7 @@ function SvgFunctions(root){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            drawDigitOnCanvas(id);
+            drawDigitOnCanvas(id, (1 + parseInt(Math.random() * (6))));
             if(counter == (rotate/18)){
                 counter = 0;
                 i = 0;
@@ -131,14 +131,14 @@ function SvgFunctions(root){
         
     //Private Methods
     
-    var drawDigitOnCanvas = function(id){
-        var canvas = document.getElementById('canvas_' + id);
+    var drawDigitOnCanvas = function(id, count){
+        var canvas = root.getElementById('canvas_' + id);
         if(canvas.getContext){
             var context = canvas.getContext('2d');
             context.font = '40pt Arial';
             context.textAlign = 'center';
             context.fillStyle = 'red';
-            context.fillText((1 + parseInt(Math.random() * (6))), 75, 90);
+            context.fillText(count, 75, 90);
         }
     };
     

@@ -14,11 +14,13 @@
     <script src="js/RisikoApi.js"></script>
     <script src="js/Objects.js"></script>
     <script src="js/GameSteps.js"></script>
+    <script src="js/Connection.js"></script>
     <script src="js/ServerAnswerParser.js"></script>
     <script src="js/SelectableTable.js"></script>
     <script src="js/SvgFunctions.js"></script>
     <script src="js/Combat.js"></script>
     <script src="js/Core.js"></script>
+
 
     <!-- style sheets -->
     <link rel="stylesheet" href="css/extern/bootstrap/bootstrap.min.css" />
@@ -52,8 +54,8 @@
     </div>
     <div id="newGame">
         <h3 class="playerNameDisplay" style="text-align: center;"></h3>
-        Name des Spiels: <input id="gameName" value="Spielname" size="26" style="margin-left: 50px;"><br />
-        Anzahl der Spieler: <input id="maxPlayers" value="6" size="26" onkeyup="this.value = Core.minmax(this.value, 2, 6)" style="margin-left: 40px; margin-top: 5px;"><br />
+        Name des Spiels: <input id="gameName" placeholder="Spielname" size="26" style="margin-left: 50px;"><br />
+        Anzahl der Spieler: <input id="maxPlayers" value="6" size="26" onkeyup='this.value = "Core.minmax(this.value, 2, 6);"' style="margin-left: 40px; margin-top: 5px;"><br />
         <button style="margin-left: 25px; margin-top: 5px;" name="leaveCreateGame" onClick="Core.leaveCreateGame()">Zurück</button>
         <button style="margin-left: 90px; margin-top: 5px;"  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button>
     </div>
@@ -79,8 +81,9 @@
             <br>
             Ihre Mitspieler<br />
             <div id="playerList"></div><br />
-            <button  id="optionsInGame" name="optionsInGame" onClick='Core.readyToPlay(true)' style="margin-bottom: 10px;">Bereit zum Spielen</button><br />
-            <button  name="backToLobby" onClick='Core.backToLobby()'>Spiel verlassen</button>
+            <div id="startGame"></div>
+            <button  id="optionsInGame" name="optionsInGame" onClick='Core.connectionHandler.setPlayerState(true);' style="margin-bottom: 10px;">Bereit zum Spielen</button><br />
+            <div id="endGame"><button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();'>Spiel verlassen</button></div>
         </div>
         <div style="clear:both"></div>
     </div>

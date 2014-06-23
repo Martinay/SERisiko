@@ -37,8 +37,8 @@ function ServerAnswerParser(doc){
                 case "PlayerLeftMessage":
                     handlePlayerLeftMessage(message);
                     break;
-                case "JoinedServerMessage":
-                    handleJoinedServerMessage(message);
+                case "PlayerCreatedMessage":
+                    handlePlayerCreatedMessage(message);
                     break;
                 default:
                     //nothing
@@ -52,7 +52,7 @@ function ServerAnswerParser(doc){
     //# Private Methods
     var handleAddNewPlayerToLobbyMessage = function(message){
         //is it me?
-        if(message.data[0].Player.id == Core.getPlayerId() || true){
+        if(message.data[0].Player.id == Core.getPlayerId()){
             // create Player on Client
             Core.hideElement(root.getElementById("setPlayerName"));
             Core.showElement(root.getElementById("selectGame"));
@@ -68,14 +68,14 @@ function ServerAnswerParser(doc){
     };
     var handleGameCreatedMessage = function(message){
         //is it me?
-        if(message.data[1].Player.id == Core.getPlayerId() || true){
+        if(message.data[1].Player.id == Core.getPlayerId()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
+            Core.prepareJoinedGame();
 
-            Core.setGame(parseInt(message.data[0].ServerGame.id));
-
+            root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.connectionHandler.startGame();" style="margin-bottom: 10px;">Spielstarten</button>';
+            root.getElementById("startGameBtn").disabled = true;
             //cleanup
-            root.getElementById("gameName").value = "Spielname";
             root.getElementById("maxPlayers").value = "6";
         }
         else{
@@ -87,30 +87,13 @@ function ServerAnswerParser(doc){
     
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
-        if(message.data[1].Player.id == Core.getPlayerId() || true){    
-            //verify 
-            Core.showElement(root.getElementById("game"));
-            Core.hideElement(root.getElementById("selectGame"));
-
-            // give me some lands test
-                Core.svgHandler.setNewLandOwner("D2" , Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("D6" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("E3" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("C4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("B5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A1" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("A5" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P4" ,Core.getPlayerName());
-                Core.svgHandler.setNewLandOwner("P12" ,Core.getPlayerName());
-
-                Core.svgHandler.refreshOwnerRights();
-            //#
-
-            Core.listPlayers();
+        if(message.data[0].Player.id == Core.getPlayerId()){
+           Core.prepareJoinedGame();
         }
         else{
-            Core.listPlayers();
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.addPlayer(player);
+            Core.updatePlayerList();
         }
     };
     
@@ -118,7 +101,6 @@ function ServerAnswerParser(doc){
         // cleanup
         root.getElementById("playerList").innerHTML = "";
         Core.playerList.clear();
-        
         // parse message			  	  
         for(var i = 0; i < message.data.length; i++){
             var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready);
@@ -128,9 +110,38 @@ function ServerAnswerParser(doc){
     };
     
     var handleReadyStateChangedMessage = function(message){
-        var player = new Objects.PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready);
-        Core.playerList.updatePlayer(parseInt(message.data[i].Player.id), player);    
-        Core.updatePlayerList();
+        //is it me?
+        if(message.data[0].Player.id == Core.getPlayerId()){
+            
+            
+
+            if(message.data[0].Player.ready == true){
+                root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(false); };
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = false;
+                }
+                root.getElementById("backToLobbyBtn").disabled = true;
+            } else {
+                root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
+                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(true); };
+                if(root.getElementById("startGameBtn") != null){
+                    root.getElementById("startGameBtn").disabled = true;
+                }
+                root.getElementById("backToLobbyBtn").disabled = false;
+            }
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
+            // cleanup
+            root.getElementById("playerList").innerHTML = "";
+            Core.updatePlayerList();
+        }
+        else{
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);   
+            root.getElementById("playerList").innerHTML = "";
+            Core.updatePlayerList(); 
+        }
     };
     
     var handlePlayerLeftMessage = function(message){
@@ -138,7 +149,8 @@ function ServerAnswerParser(doc){
         Core.updatePlayerList();
     };
     
-    var handleJoinedServerMessage = function(message){
+    var handlePlayerCreatedMessage = function(message){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
+        Core.connectionHandler.joinLobby();
     };
 }

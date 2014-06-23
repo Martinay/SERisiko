@@ -4,10 +4,8 @@ import ServerLogic.Helper.GameCreator;
 import ServerLogic.Helper.MessageCreator;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.Game;
-import ServerLogic.Model.Player;
-import ServerLogic.Model.ServerGame;
-import ServerLogic.Model.ServerState;
+import ServerLogic.Messages.GameLogicInteraction.EndTurn;
+import ServerLogic.Model.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,11 +41,16 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
+    public AttackMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        game.Attack(countryFromID, countryToID, units);
+        Integer[] dices = game.Attack(countryFromID, countryToID, units);
 
-        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryFromID, countryToID);
+        if (dices.length == 0)
+            return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, null, null);
+
+        Integer[] diceAttacker = Arrays.asList(dices[0],dices[1],dices[2]).toArray(new Integer[3]);
+        Integer[] diceDefender = Arrays.asList(dices[3],dices[4]).toArray(new Integer[2]);
+        return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, diceAttacker, diceDefender);
     }
 
     @Override
@@ -75,9 +78,9 @@ public class ServerLogic implements IServerLogic {
     @Override
     public EndTurnMessage EndTurn(int playerID) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        Player nextPlayer = game.EndTurn();
+        EndTurn response = game.EndTurn();
 
-        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), nextPlayer);
+        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), response);
     }
 
     @Override
@@ -93,7 +96,7 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.AddPlayer(player);
         
-    return MessageCreator.CreateAddNewPlayerToLobbyMessage(_state.Lobby.GetPlayerIDs(),player);
+    return MessageCreator.CreateAddNewPlayerToLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
     }
 
     @Override
@@ -130,7 +133,13 @@ public class ServerLogic implements IServerLogic {
         if (game.Players.size()== 0)
         {
             _state.Lobby.RemoveGame(game);
-            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),player, _state.Lobby.GetPlayerIDs(),game);
+            return MessageCreator.CreatePlayerLeftMessage(_state.Lobby.GetPlayerIDs(),game);
+        }
+
+        if (game.Creator.ID == playerID)
+        {
+            _state.Lobby.RemoveGame(game);
+            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),_state.Lobby.GetPlayerIDs(),game);
         }
 
         return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(), player);
@@ -149,6 +158,10 @@ public class ServerLogic implements IServerLogic {
     @Override
     public GameStartedMessage StartGame(int playerID) {
         ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
+
+        if (playerID != game.Creator.ID)
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
+
         if (!game.AreAllPlayerReady())
             return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
 
@@ -156,7 +169,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game, game.GetCurrentPlayer(), game.GetNumberOfUnitsToPlace());
     }
 
     @Override

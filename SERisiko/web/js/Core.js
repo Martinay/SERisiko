@@ -21,34 +21,17 @@ function Core() {
     var thePlayerName = "";
     
     //#InitConnection Function
-    var connection = null;
-    var etablishConnection = function(){
-        if (connection != null)
-            connection.close();
-        connection = new RisikoApi();
-
-        // Start ConnectionToServer
-        connection.onmessage = function(elem) { //get message from server
-            console.log( elem );
-            Core.serverAnswerParserHandler.parseServerAnswers(elem);
-            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
-        };
-    };
-    etablishConnection();
-    //# Load Map... done by html object    
-    
+    this.connectionHandler = new Connection();
     
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "" || name == "Ihr Spielername")
+        if(name == "" || !validate(name))
             return false;
         thePlayerName = name;
 
         // create Player on Server + joinLobby
-        connection.joinServer(thePlayerName); // includes joinlobby
-        
-        this.updateGameList();
+        this.connectionHandler.joinServer(thePlayerName); // includes joinlobby
     };
     
     this.getPlayerName = function(){
@@ -56,7 +39,7 @@ function Core() {
     };
 
     this.deletePlayerName = function(){
-        connection.leaveLobby();
+        this.connectionHandler.leaveLobby();
         thePlayerName = "";
         playerNameRegistered = false;
         document.getElementById("playerName").value = "";
@@ -69,13 +52,13 @@ function Core() {
         [].slice.call(divs).forEach(function(div){div.innerHTML = playerName;});
         this.sctTable.clear("availableGames");
         
-        etablishConnection();
+        this.connectionHandler.init();
     };
 
     this.backToLobby = function(){
-        connection.leaveGame();
+        this.connectionHandler.leaveGame();
         //check response
-        connection.joinLobby();
+        this.connectionHandler.joinLobby();
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -88,18 +71,6 @@ function Core() {
         //cleanup
         document.getElementById("gameName").value = "Spielname";
         document.getElementById("maxPlayers").value = "6";
-    }
-
-    this.setGame = function(id){
-        if(this.sctTable != null){
-            var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-            this.svgHandler.init(svg);
-            this.combatHandler.init(svg);
-            
-            connection.joinGame(parseInt(id));
-        }
-        else
-            alert("Error! no gameTable");
     };
 
     this.showCreateNewGame = function(){
@@ -111,17 +82,41 @@ function Core() {
         //check game settings....
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
+        // validate name
+        if(gameName === "" || !validate(gameName))
+            return;
         //parse data to server
-        connection.createGame(gameName, parseInt(maxPlayers));
+        this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
     };
+    
+    this.prepareJoinedGame = function(){
+        //var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+        var svg = document.getElementsByTagName('svg')[0];
+        this.svgHandler.init(svg);
+        this.combatHandler.init(svg);   
 
-    this.updateGameList = function(){
-        if(this.sctTable != null){
-            this.sctTable.clear("availableGames");
-            getGameList();
-        }
-        else
-            alert("Error! no gameTable");	
+         // cleanup
+        document.getElementById("playerList").innerHTML = "";
+        this.playerList.clear();
+        this.connectionHandler.listPlayers()
+        //verify 
+        this.showElement(document.getElementById("game"));
+        this.hideElement(document.getElementById("selectGame"));
+
+        // give me some lands test
+            this.svgHandler.setNewLandOwner("D2" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D6" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("E1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("E3" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("C4" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("B5" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("A1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
+
+            this.svgHandler.refreshOwnerRights();
+        //#
     };
 
     this.minmax = function(value, min, max){
@@ -142,24 +137,6 @@ function Core() {
                     //nothing
         }
     };
-
-    this.readyToPlay = function(arg){		
-        // send to server : player ready
-        if(arg == true){
-            connection.setPlayerState(true);
-            //initUnitAmountSelector(1, 10);
-            document.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
-            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(false); };
-        } else {
-            connection.setPlayerState(false);
-            document.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
-            document.getElementById("optionsInGame").onclick = function() { Core.readyToPlay(true); };
-        }
-    };
-    
-    this.listPlayers = function(){
-        connection.listPlayers();
-    }
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
@@ -241,12 +218,6 @@ function Core() {
     var showElement = function(element){
         element.style.display = "block";
     };
-
-    var getGameList = function(){
-        // should be parsed by server...
-        Core.gameList.clear();
-        connection.listOpenGames();
-    };
     
     var initUnitAmountSelector = function(minValue, maxValue){
         //showElement(document.getElementById("bottom_overlay"));
@@ -266,6 +237,15 @@ function Core() {
           break;
         }
       }
+    };
+    
+    var validate = function(str){
+        var nameRegex = /^[a-zA-Z0-9]+$/;
+        var valid = str.match(nameRegex);
+        if(valid === null){
+            return false;
+        }
+        return true;
     };
 }
 // ---------------------- #

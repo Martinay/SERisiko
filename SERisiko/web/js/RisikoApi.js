@@ -84,9 +84,7 @@ var RisikoApi = function() {
     socket.attack = function(source, target, value) {
         socket.call("attack", source, target, value);
     }; 
-    socket.attack = function(source, target, value) {
-        socket.call("endAttack", source, target, value);
-    }; 
+    
     socket.move = function(source, target, value) {
         socket.call("move", source, target, value);
     }; 

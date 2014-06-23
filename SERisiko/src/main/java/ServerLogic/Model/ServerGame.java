@@ -6,7 +6,10 @@ import ServerLogic.Helper.CountryMapper;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
+import ServerLogic.Messages.GameLogicInteraction.EndTurn;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,11 +20,13 @@ import java.util.List;
 public class ServerGame extends Game {
     
     public List<Player> Players = new LinkedList<>();
+    public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
+        Creator = player;
         Name = name;
         ID = id;
         MaxPlayer = maxPlayer;
@@ -62,28 +67,32 @@ public class ServerGame extends Game {
             PlayerMapper.Add(spieler, player);
         }
 
-        Kontinent[] kontinents = (Kontinent[]) _mapLoader.GetKontinets().toArray();
+        Collection<Kontinent> loadedContinents = _mapLoader.GetKontinets();
 
-       _spiel = new Spielsteuerung((Spieler[])spielerList.toArray(), kontinents);
+        Kontinent[] kontinents = loadedContinents.toArray(new Kontinent[loadedContinents.size()-1]);
+
+       _spiel = new Spielsteuerung(spielerList.toArray(new Spieler[spielerList.size()-1]), kontinents);
         CountryMapper.CreateCountryMapping(kontinents);
      }
 
-    public void Attack(String countryFromID, String countryToID, int units) {
+    public Integer[] Attack(String countryFromID, String countryToID, int units) {
 
         if (_spiel.Zustand != Spielzustaende.Angriff)
-            return;
+            return new Integer[0];
 
         Land from = CountryMapper.GetCountryById(countryFromID);
         Land to = CountryMapper.GetCountryById(countryToID);
 
         InteractWithGameLogic(units, from, to, false);
+
+        return Arrays.asList(6,4,3,2,1).toArray(new Integer[5]); //TODO
     }
 
     public void EndAttack() {
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return;
 
-        InteractWithGameLogic(1, null, null, true);
+        InteractWithGameLogic(0, null, null, true);
     }
 
     public void Move(String countryFromID, String countryToID, int units) {
@@ -105,18 +114,28 @@ public class ServerGame extends Game {
         InteractWithGameLogic(units, land, null, false);
     }
 
-    public Player EndTurn() {
+    public EndTurn EndTurn() {
 
         Client_Response gameResponse = InteractWithGameLogic(1,null,null, true);
-        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Angriff) {
+        while(gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Beenden)
             gameResponse = InteractWithGameLogic(1,null,null, true);
-        }
 
-        if (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Verschieben) {
-            gameResponse = InteractWithGameLogic(1,null,null, true);
-        }
+        EndTurn response = new EndTurn();
+        response.NextPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
+        response.EndGame = gameResponse.gib_aktuellen_Zustand() == Spielzustaende.Beenden;
+        response.DefeatedPlayer = new LinkedList<Player>(); //TODO
+        response.UnitsToPlaceNextPlayer = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
 
-        return PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
+        return response;
+    }
+
+    public Player GetCurrentPlayer()
+    {
+        return PlayerMapper.Map(_spiel.aktueller_Spieler);
+    }
+
+    public int GetNumberOfUnitsToPlace() {
+        return 5; //TODO
     }
 
     private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState )

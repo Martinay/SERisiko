@@ -15,6 +15,7 @@
                 .fil3 {fill:#F08683}
                 .fil2 {fill:#E51A4B}
                 .fil4 {fill:#E31E24}
+                .fil7 {fill: rgba(43,42,41, 0.6)}
                 .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
                 .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
                 .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
@@ -42,12 +43,12 @@
         <rect id="A5_back" class="fil3 str0" x="7644" y="11593" width="3034" height="953"/>
         <rect id="A6_back" class="fil3 str0" x="6409" y="11673" width="1235" height="510"/>
 
-        <text x="11370" y="7683"  class="fil6 fnt2">A1</text>
-        <text x="11370" y="9835"  class="fil6 fnt2">A2</text>
-        <text x="10724" y="11376"  class="fil6 fnt2">A3</text>
-        <text x="7672" y="11022"  class="fil6 fnt2">A4</text>
-        <text x="7673" y="11941"  class="fil6 fnt2">A5</text>
-        <text x="6425" y="12007"  class="fil6 fnt2">A6</text>
+        <text x="11370" y="7683"  class="fil7 fnt2">A1</text>
+        <text x="11370" y="9835"  class="fil7 fnt2">A2</text>
+        <text x="10724" y="11376"  class="fil7 fnt2">A3</text>
+        <text x="7672" y="11022"  class="fil7 fnt2">A4</text>
+        <text x="7673" y="11941"  class="fil7 fnt2">A5</text>
+        <text x="6425" y="12007"  class="fil7 fnt2">A6</text>
 
 <!-- Gebäude B&C -->
         <text x="2408" y="10014"  class="fil6 fnt0">Gebäude </text>
@@ -64,16 +65,16 @@
         <rect id="C4_back" class="fil4 str0" x="994" y="6883" width="811" height="3951"/>
         <rect id="C5_back" class="fil4 str0" x="183" y="5437" width="1623" height="1431"/>
 
-        <text x="4799" y="11307"  class="fil6 fnt2">B1</text>
-        <text x="4776" y="7351"  class="fil6 fnt2">B2</text>
-        <text x="5605" y="7351"  class="fil6 fnt2">B3</text>
-        <text x="4798" y="5803"  class="fil6 fnt2">B4</text>
-        <text x="1842" y="5793"  class="fil6 fnt3">B5</text>
-        <text x="1827" y="12145"  class="fil6 fnt3">C1</text>
-        <text x="232" y="11202"  class="fil6 fnt2">C2</text>
-        <text x="207" y="7227"  class="fil6 fnt2">C3</text>
-        <text x="1019" y="7227"  class="fil6 fnt2">C4</text>
-        <text x="226" y="5799"  class="fil6 fnt2">C5</text>
+        <text x="4799" y="11307"  class="fil7 fnt2">B1</text>
+        <text x="4776" y="7351"  class="fil7 fnt2">B2</text>
+        <text x="5605" y="7351"  class="fil7 fnt2">B3</text>
+        <text x="4798" y="5803"  class="fil7 fnt2">B4</text>
+        <text x="1842" y="5793"  class="fil7 fnt3">B5</text>
+        <text x="1827" y="12145"  class="fil7 fnt3">C1</text>
+        <text x="232" y="11202"  class="fil7 fnt2">C2</text>
+        <text x="207" y="7227"  class="fil7 fnt2">C3</text>
+        <text x="1019" y="7227"  class="fil7 fnt2">C4</text>
+        <text x="226" y="5799"  class="fil7 fnt2">C5</text>
 
 <!-- Gebäude D -->
         <text x="16933" y="9806"  class="fil6 fnt0">Gebäude </text>
@@ -87,13 +88,13 @@
         <rect id="D6_back" class="fil2 str0" x="18880" y="6707" width="1693" height="2205"/>
         <rect id="D7_back" class="fil2 str0" x="16728" y="6707" width="2152" height="1411"/>
 
-        <text x="15137" y="7075"  class="fil6 fnt2">D1</text>
-        <text x="15137" y="9174"  class="fil6 fnt2">D2</text>
-        <text x="15114" y="12009"  class="fil6 fnt2">D3</text>
-        <text x="17918" y="12008"  class="fil6 fnt2">D4</text>
-        <text x="18931" y="9282"  class="fil6 fnt2">D5</text>
-        <text x="18931" y="7077"  class="fil6 fnt2">D6</text>
-        <text x="16771" y="7068"  class="fil6 fnt2">D7</text>
+        <text x="15137" y="7075"  class="fil7 fnt2">D1</text>
+        <text x="15137" y="9174"  class="fil7 fnt2">D2</text>
+        <text x="15114" y="12009"  class="fil7 fnt2">D3</text>
+        <text x="17918" y="12008"  class="fil7 fnt2">D4</text>
+        <text x="18931" y="9282"  class="fil7 fnt2">D5</text>
+        <text x="18931" y="7077"  class="fil7 fnt2">D6</text>
+        <text x="16771" y="7068"  class="fil7 fnt2">D7</text>
 
 <!-- Gebäude E -->
         <text x="16633" y="1071"  class="fil6 fnt1">Gebäude E</text>
@@ -103,10 +104,10 @@
         <rect id="E3_back" class="fil1 str0" x="16508" y="2553" width="2461" height="1288"/> 
         <rect id="E4_back" class="fil1 str0" x="18968" y="1265" width="1649" height="2575"/>
 
-        <text x="15156" y="1626"  class="fil6 fnt3">E1</text>
-        <text x="16546" y="1623"  class="fil6 fnt3">E2</text>
-        <text x="16546" y="2911"  class="fil6 fnt2">E3</text>
-        <text x="19018" y="1634"  class="fil6 fnt2">E4</text>
+        <text x="15156" y="1626"  class="fil7 fnt3">E1</text>
+        <text x="16546" y="1623"  class="fil7 fnt3">E2</text>
+        <text x="16546" y="2911"  class="fil7 fnt2">E3</text>
+        <text x="19018" y="1634"  class="fil7 fnt2">E4</text>
 
 <!-- Parkplatz P -->
         <text x="7219" y="4173"  class="fil6 fnt0">Parkplatz</text>
@@ -127,21 +128,21 @@
         <rect id="P14_back" class="fil0 str0" x="209" y="13383" width="13194" height="843"/>
         <rect id="P15_back" class="fil0 str0" x="14215" y="13383" width="6368" height="843"/>
 
-        <text x="247" y="4858"  class="fil6 fnt2">P1</text>
-        <text x="6966" y="4893"  class="fil6 fnt2">P2</text>
-        <text x="6957" y="6692"  class="fil6 fnt2">P3</text>
-        <text x="8448" y="6684"  class="fil6 fnt2">P4</text>
-        <text x="9684" y="6684"  class="fil6 fnt2">P5</text>
-        <text x="6946" y="9573"  class="fil6 fnt2">P6</text>
-        <text x="13387" y="469"  class="fil6 fnt3">P7</text>
-        <text x="10919" y="4859"  class="fil6 fnt2">P8</text>
-        <text x="10919" y="5559"  class="fil6 fnt2">P9</text>
-        <text x="15864" y="4381"  class="fil6 fnt2">P10</text>
-        <text x="17342" y="4377"  class="fil6 fnt2">P11</text>
-        <text x="17336" y="5729"  class="fil6 fnt3">P12</text>
-        <text x="13428" y="6263"  class="fil6 fnt2">P13</text>
-        <text x="235" y="13792"  class="fil6 fnt0">P14</text>
-        <text x="14240" y="13728"  class="fil6 fnt2">P15</text>
+        <text x="247" y="4858"  class="fil7 fnt2">P1</text>
+        <text x="6966" y="4893"  class="fil7 fnt2">P2</text>
+        <text x="6957" y="6692"  class="fil7 fnt2">P3</text>
+        <text x="8448" y="6684"  class="fil7 fnt2">P4</text>
+        <text x="9684" y="6684"  class="fil7 fnt2">P5</text>
+        <text x="6946" y="9573"  class="fil7 fnt2">P6</text>
+        <text x="13387" y="469"  class="fil7 fnt3">P7</text>
+        <text x="10919" y="4859"  class="fil7 fnt2">P8</text>
+        <text x="10919" y="5559"  class="fil7 fnt2">P9</text>
+        <text x="15864" y="4381"  class="fil7 fnt2">P10</text>
+        <text x="17342" y="4377"  class="fil7 fnt2">P11</text>
+        <text x="17336" y="5729"  class="fil7 fnt3">P12</text>
+        <text x="13428" y="6263"  class="fil7 fnt2">P13</text>
+        <text x="235" y="13792"  class="fil7 fnt0">P14</text>
+        <text x="14240" y="13728"  class="fil7 fnt2">P15</text>
 
 <!-- Raum Verbindungslininen-->
         <line class="fil5 str1" x1="3279" y1="12528" x2="3279" y2= "13383" /><!-- C1-P14 -->

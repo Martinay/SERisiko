@@ -28,16 +28,32 @@ public class MapParser implements IMapParser {
     private List<ParseCountry> GetCountriesWithContinent(List<List<String>> continentLines) {
         List<ParseCountry> countries = new LinkedList<>();
 
+
         for (int i = 0; i < continentLines.size(); i++) {
-            for (String line : continentLines.get(i)) {
-                countries.add(ParseLand(line, i));
+            List<String> lines = continentLines.get(i);
+            ParseContinent parseContinent = ParseHeaderToParseContinent(lines.get(0));
+
+            for (int j = 1; j < lines.size(); j++) {
+                countries.add(ParseLand(lines.get(j), parseContinent));
             }
         }
 
         return countries;
     }
 
-    private ParseCountry ParseLand(String line, int continentId) {
+    private ParseContinent ParseHeaderToParseContinent(String headerLine) {
+        ParseContinent continent = new ParseContinent();
+
+        if (!headerLine.matches("^HEAD:.*"))
+            throw new RuntimeException("Ungültiger HEADER in map.txt");
+
+        String extraUnits = headerLine.replaceFirst("HEAD:extraUnits=","");
+        continent.extraUnits = Integer.parseInt(extraUnits);
+
+        return continent;
+    }
+
+    private ParseCountry ParseLand(String line, ParseContinent parseContinent) {
         ParseCountry country = new ParseCountry();
 
         String[] firstSplit = line.split(":");
@@ -46,7 +62,7 @@ public class MapParser implements IMapParser {
 
         Collections.addAll(country.Neighbors, neighbors);
 
-        country.ContinentId = continentId;
+        country.continent = parseContinent;
         country.id = firstSplit[0];
         return country;
     }
@@ -62,6 +78,7 @@ public class MapParser implements IMapParser {
                 currentContinentLines = new LinkedList<>();
                 continue;
             }
+
             currentContinentLines.add(line);
         }
 
@@ -72,7 +89,12 @@ public class MapParser implements IMapParser {
     private class ParseCountry {
         List<String> Neighbors = new LinkedList<>();
         String id;
-        int ContinentId;
+        ParseContinent continent;
+    }
+
+    private class ParseContinent {
+        int id;
+        int extraUnits;
     }
 
     private class Mapper {
@@ -87,7 +109,6 @@ public class MapParser implements IMapParser {
         private Collection<Kontinent> AddToContinents(final HashMap<Land, ParseCountry> mappedCountries) {
             final Collection<Kontinent> continents = new LinkedList<>();
 
-
             final HashMap<ParseCountry, Land> parseCountryLandHashMap = new HashMap<>();
 
             mappedCountries.forEach(new BiConsumer<Land, ParseCountry>() {
@@ -101,14 +122,14 @@ public class MapParser implements IMapParser {
                     .groupBy(new Function1<ParseCountry, Object>() {
                         @Override
                         public Object apply(ParseCountry a0) {
-                            return a0.ContinentId;
+                            return a0.continent;
                         }
                     })
                     .forEach(new Consumer<Grouping<Object, ParseCountry>>() {
                         @Override
                         public void accept(Grouping<Object, ParseCountry> parseCountries) {
 
-                            final Kontinent continent = new Kontinent(0); //TODO
+                            final Kontinent continent = new Kontinent(parseCountries.first().continent.extraUnits);
                             parseCountries.forEach(new Consumer<ParseCountry>() {
                                 @Override
                                 public void accept(ParseCountry parseCountry) {
