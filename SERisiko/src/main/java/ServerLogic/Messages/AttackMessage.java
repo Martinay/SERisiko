@@ -1,7 +1,9 @@
 package ServerLogic.Messages;
 
+import ServerLogic.Model.Dice;
+
 public class AttackMessage extends MapChangedMessage {
 
-    public Integer[] DiceAttacker;
-    public Integer[] DiceDefender;
+    public Dice[] DiceAttacker;
+    public Dice[] DiceDefender;
 }

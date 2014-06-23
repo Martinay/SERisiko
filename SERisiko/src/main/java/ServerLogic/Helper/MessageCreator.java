@@ -1,5 +1,6 @@
 package ServerLogic.Helper;
 
+import ServerLogic.Model.MapChange;
 import GameLogic.Land;
 import ServerLogic.Messages.*;
 import ServerLogic.Messages.GameLogicInteraction.EndTurn;

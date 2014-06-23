@@ -5,8 +5,8 @@ import ServerLogic.Model.Player;
 import java.util.List;
 
 public class EndTurnMessage extends MessageBase {
-    public Player NewActivePlayer;
-    public boolean EndGame;
-    public List<Player> DefeatedPlayer;
-    public int UnitsToPlaceNextPlayer;
+    public Player NewActivePlayer; //zum Gameobjekt adden (activePlayer)
+    public boolean EndGame; //zum Gameobjekt adden (finished)
+    public List<Player> DefeatedPlayer; //zum PLayerobjekt adden (killed)
+    public int UnitsToPlaceNextPlayer; //zum PLayerobjekt adden (freeSupply)
 }
