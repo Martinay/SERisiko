@@ -7,6 +7,7 @@
 package ServerLogic.Model;
 
 import ServerApi.ApiResponseObject;
+
 import java.util.HashMap;
 
 /**
@@ -16,7 +17,7 @@ import java.util.HashMap;
 public class Dice implements ApiResponseObject {
     
     public int value;
-    public String type;
+    public DiceType type;
     
     
     public <String, Object> HashMap getResponseData() {

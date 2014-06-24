@@ -2,8 +2,10 @@ package ServerLogic.Messages;
 
 import ServerLogic.Model.Dice;
 
+import java.util.List;
+
 public class AttackMessage extends MapChangedMessage {
 
-    public Dice[] DiceAttacker;
-    public Dice[] DiceDefender;
+    public List<Dice> DiceAttacker;
+    public List<Dice> DiceDefender;
 }
