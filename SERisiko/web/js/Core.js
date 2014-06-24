@@ -19,6 +19,7 @@ function Core() {
     //#Private Vars
     var thePlayerId = -1;
     var thePlayerName = "";
+    var thePlayerStatus = "";
     
     //#InitConnection Function
     this.connectionHandler = new Connection();
@@ -36,6 +37,14 @@ function Core() {
     
     this.getPlayerName = function(){
         return thePlayerName;
+    };
+    
+     this.setPlayerStatus = function(PlayerStatus){
+        thePlayerStatus = PlayerStatus;
+    };
+    
+     this.getPlayerStatus = function(){
+        return thePlayerStatus;
     };
 
     this.deletePlayerName = function(){
@@ -115,7 +124,8 @@ function Core() {
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
 
-            this.svgHandler.refreshOwnerRights();
+            //this.refreshOwnerRights();
+            this.svgHandler.refreshOwnerRightsForUnitPlace(5);
         //#
     };
 

@@ -52,7 +52,12 @@ function SvgFunctions(document){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     theRect.setAttribute('opacity','1');
-                    Core.combatHandler.selectAmountUnit(attacker, id);
+                    console.log(Core.getPlayerStatus);
+                    if(Core.getPlayerStatus == ""){
+                        Core.combatHandler.selectCountMoveUnits(attacker, id);
+                    } else {
+                        Core.combatHandler.selectAmountUnit(attacker, id);
+                    }
                 }
             }
     };
@@ -88,6 +93,18 @@ function SvgFunctions(document){
                 rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                 rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                 rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
+            }
+        });        
+    };
+    
+    
+    this.refreshOwnerRightsForUnitPlace = function (value){
+        var rects = svgDoc.getElementsByTagName("rect");
+        [].slice.call(rects).forEach(function(rect){
+            if(rect.getAttribute("Owner") === Core.getPlayerName()){
+                rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
+                rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
+                rect.onclick = new Function("Core.combatHandler.UnitPlacement(this.id, \""+value+"\");");
             }
         });        
     };
