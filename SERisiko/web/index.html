@@ -2,7 +2,9 @@
 <html xml:lang="de-de" lang="de-de">
 <head>
     <!-- root dir -->
-    <base href="http://localhost:80" />
+    <script type="text/javascript">
+        document.write("<base href='http://" + document.location.host + "' />");
+    </script>
 
     <!-- javascripts -->
     <script src="js/extern/jquery-2.1.1.min.js"></script>

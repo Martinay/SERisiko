@@ -101,7 +101,7 @@ function SvgFunctions(document){
     
     this.drawRotatePaperOnCanvas = function(id, rotate){
         if (i < rotate){
-            var canvas = root.getElementById('canvas_' + id);
+            var canvas = svgDoc.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
                 if(canvas.getContext){
@@ -132,13 +132,37 @@ function SvgFunctions(document){
     //Private Methods
     
     var drawDigitOnCanvas = function(id, count){
-        var canvas = root.getElementById('canvas_' + id);
-        if(canvas.getContext){
-            var context = canvas.getContext('2d');
-            context.font = '40pt Arial';
-            context.textAlign = 'center';
-            context.fillStyle = 'red';
-            context.fillText(count, 75, 90);
+        switch(count){
+            case 1:
+                count = 6;
+                break;
+            case 2: 
+                count = 5;
+                break;
+            case 3: 
+                count = 4;
+                break;
+            case 4: 
+                count = 3;
+                break;
+            case 5: 
+                count = 2;
+                break;
+             case 6: 
+                count = 1;
+                break;
+            default: 
+                count = null;
+        }
+        if(count != null){
+            var canvas = svgDoc.getElementById('canvas_' + id);
+            if(canvas.getContext){
+                var context = canvas.getContext('2d');
+                context.font = '40pt Arial';
+                context.textAlign = 'center';
+                context.fillStyle = 'red';
+                context.fillText(count, 75, 90);
+            }
         }
     };
     
