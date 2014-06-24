@@ -88,7 +88,7 @@ function ServerAnswerParser(doc){
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-           Core.prepareJoinedGame();
+           //Core.prepareJoinedGame();   -->> bad logic error if this if will get true !!!
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);

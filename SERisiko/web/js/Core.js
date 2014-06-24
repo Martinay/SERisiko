@@ -15,42 +15,43 @@ function Core() {
     this.svgHandler = new SvgFunctions(document);
     this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
+    this.connectionHandler = new Connection();  // also inits Connection
     
     //#Private Vars
-    var thePlayerId = -1;
-    var thePlayerName = "";
-    var thePlayerStatus = "";
-    
-    //#InitConnection Function
-    this.connectionHandler = new Connection();
+    var myData = new MyDataObject();
     
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
         if(name == "" || !validate(name))
             return false;
-        thePlayerName = name;
-
+        myData.setPlayerName(name);
+        
         // create Player on Server + joinLobby
-        this.connectionHandler.joinServer(thePlayerName); // includes joinlobby
+        this.connectionHandler.joinServer(name); // includes joinlobby
     };
     
+    //# MyData Setters and Getters
     this.getPlayerName = function(){
-        return thePlayerName;
+        return myData.getPlayerName();
     };
+    this.setPlayerStatus = function(status){
+        myData.setPlayerStatus(status);
+    };
+    this.getPlayerStatus = function(){
+        return myData.getPlayerStatus();
+    };
+    this.setPlayerId = function(id){
+        myData.setPlayerId(id);
+    };
+    this.getPlayerId = function(){
+        return myData.getPlayerId();
+    };
+    //##############################
     
-     this.setPlayerStatus = function(PlayerStatus){
-        thePlayerStatus = PlayerStatus;
-    };
-    
-     this.getPlayerStatus = function(){
-        return thePlayerStatus;
-    };
-
     this.deletePlayerName = function(){
         this.connectionHandler.leaveLobby();
-        thePlayerName = "";
-        playerNameRegistered = false;
+        myData.setPlayerName("");
         document.getElementById("playerName").value = "";
 
         // revert menu
@@ -152,10 +153,6 @@ function Core() {
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
-    this.getPlayerName = function(){
-        return thePlayerName;        
-    };
-    
     this.setUnitAmount = function(){
         //hideElement(document.getElementById("bottom_overlay"));
         $( "#bottom_overlay" ).slideUp( "slow");
@@ -212,14 +209,6 @@ function Core() {
         }
     };
     
-    this.setPlayerId = function(id){
-        thePlayerId = id;
-    };
-    
-    this.getPlayerId = function(){
-        return thePlayerId;
-    };
-    
     //# Private Methods  
     var hideElement = function(element){
         element.style.display = "none";
@@ -238,15 +227,6 @@ function Core() {
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
-    };
-    
-    var sleep = function(milliseconds) {
-      var start = new Date().getTime();
-      for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-          break;
-        }
-      }
     };
     
     var validate = function(str){

@@ -155,3 +155,41 @@ function PlayerObject(name, id, rdy){
     }
     //# Private Methods
 }
+
+
+/*
+ * Data abstraction class for the own data of the player
+ */
+function MyDataObject(){
+    
+    //#Private Vars
+    var thePlayerId = -1;
+    var thePlayerName = "";
+    var thePlayerStatus = "";
+    var inGameLobby = false;
+    
+    this.getPlayerId = function(){
+        return thePlayerId;
+    };
+    this.getPlayerName = function(){
+        return thePlayerName;
+    };
+    this.getPlayerStatus = function(){
+        return thePlayerStatus;
+    };
+    this.isInGameLobby = function(){
+        return inGameLobby;
+    };
+    this.setPlayerId = function(id){
+        thePlayerId = id;
+    };
+    this.setPlayerName = function(name){
+        thePlayerName = name;
+    };
+    this.setPlayerStatus = function(status){
+        thePlayerStatus = status;
+    };
+    this.setInGameLobby = function(arg){
+        inGameLobby = arg;
+    };
+}
