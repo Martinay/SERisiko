@@ -1,6 +1,7 @@
 package ServerLogic;
 
 import ServerLogic.Messages.*;
+import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.Player;
 
@@ -14,6 +15,7 @@ public interface IServerLogic {
     void EndAttack(int playerID);
     MapChangedMessage Move(int playerID, String countryFromID, String countryToID, int units);
     EndTurnMessage EndTurn(int playerID);
+    EndFirstUnitPlacementMessage EndFirstUnitPlacement(int playerID, List<ClientMapChange> clientMapChanges );
 
     //Lobby
     PlayerCreatedMessage CreatePlayer(int playerID, String playerName);

@@ -3,10 +3,11 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
+import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
-
 import java.util.List;
 
 
@@ -203,7 +204,37 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     //game
     public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("attack");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        AttackMessage message = gameManager.Attack(clientId, source, target, value.intValue());
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+        
+        //changed countrys
+        List<MapChange> changedMaps = message.MapChange;
+        for(int i = 0; i< changedMaps.size(); i++) {
+            response.addChangedObject( changedMaps.get(i) );
+        }
+        
+        //dice
+        Dice[] dice = message.DiceAttacker;
+        for(int i = 0; i< dice.length ; i++) {
+            response.addChangedObject( dice[i] );
+        }
+        
+        Dice[] dice2 = message.DiceDefender;
+        for(int i = 0; i< dice2.length; i++) {
+            response.addChangedObject( dice2[i] );
+        }
+        
+        return response; 
+        
+        
     }    
     
     public  WebSocketResponse endAttack(GameClient gameClient) {
@@ -223,11 +254,44 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
    
 
     public WebSocketResponse move(GameClient gameClient, String source, String target, Long value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("move Units");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        MapChangedMessage message = gameManager.Move(clientId, source, target, value.intValue());
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+        
+        List<MapChange> changedMaps = message.MapChange;
+        for(int i = 0; i< changedMaps.size(); i++) {
+            response.addChangedObject( changedMaps.get(i) );
+        }
+        
+        return response; 
     }
 
     public WebSocketResponse set(GameClient gameClient, String target, Long value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("setUnits");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        MapChangedMessage message = gameManager.PlaceUnits(clientId, target, value.intValue() );
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+        
+        List<MapChange> changedMaps = message.MapChange;
+        for(int i = 0; i< changedMaps.size(); i++) {
+            response.addChangedObject( changedMaps.get(i) );
+        }
+        
+        return response;   
+
     }
 
     public WebSocketResponse endTurn(GameClient gameClient) {

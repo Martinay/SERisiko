@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class ServerGame extends Game {
     
-    public List<Player> Players = new LinkedList<>();
     public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();

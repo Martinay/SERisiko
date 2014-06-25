@@ -8,6 +8,7 @@ public class Player implements ApiResponseObject {
     public int ID;
     public String Name;
     public boolean Ready;
+    public PlayerStatus PlayerStatus; //TODO
 
     public Player(int playerID, String playerName) {
         ID = playerID;
@@ -22,7 +23,8 @@ public class Player implements ApiResponseObject {
         apiData.put("id", ID);
         apiData.put("name", Name);
         apiData.put("ready", Ready);
-        
+        apiData.put("playerStatus", PlayerStatus);
+
         return apiData;
 
     }

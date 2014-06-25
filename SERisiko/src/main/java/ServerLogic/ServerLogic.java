@@ -84,6 +84,11 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
+    public EndFirstUnitPlacementMessage EndFirstUnitPlacement(int playerID, List<ClientMapChange> clientMapChanges) {
+        return null; //TODO
+    }
+
+    @Override
     public PlayerCreatedMessage CreatePlayer(int playerID, String playerName) {
         Player player = new Player(playerID, playerName);
         _state.Players.add(player);
