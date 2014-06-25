@@ -52,9 +52,8 @@ function SvgFunctions(document){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     theRect.setAttribute('opacity','1');
-                    console.log(Core.getPlayerStatus);
-                    if(Core.getPlayerStatus == ""){
-                        Core.combatHandler.selectCountMoveUnits(attacker, id);
+                    if(Core.getPlayerStatus() == ""){
+                        Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
                     } else {
                         Core.combatHandler.selectAmountUnit(attacker, id);
                     }
@@ -76,7 +75,7 @@ function SvgFunctions(document){
     };
     
     this.setRectsOnClickNull = function(){
-         var rects = svgDoc.getElementsByTagName("rect");
+        var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
             rect.onmouseover = "";
             rect.onmouseout = "";
@@ -104,7 +103,7 @@ function SvgFunctions(document){
             if(rect.getAttribute("Owner") === Core.getPlayerName()){
                 rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                 rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
-                rect.onclick = new Function("Core.combatHandler.UnitPlacement(this.id, \""+value+"\");");
+                rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
             }
         });        
     };

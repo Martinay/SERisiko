@@ -97,7 +97,7 @@ function Combat(document){
     
     this.endAttack = function (){
         this.abortAttack();
-    }
+    };
     
     this.abortAttack = function (){
         root.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
@@ -106,46 +106,5 @@ function Combat(document){
         root.getElementById("loading_overlay").style.display = "none";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
-    };
-    
-    this.UnitPlacement = function (id, maxValue){
-        $( "#bottom_overlay" ).slideDown( "slow");
-        Core.showElement(document.getElementById("mutex"));
-        document.getElementById("bottom_overlay").innerHTML = "\
-                        <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.combatHandler.PlaceUnits(\""+id+"\",\""+maxValue+"\")' style='margin-left: 680px;'>OK</button>";
-        Core.createSlider("unitAmount", "insertSliderAfter", 1, maxValue);
-    };
-    
-    this.PlaceUnits = function (id, maxValue){
-        $( "#bottom_overlay" ).slideUp( "slow");
-        Core.hideElement(document.getElementById("mutex"));  
-        var countSelector = document.getElementById("unitAmount").options[document.getElementById("unitAmount").selectedIndex].value;
-        maxValue = maxValue - countSelector;
-        alert(id + ": " + countSelector);
-        document.getElementById("bottom_overlay").innerHTML = "";
-        if(maxValue == 0){
-            Core.svgHandler.refreshOwnerRights();
-        } else {
-            Core.svgHandler.refreshOwnerRightsForUnitPlace(maxValue);
-        }
-    };
-    
-     this.selectCountMoveUnits = function(source, destination){
-        $( "#bottom_overlay" ).slideDown( "slow");
-        Core.showElement(document.getElementById("mutex"));
-        document.getElementById("bottom_overlay").innerHTML = "\
-                        <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.combatHandler.PlaceUnits(\""+destination+"\")' style='margin-left: 680px;'>OK</button>";
-        Core.createSlider("unitAmount", "insertSliderAfter", 1, (svgDoc.getElementById(source).getAttribute("Unitcount") - 1));
-    };
-    
-    this.moveUnits = function(id){
-         $( "#bottom_overlay" ).slideUp( "slow");
-        Core.hideElement(document.getElementById("mutex"));  
-        var countSelector = document.getElementById("unitAmount").options[document.getElementById("unitAmount").selectedIndex].value;
-        alert(id + ": " + countSelector);
     };
 }

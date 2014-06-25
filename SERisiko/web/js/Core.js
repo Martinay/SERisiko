@@ -15,6 +15,8 @@ function Core() {
     this.svgHandler = new SvgFunctions(document);
     this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
+    this.unitMoveHandler = new UnitMove(document);
+    this.unitPlacementHandler = new UnitPlacement(document);
     this.connectionHandler = new Connection();  // also inits Connection
     
     //#Private Vars
@@ -115,7 +117,9 @@ function Core() {
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
         //var svg = document.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
-        this.combatHandler.init(svg);   
+        this.combatHandler.init(svg); 
+        this.unitPlacementHandler.init(svg);
+        this.unitMoveHandler.init(svg);
         this.setInGameLobby(true);
         
          // cleanup
