@@ -19,6 +19,7 @@ function Core() {
     
     //#Private Vars
     var myData = new MyDataObject();
+    var gameRunning = false;
     
     //# Public Methods
     this.setPlayerName = function(){
@@ -47,6 +48,18 @@ function Core() {
     this.getPlayerId = function(){
         return myData.getPlayerId();
     };
+    this.setInGameLobby = function(arg){
+        myData.setInGameLobby(arg);
+    };
+    this.isInGameLobby = function(){
+        return myData.isInGameLobby();
+    };
+    this.setGameRunning = function(arg){
+        gameRunning = arg;
+    };
+    this.isGameRunning = function(){
+        return gameRunning;
+    };
     //##############################
     
     this.deletePlayerName = function(){
@@ -66,9 +79,8 @@ function Core() {
     };
 
     this.backToLobby = function(){
-        this.connectionHandler.leaveGame();
-        //check response
-        this.connectionHandler.joinLobby();
+        this.connectionHandler.leaveGame();        
+        this.setInGameLobby(false);
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -104,7 +116,8 @@ function Core() {
         //var svg = document.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
         this.combatHandler.init(svg);   
-
+        this.setInGameLobby(true);
+        
          // cleanup
         document.getElementById("playerList").innerHTML = "";
         this.playerList.clear();
@@ -202,7 +215,8 @@ function Core() {
     this.updatePlayerList = function(){
         var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
         var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
-
+        $("#playerList").html("");
+        
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");

@@ -20,7 +20,7 @@ public class Kontinent {
     }
     
     public Land[] GETLands(){
-    	return  (Land[]) _laender.toArray();
+    	return  _laender.toArray(new Land[_laender.size()]);
     }
     
     public int GETAnzahlBonusArmeen(){
