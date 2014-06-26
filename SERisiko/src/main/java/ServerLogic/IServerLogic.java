@@ -25,8 +25,8 @@ public interface IServerLogic {
     List<Player> GetPlayersInLobby();
 
     //LobbyGame
-    NewPlayerJoinedMessage JoinGame(int playerID, int GameID);
-    PlayerLeftMessage LeaveGame(int playerID);
+    NewPlayerJoinedGameMessage JoinGame(int playerID, int GameID);
+    PlayerLeftGameMessage LeaveGame(int playerID);
     GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
     List<Player> GetPlayersInGame(int playerID);

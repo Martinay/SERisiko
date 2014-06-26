@@ -1,4 +1,6 @@
-package ServerLogic.Model;
+package ServerLogic.Model.Server;
+
+import ServerLogic.Model.Player;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public class ServerState {
     public List<Player> Players = new LinkedList<>();
-    public Lobby Lobby = new Lobby();
+    public ServerLogic.Model.Server.Lobby Lobby = new Lobby();
     public List<ServerGame> ActiveGames = new LinkedList<>();
     
     public Player GetPlayer(int playerID)
@@ -35,5 +37,4 @@ public class ServerState {
 
         throw new RuntimeException("Game not Found");
     }
-    
 }

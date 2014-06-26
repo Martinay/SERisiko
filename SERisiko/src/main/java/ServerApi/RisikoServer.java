@@ -3,11 +3,11 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
+
 import java.util.List;
 
 
@@ -82,7 +82,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         int clientId = gameClient.getIdentifyer();
         int gameId = gameIndex.intValue();
         
-        NewPlayerJoinedMessage message = gameManager.JoinGame(clientId, gameId );
+        NewPlayerJoinedGameMessage message = gameManager.JoinGame(clientId, gameId );
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
@@ -100,13 +100,13 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
 
-        PlayerLeftMessage message = gameManager.LeaveGame(clientId);
+        PlayerLeftGameMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        response.addChangedObject( message.Player );
+        //response.addChangedObject( message.Player ); //TODO
 
         
         return response;
@@ -156,7 +156,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        response.addChangedObject( message.DeleteGameFromLobbyMessage.Game );
+        // TODO response.addChangedObject( message.DeleteGameFromLobbyMessage.Game );
         
         
         return response;
@@ -222,7 +222,8 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         }
         
         //dice
-        Dice[] dice = message.DiceAttacker;
+        //TODO
+        /*Dice[] dice = message.DiceAttacker;
         for(int i = 0; i< dice.length ; i++) {
             response.addChangedObject( dice[i] );
         }
@@ -230,7 +231,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         Dice[] dice2 = message.DiceDefender;
         for(int i = 0; i< dice2.length; i++) {
             response.addChangedObject( dice2[i] );
-        }
+        }*/
         
         return response; 
         

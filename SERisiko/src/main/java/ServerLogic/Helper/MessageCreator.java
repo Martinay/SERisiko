@@ -1,11 +1,11 @@
 package ServerLogic.Helper;
 
-import ServerLogic.Model.MapChange;
 import GameLogic.Land;
 import ServerLogic.Messages.*;
-import ServerLogic.Messages.GameLogicInteraction.EndTurn;
 import ServerLogic.Model.Game;
+import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
+import ServerLogic.Model.Server.ServerDice;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,82 +16,29 @@ public class MessageCreator {
         ReadyStateChangedMessage message = new ReadyStateChangedMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
-        message.ReadyState = readyState;
         return message;
     }
 
-    //Game wasn't started successfully
-    public static GameStartedMessage CreateGameStartedMessage(List<Integer> idsToUpdate)
-    {
-        GameStartedMessage message = new GameStartedMessage();
-        message.PlayerIDsToUpdate = idsToUpdate;
-        message.GameStarted = false;
-        return message;
-    }
-
-    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, List<Integer> playerIdsInLobby, Game game, Player player, int numberOfUnits)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game)
     {
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
-        message.GameStarted = true;
-        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
-        message.FirstPlayer = player;
-        message.NumberOfUnits = numberOfUnits;
-        return message;
-    }
-
-    public static DeleteGameFromLobbyMessage CreateDeleteGameFromLobbyMessage(List<Integer> playerIdsInLobby, Game game)
-    {
-        DeleteGameFromLobbyMessage message = new DeleteGameFromLobbyMessage();
-        message.PlayerIDsToUpdate = playerIdsInLobby;
         message.Game = game;
         return message;
     }
 
-    //Join wasn't successful
-    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate) {
-
-        NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
-        message.PlayerIDsToUpdate = idsToUpdate;
-        message.Successful = false;
-        return message;
-    }
-
-    public static NewPlayerJoinedMessage CreateNewPlayerJoinedMessage(List<Integer> idsToUpdate, Player player) {
-        NewPlayerJoinedMessage message = new NewPlayerJoinedMessage();
-        message.PlayerIDsToUpdate = idsToUpdate;
-        message.Successful = true;
-        message.Player = player;
-        return message;
-    }
-
-    //If Player who doesn't own the game leaves
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player) {
-        PlayerLeftMessage message = new PlayerLeftMessage();
+    public static NewPlayerJoinedGameMessage CreateNewPlayerJoinedGameMessage(List<Integer> idsToUpdate, Player player) {
+        NewPlayerJoinedGameMessage message = new NewPlayerJoinedGameMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
         return message;
     }
 
-    //If no player is left in the game
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> playerIdsInLobby, Game game) {
-        PlayerLeftMessage message = new PlayerLeftMessage();
-        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby, game);
-        return message;
-    }
-
-    //If Player who created the game leaves
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, List<Integer> playerIdsInLobby, Game game) {
-
-        PlayerLeftMessage message = new PlayerLeftMessage();
-        message.GameCreatorLeftGameMessage = CreateGameCreatorLeftGameMessage(idsToUpdate);
-        message.DeleteGameFromLobbyMessage = CreateDeleteGameFromLobbyMessage(playerIdsInLobby,game);
-        return message;
-    }
-
-    private static GameCreatorLeftGameMessage CreateGameCreatorLeftGameMessage(List<Integer> idsToUpdate) {
-        GameCreatorLeftGameMessage message = new GameCreatorLeftGameMessage();
+    public static PlayerLeftGameMessage CreatePlayerLeftGameMessage(List<Integer> idsToUpdate, Game game, Player player) {
+        PlayerLeftGameMessage message = new PlayerLeftGameMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
+        message.Game = game;
+        message.Player = player;
         return message;
     }
 
@@ -150,13 +97,9 @@ public class MessageCreator {
         return mapChange;
     }
 
-    public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, EndTurn endTurn) {
+    public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, Game game) {
         EndTurnMessage message = new EndTurnMessage();
-
-        message.NewActivePlayer = endTurn.NextPlayer;
-        message.EndGame = endTurn.EndGame;
-        message.DefeatedPlayer = endTurn.DefeatedPlayer;
-        message.UnitsToPlaceNextPlayer =endTurn.UnitsToPlaceNextPlayer;
+        message.Game = game;
         message.PlayerIDsToUpdate = idsToUpdate;
 
         return message;
@@ -169,14 +112,28 @@ public class MessageCreator {
         return message;
     }
 
-    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID, Integer[] diceAttacker, Integer[] diceDefender) {
+    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID, ServerDice dice) {
         AttackMessage message = new AttackMessage();
 
         message.PlayerIDsToUpdate = idsToUpdate;
         message.MapChange = Arrays.asList(CreateMapChange(countryFromID));
         message.MapChange.add(CreateMapChange(countryToID));
-        message.DiceAttacker = diceAttacker;
-        message.DiceDefender = diceDefender;
+
+        if (dice.HasDice()) {
+            message.DiceAttacker = dice.Attacker;
+            message.DiceDefender = dice.Defender;
+        }
+
+        return message;
+    }
+
+    public static EndFirstUnitPlacementMessage CreateEndFirstUnitPlacementMessage(List<Integer> idsToUpdate, List<MapChange> currentMap, Game game, Player player)
+    {
+        EndFirstUnitPlacementMessage message = new EndFirstUnitPlacementMessage();
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.CurrentMap = currentMap;
+        message.Game = game;
+        message.Player = player;
 
         return message;
     }

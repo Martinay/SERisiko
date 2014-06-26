@@ -4,5 +4,5 @@ package ServerLogic.Model;
  * Created by Martin on 6/24/2014.
  */
 public enum PlayerStatus {
-    Playing, Defeated
+    InLobby, WaitingForGameStart, Playing, Defeated
 }
