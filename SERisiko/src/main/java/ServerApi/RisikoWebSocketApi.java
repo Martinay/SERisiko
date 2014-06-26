@@ -1,6 +1,7 @@
 package ServerApi;
 
 import Network.WebSocket.WebSocketResponse;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -28,5 +29,6 @@ interface RisikoWebSocketApi {
     public WebSocketResponse set(GameClient gameClient, String target, Long value);
     public WebSocketResponse endTurn(GameClient gameClient);   
     public WebSocketResponse endAttack(GameClient gameClient); 
+    public WebSocketResponse endFirstUnitPlacement(GameClient gameClient, JSONObject value);
     
 }
