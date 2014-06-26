@@ -70,6 +70,14 @@ function Connection(){
     this.sendAttack = function(attackerLandId, defenderLandId, amountAttackerUnits){
         connection.attack(attackerLandId, defenderLandId, amountAttackerUnits);
     };
+    
+    this.sendPlaceFirstUnits = function(PlaceUnitArray){
+        connection.endFirstUnitPlacement(PlaceUnitArray);
+    };
+    
+    this.sendUnitMove = function(source, target, value){
+        connection.move(source, target, value);
+    };
 
 }
 
