@@ -8,12 +8,13 @@ public class Player implements ApiResponseObject {
     public int ID;
     public String Name;
     public boolean Ready;
-    public PlayerStatus PlayerStatus; //TODO
+    public PlayerStatus PlayerStatus;
 
     public Player(int playerID, String playerName) {
         ID = playerID;
         Name = playerName;
         Ready = false;
+        PlayerStatus = PlayerStatus.Undefined;
     }
 
     public <String, Object> HashMap getResponseData() {

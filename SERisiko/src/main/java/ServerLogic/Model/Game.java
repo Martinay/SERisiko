@@ -10,9 +10,9 @@ public abstract class Game implements ApiResponseObject {
     public String Name;
     public int ID;
     public int MaxPlayer;
-    public Player CurrentPlayer; //TODO
-    public int NumberOfUnitsToPlace; //TODO
-    public GameStatus CurrentGameStatus; //TODO
+    public Player CurrentPlayer;
+    public int NumberOfUnitsToPlace;
+    public GameStatus CurrentGameStatus;
     public List<Player> Players = new LinkedList<>();
     public abstract int GetPlayerCount();
     

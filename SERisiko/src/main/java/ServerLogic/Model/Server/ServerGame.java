@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  *
  * @author Martin
  */
 public class ServerGame extends Game {
-    
+
     public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
@@ -40,8 +41,7 @@ public class ServerGame extends Game {
         return Players.size();
     }
 
-    public List<Integer> GetPlayerIds()
-    {
+    public List<Integer> GetPlayerIds() {
         return Linq4j.asEnumerable(Players)
                 .select(new Function1<Player, Integer>() {
                     @Override
@@ -52,8 +52,7 @@ public class ServerGame extends Game {
                 .toList();
     }
 
-    public boolean AreAllPlayerReady()
-    {
+    public boolean AreAllPlayerReady() {
         return Linq4j.asEnumerable(Players)
                 .all(new Predicate1<Player>() {
                     @Override
@@ -63,8 +62,12 @@ public class ServerGame extends Game {
                 });
     }
 
-    public void Start()
-    {
+    public void AddPlayer(Player player) {
+        Players.add(player);
+        player.PlayerStatus = PlayerStatus.WaitingForGameStart;
+    }
+
+    public void Start() {
         List<Spieler> spielerList = new LinkedList<>();
 
         for (Player player : Players) {
@@ -77,13 +80,15 @@ public class ServerGame extends Game {
 
         Kontinent[] kontinents = loadedContinents.toArray(new Kontinent[loadedContinents.size() - 1]);
 
-       _spiel = new Spielsteuerung(spielerList.toArray(new Spieler[spielerList.size()-1]), kontinents);
+        _spiel = new Spielsteuerung(spielerList.toArray(new Spieler[spielerList.size() - 1]), kontinents);
         CountryMapper.CreateCountryMapping(kontinents);
 
         Client_Response response = _spiel.gib_aktuellen_Zustand();
         UpdateGameStatus(response);
         CurrentGameStatus = GameStatus.FirstRoundPlacing;
-     }
+
+        UpdatePlayerStatus();
+    }
 
     public ServerDice Attack(String countryFromID, String countryToID, int units) {
 
@@ -93,7 +98,7 @@ public class ServerGame extends Game {
         Land from = CountryMapper.GetCountryById(countryFromID);
         Land to = CountryMapper.GetCountryById(countryToID);
 
-        Client_Response gameResponse =  InteractWithGameLogic(units, from, to, false);
+        Client_Response gameResponse = InteractWithGameLogic(units, from, to, false);
         UpdateGameStatus(gameResponse);
 
         return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
@@ -130,9 +135,9 @@ public class ServerGame extends Game {
 
     public void EndTurn() {
 
-        Client_Response gameResponse = InteractWithGameLogic(1,null,null, true);
-        while(gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Beenden)
-            gameResponse = InteractWithGameLogic(1,null,null, true);
+        Client_Response gameResponse = InteractWithGameLogic(1, null, null, true);
+        while (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Beenden)
+            gameResponse = InteractWithGameLogic(1, null, null, true);
 
         UpdateGameStatus(gameResponse);
     }
@@ -165,16 +170,14 @@ public class ServerGame extends Game {
         }
     }
 
-    private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState )
-    {
-        SpielEreigniss ereignis = new SpielEreigniss(units, erstesLand, zweitesLand, changeState );
+    private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState) {
+        SpielEreigniss ereignis = new SpielEreigniss(units, erstesLand, zweitesLand, changeState);
         Client_Response gameResponse = _spiel.zustandssteuerung(ereignis);
         CheckForError(gameResponse);
         return gameResponse;
     }
 
-    private void CheckForError(Client_Response gameResponse)
-    {
+    private void CheckForError(Client_Response gameResponse) {
         if (gameResponse.ist_ein_fehler_aufgetreten())
             throw new RuntimeException("Unknown Error in GameLogic in" + gameResponse.gib_aktuellen_Zustand());
     }
@@ -206,5 +209,15 @@ public class ServerGame extends Game {
             list.add(anInt);
         }
         return list;
+    }
+
+    private void UpdatePlayerStatus() {
+        Linq4j.asEnumerable(Players)
+                .forEach(new Consumer<Player>() {
+                    @Override
+                    public void accept(Player player) {
+                        player.PlayerStatus = PlayerStatus.Playing;
+                    }
+                });
     }
 }

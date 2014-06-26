@@ -2,6 +2,7 @@ package ServerLogic.Model.Server;
 
 import ServerLogic.Model.Game;
 import ServerLogic.Model.Player;
+import ServerLogic.Model.PlayerStatus;
 import net.hydromatic.linq4j.Linq4j;
 
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ public class Lobby {
 
     public void AddPlayer(Player player) {
         _players.add(player);
+        player.PlayerStatus = PlayerStatus.InLobby;
     }
     
     public void RemovePlayer(Player player)

@@ -123,7 +123,8 @@ public class ServerLogic implements IServerLogic {
         if (game.MaxPlayer<=game.GetPlayerCount())
             return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
 
-        game.Players.add(player);
+        game.AddPlayer(player);
+        _state.Lobby.RemovePlayer(player);
 
         return MessageCreator.CreateNewPlayerJoinedGameMessage(game.GetPlayerIds(), player);
     }
