@@ -165,7 +165,7 @@ function MyDataObject(){
     //#Private Vars
     var thePlayerId = -1;
     var thePlayerName = "";
-    var thePlayerStatus = "";
+    var thePlayerStatus = GameSteps.state.IDLE;
     var inGameLobby = false;
     
     this.getPlayerId = function(){
