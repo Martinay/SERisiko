@@ -60,4 +60,14 @@ public class ServerState {
 
         return game;
     }
+
+    public Player TryGetPlayer(int playerID) {
+        try {
+            return GetPlayer(playerID);
+        }
+        catch (RuntimeException ex)
+        {
+            return null;
+        }
+    }
 }

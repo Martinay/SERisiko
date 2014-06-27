@@ -11,6 +11,7 @@ import ServerLogic.Model.Server.ServerGame;
 import ServerLogic.Model.Server.ServerState;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ServerLogic implements IServerLogic {
@@ -118,19 +119,22 @@ public class ServerLogic implements IServerLogic {
     @Override
     public PlayerLeftMessage LeaveServer(int playerID) {
 
-        Player player = _state.GetPlayer(playerID);
+        Player player = _state.TryGetPlayer(playerID);
+        if (player == null)
+            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<Integer>(), null);
+
         _state.Lobby.RemovePlayer(player);
         _state.Players.remove(player);
         PlayerMapper.Remove(player);
         List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
 
-        if (player.PlayerStatus != PlayerStatus.InLobby) {
+        if (player.PlayerStatus != PlayerStatus.InLobby && player.PlayerStatus != PlayerStatus.Undefined) {
             ServerGame game = _state.GetActiveGameByPlayerId(playerID);
             game.RemovePlayer(player);
             idsToUpdate = game.GetPlayerIds();
         }
 
-        return MessageCreator.CreatePlayerLeftLobbyMessage(idsToUpdate, player);
+        return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player);
     }
 
     @Override
