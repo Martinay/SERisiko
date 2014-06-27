@@ -150,7 +150,7 @@ public class ServerLogic implements IServerLogic {
     @Override
     public PlayerLeftGameMessage LeaveGame(int playerID) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
+        ServerGame game = _state.GetGameByPlayerId(playerID);
 
         game.Players.remove(player);
 
