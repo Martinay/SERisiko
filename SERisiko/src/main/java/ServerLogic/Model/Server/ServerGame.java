@@ -2,20 +2,18 @@
 package ServerLogic.Model.Server;
 
 import GameLogic.*;
-import ServerLogic.Helper.CountryMapper;
+import ServerLogic.Helper.CountryService;
 import ServerLogic.Helper.FirstUnitPlacementHelper;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
 import ServerLogic.Model.*;
+import net.hydromatic.linq4j.Enumerable;
 import net.hydromatic.linq4j.Linq4j;
 import net.hydromatic.linq4j.function.Function1;
 import net.hydromatic.linq4j.function.Predicate1;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -27,7 +25,9 @@ public class ServerGame extends Game {
     public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
+    private CountryService _countryService = new CountryService();
     public FirstUnitPlacementHelper FirstUnitPlacementHelper = new FirstUnitPlacementHelper(this);
+
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
@@ -83,13 +83,13 @@ public class ServerGame extends Game {
         Kontinent[] kontinents = loadedContinents.toArray(new Kontinent[loadedContinents.size() - 1]);
 
         _spiel = new Spielsteuerung(spielerList.toArray(new Spieler[spielerList.size() - 1]), kontinents);
-        CountryMapper.CreateCountryMapping(kontinents);
+        _countryService.Initialize(kontinents);
 
         Client_Response response = _spiel.gib_aktuellen_Zustand();
         UpdateGameStatus(response);
         CurrentGameStatus = GameStatus.FirstRoundPlacing;
 
-        UpdatePlayerStatus();
+        SetPlayerStatusToPlaying();
     }
 
     public ServerDice Attack(String countryFromID, String countryToID, int units) {
@@ -97,8 +97,8 @@ public class ServerGame extends Game {
         if (_spiel.Zustand != Spielzustaende.Angriff)
             return new ServerDice();
 
-        Land from = CountryMapper.GetCountryById(countryFromID);
-        Land to = CountryMapper.GetCountryById(countryToID);
+        Land from = _countryService.GetCountryById(countryFromID);
+        Land to = _countryService.GetCountryById(countryToID);
 
         Client_Response gameResponse = InteractWithGameLogic(units, from, to, false);
         UpdateGameStatus(gameResponse);
@@ -118,8 +118,8 @@ public class ServerGame extends Game {
         if (_spiel.Zustand != Spielzustaende.Verschieben)
             return;
 
-        Land from = CountryMapper.GetCountryById(countryFromID);
-        Land to = CountryMapper.GetCountryById(countryToID);
+        Land from = _countryService.GetCountryById(countryFromID);
+        Land to = _countryService.GetCountryById(countryToID);
 
         Client_Response gameResponse = InteractWithGameLogic(units, from, to, false);
         UpdateGameStatus(gameResponse);
@@ -129,7 +129,7 @@ public class ServerGame extends Game {
         if (_spiel.Zustand != Spielzustaende.Armeen_hinzufuegen)
             return;
 
-        Land land = CountryMapper.GetCountryById(countryID);
+        Land land = _countryService.GetCountryById(countryID);
 
         Client_Response gameResponse = InteractWithGameLogic(units, land, null, false);
         UpdateGameStatus(gameResponse);
@@ -150,11 +150,63 @@ public class ServerGame extends Game {
         NumberOfUnitsToPlace = 0;
     }
 
+    public List<MapChange> GetMap() {
+        return Linq4j.asEnumerable(Arrays.asList(_spiel.gib_aktuellen_Zustand().gib_Laender()))
+                .select(new Function1<Land, MapChange>() {
+                    @Override
+                    public MapChange apply(Land land) {
+                        MapChange mapChange = new MapChange();
+                        mapChange.Units = land.gib_anzahl_armeen();
+                        mapChange.CountryID = land.gib_bezeichnung();
+                        mapChange.OwnedPlayer = PlayerMapper.Map(land.gib_besitzer());
+                        return mapChange;
+                    }
+                })
+                .toList();
+    }
+
+    public MapChange GetMapChange(String countryFromID) {
+        return Linq4j.asEnumerable(GetMap())
+                .single(new Predicate1<MapChange>() {
+                    @Override
+                    public boolean apply(MapChange mapChange) {
+                        return mapChange.CountryID == countryFromID;
+                    }
+                });
+    }
+
+    public void RemovePlayer(Player player) {
+
+        if (_spiel != null)
+        {
+            //TODO Spieler aus Spiel entfernen
+            //_spiel.RemovePlayer();
+        }
+
+        Players.remove(player);
+    }
+
     private void UpdateGameStatus(Client_Response gameResponse) {
         CurrentPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
         CurrentGameStatus = MapSpielZustand(gameResponse.gib_aktuellen_Zustand());
         NumberOfUnitsToPlace = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
-        //TODO Spielerstatus updaten
+        UpdatePlayerStatus();
+    }
+
+    private void UpdatePlayerStatus() {
+        Enumerable<Land> lands = Linq4j.asEnumerable(_spiel.DieSpielwelt.gibLaender());
+
+        for (Player player : Players)
+        {
+            boolean ownsAnyLand = lands.any(new Predicate1<Land>() {
+                @Override
+                public boolean apply(Land land) {
+                    return land.gib_besitzer().Id == player.ID;
+                }
+            });
+            if (!ownsAnyLand)
+                player.PlayerStatus = PlayerStatus.Defeated;
+        }
     }
 
     private GameStatus MapSpielZustand(Spielzustaende spielzustaende) {
@@ -213,7 +265,7 @@ public class ServerGame extends Game {
         return list;
     }
 
-    private void UpdatePlayerStatus() {
+    private void SetPlayerStatusToPlaying() {
         Linq4j.asEnumerable(Players)
                 .forEach(new Consumer<Player>() {
                     @Override

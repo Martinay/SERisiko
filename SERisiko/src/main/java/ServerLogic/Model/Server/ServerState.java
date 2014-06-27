@@ -37,4 +37,37 @@ public class ServerState {
 
         throw new RuntimeException("Game not Found");
     }
+
+    public ServerGame GetGameByPlayerId(int playerID) {
+        ServerGame game = null;
+        try {
+            game = GetActiveGameByPlayerId(playerID);
+        }
+        catch (RuntimeException ex)
+        {}
+
+        if (game == null)
+        {
+            try {
+                game = Lobby.GetGameByPlayerId(playerID);
+            }
+            catch (RuntimeException ex)
+            {}
+            if (game== null)
+                throw new RuntimeException("No Game Found. PlayerID: " + playerID);
+
+        }
+
+        return game;
+    }
+
+    public Player TryGetPlayer(int playerID) {
+        try {
+            return GetPlayer(playerID);
+        }
+        catch (RuntimeException ex)
+        {
+            return null;
+        }
+    }
 }

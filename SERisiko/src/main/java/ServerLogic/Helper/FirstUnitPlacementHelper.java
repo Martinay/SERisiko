@@ -1,12 +1,10 @@
 package ServerLogic.Helper;
 
 import ServerLogic.Model.ClientMapChange;
-import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.Model.Server.ServerGame;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public class FirstUnitPlacementHelper {
     }
 
     public void Collect(Player player, List<ClientMapChange> clientMapChanges) {
-        finishedPlayers.put(player,clientMapChanges);
+        finishedPlayers.put(player, clientMapChanges);
     }
 
     public boolean AllPlayerFinished() {
@@ -30,13 +28,24 @@ public class FirstUnitPlacementHelper {
     }
 
     public void ApplyChangesToGame() {
-        //TODO
+        if (!AllPlayerFinished())
+            return;
+
+        while (finishedPlayers.size() != 0)
+        {
+            Player currentPlayer = _game.CurrentPlayer;
+            ApplyChangesToGame(currentPlayer);
+            finishedPlayers.remove(currentPlayer);
+        }
     }
 
-    public List<MapChange> GetAllChanges() {
-        List<MapChange> result = new LinkedList<>();
-        //for (List<ClientMapChange> mapChange : finishedPlayers.values())
-            //result.addAll(mapChange);
-        return null;//TODO
+    private void ApplyChangesToGame(Player currentPlayer) {
+        List<ClientMapChange> changes = finishedPlayers.get(currentPlayer);
+        for(ClientMapChange change : changes)
+        {
+            if (_game.CurrentPlayer.ID != currentPlayer.ID)
+                return;
+            _game.PlaceUnits(change.CountryId,change.AddedUnits);
+        }
     }
 }

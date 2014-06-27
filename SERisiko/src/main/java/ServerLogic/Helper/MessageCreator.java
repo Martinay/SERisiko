@@ -1,6 +1,5 @@
 package ServerLogic.Helper;
 
-import GameLogic.Land;
 import ServerLogic.Messages.*;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.MapChange;
@@ -19,12 +18,12 @@ public class MessageCreator {
         return message;
     }
 
-    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game, List<MapChange> map)
     {
-        // TODO Karte am Anfang mitschicken
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
         message.Game = game;
+        message.Map = map;
         return message;
     }
 
@@ -51,8 +50,8 @@ public class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftLobbyMessage CreatePlayerLeftLobbyMessage(List<Integer> idsToUpdate, Player player) {
-        PlayerLeftLobbyMessage message = new PlayerLeftLobbyMessage();
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player) {
+        PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
 
@@ -66,36 +65,23 @@ public class MessageCreator {
         return message;
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, MapChange countryFrom, MapChange countryTo) {
 
-        MapChangedMessage message = CreateMapChangedMessage(idsToUpdate, countryFromID);
+        MapChangedMessage message = CreateMapChangedMessage(idsToUpdate, countryFrom);
 
-        message.MapChange.add(CreateMapChange(countryToID));
+        message.MapChange.add(countryTo);
 
         return message;
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, String countryID) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate,  MapChange country) {
         MapChangedMessage message = new MapChangedMessage();
 
-        List<MapChange> mapChange = Arrays.asList(CreateMapChange(countryID));
 
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.MapChange = mapChange;
+        message.MapChange = Arrays.asList(country);
 
         return message;
-    }
-
-    private static MapChange CreateMapChange(String countryId)
-    {
-        Land country = CountryMapper.GetCountryById(countryId);
-
-        MapChange mapChange = new MapChange();
-        mapChange.CountryID = countryId;
-        mapChange.OwnedPlayer = PlayerMapper.Map(country.gib_besitzer());
-        mapChange.Units = country.gib_anzahl_armeen();
-
-        return mapChange;
     }
 
     public static EndTurnMessage CreateEndTurnMessage(List<Integer> idsToUpdate, Game game) {
@@ -113,12 +99,12 @@ public class MessageCreator {
         return message;
     }
 
-    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, String countryFromID, String countryToID, ServerDice dice) {
+    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, MapChange countryFromID, MapChange countryToID, ServerDice dice) {
         AttackMessage message = new AttackMessage();
 
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.MapChange = Arrays.asList(CreateMapChange(countryFromID));
-        message.MapChange.add(CreateMapChange(countryToID));
+        message.MapChange = Arrays.asList(countryFromID);
+        message.MapChange.add(countryToID);
 
         if (dice.HasDice()) {
             message.DiceAttacker = dice.Attacker;

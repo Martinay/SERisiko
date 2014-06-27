@@ -20,7 +20,7 @@ public interface IServerLogic {
     //Lobby
     PlayerCreatedMessage CreatePlayer(int playerID, String playerName);
     AddNewPlayerToLobbyMessage JoinLobby(int playerID);
-    PlayerLeftLobbyMessage LeaveLobby(int playerID);
+    PlayerLeftMessage LeaveServer(int playerID);
     List<Game> GetGamesInLobby();
     List<Player> GetPlayersInLobby();
 
