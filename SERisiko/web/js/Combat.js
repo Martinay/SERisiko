@@ -46,24 +46,9 @@ function Combat(document){
                 Core.combatHandler.showAttackResult("lose");
             }else{      
                 //Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
+                 
+                rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
 
-                if(countAttack + countDefend < 5){
-                    if(countDefend > 2){
-                           rotate = (2 + countAttack) * countRotate;
-                    } else {
-                        rotate = (countDefend + countAttack) * countRotate;
-                    }
-                } else {
-                    if(countDefend < 2){
-                        rotate = ( 1 + 3) * countRotate;
-                    } else {
-                        if(countDefend > 2){
-                            rotate = (2 + countAttack) * countRotate;
-                        } else {
-                            rotate = 5 * countRotate;
-                        }
-                    }
-                }
                 var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
