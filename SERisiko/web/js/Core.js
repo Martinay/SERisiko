@@ -9,6 +9,7 @@ var Core = new Core();
 
 function Core() {
     //#Public Vars
+    this.gameSteps = new Core.gameSteps();
     this.gameList = new GameList();
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
@@ -148,7 +149,7 @@ function Core() {
             this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
-            this.setPlayerStatus(GameSteps.state.ATTACK);
+            this.setPlayerStatus(Core.gameSteps.state.ATTACK);
 
             //this.refreshOwnerRights();
             this.svgHandler.refreshOwnerRightsForUnitPlace(5);
@@ -190,7 +191,7 @@ function Core() {
     };
     
     this.endUnitPlacement = function(){
-        this.setPlayerStatus(GameSteps.state.ATTACK);
+        this.setPlayerStatus(Core.gameSteps.state.ATTACK);
         document.getElementById("gamePhase").innerHTML = "Angriffphase Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
         this.connectionHandler.sendUnitPlace(this.temp);
@@ -199,7 +200,7 @@ function Core() {
     };
     
     this.endAttack = function(){
-        this.setPlayerStatus(GameSteps.state.UNITMOVEMENT);
+        this.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
         document.getElementById("gamePhase").innerHTML = "Runde Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.endRound(); };
         this.svgHandler.setRectsOnClickNull();
@@ -208,7 +209,7 @@ function Core() {
     };
     
     this.endRound = function(){
-        this.setPlayerStatus(GameSteps.state.IDLE);
+        this.setPlayerStatus(Core.gameSteps.state.IDLE);
         document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
         document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
         document.getElementById("gamePhase").disabled = true;
@@ -219,7 +220,7 @@ function Core() {
     };
     
     this.endFirstUnitPlacement = function(){
-        this.setPlayerStatus(GameSteps.state.IDLE);
+        this.setPlayerStatus(Core.gameSteps.state.IDLE);
         document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
         document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
         document.getElementById("gamePhase").disabled = true;

@@ -29,7 +29,7 @@ function SvgFunctions(document){
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
         console.log(Core.getPlayerStatus());
-        if(Core.getPlayerStatus() == GameSteps.state.ATTACK){
+        if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
                 if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
@@ -78,7 +78,7 @@ function SvgFunctions(document){
         theRect.setAttribute('opacity','0.5');
         var theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.5');
-        if(Core.getPlayerStatus() == GameSteps.state.ATTACK){
+        if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 if(id != neighborLands[i]){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
