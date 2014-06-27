@@ -99,9 +99,10 @@ function Combat(document){
                                             </tr>\n\
                                         </table>\n\
                                     </div>\n'+
-                                    "<button style='margin-top: 20px;' name='StartAttack' onClick='Core.combatHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
+                                    "<button style='margin-top: 20px;' id='startAttack' name='StartAttack' onClick='Core.combatHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
+                root.getElementById("startAttack").disabled = true;
             }
         }
     };
@@ -117,13 +118,14 @@ function Combat(document){
     };
     
     this.endAttack = function (){
-        this.abortAttack();
+        root.getElementById("loading_overlay").innerHTML = '';
+        root.getElementById("loading_overlay").style.display = "none";
+        Core.svgHandler.setRectsOnClickNull();
+        Core.svgHandler.refreshOwnerRights();
     };
     
     this.abortAttack = function (){
-        root.getElementById("loading_overlay").innerHTML = '<div id="loading_message">Waiting for Server... \n\
-                                                                    <img id="loading" alt="Loading Screen" src="img/loading_overlay.gif">\n\
-                                                                </div>';
+        root.getElementById("loading_overlay").innerHTML = '';
         root.getElementById("loading_overlay").style.display = "none";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();

@@ -15,8 +15,6 @@ function SvgFunctions(document){
     var i = 0;
     var counter = 0;
     
-    
-    
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
@@ -31,7 +29,7 @@ function SvgFunctions(document){
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
         console.log(Core.getPlayerStatus());
-        if(Core.getPlayerStatus() == "Attack"){
+        if(Core.getPlayerStatus() == GameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
                 if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
@@ -80,7 +78,7 @@ function SvgFunctions(document){
         theRect.setAttribute('opacity','0.5');
         var theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.5');
-        if(Core.getPlayerStatus() == "Attack"){
+        if(Core.getPlayerStatus() == GameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 if(id != neighborLands[i]){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
@@ -188,38 +186,16 @@ function SvgFunctions(document){
     //Private Methods
     
     var drawDigitOnCanvas = function(id, count){
-        switch(count){
-            case 1:
-                count = 6;
-                break;
-            case 2: 
-                count = 5;
-                break;
-            case 3: 
-                count = 4;
-                break;
-            case 4: 
-                count = 3;
-                break;
-            case 5: 
-                count = 2;
-                break;
-             case 6: 
-                count = 1;
-                break;
-            default: 
-                count = null;
+        count = 7-count;
+        var canvas = root.getElementById('canvas_' + id);
+        if(canvas.getContext){
+            var context = canvas.getContext('2d');
+            context.font = '40pt Arial';
+            context.textAlign = 'center';
+            context.fillStyle = 'red';
+            context.fillText(count, 75, 90);
         }
-        if(count != null){
-            var canvas = root.getElementById('canvas_' + id);
-            if(canvas.getContext){
-                var context = canvas.getContext('2d');
-                context.font = '40pt Arial';
-                context.textAlign = 'center';
-                context.fillStyle = 'red';
-                context.fillText(count, 75, 90);
-            }
-        }
+        root.getElementById("startAttack").disabled = false;
     };
     
     var arraySchnittmengeDelete = function(array, arrayDelete){

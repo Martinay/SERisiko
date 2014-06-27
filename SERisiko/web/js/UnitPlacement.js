@@ -7,11 +7,20 @@
 function UnitPlacement(document){
     var root = document;
     var svgDoc = null;
+    var firstRound = true;
     
     var placeUnit = new Array();
     
     this.init = function(svgElement){
         svgDoc = svgElement;
+    };
+    
+    this.changefirstRound = function(){
+        this.firstRound = false;
+    };
+    
+    this.getfirstRound = function(){
+        return this.firstRound;
     };
     
     this.unitPlacement = function (id, maxValue){
@@ -41,10 +50,9 @@ function UnitPlacement(document){
         Core.svgHandler.setLandUnitcount(id, parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id)));
         root.getElementById("bottom_overlay").innerHTML = "";
         if(maxValue == 0){
-            Core.connectionHandler.sendPlaceFirstUnits(placeUnit);
-            root.getElementById("gamePhase").disabled = false;
             Core.svgHandler.setRectsOnClickNull();
-            Core.svgHandler.refreshOwnerRights();
+            document.getElementById("gamePhase").disabled = false;
+            Core.set
         } else {
             Core.svgHandler.refreshOwnerRightsForUnitPlace(maxValue);
         }

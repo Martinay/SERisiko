@@ -22,6 +22,7 @@ function Core() {
     //#Private Vars
     var myData = new MyDataObject();
     var gameRunning = false;
+    var Temp = null;
     
     //# Public Methods
     this.setPlayerName = function(){
@@ -63,6 +64,10 @@ function Core() {
         return gameRunning;
     };
     //##############################
+    
+    this.setTemp = function(arg){
+        this.temp = arg;
+    };
     
     this.deletePlayerName = function(){
         this.connectionHandler.leaveLobby();
@@ -143,10 +148,11 @@ function Core() {
             this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
-            this.setPlayerStatus("Attack");
+            this.setPlayerStatus(GameSteps.state.ATTACK);
 
             //this.refreshOwnerRights();
             this.svgHandler.refreshOwnerRightsForUnitPlace(5);
+            document.getElementById("gamePhase").disabled = true;
         //#
     };
 
@@ -183,17 +189,43 @@ function Core() {
         document.getElementById("bottom_overlay").innerHTML = "";
     };
     
+    this.endUnitPlacement = function(){
+        this.setPlayerStatus(GameSteps.state.ATTACK);
+        document.getElementById("gamePhase").innerHTML = "Angriffphase Beenden";
+        document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
+        this.connectionHandler.sendUnitPlace(this.temp);
+        // After Answer
+        this.svgHandler.refreshOwnerRights();  
+    };
+    
     this.endAttack = function(){
-        this.setPlayerStatus("UnitMove");
-        document.getElementById("gamePhase").innerHTML = "Spielrunde Beenden";
+        this.setPlayerStatus(GameSteps.state.UNITMOVEMENT);
+        document.getElementById("gamePhase").innerHTML = "Runde Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.endRound(); };
+        this.svgHandler.setRectsOnClickNull();
+        // After Answer
+        this.svgHandler.refreshOwnerRights();
     };
     
     this.endRound = function(){
-        this.setPlayerStatus("Attack");
-        document.getElementById("gamePhase").innerHTML = "Angriff Beenden";
-        document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
+        this.setPlayerStatus(GameSteps.state.IDLE);
+        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
+        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
         document.getElementById("gamePhase").disabled = true;
+        this.connectionHandler.sendEndRound();
+        this.svgHandler.setRectsOnClickNull();
+        // After Answer
+        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
+    };
+    
+    this.endFirstUnitPlacement = function(){
+        this.setPlayerStatus(GameSteps.state.IDLE);
+        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
+        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
+        document.getElementById("gamePhase").disabled = true;
+        this.connectionHandler.sendPlaceFirstUnits(this.temp);
+        // After Answer
+        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
     };
     
     this.hideElement = function(element){
