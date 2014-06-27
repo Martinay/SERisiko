@@ -66,6 +66,17 @@ public class Lobby {
         throw new RuntimeException("Game not found");
     }
 
+    public ServerGame TryGetGameById(int gameId)
+    {
+        try {
+            return GetGameById(gameId);
+        }
+        catch (RuntimeException ex)
+        {
+            return null;
+        }
+    }
+
     public List<Game> GetOpenGames()
     {
         return new LinkedList<Game>(_openGames);

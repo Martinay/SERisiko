@@ -38,7 +38,7 @@ public class ServerState {
         throw new RuntimeException("Game not Found");
     }
 
-    public ServerGame GetGameByPlayerId(int playerID) {
+    public ServerGame GetGameByPlayerId(int playerID)  {
         ServerGame game = null;
         try {
             game = GetActiveGameByPlayerId(playerID);
@@ -59,6 +59,16 @@ public class ServerState {
         }
 
         return game;
+    }
+
+    public ServerGame TryGetGameByPlayerId(int playerID)  {
+       try {
+            return GetGameByPlayerId(playerID);
+        }
+        catch (RuntimeException ex)
+        {
+            return null;
+        }
     }
 
     public Player TryGetPlayer(int playerID) {

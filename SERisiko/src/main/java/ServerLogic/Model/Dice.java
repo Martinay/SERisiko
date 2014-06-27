@@ -25,7 +25,7 @@ public class Dice implements ApiResponseObject {
         HashMap apiData = new HashMap();
         
         apiData.put("value", value);
-        apiData.put("type", type);
+        apiData.put("type", type.toString());
 
         return apiData;
     }

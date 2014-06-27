@@ -36,6 +36,7 @@ public class ServerGame extends Game {
         ID = id;
         MaxPlayer = maxPlayer;
         CurrentGameStatus = GameStatus.WaitingForPlayer;
+        player.PlayerStatus = PlayerStatus.WaitingForGameStart;
     }
 
     @Override

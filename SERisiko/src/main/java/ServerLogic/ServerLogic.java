@@ -123,16 +123,21 @@ public class ServerLogic implements IServerLogic {
         if (player == null)
             return MessageCreator.CreatePlayerLeftMessage(new LinkedList<Integer>(), null);
 
-        _state.Lobby.RemovePlayer(player);
-        _state.Players.remove(player);
-        PlayerMapper.Remove(player);
         List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
 
         if (player.PlayerStatus != PlayerStatus.InLobby && player.PlayerStatus != PlayerStatus.Undefined) {
-            ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-            game.RemovePlayer(player);
-            idsToUpdate = game.GetPlayerIds();
+            ServerGame game = _state.TryGetGameByPlayerId(playerID);
+            if (game != null)
+            {
+                LeaveGame(playerID);
+                idsToUpdate = game.GetPlayerIds();
+            }
         }
+
+        _state.Lobby.RemovePlayer(player);
+        _state.Players.remove(player);
+        PlayerMapper.Remove(player);
+        idsToUpdate.remove(player);
 
         return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player);
     }
@@ -140,10 +145,25 @@ public class ServerLogic implements IServerLogic {
     @Override
     public NewPlayerJoinedGameMessage JoinGame(int playerID, int gameId) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.Lobby.GetGameById(gameId);
+        if (player.PlayerStatus != PlayerStatus.InLobby)
+        {
+            Logger.Write("Spieler bereits in einem Spiel. PlayerId:" + playerID + "gameID: " + gameId);
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+        }
+
+        ServerGame game = _state.Lobby.TryGetGameById(gameId);
+
+        if (game == null)
+        {
+            Logger.Write("Kein Spiel gefunden PlayerId:" + playerID + "gameID: " + gameId);
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+        }
 
         if (game.MaxPlayer<=game.GetPlayerCount())
+        {
+            Logger.Write("Max Spieler erreicht PlayerId:" + playerID + "gameID: " + gameId);
             return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+        }
 
         game.AddPlayer(player);
         _state.Lobby.RemovePlayer(player);
@@ -156,14 +176,14 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         ServerGame game = _state.GetGameByPlayerId(playerID);
 
-        game.Players.remove(player);
+        game.RemovePlayer(player);
 
         if (game.Players.size()== 0)
         {
             _state.Lobby.RemoveGame(game);
         }
 
-        if (game.Creator.ID == playerID)
+        if (game.Creator.ID == playerID && game.Players.size()!= 0)
         {
             _state.Lobby.RemoveGame(game);
             game.Finish();
