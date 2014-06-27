@@ -13,26 +13,30 @@ function UnitMove(document){
     };
     
     this.selectCountMoveUnits = function(source, destination){
-        $( "#bottom_overlay" ).slideDown( "slow");
         Core.showElement(root.getElementById("mutex"));
-        root.getElementById("bottom_overlay").innerHTML = "\
-                        <label for='unitAmount'>Anzahl Einheiten von: " + source + " nach: " + destination + "</label> \
-                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.abortUnitMove()' style='margin-left: 460px;'>Abbrechen</Button>\
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitMoveHandler.PlaceUnits(\""+destination+"\")' style='margin-left: 20px;'>OK</button>";
-        Core.createSlider("unitAmount", "insertSliderAfter", 1, (parseInt(svgDoc.getElementById(source).getAttribute("Unitcount")) - 1));
+        if(parseInt(svgDoc.getElementById(source).getAttribute("Unitcount")) != 1){
+            root.getElementById("bottom_overlay").innerHTML = "\
+                            <label for='unitAmount'>Anzahl Einheiten von: " + source + " nach: " + destination + "</label> \
+                            <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
+                            <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.abortUnitMove()' style='margin-left: 460px;'>Abbrechen</Button>\
+                            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitMoveHandler.moveUnits(\""+source+"\",\""+destination+"\")' style='margin-left: 20px;'>OK</button>";
+            Core.createSlider("unitAmount", "insertSliderAfter", 1, (parseInt(svgDoc.getElementById(source).getAttribute("Unitcount")) - 1));
+        } else {
+            this.abortUnitMove();
+        }
     };
     
-    this.moveUnits = function(id){
-        $( "#bottom_overlay" ).slideUp( "slow");
-        Core.hideElement(root.getElementById("mutex"));  
+    this.moveUnits = function(source, destination){ 
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
-        alert(id + ": " + countSelector);
+        Core.connectionHandler.sendUnitMove(source, destination, countSelector);
+        this.abortUnitMove();
     };
     
     this.abortUnitMove = function(){
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
-    }
+        Core.svgHandler.setRectsOnClickNull();
+        Core.svgHandler.refreshOwnerRights();
+    };
 }

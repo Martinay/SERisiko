@@ -30,14 +30,47 @@ function SvgFunctions(document){
         neighborLands = theRect.getAttribute("neighbor").split(",");
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
-        for (var i = 0; i < neighborLands.length; i++) {
-            theRect = svgDoc.getElementById(neighborLands[i]);
-            if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
-                theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
-                theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
-                theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
-                theRect.setAttribute('opacity','0.75');
+        console.log(Core.getPlayerStatus());
+        if(Core.getPlayerStatus() == "Attack"){
+            for (var i = 0; i < neighborLands.length; i++) {
+                theRect = svgDoc.getElementById(neighborLands[i]);
+                if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
+                    theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
+                    theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
+                    theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
+                    svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
+                }
             }
+            $( "#bottom_overlay" ).slideDown( "slow");
+            root.getElementById("bottom_overlay").innerHTML = "\
+                    <button name='abortAttack' onClick='Core.combatHandler.abortAttack2();' style='margin: 22px 398px;'>Attack Abbrechen</button>";
+        } else {
+            var newNeighorLands = null;
+            var doneCountrys = new Array();
+            doneCountrys.push(id);
+            var goOn = true;
+            while(goOn == true){
+                goOn = false;
+                newNeighorLands = new Array();
+                for (var i = 0; i < neighborLands.length; i++) {
+                    theRect = svgDoc.getElementById(neighborLands[i]);
+                    if(doneCountrys.indexOf(theRect.getAttribute('id')) == -1){
+                        doneCountrys.push(theRect.getAttribute('id'));
+                    }
+                    if(theRect.getAttribute("Owner") ==  Core.getPlayerName()){
+                        theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
+                        theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
+                        theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
+                        svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
+                        newNeighorLands = newNeighorLands.concat(theRect.getAttribute("neighbor").split(","));
+                        goOn = true;
+                    }
+                }
+                neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
+            }
+            $( "#bottom_overlay" ).slideDown( "slow");
+            root.getElementById("bottom_overlay").innerHTML = "\
+                    <button name='abortUnitMove' onClick='Core.unitMoveHandler.abortUnitMove();' style='margin: 22px 398px;'>Unitmove Abbrechen</button>";
         }
     };
     
@@ -47,20 +80,25 @@ function SvgFunctions(document){
         theRect.setAttribute('opacity','0.5');
         var theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.5');
-        for (var i = 0; i < neighborLands.length; i++) {
-            if(id != neighborLands[i]){
+        if(Core.getPlayerStatus() == "Attack"){
+            for (var i = 0; i < neighborLands.length; i++) {
+                if(id != neighborLands[i]){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     theRect.setAttribute('opacity','1');
-                    if(Core.getPlayerStatus() == ""){
-                        Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
-                    } else {
-                        Core.combatHandler.selectAmountUnit(attacker, id);
-                    }
+                    
                 }
             }
+            Core.combatHandler.selectAmountUnit(attacker, id);
+        } else {
+            Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
+        }
+        
     };
-
+    this.getLandOwner = function(landId){
+        svgDoc.getElementById(landId).getAttribute("Owner");  
+    };
+    
     this.setNewLandOwner = function(landId, playerName){
         // parse playerId to Playername....
         svgDoc.getElementById(landId).setAttribute("Owner", playerName);  
@@ -80,8 +118,10 @@ function SvgFunctions(document){
             rect.onmouseover = "";
             rect.onmouseout = "";
             rect.onclick = "";
-            rect.setAttribute('opacity','1');
-            rect.style='cursor: default';
+            if(rect.getAttribute("id").indexOf("_back") != -1){
+                svgDoc.getElementById(rect.getAttribute("id")).setAttribute('opacity','1');
+                svgDoc.getElementById(rect.getAttribute("id")).style='cursor: default';
+            }
         });
     }
     
@@ -117,7 +157,7 @@ function SvgFunctions(document){
     
     this.drawRotatePaperOnCanvas = function(id, rotate){
         if (i < rotate){
-            var canvas = svgDoc.getElementById('canvas_' + id);
+            var canvas = root.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
                 if(canvas.getContext){
@@ -171,7 +211,7 @@ function SvgFunctions(document){
                 count = null;
         }
         if(count != null){
-            var canvas = svgDoc.getElementById('canvas_' + id);
+            var canvas = root.getElementById('canvas_' + id);
             if(canvas.getContext){
                 var context = canvas.getContext('2d');
                 context.font = '40pt Arial';
@@ -180,6 +220,15 @@ function SvgFunctions(document){
                 context.fillText(count, 75, 90);
             }
         }
+    };
+    
+    var arraySchnittmengeDelete = function(array, arrayDelete){
+        for(i = 0; i < arrayDelete.length; i++){
+            while(array.indexOf(arrayDelete[i]) != -1){
+                array.splice(array.indexOf(arrayDelete[i]), 1);
+            }
+        }
+        return array;
     };
     
     var initUnitOnMap = function(){

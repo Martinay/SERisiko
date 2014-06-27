@@ -132,6 +132,8 @@ function Core() {
 
         // give me some lands test
             this.svgHandler.setNewLandOwner("D2" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D7" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("D6" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("E1" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("E3" ,this.getPlayerName());
@@ -141,6 +143,7 @@ function Core() {
             this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
+            this.setPlayerStatus("Attack");
 
             //this.refreshOwnerRights();
             this.svgHandler.refreshOwnerRightsForUnitPlace(5);
@@ -178,6 +181,19 @@ function Core() {
         var select = document.getElementById("unitAmount");
         alert(select.options[select.selectedIndex].value);
         document.getElementById("bottom_overlay").innerHTML = "";
+    };
+    
+    this.endAttack = function(){
+        this.setPlayerStatus("UnitMove");
+        document.getElementById("gamePhase").innerHTML = "Spielrunde Beenden";
+        document.getElementById("gamePhase").onclick = function() { Core.endRound(); };
+    };
+    
+    this.endRound = function(){
+        this.setPlayerStatus("Attack");
+        document.getElementById("gamePhase").innerHTML = "Angriff Beenden";
+        document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
+        document.getElementById("gamePhase").disabled = true;
     };
     
     this.hideElement = function(element){

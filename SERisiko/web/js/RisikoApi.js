@@ -53,32 +53,38 @@ var RisikoApi = function() {
     socket.joinLobby = function(){
         socket.call("joinLobby");
     };
+    
     socket.leaveLobby = function() {
         socket.call("leaveLobby");
     };
+    
     socket.joinGame = function(gameNumber) {
         socket.call("joinGame", gameNumber);
     };
+    
     socket.createGame = function(gameName, maxPlayers) {
         socket.call("createGame", gameName, maxPlayers);
     };
+    
     socket.setPlayerState = function(state) {
         socket.call("setPlayerState",state);
     };
+    
     socket.startGame = function() {
         socket.call("startGame");
     };
+    
     socket.leaveGame = function() {
         socket.call("leaveGame");
-    };    
+    }; 
+    
     socket.listOpenGames = function() {
         socket.call("listOpenGames");
-    };    
+    }; 
+    
     socket.listPlayers = function() {
         socket.call("listPlayers");
     }; 
-    
-    
     
     
     socket.attack = function(source, target, value) {
@@ -88,9 +94,11 @@ var RisikoApi = function() {
     socket.move = function(source, target, value) {
         socket.call("move", source, target, value);
     }; 
-    socket.set = function(target, value) {
-        socket.call("set", target, value);
+    
+    socket.endFirstUnitPlacement = function(targetArray) {
+        socket.call("endFirstUnitPlacement", targetArray);
     }; 
+    
     socket.endTurn = function() {
         socket.call("endTurn");
     }; 
