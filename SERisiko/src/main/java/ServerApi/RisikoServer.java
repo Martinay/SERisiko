@@ -9,7 +9,7 @@ import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
 
 import java.util.List;
-
+import org.json.simple.JSONObject;
 
 
 /**
@@ -21,6 +21,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     private final ServerLogic gameManager = new ServerLogic();
     
+    @Override
     public WebSocketResponse joinServer(GameClient gameClient, String username) {
         System.out.println("Join Server");
 
@@ -37,10 +38,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }  
     
+    @Override
     public WebSocketResponse leaveServer(GameClient gameClient) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     } 
 
+    @Override
     public WebSocketResponse joinLobby(GameClient gameClient) {
         System.out.println("Join Lobby");
 
@@ -58,6 +61,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
+    @Override
     public WebSocketResponse leaveLobby(GameClient gameClient) {
         System.out.println("Leave Lobby");
         
@@ -76,6 +80,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
+    @Override
     public WebSocketResponse joinGame(GameClient gameClient, Long gameIndex) {
         System.out.println("Join Game: " + gameIndex);
                 
@@ -95,6 +100,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
+    @Override
     public WebSocketResponse leaveGame(GameClient gameClient) {
         System.out.println("leave game");
         
@@ -106,12 +112,13 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        //response.addChangedObject( message.Player ); //TODO
+        response.addChangedObject( message.Game );
 
         
         return response;
     }
 
+    @Override
     public WebSocketResponse createGame(GameClient gameClient, String gamename, Long maxPlayer) {
         System.out.println("Create Game: " + gamename + '(' +maxPlayer+ ')');
         
@@ -129,6 +136,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
     
+    @Override
     public WebSocketResponse setPlayerState(GameClient gameClient, Boolean state) {
         System.out.println("set player state");
         
@@ -145,6 +153,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
     
+    @Override
     public WebSocketResponse startGame(GameClient gameClient) {
         System.out.println("Start Game");
         
@@ -156,12 +165,13 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        // TODO response.addChangedObject( message.DeleteGameFromLobbyMessage.Game );
+        response.addChangedObject( message.Game );
         
         
         return response;
     }
 
+    @Override
     public WebSocketResponse listOpenGames(GameClient gameClient) {
         System.out.println("List Games");
         
@@ -181,6 +191,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
 
+    @Override
     public WebSocketResponse listPlayers(GameClient gameClient) {
         System.out.println("List Players");
         
@@ -203,6 +214,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     
     //game
+    @Override
     public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value) {
         System.out.println("attack");
         
@@ -222,22 +234,22 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         }
         
         //dice
-        //TODO
-        /*Dice[] dice = message.DiceAttacker;
-        for(int i = 0; i< dice.length ; i++) {
-            response.addChangedObject( dice[i] );
+        List<Dice> dice = message.DiceAttacker;
+        for(int i = 0; i< dice.size() ; i++) {
+            response.addChangedObject( dice.get(i) );
         }
         
-        Dice[] dice2 = message.DiceDefender;
-        for(int i = 0; i< dice2.length; i++) {
-            response.addChangedObject( dice2[i] );
-        }*/
+        List<Dice> dice2 = message.DiceDefender;
+        for(int i = 0; i< dice2.size(); i++) {
+            response.addChangedObject( dice2.get(i) );
+        }
         
         return response; 
         
         
     }    
     
+    @Override
     public  WebSocketResponse endAttack(GameClient gameClient) {
         System.out.println("List Players");
         
@@ -254,6 +266,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
    
 
+    @Override
     public WebSocketResponse move(GameClient gameClient, String source, String target, Long value) {
         System.out.println("move Units");
         
@@ -274,6 +287,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response; 
     }
 
+    @Override
     public WebSocketResponse set(GameClient gameClient, String target, Long value) {
         System.out.println("setUnits");
         
@@ -295,8 +309,21 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     }
 
+    @Override
     public WebSocketResponse endTurn(GameClient gameClient) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("end first unitplacement");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        EndTurnMessage message = gameManager.EndTurn(clientId);
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addChangedObject( message.Game );
+        
+        
+        return response; 
     }
 
     @Override
@@ -305,6 +332,23 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         int clientId = gameClient.getIdentifyer();
         
         this.gameManager.LeaveServer(clientId);
+    }
+
+    @Override
+    public WebSocketResponse endFirstUnitPlacement(GameClient gameClient, JSONObject value) {
+        System.out.println("end first unitplacement");
+        
+        int clientId = gameClient.getIdentifyer();
+        
+        EndFirstUnitPlacementMessage message = gameManager.EndFirstUnitPlacement(clientId, null);
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+
+        
+        
+        return response;  
     }
     
 
