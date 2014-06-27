@@ -9,7 +9,7 @@ var Core = new Core();
 
 function Core() {
     //#Public Vars
-    this.gameSteps = new Core.gameSteps();
+    this.gameSteps = new GameSteps();
     this.gameList = new GameList();
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
