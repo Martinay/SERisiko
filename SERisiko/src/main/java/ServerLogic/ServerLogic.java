@@ -5,6 +5,7 @@ import ServerLogic.Messages.*;
 import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.Player;
+import ServerLogic.Model.PlayerStatus;
 import ServerLogic.Model.Server.ServerDice;
 import ServerLogic.Model.Server.ServerGame;
 import ServerLogic.Model.Server.ServerState;
@@ -115,14 +116,21 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
+    public PlayerLeftMessage LeaveServer(int playerID) {
 
         Player player = _state.GetPlayer(playerID);
         _state.Lobby.RemovePlayer(player);
         _state.Players.remove(player);
         PlayerMapper.Remove(player);
+        List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
 
-        return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
+        if (player.PlayerStatus != PlayerStatus.InLobby) {
+            ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+            game.RemovePlayer(player);
+            idsToUpdate = game.GetPlayerIds();
+        }
+
+        return MessageCreator.CreatePlayerLeftLobbyMessage(idsToUpdate, player);
     }
 
     @Override

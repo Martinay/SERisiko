@@ -50,8 +50,8 @@ public class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftLobbyMessage CreatePlayerLeftLobbyMessage(List<Integer> idsToUpdate, Player player) {
-        PlayerLeftLobbyMessage message = new PlayerLeftLobbyMessage();
+    public static PlayerLeftMessage CreatePlayerLeftLobbyMessage(List<Integer> idsToUpdate, Player player) {
+        PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
 

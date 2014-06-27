@@ -175,6 +175,20 @@ public class ServerGame extends Game {
                 });
     }
 
+    public void RemovePlayer(Player player) {
+
+
+        if (_spiel == null)
+        {
+            Players.remove(player);
+            return;
+        }
+        //TODO Spieler aus Spiel entfernen
+        //_spiel.RemovePlayer();
+
+
+    }
+
     private void UpdateGameStatus(Client_Response gameResponse) {
         CurrentPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
         CurrentGameStatus = MapSpielZustand(gameResponse.gib_aktuellen_Zustand());
