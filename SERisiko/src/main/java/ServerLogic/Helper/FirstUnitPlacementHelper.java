@@ -28,6 +28,24 @@ public class FirstUnitPlacementHelper {
     }
 
     public void ApplyChangesToGame() {
-        //TODO
+        if (!AllPlayerFinished())
+            return;
+
+        while (finishedPlayers.size() != 0)
+        {
+            Player currentPlayer = _game.CurrentPlayer;
+            ApplyChangesToGame(currentPlayer);
+            finishedPlayers.remove(currentPlayer);
+        }
+    }
+
+    private void ApplyChangesToGame(Player currentPlayer) {
+        List<ClientMapChange> changes = finishedPlayers.get(currentPlayer);
+        for(ClientMapChange change : changes)
+        {
+            if (_game.CurrentPlayer.ID != currentPlayer.ID)
+                return;
+            _game.PlaceUnits(change.CountryId,change.Units);
+        }
     }
 }
