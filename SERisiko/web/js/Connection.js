@@ -13,9 +13,9 @@ function Connection(){
 
         // Start ConnectionToServer
         connection.onmessage = function(elem) { //get message from server
+            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
             console.log(JSON.parse(elem.data));
             Core.serverAnswerParserHandler.parseServerAnswers(elem);
-            $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
         };
     };
     this.init();

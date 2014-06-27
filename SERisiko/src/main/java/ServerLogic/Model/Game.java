@@ -26,7 +26,7 @@ public abstract class Game implements ApiResponseObject {
         apiData.put("currentGameStatus", CurrentGameStatus.toString() );
         apiData.put("playerCount", this.GetPlayerCount() );
         apiData.put("maxPlayer", MaxPlayer );
-        apiData.put("players", Players );
+        //apiData.put("players", Players );
         apiData.put("currentPlayer", CurrentPlayer);
         apiData.put("numberOfUnitsToPlace", NumberOfUnitsToPlace);
 
