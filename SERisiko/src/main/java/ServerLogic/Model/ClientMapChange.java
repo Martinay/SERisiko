@@ -5,5 +5,5 @@ package ServerLogic.Model;
  */
 public class ClientMapChange {
     public String CountryId;
-    public int Units;
+    public int AddedUnits;
 }

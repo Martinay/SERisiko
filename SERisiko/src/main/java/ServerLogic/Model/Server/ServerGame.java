@@ -177,16 +177,13 @@ public class ServerGame extends Game {
 
     public void RemovePlayer(Player player) {
 
-
-        if (_spiel == null)
+        if (_spiel != null)
         {
-            Players.remove(player);
-            return;
+            //TODO Spieler aus Spiel entfernen
+            //_spiel.RemovePlayer();
         }
-        //TODO Spieler aus Spiel entfernen
-        //_spiel.RemovePlayer();
 
-
+        Players.remove(player);
     }
 
     private void UpdateGameStatus(Client_Response gameResponse) {

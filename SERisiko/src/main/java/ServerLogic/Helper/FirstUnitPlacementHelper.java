@@ -45,7 +45,7 @@ public class FirstUnitPlacementHelper {
         {
             if (_game.CurrentPlayer.ID != currentPlayer.ID)
                 return;
-            _game.PlaceUnits(change.CountryId,change.Units);
+            _game.PlaceUnits(change.CountryId,change.AddedUnits);
         }
     }
 }
