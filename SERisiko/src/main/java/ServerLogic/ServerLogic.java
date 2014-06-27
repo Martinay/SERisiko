@@ -178,13 +178,13 @@ public class ServerLogic implements IServerLogic {
         if (playerID != game.Creator.ID)
         {
             Logger.Write("Player != Creator hat versucht das Spiel zu starten Name:" + game.Name+ "SpielerID: "+ playerID);
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, game.GetMap());
         }
 
         if (!game.AreAllPlayerReady())
         {
             Logger.Write("Creator hat versucht das Spiel zu starten, ohne das alle Spieler bereit sind. Name:" + game.Name);
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, game.GetMap());
         }
 
         _state.Lobby.RemoveGame(game);
@@ -192,7 +192,7 @@ public class ServerLogic implements IServerLogic {
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), game);
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), game, game.GetMap());
     }
 
     @Override

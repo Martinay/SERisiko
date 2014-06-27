@@ -18,12 +18,12 @@ public class MessageCreator {
         return message;
     }
 
-    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game)
+    public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game, List<MapChange> map)
     {
-        // TODO Karte am Anfang mitschicken
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
         message.Game = game;
+        message.Map = map;
         return message;
     }
 
