@@ -21,6 +21,7 @@ public class MessageCreator {
 
     public static GameStartedMessage CreateGameStartedMessage(List<Integer> playerIdsInGame, Game game)
     {
+        // TODO Karte am Anfang mitschicken
         GameStartedMessage message = new GameStartedMessage();
         message.PlayerIDsToUpdate = playerIdsInGame;
         message.Game = game;

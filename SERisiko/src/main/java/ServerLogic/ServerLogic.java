@@ -1,9 +1,6 @@
 package ServerLogic;
 
-import ServerLogic.Helper.GameCreator;
-import ServerLogic.Helper.Logger;
-import ServerLogic.Helper.MessageCreator;
-import ServerLogic.Helper.PlayerMapper;
+import ServerLogic.Helper.*;
 import ServerLogic.Messages.*;
 import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Game;
@@ -85,7 +82,21 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public EndFirstUnitPlacementMessage EndFirstUnitPlacement(int playerID, List<ClientMapChange> clientMapChanges) {
-        return null; //TODO
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        Player player = _state.GetPlayer(playerID);
+
+        FirstUnitPlacementHelper helper = game.FirstUnitPlacementHelper;
+        helper.Collect(player, clientMapChanges);
+
+        if (helper.AllPlayerFinished())
+        {
+            helper.ApplyChangesToGame();
+            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(), helper.GetAllChanges(), game, player);
+        }
+        else
+        {
+            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(), null, null, player);
+        }
     }
 
     @Override

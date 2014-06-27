@@ -3,6 +3,7 @@ package ServerLogic.Model.Server;
 
 import GameLogic.*;
 import ServerLogic.Helper.CountryMapper;
+import ServerLogic.Helper.FirstUnitPlacementHelper;
 import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Map.Interfaces.IMapLoader;
 import ServerLogic.Map.MapLoader;
@@ -26,6 +27,7 @@ public class ServerGame extends Game {
     public Player Creator;
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
+    public FirstUnitPlacementHelper FirstUnitPlacementHelper = new FirstUnitPlacementHelper(this);
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
         Players.add(player);
