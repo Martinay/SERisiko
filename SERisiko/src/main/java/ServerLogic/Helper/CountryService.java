@@ -5,11 +5,11 @@ import GameLogic.Land;
 
 import java.util.HashMap;
 
-public class CountryMapper {
+public class CountryService {
 
-    static HashMap<String, Land> _countryMapping = new HashMap<>();
+    HashMap<String, Land> _countryMapping = new HashMap<>();
 
-    public static void CreateCountryMapping(Kontinent[] kontinents) {
+    public void Initialize(Kontinent[] kontinents) {
         for (Kontinent continent : kontinents) {
             Land[] lands = continent.GETLands();
             for (int i = 0; i<lands.length; i++)
@@ -18,7 +18,8 @@ public class CountryMapper {
 
     }
 
-    public static Land GetCountryById(String id) {
+    public Land GetCountryById(String id) {
         return _countryMapping.get(id);
     }
+
 }

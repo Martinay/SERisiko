@@ -1,13 +1,17 @@
 package ServerLogic;
 
-import ServerLogic.Helper.GameCreator;
-import ServerLogic.Helper.MessageCreator;
-import ServerLogic.Helper.PlayerMapper;
+import ServerLogic.Helper.*;
 import ServerLogic.Messages.*;
-import ServerLogic.Messages.GameLogicInteraction.EndTurn;
-import ServerLogic.Model.*;
+import ServerLogic.Model.ClientMapChange;
+import ServerLogic.Model.Game;
+import ServerLogic.Model.Player;
+import ServerLogic.Model.PlayerStatus;
+import ServerLogic.Model.Server.ServerDice;
+import ServerLogic.Model.Server.ServerGame;
+import ServerLogic.Model.Server.ServerState;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ServerLogic implements IServerLogic {
@@ -43,14 +47,9 @@ public class ServerLogic implements IServerLogic {
     @Override
     public AttackMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        Integer[] dices = game.Attack(countryFromID, countryToID, units);
+        ServerDice dices = game.Attack(countryFromID, countryToID, units);
 
-        if (dices.length == 0)
-            return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, null, null);
-
-        Integer[] diceAttacker = Arrays.asList(dices[0],dices[1],dices[2]).toArray(new Integer[3]);
-        Integer[] diceDefender = Arrays.asList(dices[3],dices[4]).toArray(new Integer[2]);
-        return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), countryFromID, countryToID, diceAttacker, diceDefender);
+        return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID), dices);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Move(countryFromID, countryToID, units);
 
-        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryFromID, countryToID);
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID));
     }
 
     @Override
@@ -72,20 +71,33 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.PlaceUnits(countryID, units);
 
-        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), countryID);
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange(countryID));
     }
 
     @Override
     public EndTurnMessage EndTurn(int playerID) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        EndTurn response = game.EndTurn();
+        game.EndTurn();
 
-        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), response);
+        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), null);
     }
 
     @Override
     public EndFirstUnitPlacementMessage EndFirstUnitPlacement(int playerID, List<ClientMapChange> clientMapChanges) {
-        return null; //TODO
+
+
+        ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+        Player player = _state.GetPlayer(playerID);
+
+        FirstUnitPlacementHelper helper = game.FirstUnitPlacementHelper;
+        helper.Collect(player, clientMapChanges);
+
+        if (helper.AllPlayerFinished()) {
+            helper.ApplyChangesToGame();
+            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(),game.GetMap(), game, player);
+        }
+        return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(), null, null, player);
+
     }
 
     @Override
@@ -105,49 +117,60 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public PlayerLeftLobbyMessage LeaveLobby(int playerID) {
+    public PlayerLeftMessage LeaveServer(int playerID) {
 
-        Player player = _state.GetPlayer(playerID);
-        _state.Lobby.DeletePlayer(player);
+        Player player = _state.TryGetPlayer(playerID);
+        if (player == null)
+            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<Integer>(), null);
+
+        _state.Lobby.RemovePlayer(player);
         _state.Players.remove(player);
         PlayerMapper.Remove(player);
+        List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
 
-        return MessageCreator.CreatePlayerLeftLobbyMessage(_state.Lobby.GetPlayerIDs(), player);
+        if (player.PlayerStatus != PlayerStatus.InLobby && player.PlayerStatus != PlayerStatus.Undefined) {
+            ServerGame game = _state.GetActiveGameByPlayerId(playerID);
+            game.RemovePlayer(player);
+            idsToUpdate = game.GetPlayerIds();
+        }
+
+        return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player);
     }
 
     @Override
-    public NewPlayerJoinedMessage JoinGame(int playerID, int gameId) {
+    public NewPlayerJoinedGameMessage JoinGame(int playerID, int gameId) {
         Player player = _state.GetPlayer(playerID);
         ServerGame game = _state.Lobby.GetGameById(gameId);
 
         if (game.MaxPlayer<=game.GetPlayerCount())
-            return MessageCreator.CreateNewPlayerJoinedMessage(Arrays.asList(playerID));
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
 
-        game.Players.add(player);
+        game.AddPlayer(player);
+        _state.Lobby.RemovePlayer(player);
 
-        return MessageCreator.CreateNewPlayerJoinedMessage(game.GetPlayerIds(), player);
+        return MessageCreator.CreateNewPlayerJoinedGameMessage(game.GetPlayerIds(), player);
     }
 
     @Override
-    public PlayerLeftMessage LeaveGame(int playerID) {
+    public PlayerLeftGameMessage LeaveGame(int playerID) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
+        ServerGame game = _state.GetGameByPlayerId(playerID);
 
         game.Players.remove(player);
 
         if (game.Players.size()== 0)
         {
             _state.Lobby.RemoveGame(game);
-            return MessageCreator.CreatePlayerLeftMessage(_state.Lobby.GetPlayerIDs(),game);
         }
 
         if (game.Creator.ID == playerID)
         {
             _state.Lobby.RemoveGame(game);
-            return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(),_state.Lobby.GetPlayerIDs(),game);
+            game.Finish();
+            return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
         }
 
-        return MessageCreator.CreatePlayerLeftMessage(game.GetPlayerIds(), player);
+        return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
     }
 
     @Override
@@ -165,16 +188,23 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.Lobby.GetGameByPlayerId(playerID);
 
         if (playerID != game.Creator.ID)
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
+        {
+            Logger.Write("Player != Creator hat versucht das Spiel zu starten Name:" + game.Name+ "SpielerID: "+ playerID);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, game.GetMap());
+        }
 
         if (!game.AreAllPlayerReady())
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID));
+        {
+            Logger.Write("Creator hat versucht das Spiel zu starten, ohne das alle Spieler bereit sind. Name:" + game.Name);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, game.GetMap());
+        }
 
         _state.Lobby.RemoveGame(game);
+        _state.Lobby.RemovePlayer(game.Players);
         _state.ActiveGames.add(game);
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), _state.Lobby.GetPlayerIDs(),game, game.GetCurrentPlayer(), game.GetNumberOfUnitsToPlace());
+        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), game, game.GetMap());
     }
 
     @Override

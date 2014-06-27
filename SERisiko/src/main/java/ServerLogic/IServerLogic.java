@@ -20,13 +20,13 @@ public interface IServerLogic {
     //Lobby
     PlayerCreatedMessage CreatePlayer(int playerID, String playerName);
     AddNewPlayerToLobbyMessage JoinLobby(int playerID);
-    PlayerLeftLobbyMessage LeaveLobby(int playerID);
+    PlayerLeftMessage LeaveServer(int playerID);
     List<Game> GetGamesInLobby();
     List<Player> GetPlayersInLobby();
 
     //LobbyGame
-    NewPlayerJoinedMessage JoinGame(int playerID, int GameID);
-    PlayerLeftMessage LeaveGame(int playerID);
+    NewPlayerJoinedGameMessage JoinGame(int playerID, int GameID);
+    PlayerLeftGameMessage LeaveGame(int playerID);
     GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
     List<Player> GetPlayersInGame(int playerID);

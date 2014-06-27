@@ -40,6 +40,9 @@ function ServerAnswerParser(doc){
                 case "PlayerCreatedMessage":
                     handlePlayerCreatedMessage(message);
                     break;
+                case "GameStartedMessage":
+                    handleGameStartedMessage(message);
+                    break;
                 default:
                     //nothing
             } 
@@ -67,8 +70,8 @@ function ServerAnswerParser(doc){
         }
     };
     var handleGameCreatedMessage = function(message){
-        //is it me?
-        if(message.data[1].Player.id == Core.getPlayerId()){
+        //is it me? or am I not in an active game?
+        if(message.data[1].Player.id == Core.getPlayerId() && !Core.isInGameLobby()){
         //verify 
             Core.hideElement(root.getElementById("newGame"));
             Core.prepareJoinedGame();
@@ -112,9 +115,6 @@ function ServerAnswerParser(doc){
     var handleReadyStateChangedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-            
-            
-
             if(message.data[0].Player.ready == true){
                 root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
                 root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(false); };
@@ -152,5 +152,11 @@ function ServerAnswerParser(doc){
     var handlePlayerCreatedMessage = function(message){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
         Core.connectionHandler.joinLobby();
+    };
+    var handleGameStartedMessage = function(message){
+        Core.setGameRunning(true);
+        root.getElementById("startGameBtn").disabled = true;
+        root.getElementById("optionsInGame").disabled = true;
+        root.getElementById("backToLobbyBtn").disabled = false;
     };
 }

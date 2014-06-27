@@ -1,7 +1,7 @@
 package ServerLogic.Helper;
 
 import ServerLogic.Model.Player;
-import ServerLogic.Model.ServerGame;
+import ServerLogic.Model.Server.ServerGame;
 
 public class GameCreator {
 

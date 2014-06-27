@@ -9,39 +9,70 @@ var Core = new Core();
 
 function Core() {
     //#Public Vars
+    this.gameSteps = new GameSteps();
     this.gameList = new GameList();
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
     this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
+    this.unitMoveHandler = new UnitMove(document);
+    this.unitPlacementHandler = new UnitPlacement(document);
+    this.connectionHandler = new Connection();  // also inits Connection
     
     //#Private Vars
-    var thePlayerId = -1;
-    var thePlayerName = "";
-    
-    //#InitConnection Function
-    this.connectionHandler = new Connection();
+    var myData = new MyDataObject();
+    var gameRunning = false;
+    var Temp = null;
     
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
         if(name == "" || !validate(name))
             return false;
-        thePlayerName = name;
-
+        myData.setPlayerName(name);
+        
         // create Player on Server + joinLobby
-        this.connectionHandler.joinServer(thePlayerName); // includes joinlobby
+        this.connectionHandler.joinServer(name); // includes joinlobby
     };
     
+    //# MyData Setters and Getters
     this.getPlayerName = function(){
-        return thePlayerName;
+        return myData.getPlayerName();
     };
-
+    this.setPlayerStatus = function(status){
+        myData.setPlayerStatus(status);
+    };
+    this.getPlayerStatus = function(){
+        return myData.getPlayerStatus();
+    };
+    this.setPlayerId = function(id){
+        myData.setPlayerId(id);
+    };
+    this.getPlayerId = function(){
+        return myData.getPlayerId();
+    };
+    this.setInGameLobby = function(arg){
+        myData.setInGameLobby(arg);
+    };
+    this.isInGameLobby = function(){
+        return myData.isInGameLobby();
+    };
+    this.setGameRunning = function(arg){
+        gameRunning = arg;
+    };
+    this.isGameRunning = function(){
+        return gameRunning;
+    };
+    //##############################
+    
+    this.setTemp = function(arg){
+        this.temp = arg;
+    };
+    
     this.deletePlayerName = function(){
         this.connectionHandler.leaveLobby();
-        thePlayerName = "";
-        playerNameRegistered = false;
+        myData.setPlayerName("");
         document.getElementById("playerName").value = "";
 
         // revert menu
@@ -56,9 +87,8 @@ function Core() {
     };
 
     this.backToLobby = function(){
-        this.connectionHandler.leaveGame();
-        //check response
-        this.connectionHandler.joinLobby();
+        this.connectionHandler.leaveGame();        
+        this.setInGameLobby(false);
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
@@ -90,11 +120,14 @@ function Core() {
     };
     
     this.prepareJoinedGame = function(){
-        //var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-        var svg = document.getElementsByTagName('svg')[0];
+        var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
+        //var svg = document.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
-        this.combatHandler.init(svg);   
-
+        this.combatHandler.init(svg); 
+        this.unitPlacementHandler.init(svg);
+        this.unitMoveHandler.init(svg);
+        this.setInGameLobby(true);
+        
          // cleanup
         document.getElementById("playerList").innerHTML = "";
         this.playerList.clear();
@@ -105,6 +138,8 @@ function Core() {
 
         // give me some lands test
             this.svgHandler.setNewLandOwner("D2" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D1" ,this.getPlayerName());
+            this.svgHandler.setNewLandOwner("D7" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("D6" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("E1" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("E3" ,this.getPlayerName());
@@ -114,8 +149,11 @@ function Core() {
             this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
+            this.setPlayerStatus(Core.gameSteps.state.ATTACK);
 
-            this.svgHandler.refreshOwnerRights();
+            //this.refreshOwnerRights();
+            this.svgHandler.refreshOwnerRightsForUnitPlace(5);
+            document.getElementById("gamePhase").disabled = true;
         //#
     };
 
@@ -142,10 +180,6 @@ function Core() {
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
-    this.getPlayerName = function(){
-        return thePlayerName;        
-    };
-    
     this.setUnitAmount = function(){
         //hideElement(document.getElementById("bottom_overlay"));
         $( "#bottom_overlay" ).slideUp( "slow");
@@ -154,6 +188,45 @@ function Core() {
         var select = document.getElementById("unitAmount");
         alert(select.options[select.selectedIndex].value);
         document.getElementById("bottom_overlay").innerHTML = "";
+    };
+    
+    this.endUnitPlacement = function(){
+        this.setPlayerStatus(Core.gameSteps.state.ATTACK);
+        document.getElementById("gamePhase").innerHTML = "Angriffphase Beenden";
+        document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
+        this.connectionHandler.sendUnitPlace(this.temp);
+        // After Answer
+        this.svgHandler.refreshOwnerRights();  
+    };
+    
+    this.endAttack = function(){
+        this.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        document.getElementById("gamePhase").innerHTML = "Runde Beenden";
+        document.getElementById("gamePhase").onclick = function() { Core.endRound(); };
+        this.svgHandler.setRectsOnClickNull();
+        // After Answer
+        this.svgHandler.refreshOwnerRights();
+    };
+    
+    this.endRound = function(){
+        this.setPlayerStatus(Core.gameSteps.state.IDLE);
+        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
+        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
+        document.getElementById("gamePhase").disabled = true;
+        this.connectionHandler.sendEndRound();
+        this.svgHandler.setRectsOnClickNull();
+        // After Answer
+        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
+    };
+    
+    this.endFirstUnitPlacement = function(){
+        this.setPlayerStatus(Core.gameSteps.state.IDLE);
+        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
+        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
+        document.getElementById("gamePhase").disabled = true;
+        this.connectionHandler.sendPlaceFirstUnits(this.temp);
+        // After Answer
+        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
     };
     
     this.hideElement = function(element){
@@ -195,19 +268,12 @@ function Core() {
     this.updatePlayerList = function(){
         var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
         var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
-
+        $("#playerList").html("");
+        
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
         }
-    };
-    
-    this.setPlayerId = function(id){
-        thePlayerId = id;
-    };
-    
-    this.getPlayerId = function(){
-        return thePlayerId;
     };
     
     //# Private Methods  
@@ -228,15 +294,6 @@ function Core() {
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
-    };
-    
-    var sleep = function(milliseconds) {
-      var start = new Date().getTime();
-      for (var i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds){
-          break;
-        }
-      }
     };
     
     var validate = function(str){

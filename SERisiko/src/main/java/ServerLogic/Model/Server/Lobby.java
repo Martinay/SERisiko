@@ -1,7 +1,13 @@
-package ServerLogic.Model;
+package ServerLogic.Model.Server;
+
+import ServerLogic.Model.Game;
+import ServerLogic.Model.Player;
+import ServerLogic.Model.PlayerStatus;
+import net.hydromatic.linq4j.Linq4j;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Lobby {
     private List<Player> _players = new LinkedList<>();
@@ -19,11 +25,23 @@ public class Lobby {
 
     public void AddPlayer(Player player) {
         _players.add(player);
+        player.PlayerStatus = PlayerStatus.InLobby;
     }
     
-    public void DeletePlayer(Player player)
+    public void RemovePlayer(Player player)
     {
         _players.remove(player);
+    }
+
+    public void RemovePlayer(List<Player> player)
+    {
+        Linq4j.asEnumerable(player)
+                .forEach(new Consumer<Player>() {
+                    @Override
+                    public void accept(Player player) {
+                        RemovePlayer(player);
+                    }
+                });
     }
 
     public ServerGame GetGameByPlayerId(int playerId)

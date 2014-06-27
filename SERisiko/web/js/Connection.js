@@ -1,7 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+
+/*
+ * 
+ * author
  */
 function Connection(){
     var connection = null;
@@ -13,9 +13,9 @@ function Connection(){
 
         // Start ConnectionToServer
         connection.onmessage = function(elem) { //get message from server
-            console.log( JSON.parse(elem.data) );
-            Core.serverAnswerParserHandler.parseServerAnswers(elem);
             $('#serverAnswers').append("Serveranswer: " + elem.data + "<br>");
+            console.log(JSON.parse(elem.data));
+            Core.serverAnswerParserHandler.parseServerAnswers(elem);
         };
     };
     this.init();
@@ -69,6 +69,23 @@ function Connection(){
     
     this.sendAttack = function(attackerLandId, defenderLandId, amountAttackerUnits){
         connection.attack(attackerLandId, defenderLandId, amountAttackerUnits);
+    };
+    
+    this.sendPlaceFirstUnits = function(PlaceUnitArray){
+        connection.endFirstUnitPlacement(PlaceUnitArray);
+        Core.unitPlacementHandler.changefirstRound();
+    };
+    
+    this.sendUnitMove = function(source, target, value){
+        connection.move(source, target, value);
+    };
+    
+    this.sendEndRound = function() {
+        connection.endTurn();
+    }; 
+    
+    this.sendUnitPlace = function(PlaceUnitArray){
+        connection.unitPlacement(PlaceUnitArray);
     };
 
 }

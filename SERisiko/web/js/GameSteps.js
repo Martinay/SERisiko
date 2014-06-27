@@ -4,20 +4,20 @@
  *
  * @author Alexander Santana Losada
  */
-
+ 
+    
 function GameSteps(){
     //#Public Vars
-    this.gameStep = state.IDLE;
-    
-    //#Private Vars
-    var state = {
+   this.state = {
         IDLE: 0,
         SUPPLYDRAW: 1,
         ATTACK: 2,
         DEFEND: 3,
         UNITMOVEMENT: 4
     };
-
+    //#Private Vars
+    var gameStep = this.state.IDLE;
+    
     //# Public Methods
     this.doIdle = function(){
         
@@ -35,6 +35,12 @@ function GameSteps(){
         
     };
     
+    this.getGameStep = function(){
+        return gameStep;
+    };
+    this.setGameStep = function(state){
+        gameStep = state;
+    };
     //# Private Methods
     
 }

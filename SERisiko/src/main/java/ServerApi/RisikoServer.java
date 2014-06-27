@@ -3,11 +3,11 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
+
 import java.util.List;
 import org.json.simple.JSONObject;
 
@@ -68,7 +68,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         int clientId = gameClient.getIdentifyer();
         
         
-        PlayerLeftLobbyMessage message = gameManager.LeaveLobby(clientId);
+        PlayerLeftMessage message = gameManager.LeaveServer(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
@@ -87,7 +87,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         int clientId = gameClient.getIdentifyer();
         int gameId = gameIndex.intValue();
         
-        NewPlayerJoinedMessage message = gameManager.JoinGame(clientId, gameId );
+        NewPlayerJoinedGameMessage message = gameManager.JoinGame(clientId, gameId );
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
@@ -106,7 +106,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
 
-        PlayerLeftMessage message = gameManager.LeaveGame(clientId);
+        PlayerLeftGameMessage message = gameManager.LeaveGame(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
@@ -331,7 +331,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
         
-        this.gameManager.LeaveLobby(clientId);
+        this.gameManager.LeaveServer(clientId);
     }
 
     @Override

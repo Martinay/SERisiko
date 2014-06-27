@@ -1,5 +1,5 @@
 package ServerLogic.Messages;
 
-public class PlayerLeftMessage extends MessageBase {
-    public ServerLogic.Model.Game Game;
+public class PlayerLeftMessage extends MessageBase{
+    public ServerLogic.Model.Player Player;
 }

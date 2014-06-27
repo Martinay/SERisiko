@@ -2,7 +2,9 @@
 <html xml:lang="de-de" lang="de-de">
 <head>
     <!-- root dir -->
-    <base href="http://localhost:80" />
+    <script type="text/javascript">
+        document.write("<base href='http://" + document.location.host + "' />");
+    </script>
 
     <!-- javascripts -->
     <script src="js/extern/jquery-2.1.1.min.js"></script>
@@ -12,13 +14,15 @@
     <script src="js/extern/raphael-min.js"></script>
     
     <script src="js/RisikoApi.js"></script>
-    <script src="js/Objects.js"></script>
     <script src="js/GameSteps.js"></script>
+    <script src="js/Objects.js"></script>
     <script src="js/Connection.js"></script>
     <script src="js/ServerAnswerParser.js"></script>
     <script src="js/SelectableTable.js"></script>
     <script src="js/SvgFunctions.js"></script>
     <script src="js/Combat.js"></script>
+    <script src="js/UnitPlacement.js"></script>
+    <script src="js/UnitMove.js"></script>
     <script src="js/Core.js"></script>
 
 
@@ -83,6 +87,7 @@
             <div id="playerList"></div><br />
             <div id="startGame"></div>
             <button  id="optionsInGame" name="optionsInGame" onClick='Core.connectionHandler.setPlayerState(true);' style="margin-bottom: 10px;">Bereit zum Spielen</button><br />
+            <button  id="gamePhase" name="gamePhase" onClick='Core.endFirstUnitPlacement()' style="margin-bottom: 10px;">Alle Einheiten Platziert</button><br />
             <div id="endGame"><button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();'>Spiel verlassen</button></div>
         </div>
         <div style="clear:both"></div>

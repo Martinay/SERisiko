@@ -3,7 +3,6 @@ package ServerLogic.Messages;
 import ServerLogic.Model.Player;
 
 
-public class NewPlayerJoinedMessage extends MessageBase{
+public class NewPlayerJoinedGameMessage extends MessageBase{
     public Player Player;
-    public boolean Successful;
 }
