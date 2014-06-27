@@ -24,7 +24,7 @@ public class Player implements ApiResponseObject {
         apiData.put("id", ID);
         apiData.put("name", Name);
         apiData.put("ready", Ready);
-        apiData.put("playerStatus", PlayerStatus);
+        apiData.put("playerStatus", PlayerStatus.toString());
 
         return apiData;
 
