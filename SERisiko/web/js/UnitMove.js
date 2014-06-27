@@ -29,7 +29,10 @@ function UnitMove(document){
     this.moveUnits = function(source, destination){ 
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
         Core.connectionHandler.sendUnitMove(source, destination, countSelector);
-        this.abortUnitMove();
+        $( "#bottom_overlay" ).slideUp( "slow");
+        Core.hideElement(root.getElementById("mutex"));
+        root.getElementById("bottom_overlay").innerHTML = "";
+        Core.svgHandler.setRectsOnClickNull();
     };
     
     this.abortUnitMove = function(){

@@ -73,10 +73,19 @@ function Connection(){
     
     this.sendPlaceFirstUnits = function(PlaceUnitArray){
         connection.endFirstUnitPlacement(PlaceUnitArray);
+        Core.unitPlacementHandler.changefirstRound();
     };
     
     this.sendUnitMove = function(source, target, value){
         connection.move(source, target, value);
+    };
+    
+    this.sendEndRound = function() {
+        connection.endTurn();
+    }; 
+    
+    this.sendUnitPlace = function(PlaceUnitArray){
+        connection.unitPlacement(PlaceUnitArray);
     };
 
 }

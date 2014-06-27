@@ -99,6 +99,10 @@ var RisikoApi = function() {
         socket.call("endFirstUnitPlacement", targetArray);
     }; 
     
+    socket.unitPlacement = function(targetArray) {
+        socket.call("UnitPlacement", targetArray);
+    }; 
+    
     socket.endTurn = function() {
         socket.call("endTurn");
     }; 

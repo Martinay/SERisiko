@@ -15,8 +15,6 @@ function SvgFunctions(document){
     var i = 0;
     var counter = 0;
     
-    
-    
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
@@ -219,6 +217,7 @@ function SvgFunctions(document){
                 context.fillStyle = 'red';
                 context.fillText(count, 75, 90);
             }
+            root.getElementById("startAttack").disabled = false;
         }
     };
     
