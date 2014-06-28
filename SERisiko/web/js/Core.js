@@ -23,7 +23,6 @@ function Core() {
     //#Private Vars
     var myData = new MyDataObject();
     var gameRunning = false;
-    var Temp = null;
     
     //# Public Methods
     this.setPlayerName = function(){
@@ -65,10 +64,6 @@ function Core() {
         return gameRunning;
     };
     //##############################
-    
-    this.setTemp = function(arg){
-        this.temp = arg;
-    };
     
     this.deletePlayerName = function(){
         this.connectionHandler.leaveLobby();
@@ -149,9 +144,9 @@ function Core() {
             this.svgHandler.setNewLandOwner("A5" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P4" ,this.getPlayerName());
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
-            this.setPlayerStatus(Core.gameSteps.state.ATTACK);
+            
+            this.setPlayerStatus(Core.gameSteps.state.FIRSTUNITMOVEMENT);
 
-            //this.refreshOwnerRights();
             this.svgHandler.refreshOwnerRightsForUnitPlace(5);
             document.getElementById("gamePhase").disabled = true;
         //#
@@ -180,53 +175,8 @@ function Core() {
         document.getElementById("serverAnswers").innerHTML = "";
     };
     
-    this.setUnitAmount = function(){
-        //hideElement(document.getElementById("bottom_overlay"));
-        $( "#bottom_overlay" ).slideUp( "slow");
-        hideElement(document.getElementById("mutex"));
-        
-        var select = document.getElementById("unitAmount");
-        alert(select.options[select.selectedIndex].value);
-        document.getElementById("bottom_overlay").innerHTML = "";
-    };
-    
-    this.endUnitPlacement = function(){
-        this.setPlayerStatus(Core.gameSteps.state.ATTACK);
-        document.getElementById("gamePhase").innerHTML = "Angriffphase Beenden";
-        document.getElementById("gamePhase").onclick = function() { Core.endAttack(); };
-        this.connectionHandler.sendUnitPlace(this.temp);
-        // After Answer
-        this.svgHandler.refreshOwnerRights();  
-    };
-    
-    this.endAttack = function(){
-        this.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
-        document.getElementById("gamePhase").innerHTML = "Runde Beenden";
-        document.getElementById("gamePhase").onclick = function() { Core.endRound(); };
-        this.svgHandler.setRectsOnClickNull();
-        // After Answer
-        this.svgHandler.refreshOwnerRights();
-    };
-    
-    this.endRound = function(){
-        this.setPlayerStatus(Core.gameSteps.state.IDLE);
-        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
-        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
-        document.getElementById("gamePhase").disabled = true;
-        this.connectionHandler.sendEndRound();
-        this.svgHandler.setRectsOnClickNull();
-        // After Answer
-        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
-    };
-    
     this.endFirstUnitPlacement = function(){
-        this.setPlayerStatus(Core.gameSteps.state.IDLE);
-        document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
-        document.getElementById("gamePhase").onclick = function() { Core.endUnitPlacement(); };
-        document.getElementById("gamePhase").disabled = true;
-        this.connectionHandler.sendPlaceFirstUnits(this.temp);
-        // After Answer
-        this.svgHandler.refreshOwnerRightsForUnitPlace(3);
+        
     };
     
     this.hideElement = function(element){
@@ -283,17 +233,6 @@ function Core() {
     
     var showElement = function(element){
         element.style.display = "block";
-    };
-    
-    var initUnitAmountSelector = function(minValue, maxValue){
-        //showElement(document.getElementById("bottom_overlay"));
-        $( "#bottom_overlay" ).slideDown( "slow");
-        showElement(document.getElementById("mutex"));
-        document.getElementById("bottom_overlay").innerHTML = "\
-                        <label for='unitAmount'>Anzahl Einheiten</label> \
-                        <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.setUnitAmount()' style='margin-left: 680px;'>OK</button>";
-        Core.createSlider("unitAmount", "insertSliderAfter", minValue, maxValue);
     };
     
     var validate = function(str){

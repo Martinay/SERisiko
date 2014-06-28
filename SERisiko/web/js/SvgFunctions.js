@@ -175,28 +175,33 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            drawDigitOnCanvas(id, (1 + parseInt(Math.random() * (6))));
+            var canvas = root.getElementById('canvas_' + id);
+            if(canvas.getContext){
+                var context = canvas.getContext('2d');
+                context.fillStyle = 'red';
+            }
+            root.getElementById("startAttack").disabled = false;
             if(counter == (rotate/18)){
                 counter = 0;
                 i = 0;
             }
        }
     };
-        
-    //Private Methods
     
-    var drawDigitOnCanvas = function(id, count){
+    this.drawDigitOnCanvas = function(id, count){
         count = 7-count;
         var canvas = root.getElementById('canvas_' + id);
-        if(canvas.getContext){
+        if(canvas != null && canvas.getContext){
             var context = canvas.getContext('2d');
             context.font = '40pt Arial';
             context.textAlign = 'center';
-            context.fillStyle = 'red';
+            context.fillStyle = 'white';
             context.fillText(count, 75, 90);
         }
         root.getElementById("startAttack").disabled = false;
     };
+    
+    //Private Methods
     
     var arraySchnittmengeDelete = function(array, arrayDelete){
         for(i = 0; i < arrayDelete.length; i++){
@@ -257,40 +262,4 @@ function SvgFunctions(document){
             }
         });
     };
-    
-
-     /*
-    this.setUnit = function(id, count){
-        var theRect = svgDoc.getElementById(id);
-
-        var xPosition = parseInt(theRect.getAttribute("x")) + 10;
-        var yPosition = parseInt(theRect.getAttribute("y")) + 10;
-
-        var addUnits = svgDoc.getElementById("MapUnit");
-
-        count = parseInt(count);
-
-        while (count > 0) {
-            if(count > 9) {
-                 addUnits.innerHTML = addUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Einstein.jpeg"/>\n';
-                 count = count - 10;
-            } else {
-                if(count > 4) {
-                    addUnits.innerHTML = addUnits.innerHTML + '<image id="professor.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/Professor.png"/>\n';
-                    count = count - 5;
-                } else {
-                        addUnits.innerHTML = addUnits.innerHTML + '<image id="einstein.jpg" x="'+xPosition+'" y="'+yPosition+'" width="893" height="1000" xlink:href="/img/student.png"/>\n';
-                        count = count - 1;
-                }
-            }
-                
-            if((xPosition + 1800) < (parseInt(theRect.getAttribute("x")) + parseInt(theRect.getAttribute("width")))){
-                xPosition = xPosition + 910;
-            } else {
-                if((yPosition + 2010) < (parseInt(theRect.getAttribute("y")) + theRect.getAttribute("height"))){
-                    yPosition = yPosition + 1010;
-                }
-            }
-        }
-    };*/
 }

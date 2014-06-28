@@ -44,11 +44,8 @@ function Combat(document){
         } else {
             if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) == 1){
                 Core.combatHandler.showAttackResult("lose");
-            }else{      
-                //Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
-                 
+            }else{ 
                 rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
-
                 var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
@@ -88,6 +85,12 @@ function Combat(document){
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;
+                Core.svgHandler.drawDigitOnCanvas("A1", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("A2", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("A3", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("D1", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("D2", (1 + parseInt(Math.random() * (6))));
+                
             }
         }
     };
@@ -121,5 +124,71 @@ function Combat(document){
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
+    };
+    
+    this.showDefeat = function (attackId, defendId, countAttack, attackState){
+        var countRotate = 18;
+        var rotate = 0;
+        
+        Core.svgHandler.setOpacityOnRect(attackId, 0.5, "default");
+        Core.svgHandler.setOpacityOnRect(defendId, 0.5, "default");
+        
+        var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
+        
+        if(attackState){
+            Core.combatHandler.showAttackResult("lose");
+        } else {
+            if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) == 1){
+                Core.combatHandler.showAttackResult("win");
+            }else{
+                rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
+                var OverlayString = '<div id="showAttack">\n\
+                                        <table id="attackerTable">\n\
+                                            <tr>\n\n\
+                                                <td colspan="2">Attacker:</td>\n\
+                                                <td style="width: 50px;"></td>\n\
+                                                <td colspan="2">Defender:</td>\n\
+                                            </tr>\n\
+                                            <tr>\n\
+                                                <td> Einheiten zum Angreifen:<div id="CountAttackerAnz" style="color: green;"> ' + countAttack + '</div></td>\n\
+                                                <td>\n\
+                                                    <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
+                setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
+                if(countAttack > 1){
+                    OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
+                    setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A2", rotate);},50); 
+                    if(countAttack > 2){
+                        OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
+                        setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A3", rotate);},50);
+                    }
+                }
+                OverlayString = OverlayString + '</td>\n\
+                                                <td></td>\n\
+                                                <td>\n\
+                                                    <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
+
+                setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("D1", rotate);},50);
+                if(countDefend > 1){
+                    OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
+                    setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("D2", rotate);},50); 
+                }
+                OverlayString = OverlayString + '</td>\n\
+                                                <td> Einheiten zum Verteidigen:<div id="CountDefenderAnz" style="color: red;"> ' + countDefend + '</div></td>\n\
+                                            </tr>\n\
+                                        </table>\n\
+                                    </div>\n'+
+                                    "<button style='margin-top: 20px;' id='startAttack' name='StartAttack' onClick='Core.combatHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
+                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
+                root.getElementById("loading_overlay").innerHTML = OverlayString;
+                root.getElementById("startAttack").disabled = true;
+                Core.svgHandler.drawDigitOnCanvas("A1", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("A2", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("A3", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("D1", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.drawDigitOnCanvas("D2", (1 + parseInt(Math.random() * (6))));
+                Core.svgHandler.setOpacityOnRect(attackId, 1, "default");
+                Core.svgHandler.setOpacityOnRect(defendId, 1, "default");
+            }
+        }
     };
 }
