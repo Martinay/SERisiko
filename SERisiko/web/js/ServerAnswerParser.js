@@ -63,12 +63,14 @@ function ServerAnswerParser(doc){
             [].slice.call(divs).forEach(function(div){div.innerHTML = Core.getPlayerName();});
         }
     };
+    
     var handleGameListMessage = function(message){
         for(var i = 0; i < message.data.length; i++){
             Core.sctTable.addRow("availableGames", message.data[i].ServerGame);
             Core.gameList.addGame(message.data[i].ServerGame); 
         }
     };
+    
     var handleGameCreatedMessage = function(message){
         //is it me? or am I not in an active game?
         if(message.data[1].Player.id == Core.getPlayerId() && !Core.isInGameLobby()){
@@ -116,15 +118,15 @@ function ServerAnswerParser(doc){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
             if(message.data[0].Player.ready == true){
-                root.getElementById("optionsInGame").innerHTML = "Nicht Bereit";
-                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(false); };
+                root.getElementById("gamePhase").innerHTML = "Nicht Bereit";
+                root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(false); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = false;
                 }
                 root.getElementById("backToLobbyBtn").disabled = true;
             } else {
-                root.getElementById("optionsInGame").innerHTML = "Bereit zum Spielen";
-                root.getElementById("optionsInGame").onclick = function() { Core.connectionHandler.setPlayerState(true); };
+                root.getElementById("gamePhase").innerHTML = "Bereit zum Spielen";
+                root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(true); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = true;
                 }
@@ -153,10 +155,14 @@ function ServerAnswerParser(doc){
         Core.setPlayerId(parseInt(message.data[0].Player.id));
         Core.connectionHandler.joinLobby();
     };
+    
     var handleGameStartedMessage = function(message){
         Core.setGameRunning(true);
-        root.getElementById("startGameBtn").disabled = true;
-        root.getElementById("optionsInGame").disabled = true;
+        Core.setPlayerStatus(Core.gameSteps.state.FIRSTUNITPLACEMENT);
+        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> Platzieren Sie ihre Einheiten";
+        root.getElementById("startGame").innerHTML = "";
+        root.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
+        root.getElementById("gamePhase").onClick = "Core.gameSteps.doFirstUnitPlacement()";
         root.getElementById("backToLobbyBtn").disabled = false;
     };
 }

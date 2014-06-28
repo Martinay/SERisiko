@@ -30,7 +30,8 @@ function GameSteps(){
         document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
         document.getElementById("gamePhase").onclick = function() { Core.gameSteps.doUnitPlacement(); };
         document.getElementById("gamePhase").disabled = true;
-        Core.connectionHandler.sendPlaceFirstUnits(this.temp);
+        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
+        Core.connectionHandler.sendPlaceFirstUnits(Core.unitPlacementHandler.getPlacementArray());
         // After Answer
         Core.svgHandler.refreshOwnerRightsForUnitPlace(3);
         Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
@@ -40,7 +41,8 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
         document.getElementById("gamePhase").innerHTML = "Angriffphase Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.gameSteps.doAttackEnd(); };
-        Core.connectionHandler.sendUnitPlace(this.temp);
+         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
+        Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray());
         // After Answer
         Core.svgHandler.refreshOwnerRights();  
     };
@@ -49,6 +51,7 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
         document.getElementById("gamePhase").innerHTML = "Runde Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.gameSteps.doUnitmovement(); };
+         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
         Core.svgHandler.setRectsOnClickNull();
         // After Answer
         Core.svgHandler.refreshOwnerRights();        
@@ -59,6 +62,7 @@ function GameSteps(){
         document.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
         document.getElementById("gamePhase").onclick = function() { Core.gameSteps.doUnitPlacement(); };
         document.getElementById("gamePhase").disabled = true;
+         document.getElementById("gameStatus").innerHTML = "Spieler <div id='playerInAction'></div> ist an der Reihe";
         Core.connectionHandler.sendEndRound();
         Core.svgHandler.setRectsOnClickNull();
         // After Answer
@@ -66,8 +70,8 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
     };
     
-    this.doDefend = function(){
-        Core.combatHandler.showDefeat();
+    this.doDefend = function(attackId, defendId, countAttack, attackState){
+        Core.combatHandler.showDefeat(attackId, defendId, countAttack, attackState);
     };
     
     this.getGameStep = function(){

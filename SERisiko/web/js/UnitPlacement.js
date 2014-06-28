@@ -52,7 +52,6 @@ function UnitPlacement(document){
         if(maxValue == 0){
             Core.svgHandler.setRectsOnClickNull();
             document.getElementById("gamePhase").disabled = false;
-            Core.set
         } else {
             Core.svgHandler.refreshOwnerRightsForUnitPlace(maxValue);
         }
@@ -66,5 +65,9 @@ function UnitPlacement(document){
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
+    };
+    
+    this.getPlacementArray = function(){
+        return placeUnit;
     };
 }
