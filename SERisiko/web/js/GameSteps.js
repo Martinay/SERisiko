@@ -7,7 +7,7 @@
     
 function GameSteps(){
     //#Public Vars
-   this.state = {
+    this.state = {
         IDLE: 0,
         SUPPLYDRAW: 1,
         ATTACK: 2,
@@ -36,6 +36,7 @@ function GameSteps(){
         // After Answer
         Core.svgHandler.refreshOwnerRightsForUnitPlace(3);
         Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
+        Core.svgHandler.initUnitOnMap();
     };
     
     this.doUnitPlacement = function(){
@@ -88,7 +89,7 @@ function GameSteps(){
     
     var clearDisplay = function(){
         $( "#bottom_overlay" ).slideUp( "slow");
-        Core.hideElement(root.getElementById("mutex"));
+        Core.hideElement(document.getElementById("mutex"));
         document.getElementById("bottom_overlay").innerHTML = "";
         
         document.getElementById("loading_overlay").innerHTML = "";

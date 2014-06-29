@@ -18,8 +18,6 @@ function SvgFunctions(document){
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
-        this.refreshOwnerRights();
-        initUnitOnMap();
     };
 
     this.identifyAttacker = function(id){
@@ -31,7 +29,7 @@ function SvgFunctions(document){
         if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
-                if(theRect.getAttribute("Owner") !=  Core.getPlayerName()){
+                if(theRect.getAttribute("Owner") !=  Core.getPlayerId()){
                     theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                     theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
@@ -54,7 +52,7 @@ function SvgFunctions(document){
                     if(doneCountrys.indexOf(theRect.getAttribute('id')) == -1){
                         doneCountrys.push(theRect.getAttribute('id'));
                     }
-                    if(theRect.getAttribute("Owner") ==  Core.getPlayerName()){
+                    if(theRect.getAttribute("Owner") ==  Core.getPlayerId()){
                         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
                         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                         theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
@@ -83,7 +81,6 @@ function SvgFunctions(document){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     theRect.setAttribute('opacity','1');
-                    
                 }
             }
             Core.combatHandler.selectAmountUnit(attacker, id);
@@ -92,17 +89,24 @@ function SvgFunctions(document){
         }
         
     };
+    
     this.getLandOwner = function(landId){
         svgDoc.getElementById(landId).getAttribute("Owner");  
     };
     
-    this.setNewLandOwner = function(landId, playerName){
+    this.setNewLandOwner = function(landId, playerId){
         // parse playerId to Playername....
-        svgDoc.getElementById(landId).setAttribute("Owner", playerName);  
+        svgDoc.getElementById(landId).setAttribute("Owner", playerId); 
+        if(svgDoc.getElementById(landId + "_Unit") != null){
+            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", Core.playerList.getPlayerById(playerId).getColor());
+        }
     };
     
     this.setLandUnitcount = function(landId, count){
-        svgDoc.getElementById(landId).setAttribute("Unitcount", count);  
+        svgDoc.getElementById(landId).setAttribute("Unitcount", count);
+        if(svgDoc.getElementById(landId + "_UnitCount") != null){
+            svgDoc.getElementById(landId + "_UnitCount").innerHTML = count;
+        }
     };
     
     this.getLandUnitcount = function(landId){
@@ -125,7 +129,7 @@ function SvgFunctions(document){
     this.refreshOwnerRights = function (){
         var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") === Core.getPlayerName()){
+            if(rect.getAttribute("Owner") == Core.getPlayerId()){
                 rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                 rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                 rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
@@ -133,11 +137,10 @@ function SvgFunctions(document){
         });        
     };
     
-    
     this.refreshOwnerRightsForUnitPlace = function (value){
         var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") === Core.getPlayerName()){
+            if(rect.getAttribute("Owner") == Core.getPlayerId()){
                 rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                 rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                 rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
@@ -197,18 +200,7 @@ function SvgFunctions(document){
         root.getElementById("startAttack").disabled = false;
     };
     
-    //Private Methods
-    
-    var arraySchnittmengeDelete = function(array, arrayDelete){
-        for(i = 0; i < arrayDelete.length; i++){
-            while(array.indexOf(arrayDelete[i]) != -1){
-                array.splice(array.indexOf(arrayDelete[i]), 1);
-            }
-        }
-        return array;
-    };
-    
-    var initUnitOnMap = function(){
+    this.initUnitOnMap = function(){
         var rects = svgDoc.getElementsByTagName("rect");
         var xPosition = 0;
         var yPosition = 0;
@@ -219,9 +211,11 @@ function SvgFunctions(document){
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
         var rectID = "";
+        var bildSource = "";
         
         [].slice.call(rects).forEach(function(rect){
             rectID = rect.getAttribute("id");
+            
             if(rectID != "" && rectID.indexOf("_back") == -1){
                 countryHeight = parseInt(rect.getAttribute("height"));
                 countryWidth = parseInt(rect.getAttribute("width"));
@@ -243,8 +237,18 @@ function SvgFunctions(document){
                     xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2);
                 }
                 
+                var playerArr = Core.playerList.getPlayers();
+ 
+                for (var i = 0; i < playerArr.length; i++){
+                    if(rect.getAttribute("Owner") == playerArr[i].getPlayerId()){
+                        bildSource = playerArr[i].getColor();
+                    } else {
+                        bildSource = "/img/player_img/player_red.png";
+                    }
+                }
+                
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" />';
+                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + bildSource + '" />';
                 
                 if(countryWidth > 1234){
                     xPosition = xPosition + width * 1.4 ;
@@ -254,8 +258,19 @@ function SvgFunctions(document){
                     yPosition = yPosition + height * 1.5;
                 }
                
-                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">99</text>';
+                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + Core.svgHandler.getLandUnitcount(rectID) + '</text>';
             }
         });
+    };
+    
+    //Private Methods
+    
+    var arraySchnittmengeDelete = function(array, arrayDelete){
+        for(i = 0; i < arrayDelete.length; i++){
+            while(array.indexOf(arrayDelete[i]) != -1){
+                array.splice(array.indexOf(arrayDelete[i]), 1);
+            }
+        }
+        return array;
     };
 }
