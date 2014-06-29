@@ -81,13 +81,13 @@
             </div>
         </div> 
         <div id="gameOptions">
-            <div id="gameStatus"> Warte auf Weitere Mitspieler </div>
+            <div id="gameStatus">Bitte melden Sie sich Spielbereit</div>
             <br>
             Ihre Mitspieler<br />
             <div id="playerList"></div><br />
             <div id="startGame"></div>
-            <button  id="gamePhase" name="gamePhase" onClick='Core.connectionHandler.setPlayerState(true);' style="margin-bottom: 10px;">Bereit zum Spielen</button><br />
-            <div id="endGame"><button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();'>Spiel verlassen</button></div>
+            <button  id="gamePhase" name="gamePhase" onClick='Core.connectionHandler.setPlayerState(true);'>Bereit zum Spielen</button><br />
+            <button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();' style="width: 160px;">Spiel verlassen</button>
         </div>
         <div style="clear:both"></div>
     </div>

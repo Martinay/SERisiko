@@ -78,6 +78,7 @@
     display: block;
     float: right;
     text-align: center;
+    width: 180px;
 }
 
 #GameScreen { 
@@ -100,6 +101,7 @@
 
 #gameStatus{
     padding-top: 80px;
+    height: 150px;
 }
 
 #playerList{
@@ -108,7 +110,8 @@
     width: 160px;
     height: 140px;
     text-align: center;
-    margin: 0px auto;
+    margin: 0px 10px;
+    position: absolute;
 }
 /**anderes **/
 hr{
@@ -181,4 +184,11 @@ label[for=unitAmountAttack]{
     color: #FFFFFF;
     width: 90%;
     margin: 0px auto;
+}
+
+#gamePhase{
+    margin-top: 160px;
+    margin-bottom: 10px; 
+    width: 160px;
+    position: relative;
 }

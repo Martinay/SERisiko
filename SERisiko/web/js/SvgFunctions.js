@@ -28,7 +28,6 @@ function SvgFunctions(document){
         neighborLands = theRect.getAttribute("neighbor").split(",");
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
-        console.log(Core.getPlayerStatus());
         if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
@@ -175,12 +174,8 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            var canvas = root.getElementById('canvas_' + id);
-            if(canvas.getContext){
-                var context = canvas.getContext('2d');
-                context.fillStyle = 'red';
-            }
             root.getElementById("startAttack").disabled = false;
+            drawDigitOnCanvas(id);
             if(counter == (rotate/18)){
                 counter = 0;
                 i = 0;
@@ -188,14 +183,15 @@ function SvgFunctions(document){
        }
     };
     
-    this.drawDigitOnCanvas = function(id, count){
+    var drawDigitOnCanvas = function(id){
+        var count = Core.combatHandler.getDice(id);
         count = 7-count;
         var canvas = root.getElementById('canvas_' + id);
         if(canvas != null && canvas.getContext){
             var context = canvas.getContext('2d');
             context.font = '40pt Arial';
             context.textAlign = 'center';
-            context.fillStyle = 'white';
+            context.fillStyle = 'red';
             context.fillText(count, 75, 90);
         }
         root.getElementById("startAttack").disabled = false;

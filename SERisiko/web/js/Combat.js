@@ -8,10 +8,19 @@
 function Combat(document){
     var root = document;
     var svgDoc = null;
+    var dicesArr = new Array();
     
     this.init = function(svgElement){
         svgDoc = svgElement;
     };
+    
+    this.setDice = function(id, count){
+        dicesArr[id] = count;
+    };
+    
+    this.getDice = function(id){
+        return dicesArr[id];
+    }
     
     this.selectAmountUnit = function(attacker, defender){
         $( "#bottom_overlay" ).slideUp( "slow");
@@ -85,11 +94,11 @@ function Combat(document){
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;
-                Core.svgHandler.drawDigitOnCanvas("A1", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("A2", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("A3", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("D1", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("D2", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A1", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A2", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A3", (1 + parseInt(Math.random() * (6))));
+                this.setDice("D1", (1 + parseInt(Math.random() * (6))));
+                this.setDice("D2", (1 + parseInt(Math.random() * (6))));
                 
             }
         }
@@ -177,15 +186,14 @@ function Combat(document){
                                             </tr>\n\
                                         </table>\n\
                                     </div>\n'+
-                                    "<button style='margin-top: 20px;' id='startAttack' name='StartAttack' onClick='Core.combatHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
-                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
+                                   "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;
-                Core.svgHandler.drawDigitOnCanvas("A1", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("A2", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("A3", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("D1", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.drawDigitOnCanvas("D2", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A1", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A2", (1 + parseInt(Math.random() * (6))));
+                this.setDice("A3", (1 + parseInt(Math.random() * (6))));
+                this.setDice("D1", (1 + parseInt(Math.random() * (6))));
+                this.setDice("D2", (1 + parseInt(Math.random() * (6))));
                 Core.svgHandler.setOpacityOnRect(attackId, 1, "default");
                 Core.svgHandler.setOpacityOnRect(defendId, 1, "default");
             }

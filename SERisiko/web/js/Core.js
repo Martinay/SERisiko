@@ -146,9 +146,8 @@ function Core() {
             this.svgHandler.setNewLandOwner("P12" ,this.getPlayerName());
             
             this.setPlayerStatus(Core.gameSteps.state.FIRSTUNITMOVEMENT);
-
-            this.svgHandler.refreshOwnerRightsForUnitPlace(5);
-            document.getElementById("gamePhase").disabled = true;
+            
+            document.getElementById("gamePhase").disabled = false;
         //#
     };
 
@@ -173,10 +172,6 @@ function Core() {
     
     this.clearServerAnswers = function(){
         document.getElementById("serverAnswers").innerHTML = "";
-    };
-    
-    this.endFirstUnitPlacement = function(){
-        
     };
     
     this.hideElement = function(element){
