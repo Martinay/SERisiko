@@ -30,11 +30,23 @@ public class Spielsteuerung {
 		DieSpielwelt = new Spielwelt(kontinente);
 		
 		this.aktueller_Spieler=dieSpieler[0];
+
+        setzeBesitzer(kontinente); //TODO
 		
 		armeen_hinzufuegen_betreten();
 	}
-        
-        public Client_Response gib_aktuellen_Zustand(){
+
+    private void setzeBesitzer(Kontinent[] kontinente) {
+        //TODO
+
+        for (Kontinent kontinent : kontinente)
+        {
+            for (Land land : kontinent.GETLands())
+                land.neuerBesitzer(dieSpieler[(int)(Math.random()*dieSpieler.length)]);
+        }
+    }
+
+    public Client_Response gib_aktuellen_Zustand(){
             return aktueller_Response;
         }
        	
