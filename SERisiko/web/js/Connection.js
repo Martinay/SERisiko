@@ -72,7 +72,7 @@ function Connection(){
     };
     
     this.sendPlaceFirstUnits = function(PlaceUnitArray){
-        connection.endFirstUnitPlacement(PlaceUnitArray);
+        connection.endFirstUnitPlacement(JSON.parse(PlaceUnitArray));
         Core.unitPlacementHandler.changefirstRound();
     };
     

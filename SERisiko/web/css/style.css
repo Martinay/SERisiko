@@ -186,12 +186,9 @@ label[for=unitAmountAttack]{
     margin: 0px auto;
 }
 
-#startGame{
-    position: relative;
-    margin-top: 160px;
-}
-
 #gamePhase{
     margin-bottom: 10px; 
     width: 160px;
+    position: relative;
+    margin-top: 160px;
 }

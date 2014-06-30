@@ -9,7 +9,7 @@ function UnitPlacement(document){
     var svgDoc = null;
     var firstRound = true;
     
-    var placeUnit = new Array();
+    var placeUnit = {};
     
     this.init = function(svgElement){
         svgDoc = svgElement;
@@ -68,6 +68,6 @@ function UnitPlacement(document){
     };
     
     this.getPlacementArray = function(){
-        return placeUnit;
+        return JSON.stringify(placeUnit);
     };
 }

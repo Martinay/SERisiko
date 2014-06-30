@@ -36,7 +36,7 @@ function GameSteps(){
         // After Answer
         Core.svgHandler.refreshOwnerRightsForUnitPlace(3);
         Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
-        Core.svgHandler.initUnitOnMap();
+
     };
     
     this.doUnitPlacement = function(){

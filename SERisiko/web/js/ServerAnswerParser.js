@@ -119,15 +119,12 @@ function ServerAnswerParser(doc){
         if(message.data[0].Player.id == Core.getPlayerId()){
             if(message.data[0].Player.ready == true){
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
-                root.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
-                root.getElementById("gamePhase").onclick = function() { Core.gameSteps.doFirstUnitPlacement(); };
                 root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler";
-                //root.getElementById("gamePhase").innerHTML = "Nicht Bereit";
-                //root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(false); };
+                root.getElementById("gamePhase").innerHTML = "Nicht Bereit";
+                root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(false); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = false;
                 }
-                Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
             } else {
                 root.getElementById("gameStatus").innerHTML = "Bitte melden Sie sich Spielbereit";
                 root.getElementById("gamePhase").innerHTML = "Bereit zum Spielen";
@@ -166,7 +163,11 @@ function ServerAnswerParser(doc){
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> Platzieren Sie ihre Einheiten";
         root.getElementById("startGame").innerHTML = "";
         root.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
-        root.getElementById("gamePhase").onClick = "Core.gameSteps.doFirstUnitPlacement()";
+        root.getElementById("gamePhase").onclick = function() {Core.gameSteps.doFirstUnitPlacement();};
+        root.getElementById("gamePhase").disabled = true;
         root.getElementById("backToLobbyBtn").disabled = false;
+        Core.svgHandler.initUnitOnMap();
+        //Core.svgHandler.refreshOwnerRightsForUnitPlace(message.data[0].ServerGame.numberOfUnitsToPlace);
+        Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
     };
 }
