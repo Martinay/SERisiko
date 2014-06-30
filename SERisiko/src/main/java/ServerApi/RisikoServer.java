@@ -3,12 +3,16 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import org.json.simple.JSONObject;
 
 
@@ -340,7 +344,23 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
         
-        EndFirstUnitPlacementMessage message = gameManager.EndFirstUnitPlacement(clientId, null);
+        List<ClientMapChange> clientMapChanges = new LinkedList();
+        Iterator mapChanges = value.entrySet().iterator();
+        
+        while(mapChanges.hasNext()){
+            Entry thisEntry = (Entry) mapChanges.next();
+            
+            ClientMapChange o = new ClientMapChange();
+            o.CountryId = (String)thisEntry.getKey();
+            
+            Long temp = (Long)thisEntry.getValue();
+            o.AddedUnits = temp.intValue() ;
+            
+            clientMapChanges.add(o);
+
+        }
+        
+        EndFirstUnitPlacementMessage message = gameManager.EndFirstUnitPlacement(clientId, clientMapChanges);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
