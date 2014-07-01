@@ -1,12 +1,13 @@
 package ServerLogic.Model;
 
 import ServerApi.ApiResponseObject;
+
 import java.util.HashMap;
 
 public class MapChange implements ApiResponseObject{
     public String CountryID;
     public int Units;
-    public Player OwnedPlayer;   
+    public int OwnedByPlayerId;
     
     public <String, Object> HashMap getResponseData() {
 
@@ -14,7 +15,7 @@ public class MapChange implements ApiResponseObject{
         
         apiData.put("countryId", CountryID);
         apiData.put("unitCount", Units);
-        apiData.put("owner", OwnedPlayer);
+        apiData.put("ownerId", OwnedByPlayerId);
 
         return apiData;
     }    

@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 public class ServerGame extends Game {
 
     public Player Creator;
+    public List<Player> Players = new LinkedList<>();
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
     private CountryService _countryService = new CountryService();
@@ -159,7 +160,7 @@ public class ServerGame extends Game {
                         MapChange mapChange = new MapChange();
                         mapChange.Units = land.gib_anzahl_armeen();
                         mapChange.CountryID = land.gib_bezeichnung();
-                        mapChange.OwnedPlayer = PlayerMapper.Map(land.gib_besitzer());
+                        mapChange.OwnedByPlayerId = PlayerMapper.Map(land.gib_besitzer()).ID;
                         return mapChange;
                     }
                 })
