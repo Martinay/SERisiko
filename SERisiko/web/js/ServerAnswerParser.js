@@ -96,7 +96,7 @@ function ServerAnswerParser(doc){
            Core.prepareJoinedGame();
         }
         else{
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, Core.playerList.getPlayerAmount());
             Core.playerList.addPlayer(player);
             Core.updatePlayerList();
         }
@@ -133,14 +133,14 @@ function ServerAnswerParser(doc){
                     root.getElementById("startGameBtn").disabled = true;
                 }
             }
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, Core.playerList.getPlayerAmount());
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, parseInt(Core.playerList.getPlayerById(message.data[0].Player.id).getColorId()));
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
             // cleanup
             root.getElementById("playerList").innerHTML = "";
             Core.updatePlayerList();
         }
         else{
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, Core.playerList.getPlayerAmount());
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, parseInt(Core.playerList.getPlayerById(message.data[0].Player.id).getColorId()));
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);   
             root.getElementById("playerList").innerHTML = "";
             Core.updatePlayerList(); 
@@ -167,7 +167,13 @@ function ServerAnswerParser(doc){
         root.getElementById("gamePhase").disabled = true;
         root.getElementById("backToLobbyBtn").disabled = false;
         Core.svgHandler.initUnitOnMap();
-        //Core.svgHandler.refreshOwnerRightsForUnitPlace(message.data[0].ServerGame.numberOfUnitsToPlace);
+        for (var i = 0; i < message.data.length; i++){
+            if(message.data[i].ServerGame){
+                //Core.svgHandler.refreshOwnerRightsForUnitPlace(message.data[0].ServerGame.numberOfUnitsToPlace);
+            } else {
+                Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+            }
+        }
         Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
     };
 }

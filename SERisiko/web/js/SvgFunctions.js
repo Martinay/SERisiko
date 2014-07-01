@@ -14,6 +14,7 @@ function SvgFunctions(document){
     var root = document;
     var i = 0;
     var counter = 0;
+    var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png"];
     
     //# Public Methods
     this.init = function(doc){       
@@ -95,12 +96,17 @@ function SvgFunctions(document){
     };
     
     this.setNewLandOwner = function(landId, playerId){
-        // parse playerId to Playername....
+        var picPath = colorArr[parseInt(Core.playerList.getPlayerById(playerId).getColorId())];
         svgDoc.getElementById(landId).setAttribute("Owner", playerId); 
         if(svgDoc.getElementById(landId + "_Unit") != null){
-            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", Core.playerList.getPlayerById(playerId).getColor());
+            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", picPath);
         }
     };
+    
+    this.setLandComplete = function(landId, playerId, count){
+        this.setNewLandOwner(landId, playerId);
+        this.setLandUnitcount(landId, count);
+    }
     
     this.setLandUnitcount = function(landId, count){
         svgDoc.getElementById(landId).setAttribute("Unitcount", count);
@@ -211,7 +217,6 @@ function SvgFunctions(document){
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
         var rectID = "";
-        var bildSource = "";
         
         [].slice.call(rects).forEach(function(rect){
             rectID = rect.getAttribute("id");
@@ -237,18 +242,8 @@ function SvgFunctions(document){
                     xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2);
                 }
                 
-                var playerArr = Core.playerList.getPlayers();
- 
-                for (var i = 0; i < playerArr.length; i++){
-                    if(rect.getAttribute("Owner") == playerArr[i].getPlayerId()){
-                        bildSource = playerArr[i].getColor();
-                    } else {
-                        bildSource = "/img/player_img/player_red.png";
-                    }
-                }
-                
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + bildSource + '" />';
+                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
                 
                 if(countryWidth > 1234){
                     xPosition = xPosition + width * 1.4 ;
@@ -258,7 +253,7 @@ function SvgFunctions(document){
                     yPosition = yPosition + height * 1.5;
                 }
                
-                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + Core.svgHandler.getLandUnitcount(rectID) + '</text>';
+                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
             }
         });
     };

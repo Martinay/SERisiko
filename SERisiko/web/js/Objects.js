@@ -135,15 +135,14 @@ function PlayerList(){
     //# Private Methods
 }
 
-function PlayerObject(name, id, rdy, colorArrId){
+function PlayerObject(name, id, rdy, colorId){
     //#Public Vars
     
     //#Private Vars
-    var colorArr = ["/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png"];
     var playerName = name;
     var playerId = id;
     var readyState = rdy;
-    var color = colorArr[colorArrId];
+    var playerColorId = colorId;
     
     //# Public Methods
     this.getPlayerName = function(){
@@ -158,8 +157,8 @@ function PlayerObject(name, id, rdy, colorArrId){
         return playerId;
     };
     
-    this.getColor = function(){
-      return color;  
+    this.getColorId = function(){
+      return playerColorId;  
     };
     //# Private Methods
 }

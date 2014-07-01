@@ -131,39 +131,6 @@ function Core() {
         //verify 
         this.showElement(document.getElementById("game"));
         this.hideElement(document.getElementById("selectGame"));
-
-        // give me some lands test
-            this.svgHandler.setNewLandOwner("D2" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("D1" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("D7" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("D6" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("E1" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("E3" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("C4" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("B5" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("A1" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("A5" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("P4" ,this.getPlayerId());
-            this.svgHandler.setNewLandOwner("P12" ,this.getPlayerId());
-            
-            this.svgHandler.setLandUnitcount("D2" ,1);
-            this.svgHandler.setLandUnitcount("D1" , 1 );
-            this.svgHandler.setLandUnitcount("D7" , 4);
-            this.svgHandler.setLandUnitcount("D6" ,1);
-            this.svgHandler.setLandUnitcount("E1" ,1);
-            this.svgHandler.setLandUnitcount("E3" ,1);
-            this.svgHandler.setLandUnitcount("C4" ,3);
-            this.svgHandler.setLandUnitcount("B5" ,2);
-            this.svgHandler.setLandUnitcount("A1" ,4);
-            this.svgHandler.setLandUnitcount("A5" ,5);
-            this.svgHandler.setLandUnitcount("P4" ,2);
-            this.svgHandler.setLandUnitcount("P12" ,4);
-            
-            this.setPlayerStatus(Core.gameSteps.state.FIRSTUNITMOVEMENT);
-            
-            document.getElementById("gamePhase").disabled = false;
-            
-        //#
     };
 
     this.minmax = function(value, min, max){
@@ -232,7 +199,9 @@ function Core() {
         
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-            $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
+             if(players[i] != null){
+                $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
+            }
         }
     };
     
