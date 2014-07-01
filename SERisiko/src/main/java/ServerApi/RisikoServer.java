@@ -44,7 +44,17 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public WebSocketResponse leaveServer(GameClient gameClient) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("leave Server");
+
+        int clientId = gameClient.getIdentifyer();
+        
+        PlayerLeftMessage message = gameManager.LeaveServer(clientId);
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+
+        response.addChangedObject(message.Player);
+        
+        return response;
     } 
 
     @Override
