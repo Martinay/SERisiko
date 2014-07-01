@@ -16,6 +16,7 @@ public class Client_Response {
 		this.dieSpielwelt=dieSpielwelt;
 		this.aktuellerZustand=aktuellerZustand;
 		this.fehler=fehler;
+                this.aktuellerSpieler=aktuellerSpieler;
                 
                 hinzufuegbare_Armeen=0;
                 angreifer_wuerfel=null;
