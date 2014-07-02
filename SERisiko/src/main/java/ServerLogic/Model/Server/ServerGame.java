@@ -177,12 +177,13 @@ public class ServerGame extends Game {
 
     public MapChange GetMapChange(String countryFromID) {
         return Linq4j.asEnumerable(GetMap())
-                .single(new Predicate1<MapChange>() {
+                .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
                         return mapChange.CountryID == countryFromID;
                     }
-                });
+                })
+                .first();
     }
 
     public void RemovePlayer(Player player) {
