@@ -95,15 +95,12 @@ var RisikoApi = function() {
         socket.call("move", source, target, value);
     }; 
     
-    socket.endFirstUnitPlacement = function(targetArray) {
-        
-        console.log(targetArray);
-        
+    socket.endFirstUnitPlacement = function(targetArray) {      
         socket.call("endFirstUnitPlacement", targetArray);
     }; 
     
     socket.unitPlacement = function(targetArray) {
-        socket.call("UnitPlacement", targetArray);
+        socket.call("set", targetArray);
     }; 
     
     socket.endAttack = function(){

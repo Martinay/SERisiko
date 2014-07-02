@@ -34,7 +34,7 @@ function ServerAnswerParser(doc){
                 case "ReadyStateChangedMessage":
                     handleReadyStateChangedMessage(message);
                     break;
-                case "PlayerLeftMessage":
+                case "PlayerLeftGameMessage":
                     handlePlayerLeftMessage(message);
                     break;
                 case "PlayerCreatedMessage":
@@ -121,17 +121,14 @@ function ServerAnswerParser(doc){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
             if(message.data[0].Player.ready == true){
-                Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
+                Core.changeButton("gamePhase", "Nicht Bereit", "Core.connectionHandler.setPlayerState(false);", false);
                 root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler";
-                root.getElementById("gamePhase").innerHTML = "Nicht Bereit";
-                root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(false); };
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = false;
                 }
             } else {
                 root.getElementById("gameStatus").innerHTML = "Bitte melden Sie sich Spielbereit";
-                root.getElementById("gamePhase").innerHTML = "Bereit zum Spielen";
-                root.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(true); };
+                Core.changeButton("gamePhase", "Bereit zum Spielen", "Core.connectionHandler.setPlayerState(true);", false);
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = true;
                 }
@@ -165,19 +162,16 @@ function ServerAnswerParser(doc){
         Core.setPlayerStatus(Core.gameSteps.state.FIRSTUNITPLACEMENT);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> Platzieren Sie ihre Einheiten";
         root.getElementById("startGame").innerHTML = "";
-        root.getElementById("gamePhase").innerHTML = "Alle Einheiten Platziert";
-        root.getElementById("gamePhase").onclick = function() {Core.gameSteps.doFirstUnitPlacement();};
-        root.getElementById("gamePhase").disabled = true;
+        Core.changeButton("gamePhase", "Alle Einheiten Platziert", "Core.gameSteps.doFirstUnitPlacement();",  true);
         root.getElementById("backToLobbyBtn").disabled = false;
         Core.svgHandler.initUnitOnMap();
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame){
-                var unitAmount = parseInt(message.data[i].ServerGame.numberOfUnitsToPlace);
-            } else {
+                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
+            } else if(message.data[i].MapChange) {
                 Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
             }
         }
-        Core.svgHandler.refreshOwnerRightsForUnitPlace(unitAmount);
     };
     
     var handleEndFirstUnitPlacementMessage = function(message){

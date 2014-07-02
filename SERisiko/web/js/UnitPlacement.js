@@ -46,7 +46,7 @@ function UnitPlacement(document){
         Core.hideElement(root.getElementById("mutex"));  
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
         maxValue = maxValue - countSelector;
-        placeUnit[id] = parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id));
+        placeUnit[id] = parseInt(countSelector);
         Core.svgHandler.setLandUnitcount(id, parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id)));
         root.getElementById("bottom_overlay").innerHTML = "";
         if(maxValue == 0){

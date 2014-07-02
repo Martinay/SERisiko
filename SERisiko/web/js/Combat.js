@@ -60,7 +60,6 @@ function Combat(document){
                 Core.combatHandler.showAttackResult("lose");
             }else{ 
                 Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
-                console.log(attackId + "; " + defendId);
                 rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
                 if(rotate > 5){
                     rotate = 5 * countRotate;

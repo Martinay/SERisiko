@@ -94,9 +94,8 @@ function Core() {
         $("#startGame").html("");
         $("#gameStatus").html("Bitte melden Sie sich Spielbereit");
         
-        document.getElementById("gamePhase").disabled = false;
-        document.getElementById("gamePhase").innerHTML = "Bereit zum Spielen";
-        document.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(true); };
+        
+        this.changeButton("gamePhase", "Bereit zum Spielen", "Core.connectionHandler.setPlayerState(true);", false);
     };
     
     this.leaveCreateGame = function(){
@@ -132,6 +131,8 @@ function Core() {
         this.unitPlacementHandler.init(svg);
         this.unitMoveHandler.init(svg);
         this.setInGameLobby(true);
+        
+        document.getElementById("gamePhase").disabled = false;
         
          // cleanup
         document.getElementById("playerList").innerHTML = "";
@@ -212,6 +213,12 @@ function Core() {
                 $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
             }
         }
+    };
+    
+    this.changeButton = function(id, innerhtml, onclick, state){
+        document.getElementById(id).innerHTML = innerhtml;
+        document.getElementById(id).onclick = function() { onclick };
+        document.getElementById(id).disabled = state;
     };
     
     //# Private Methods  
