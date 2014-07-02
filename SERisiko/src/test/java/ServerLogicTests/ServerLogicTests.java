@@ -84,8 +84,11 @@ public class ServerLogicTests extends TestCase {
         //Act
         Player currentPlayerPlaceUnits1 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         String placeUnitsCurrentLand1ID = GetLandIdOfPlayer(currentPlayerPlaceUnits1, map);
+        ClientMapChange mapChange1 = new ClientMapChange();
+        mapChange1.CountryId = placeUnitsCurrentLand1ID;
+        mapChange1.AddedUnits = game.NumberOfUnitsToPlace;
 
-        logic.PlaceUnits(currentPlayerPlaceUnits1.ID, placeUnitsCurrentLand1ID, game.NumberOfUnitsToPlace);
+        logic.PlaceUnits(currentPlayerPlaceUnits1.ID, mapChange1);
 
         //Assert
         assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
@@ -129,7 +132,10 @@ public class ServerLogicTests extends TestCase {
 
         //Act
         Player currentPlayerPlace2 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
-        logic.PlaceUnits(currentPlayerPlace2.ID,GetLandIdOfPlayer(currentPlayerPlace2,map),game.NumberOfUnitsToPlace);
+        ClientMapChange mapChange2 = new ClientMapChange();
+        mapChange2.CountryId = GetLandIdOfPlayer(currentPlayerPlace2,map);
+        mapChange2.AddedUnits = game.NumberOfUnitsToPlace;
+        logic.PlaceUnits(currentPlayerPlace2.ID, mapChange2);
 
         //Assert
         assertEquals(GetOpponentOf(currentPlayerMove1,player1,player2).ID, currentPlayerPlace2.ID);
