@@ -27,6 +27,7 @@ public class ServerGame extends Game {
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
     private CountryService _countryService = new CountryService();
+    public Player CurrentPlayer;
     public FirstUnitPlacementHelper FirstUnitPlacementHelper = new FirstUnitPlacementHelper(this);
 
 
@@ -43,6 +44,13 @@ public class ServerGame extends Game {
     @Override
     public int GetPlayerCount() {
         return Players.size();
+    }
+
+    @Override
+    public int GetCurrentPlayerId() {
+        if (CurrentPlayer == null)
+            return 0;
+        return CurrentPlayer.ID;
     }
 
     public List<Integer> GetPlayerIds() {

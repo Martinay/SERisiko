@@ -13,7 +13,7 @@ public class CountryService {
         for (Kontinent continent : kontinents) {
             Land[] lands = continent.GETLands();
             for (int i = 0; i<lands.length; i++)
-                _countryMapping.put(String.valueOf(i),lands[i]);
+                _countryMapping.put(lands[i].gib_bezeichnung(),lands[i]);
         }
 
     }

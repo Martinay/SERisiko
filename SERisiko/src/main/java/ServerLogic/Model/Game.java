@@ -8,11 +8,12 @@ public abstract class Game implements ApiResponseObject {
     public String Name;
     public int ID;
     public int MaxPlayer;
-    public Player CurrentPlayer;
+
     public int NumberOfUnitsToPlace;
     public GameStatus CurrentGameStatus;
-    public abstract int GetPlayerCount();
-    
+    protected abstract int GetPlayerCount();
+    public abstract int GetCurrentPlayerId();
+
     
     public <String, Object> HashMap getResponseData() {
 
@@ -23,7 +24,7 @@ public abstract class Game implements ApiResponseObject {
         apiData.put("currentGameStatus", CurrentGameStatus.toString() );
         apiData.put("playerCount", this.GetPlayerCount() );
         apiData.put("maxPlayer", MaxPlayer );
-        apiData.put("currentPlayer", CurrentPlayer);
+        apiData.put("currentPlayerId", GetCurrentPlayerId());
         apiData.put("numberOfUnitsToPlace", NumberOfUnitsToPlace);
 
         return apiData;

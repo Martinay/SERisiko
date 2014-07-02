@@ -48,7 +48,7 @@ public class FirstUnitPlacementHelperTests extends TestCase {
         helper.ApplyChangesToGame();
 
         //Assert
-        assertEquals(helper.AllPlayerFinished(), true);
+        assertEquals(helper.AllPlayerFinished(), false);
 
     }
 
@@ -61,7 +61,7 @@ public class FirstUnitPlacementHelperTests extends TestCase {
                 .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
-                        return mapChange.OwnedByPlayerId.ID == player.ID;
+                        return mapChange.OwnedByPlayerId == player.ID;
                     }
                 })
                 .first()

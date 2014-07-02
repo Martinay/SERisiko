@@ -82,7 +82,7 @@ public class ServerLogicTests extends TestCase {
         assertEquals(finishedPlayer2.ID,player2.ID);
 
         //Act
-        Player currentPlayerPlaceUnits1 = game.CurrentPlayer;
+        Player currentPlayerPlaceUnits1 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         String placeUnitsCurrentLand1ID = GetLandIdOfPlayer(currentPlayerPlaceUnits1, map);
 
         logic.PlaceUnits(currentPlayerPlaceUnits1.ID, placeUnitsCurrentLand1ID, game.NumberOfUnitsToPlace);
@@ -93,7 +93,7 @@ public class ServerLogicTests extends TestCase {
         assertEquals(game.CurrentGameStatus, GameStatus.Attack);
 
         //Act
-        Player currentPlayerAttack1 = game.CurrentPlayer;
+        Player currentPlayerAttack1 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         String LandIdAttackCurrent1 = GetLandIdOfPlayer(currentPlayerAttack1,map);
         String LandIdAttackOpponent1 = GetLandIdOfPlayer(GetOpponentOf(currentPlayerAttack1, player1, player2), map);
 
@@ -106,7 +106,7 @@ public class ServerLogicTests extends TestCase {
         assertEquals(game.CurrentGameStatus, GameStatus.Attack);
 
         //Act
-        Player currentPlayerEndAttack1 = game.CurrentPlayer;
+        Player currentPlayerEndAttack1 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         logic.EndAttack(currentPlayerEndAttack1.ID);
 
         //Assert
@@ -116,7 +116,7 @@ public class ServerLogicTests extends TestCase {
         assertEquals(game.CurrentGameStatus, GameStatus.Move);
 
         //Act
-        Player currentPlayerMove1 = game.CurrentPlayer;
+        Player currentPlayerMove1 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         logic.EndTurn(currentPlayerMove1.ID);
 
         //Assert
@@ -124,11 +124,11 @@ public class ServerLogicTests extends TestCase {
         assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
         assertEquals(player2.PlayerStatus, PlayerStatus.Playing);
         assertEquals(game.CurrentGameStatus, GameStatus.PlacingUnits);
-        assertEquals(game.CurrentPlayer.ID, GetOpponentOf(currentPlayerMove1,player1,player2).ID);
+        assertEquals(game.GetCurrentPlayerId(), GetOpponentOf(currentPlayerMove1,player1,player2).ID);
 
 
         //Act
-        Player currentPlayerPlace2 = game.CurrentPlayer;
+        Player currentPlayerPlace2 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         logic.PlaceUnits(currentPlayerPlace2.ID,GetLandIdOfPlayer(currentPlayerPlace2,map),game.NumberOfUnitsToPlace);
 
         //Assert
@@ -138,7 +138,7 @@ public class ServerLogicTests extends TestCase {
         assertEquals(game.CurrentGameStatus, GameStatus.Attack);
 
         //Act
-        Player currentPlayerAttack2 = game.CurrentPlayer;
+        Player currentPlayerAttack2 = GetCurrentPlayer(game.GetCurrentPlayerId(), player1, player2);
         logic.EndTurn(currentPlayerAttack2.ID);
 
         //Assert
@@ -146,10 +146,17 @@ public class ServerLogicTests extends TestCase {
         assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
         assertEquals(player2.PlayerStatus, PlayerStatus.Playing);
         assertEquals(game.CurrentGameStatus, GameStatus.PlacingUnits);
-        assertEquals(game.CurrentPlayer.ID, GetOpponentOf(currentPlayerAttack2,player1,player2));
+        assertEquals(game.GetCurrentPlayerId(), GetOpponentOf(currentPlayerAttack2,player1,player2).ID);
 
 
         // ...
+    }
+
+    private Player GetCurrentPlayer(int currentPlayerId, Player player1, Player player2) {
+        if (player1.ID == currentPlayerId)
+            return player1;
+
+        return player2;
     }
 
     private Player GetOpponentOf(Player player, Player ref1, Player ref2)
@@ -165,7 +172,7 @@ public class ServerLogicTests extends TestCase {
                 .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
-                        return mapChange.OwnedByPlayerId.ID == player.ID;
+                        return mapChange.OwnedByPlayerId == player.ID;
                     }
                 })
                 .first()
@@ -181,7 +188,7 @@ public class ServerLogicTests extends TestCase {
                 .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
-                        return mapChange.OwnedByPlayerId.ID == player.ID;
+                        return mapChange.OwnedByPlayerId == player.ID;
                     }
                 })
                 .first()
