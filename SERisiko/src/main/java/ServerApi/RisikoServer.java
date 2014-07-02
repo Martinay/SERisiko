@@ -51,8 +51,16 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         PlayerLeftMessage message = gameManager.LeaveServer(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
-
+        response.setState(1);
+        response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClient( clientId );
+        
+        //TODO response.addTargetClientList( message.PlayerIDsToUpdate );
+        
         response.addChangedObject(message.Player);
+        
+        
+        
         
         return response;
     } 
@@ -126,6 +134,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
+        response.addTargetClient(clientId);
         response.addChangedObject( message.Game );
 
         
@@ -179,12 +188,14 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        response.addChangedObject( message.Game );
         
+        //order is important !!!  (*mapchanges followed by game)
         List<MapChange> changedMaps = message.Map;
         for(int i = 0; i< changedMaps.size(); i++) {
             response.addChangedObject( changedMaps.get(i) );
         }
+        
+        response.addChangedObject( message.Game );
         
         return response;
     }
@@ -306,12 +317,31 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
 
     @Override
-    public WebSocketResponse set(GameClient gameClient, String target, Long value) {
+    public WebSocketResponse set(GameClient gameClient, JSONObject value) {
         System.out.println("setUnits");
         
         int clientId = gameClient.getIdentifyer();
+        List<ClientMapChange> clientMapChanges = new LinkedList();
+        Iterator mapChanges = value.entrySet().iterator();
         
-        MapChangedMessage message = gameManager.PlaceUnits(clientId, target, value.intValue() );
+        ClientMapChange o = new ClientMapChange();
+        
+        while(mapChanges.hasNext()){
+            Entry thisEntry = (Entry) mapChanges.next();
+            //not used atm, uso only one object ClientMapChange o = new ClientMapChange();
+            o.CountryId = (String)thisEntry.getKey();
+            
+            Long temp = (Long)thisEntry.getValue();
+            o.AddedUnits = temp.intValue() ;
+            
+            break; //cancel, need only one Object atm
+            
+            //clientMapChanges.add(o);
+
+        }
+        MapChangedMessage message = gameManager.PlaceUnits(clientId, o );
+        
+        
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
@@ -379,8 +409,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
-
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
+        List<MapChange> changedMaps = message.CurrentMap;
+        for(int i = 0; i< changedMaps.size(); i++) {
+            response.addChangedObject( changedMaps.get(i) );
+        }
         
         return response;  
     }
