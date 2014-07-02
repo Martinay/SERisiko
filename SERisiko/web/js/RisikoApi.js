@@ -96,6 +96,9 @@ var RisikoApi = function() {
     }; 
     
     socket.endFirstUnitPlacement = function(targetArray) {
+        
+        console.log(targetArray);
+        
         socket.call("endFirstUnitPlacement", targetArray);
     }; 
     

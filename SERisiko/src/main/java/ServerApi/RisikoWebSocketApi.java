@@ -26,7 +26,7 @@ interface RisikoWebSocketApi {
     //game methods
     public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value);   
     public WebSocketResponse move(GameClient gameClient, String source, String target, Long value);
-    public WebSocketResponse set(GameClient gameClient, String target, Long value);
+    public WebSocketResponse set(GameClient gameClient, JSONObject value);
     public WebSocketResponse endTurn(GameClient gameClient);   
     public WebSocketResponse endAttack(GameClient gameClient); 
     public WebSocketResponse endFirstUnitPlacement(GameClient gameClient, JSONObject value);

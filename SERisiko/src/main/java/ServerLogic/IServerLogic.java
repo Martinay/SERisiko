@@ -10,10 +10,13 @@ import java.util.List;
 public interface IServerLogic {
 
     //InGame
-    MapChangedMessage PlaceUnits(int playerID, String countryID, int units);
+    MapChangedMessage PlaceUnits(int playerID, List<ClientMapChange> clientMapChanges);
     MapChangedMessage Attack(int playerID, String countryFromID, String countryToID, int units);
     void EndAttack(int playerID);
     MapChangedMessage Move(int playerID, String countryFromID, String countryToID, int units);
+
+
+
     EndTurnMessage EndTurn(int playerID);
     EndFirstUnitPlacementMessage EndFirstUnitPlacement(int playerID, List<ClientMapChange> clientMapChanges );
 

@@ -67,11 +67,11 @@ public class ServerLogic implements IServerLogic {
     }
 
     @Override
-    public MapChangedMessage PlaceUnits(int playerID, String countryID, int units) {
+    public MapChangedMessage PlaceUnits(int playerID, List<ClientMapChange> clientMapChanges) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
-        game.PlaceUnits(countryID, units);
+        //game.PlaceUnits(mapChange.CountryId, mapChange.AddedUnits);
 
-        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange(countryID));
+       return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange( "dummy" ));
     }
 
     @Override
