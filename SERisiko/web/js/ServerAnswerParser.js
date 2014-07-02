@@ -96,7 +96,7 @@ function ServerAnswerParser(doc){
            Core.prepareJoinedGame();
         }
         else{
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, Core.playerList.getPlayerAmount());
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.addPlayer(player);
             Core.updatePlayerList();
         }
@@ -108,7 +108,7 @@ function ServerAnswerParser(doc){
         Core.playerList.clear();
         // parse message			  	  
         for(var i = 0; i < message.data.length; i++){
-            var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready, Core.playerList.getPlayerAmount());
+            var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.ready);
             Core.playerList.addPlayer(player);
         }
         Core.updatePlayerList();
@@ -133,14 +133,14 @@ function ServerAnswerParser(doc){
                     root.getElementById("startGameBtn").disabled = true;
                 }
             }
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, parseInt(Core.playerList.getPlayerById(message.data[0].Player.id).getColorId()));
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);
             // cleanup
             root.getElementById("playerList").innerHTML = "";
             Core.updatePlayerList();
         }
         else{
-            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready, parseInt(Core.playerList.getPlayerById(message.data[0].Player.id).getColorId()));
+            var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.ready);
             Core.playerList.updatePlayer(parseInt(message.data[0].Player.id), player);   
             root.getElementById("playerList").innerHTML = "";
             Core.updatePlayerList(); 
@@ -169,11 +169,11 @@ function ServerAnswerParser(doc){
         Core.svgHandler.initUnitOnMap();
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame){
-                //Core.svgHandler.refreshOwnerRightsForUnitPlace(message.data[0].ServerGame.numberOfUnitsToPlace);
+                var unitAmount = parseInt(message.data[i].ServerGame.numberOfUnitsToPlace);
             } else {
                 Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
             }
         }
-        Core.svgHandler.refreshOwnerRightsForUnitPlace(5);
+        Core.svgHandler.refreshOwnerRightsForUnitPlace(unitAmount);
     };
 }

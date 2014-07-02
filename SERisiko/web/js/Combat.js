@@ -8,10 +8,14 @@
 function Combat(document){
     var root = document;
     var svgDoc = null;
-    var dicesArr = new Array();
+    var dicesArr = {};
     
     this.init = function(svgElement){
         svgDoc = svgElement;
+    };
+    
+    this.deleteDices = function(){
+        dicesArr = {};
     };
     
     this.setDice = function(id, count){
@@ -36,6 +40,7 @@ function Combat(document){
     };
     
     this.showAttack = function (attackId, defendId, difference){
+        this.deleteDices();
         var countRotate = 18;
         var rotate = 0;
         var select = root.getElementById("unitAmountAttack");
@@ -136,14 +141,20 @@ function Combat(document){
         Core.svgHandler.refreshOwnerRights();
     };
     
-    this.showDefeat = function (attackId, defendId, countAttack, attackState){
+    this.showDefeat = function (attackId, defendId, attackState){
+        this.deleteDices();
         var countRotate = 18;
         var rotate = 0;
         
         Core.svgHandler.setOpacityOnRect(attackId, 0.5, "default");
         Core.svgHandler.setOpacityOnRect(defendId, 0.5, "default");
         
+        var countAttack = parseInt(Core.svgHandler.getLandUnitcount(attackId));
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
+        
+        if(dicesArr.length < 3){
+            countAttack = dicesArr.length;
+        }
         
         if(attackState){
             Core.combatHandler.showAttackResult("lose");
