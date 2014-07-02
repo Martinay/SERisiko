@@ -145,6 +145,7 @@ public class Spielsteuerung {
 			if (hinzuzufuegende_Armeen<=0) return armeen_hinzufuegen_verlassen();
 			
                         aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                        aktueller_Response.hinzufuegbare_Armeen=hinzuzufuegende_Armeen;
 			return aktueller_Response;
 		}
 	}
