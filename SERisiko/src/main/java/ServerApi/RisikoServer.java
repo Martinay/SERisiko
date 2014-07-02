@@ -324,22 +324,20 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         List<ClientMapChange> clientMapChanges = new LinkedList();
         Iterator mapChanges = value.entrySet().iterator();
         
-        ClientMapChange o = new ClientMapChange();
         
         while(mapChanges.hasNext()){
             Entry thisEntry = (Entry) mapChanges.next();
-            //not used atm, uso only one object ClientMapChange o = new ClientMapChange();
+            ClientMapChange o = new ClientMapChange();
             o.CountryId = (String)thisEntry.getKey();
             
             Long temp = (Long)thisEntry.getValue();
             o.AddedUnits = temp.intValue() ;
+
             
-            break; //cancel, need only one Object atm
-            
-            //clientMapChanges.add(o);
+            clientMapChanges.add(o);
 
         }
-        MapChangedMessage message = gameManager.PlaceUnits(clientId, o );
+        MapChangedMessage message = gameManager.PlaceUnits(clientId, clientMapChanges );
         
         
         
