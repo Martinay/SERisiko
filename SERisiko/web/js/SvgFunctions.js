@@ -15,6 +15,7 @@ function SvgFunctions(document){
     var i = 0;
     var counter = 0;
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png"];
+    var playerColorHREF = {};
     
     //# Public Methods
     this.init = function(doc){       
@@ -96,10 +97,9 @@ function SvgFunctions(document){
     };
     
     this.setNewLandOwner = function(landId, playerId){
-        var picPath = colorArr[parseInt(Core.playerList.getPlayerById(playerId).getColorId())];
         svgDoc.getElementById(landId).setAttribute("Owner", playerId); 
         if(svgDoc.getElementById(landId + "_Unit") != null){
-            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", picPath);
+            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + playerId + '"']);
         }
     };
     
@@ -203,7 +203,6 @@ function SvgFunctions(document){
             context.fillStyle = 'red';
             context.fillText(count, 75, 90);
         }
-        root.getElementById("startAttack").disabled = false;
     };
     
     this.initUnitOnMap = function(){
@@ -216,7 +215,9 @@ function SvgFunctions(document){
         var countryWidth = 0;
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
-        var rectID = "";
+        var rectID = 
+                
+        initPlayerColor();
         
         [].slice.call(rects).forEach(function(rect){
             rectID = rect.getAttribute("id");
@@ -267,5 +268,12 @@ function SvgFunctions(document){
             }
         }
         return array;
+    };
+    
+    var initPlayerColor = function(){
+        var players = Core.playerList.getPlayers();
+        for(var i = 0; i < players.length; i++){
+            playerColorHREF['"' + players[i].getPlayerId() + '"'] = colorArr[i];
+        }
     };
 }

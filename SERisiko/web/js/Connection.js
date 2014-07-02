@@ -84,8 +84,12 @@ function Connection(){
         connection.endTurn();
     }; 
     
+    this.sendEndAttack = function(){
+        connection.endAttack();
+    };
+    
     this.sendUnitPlace = function(PlaceUnitArray){
-        connection.unitPlacement(PlaceUnitArray);
+        connection.unitPlacement(JSON.parse(PlaceUnitArray));
     };
 
 }

@@ -8,10 +8,14 @@
 function Combat(document){
     var root = document;
     var svgDoc = null;
-    var dicesArr = new Array();
+    var dicesArr = {};
     
     this.init = function(svgElement){
         svgDoc = svgElement;
+    };
+    
+    this.deleteDices = function(){
+        dicesArr = {};
     };
     
     this.setDice = function(id, count){
@@ -36,6 +40,7 @@ function Combat(document){
     };
     
     this.showAttack = function (attackId, defendId, difference){
+        this.deleteDices();
         var countRotate = 18;
         var rotate = 0;
         var select = root.getElementById("unitAmountAttack");
@@ -55,7 +60,11 @@ function Combat(document){
                 Core.combatHandler.showAttackResult("lose");
             }else{ 
                 Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
+                console.log(attackId + "; " + defendId);
                 rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
+                if(rotate > 5){
+                    rotate = 5 * countRotate;
+                }
                 var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
@@ -111,15 +120,8 @@ function Combat(document){
                                                                 <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beenden</button>";
         } else {
             root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beende</button>";
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beende</button>";
         }
-    };
-    
-    this.endAttack = function (){
-        root.getElementById("loading_overlay").innerHTML = '';
-        root.getElementById("loading_overlay").style.display = "none";
-        Core.svgHandler.setRectsOnClickNull();
-        Core.svgHandler.refreshOwnerRights();
     };
     
     this.abortAttack = function (){
@@ -136,14 +138,20 @@ function Combat(document){
         Core.svgHandler.refreshOwnerRights();
     };
     
-    this.showDefeat = function (attackId, defendId, countAttack, attackState){
+    this.showDefeat = function (attackId, defendId, attackState){
+        this.deleteDices();
         var countRotate = 18;
         var rotate = 0;
         
         Core.svgHandler.setOpacityOnRect(attackId, 0.5, "default");
         Core.svgHandler.setOpacityOnRect(defendId, 0.5, "default");
         
+        var countAttack = parseInt(Core.svgHandler.getLandUnitcount(attackId));
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
+        
+        if(dicesArr.length < 3){
+            countAttack = dicesArr.length;
+        }
         
         if(attackState){
             Core.combatHandler.showAttackResult("lose");
