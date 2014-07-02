@@ -33,10 +33,6 @@ function GameSteps(){
         document.getElementById("gamePhase").disabled = true;
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
         Core.connectionHandler.sendPlaceFirstUnits(Core.unitPlacementHandler.getPlacementArray());
-        // After Answer
-        Core.svgHandler.refreshOwnerRightsForUnitPlace(3);
-        Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
-
     };
     
     this.doUnitPlacement = function(){
@@ -56,6 +52,7 @@ function GameSteps(){
         document.getElementById("gamePhase").innerHTML = "Runde Beenden";
         document.getElementById("gamePhase").onclick = function() { Core.gameSteps.doUnitmovement(); };
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
+        Core.connectionHandler.s
         // After Answer
         Core.svgHandler.refreshOwnerRights();        
     };

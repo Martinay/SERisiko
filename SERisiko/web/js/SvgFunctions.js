@@ -203,7 +203,6 @@ function SvgFunctions(document){
             context.fillStyle = 'red';
             context.fillText(count, 75, 90);
         }
-        root.getElementById("startAttack").disabled = false;
     };
     
     this.initUnitOnMap = function(){

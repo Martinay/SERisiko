@@ -43,6 +43,9 @@ function ServerAnswerParser(doc){
                 case "GameStartedMessage":
                     handleGameStartedMessage(message);
                     break;
+                case "EndFirstUnitPlacementMessage":
+                    handleEndFirstUnitPlacementMessage(message);
+                    break;
                 default:
                     //nothing
             } 
@@ -175,5 +178,23 @@ function ServerAnswerParser(doc){
             }
         }
         Core.svgHandler.refreshOwnerRightsForUnitPlace(unitAmount);
+    };
+    
+    var handleEndFirstUnitPlacementMessage = function(message){
+        for (var i = 0; i < message.data.length; i++){
+            if(message.data[i].ServerGame){
+               if(message.data[i].ServerGame.currentPlayerId == Core.getPlayerId()){
+                   Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
+                   Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
+               }
+            } else {
+                if(message.data[i].MapChange){
+                    if(Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId, "_back") != message.data[i].MapChange.unitCount)
+                        Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                }
+            }
+        }
+        
+        
     };
 }

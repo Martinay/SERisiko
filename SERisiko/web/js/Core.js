@@ -88,6 +88,15 @@ function Core() {
         
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
+        
+        this.playerList.clear();
+        $("#playerList").html("");
+        $("#startGame").html("");
+        $("#gameStatus").html("Bitte melden Sie sich Spielbereit");
+        
+        document.getElementById("gamePhase").disabled = false;
+        document.getElementById("gamePhase").innerHTML = "Bereit zum Spielen";
+        document.getElementById("gamePhase").onclick = function() { Core.connectionHandler.setPlayerState(true); };
     };
     
     this.leaveCreateGame = function(){
