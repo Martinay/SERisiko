@@ -364,7 +364,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse endTurn(GameClient gameClient) {
-        System.out.println("end first unitplacement");
+        System.out.println("end Round");
         
         int clientId = gameClient.getIdentifyer();
         

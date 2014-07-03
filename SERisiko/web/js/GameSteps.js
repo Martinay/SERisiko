@@ -40,29 +40,23 @@ function GameSteps(){
         Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
         Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray());
-        // After Answer
         Core.svgHandler.refreshOwnerRights();  
     };
 
     this.doAttackEnd = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
-        Core.connectionHandler.s
-        // After Answer
-        Core.svgHandler.refreshOwnerRights();        
+        Core.connectionHandler.sendEndAttack();        
     };
     
     this.doUnitmovement = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
-        document.getElementById("gameStatus").innerHTML = "Spieler <div id='playerInAction'></div> ist an der Reihe";
+        Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);
+        document.getElementById("gameStatus").innerHTML = "";
         Core.connectionHandler.sendEndRound();
-        // After Answer
-        Core.svgHandler.refreshOwnerRightsForUnitPlace(3);
-        Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
     };
     
     this.doDefend = function(attackId, defendId, countAttack, attackState){
@@ -76,7 +70,11 @@ function GameSteps(){
     this.setGameStep = function(state){
         gameStep = state;
     };
-
+    
+    this.clearMap = function(){
+        clearDisplay();
+    };
+    
     //Private Methods
     
     var clearDisplay = function(){

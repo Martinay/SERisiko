@@ -93,7 +93,7 @@ function SvgFunctions(document){
     };
     
     this.getLandOwner = function(landId){
-        svgDoc.getElementById(landId).getAttribute("Owner");  
+        return parseInt(svgDoc.getElementById(landId).getAttribute("Owner"));  
     };
     
     this.setNewLandOwner = function(landId, playerId){
@@ -116,7 +116,7 @@ function SvgFunctions(document){
     };
     
     this.getLandUnitcount = function(landId){
-        return (svgDoc.getElementById(landId).getAttribute("Unitcount"));  
+        return parseInt(svgDoc.getElementById(landId).getAttribute("Unitcount"));  
     };
     
     this.setRectsOnClickNull = function(){
@@ -183,7 +183,9 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            root.getElementById("startAttack").disabled = false;
+            if(root.getElementById("startAttack") != null){
+                root.getElementById("startAttack").disabled = false;
+            }
             drawDigitOnCanvas(id);
             if(counter == (rotate/18)){
                 counter = 0;

@@ -23,7 +23,7 @@ function Combat(document){
     };
     
     this.getDice = function(id){
-        return dicesArr[id];
+        return parseInt(dicesArr[id]);
     }
     
     this.selectAmountUnit = function(attacker, defender){
@@ -40,9 +40,7 @@ function Combat(document){
     };
     
     this.showAttack = function (attackId, defendId, difference){
-        this.deleteDices();
-        var countRotate = 18;
-        var rotate = 0;
+        
         var select = root.getElementById("unitAmountAttack");
         if(select != null){
             var countAttack = parseInt(select.options[select.selectedIndex].value);
@@ -54,16 +52,15 @@ function Combat(document){
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
         
         if(Core.svgHandler.getLandOwner(defendId) == Core.getPlayerName()){
-            Core.combatHandler.showAttackResult("win");
+            Core.combatHandler.showAttackResult(true);
         } else {
             if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) == 1){
-                Core.combatHandler.showAttackResult("lose");
+                Core.combatHandler.showAttackResult(false);
             }else{ 
                 Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
-                rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
-                if(rotate > 5){
-                    rotate = 5 * countRotate;
-                }
+                
+                var rotate = getCountRotate(countAttack, countDefend);
+                
                 var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
@@ -103,18 +100,13 @@ function Combat(document){
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;
-                this.setDice("A1", (1 + parseInt(Math.random() * (6))));
-                this.setDice("A2", (1 + parseInt(Math.random() * (6))));
-                this.setDice("A3", (1 + parseInt(Math.random() * (6))));
-                this.setDice("D1", (1 + parseInt(Math.random() * (6))));
-                this.setDice("D2", (1 + parseInt(Math.random() * (6))));
                 
             }
         }
     };
     
     this.showAttackResult = function (arg){
-        if(arg == "win"){
+        if(arg == true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                 <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beenden</button>";
         } else {
@@ -137,29 +129,13 @@ function Combat(document){
         Core.svgHandler.refreshOwnerRights();
     };
     
-    this.showDefeat = function (attackId, defendId, attackState){
-        this.deleteDices();
-        var countRotate = 18;
-        var rotate = 0;
+    this.showDefeat = function (countAttack, countDefend, attackState){
+        root.getElementById("loading_overlay").innerHTML = "";
+        root.getElementById("loading_overlay").style.display = "block";
         
-        Core.svgHandler.setOpacityOnRect(attackId, 0.5, "default");
-        Core.svgHandler.setOpacityOnRect(defendId, 0.5, "default");
+        var rotate = getCountRotate(countAttack, countDefend);
         
-        var countAttack = parseInt(Core.svgHandler.getLandUnitcount(attackId));
-        var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
-        
-        if(dicesArr.length < 3){
-            countAttack = dicesArr.length;
-        }
-        
-        if(attackState){
-            Core.combatHandler.showAttackResult("lose");
-        } else {
-            if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) == 1){
-                Core.combatHandler.showAttackResult("win");
-            }else{
-                rotate = ((countAttack + countDefend < 5)?((countDefend > 2)?2:countDefend + countAttack):((countDefend < 2)?( 1 + 3):((countDefend > 2)?(2 + countAttack):5))) * countRotate;
-                var OverlayString = '<div id="showAttack">\n\
+        var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
                                                 <td colspan="2">Attacker:</td>\n\
@@ -194,17 +170,41 @@ function Combat(document){
                                             </tr>\n\
                                         </table>\n\
                                     </div>\n'+
-                                   "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Beenden</button>";
+                                    
+                                   "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.showDefeatResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                root.getElementById("startAttack").disabled = true;
-                this.setDice("A1", (1 + parseInt(Math.random() * (6))));
-                this.setDice("A2", (1 + parseInt(Math.random() * (6))));
-                this.setDice("A3", (1 + parseInt(Math.random() * (6))));
-                this.setDice("D1", (1 + parseInt(Math.random() * (6))));
-                this.setDice("D2", (1 + parseInt(Math.random() * (6))));
-                Core.svgHandler.setOpacityOnRect(attackId, 1, "default");
-                Core.svgHandler.setOpacityOnRect(defendId, 1, "default");
-            }
+                      
+                setTimeout(function(){ Core.combatHandler.showDefeatResult(attackState);}, 7500);
+    };
+    
+    this.showDefeatResult = function(arg){
+        if(arg == true){
+            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endDefeat()'>Anzeige Schließen</button>";
+        } else {
+            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endDefeat()'>Anzeige Schließen</button>";
         }
+        setTimeout(function(){ Core.combatHandler.endDefeat();}, 300);
+    };
+    
+    this.endDefeat = function(){
+        root.getElementById("loading_overlay").innerHTML = '';
+        root.getElementById("loading_overlay").style.display = "none";
+        Core.svgHandler.setRectsOnClickNull();
+    };
+    
+    var getCountRotate = function(attackCount, defendCount){
+        var countRotate = 18;
+                 
+        if(attackCount > 3){
+            attackCount = 3;
+        }
+        
+        if(defendCount > 2){
+            defendCount = 2;
+        }
+        
+        return (attackCount + defendCount) * countRotate;
     };
 }

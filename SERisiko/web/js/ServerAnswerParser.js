@@ -46,6 +46,18 @@ function ServerAnswerParser(doc){
                 case "EndFirstUnitPlacementMessage":
                     handleEndFirstUnitPlacementMessage(message);
                     break;
+                case "MapChangedMessage":
+                    handleMapChangedMessage(message);
+                    break;     
+                case "AttackMessage":
+                    handleAttackMessage(message);
+                    break;
+                case "AttackEndedMessage":
+                    handleAttackEndedMessage(message);
+                    break;
+                case "EndTurnMessage":
+                    handleEndTurnMessage(message);
+                    break;
                 default:
                     //nothing
             } 
@@ -182,17 +194,89 @@ function ServerAnswerParser(doc){
                    Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
                    document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
                } else {
-                   document.getElementById("gameStatus").innerHTML = "Spieler <div id='playerInAction'></div> ist an der Reihe";
-                   document.getElementById("playerInAction").innerHTML = Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName();
+                   Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                   document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe";
                }
             } else {
                 if(message.data[i].MapChange){
-                    if(Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId, "_back") != message.data[i].MapChange.unitCount)
+                    if(Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId) != message.data[i].MapChange.unitCount)
                         Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
                 }
             }
+        } 
+    };
+    
+    var handleMapChangedMessage = function(message){
+        for (var i = 0; i < message.data.length; i++){
+            if(message.data[i].MapChange){
+                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
+                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                } else {
+                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+
+                }
+            }
+        } 
+    };
+    
+    var handleAttackMessage = function(message){
+       
+        var defeat = false;
+        var lands = new Array();
+        var attackstate = true;
+        var attackDiceCount = 1;
+        var defeatDiceCount = 1;
+        
+        Core.combatHandler.deleteDices();
+        
+        for (var i = 0; i < message.data.length; i++){
+            if(message.data[i].MapChange){
+                lands[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
+                if(i == 1){
+                    if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == Core.getPlayerId()){
+                        defeat = true;
+                    }
+                }
+                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
+                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                } else {
+                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+                    attackstate = false;
+                }
+            }
+            if(message.data[i].Dice){
+                if(message.data[i].Dice.type == "Attacker"){
+                    Core.combatHandler.setDice("A" + attackDiceCount, message.data[i].Dice.value);
+                    attackDiceCount++;
+                }
+                if(message.data[i].Dice.type == "Defender"){
+                    Core.combatHandler.setDice("D" + defeatDiceCount, message.data[i].Dice.value);
+                    defeatDiceCount++;
+                }
+            }
+        } 
+        if(defeat == true){
+            Core.combatHandler.showDefeat(lands[0], lands[1], attackstate);
         }
-        
-        
+    };
+    
+    var handleAttackEndedMessage = function(message){
+        Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        Core.svgHandler.refreshOwnerRights();
+    };
+    
+    var handleEndTurnMessage = function(message){
+        if(message.data[0].ServerGame){
+            if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
+                Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
+                Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[0].ServerGame.numberOfUnitsToPlace));
+                document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
+                Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  false);
+            } else {
+                Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe";
+                Core.gameSteps.clearMap();
+            }
+        }
     };
 }
