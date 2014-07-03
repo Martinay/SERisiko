@@ -1,5 +1,6 @@
 package ServerLogic.Model.Server;
 
+import ServerLogic.Helper.PlayerMapper;
 import ServerLogic.Model.Player;
 
 import java.util.LinkedList;
@@ -91,5 +92,11 @@ public class ServerState {
     public void RemoveGame(ServerGame game) {
         Lobby.RemoveGame(game);
         ActiveGames.remove(game);
+    }
+
+    public void RemovePlayer(Player player) {
+        Lobby.RemovePlayer(player);
+        Players.remove(player);
+        PlayerMapper.Remove(player);
     }
 }

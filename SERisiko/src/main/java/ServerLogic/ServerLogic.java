@@ -1,6 +1,9 @@
 package ServerLogic;
 
-import ServerLogic.Helper.*;
+import ServerLogic.Helper.FirstUnitPlacementHelper;
+import ServerLogic.Helper.GameCreator;
+import ServerLogic.Helper.Logger;
+import ServerLogic.Helper.MessageCreator;
 import ServerLogic.Messages.*;
 import ServerLogic.Model.*;
 import ServerLogic.Model.Server.ServerDice;
@@ -133,9 +136,7 @@ public class ServerLogic implements IServerLogic {
             }
         }
 
-        _state.Lobby.RemovePlayer(player);
-        _state.Players.remove(player);
-        PlayerMapper.Remove(player);
+        _state.RemovePlayer(player);
         idsToUpdate.remove(player);
 
         return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player);
@@ -175,12 +176,17 @@ public class ServerLogic implements IServerLogic {
         Player player = _state.GetPlayer(playerID);
         ServerGame game = _state.GetGameByPlayerId(playerID);
 
+        List<Integer> idsToUpdate = new LinkedList<>(game.GetPlayerIds());
+
+        if (game.CurrentGameStatus == GameStatus.WaitingForPlayer)
+            idsToUpdate.addAll(_state.Lobby.GetPlayerIDs());
+
         game.RemovePlayer(player);
 
         if (game.CurrentGameStatus == GameStatus.Finished)
             _state.RemoveGame(game);
 
-        return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
+        return MessageCreator.CreatePlayerLeftGameMessage(idsToUpdate, game, player);
     }
 
     @Override
