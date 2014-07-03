@@ -116,13 +116,13 @@ public class ServerGame extends Game {
 
         //workaround //TODO
         int[] def = new int[2];
-        def[0] =(int) Math.random()*6;
-        def[1] = (int) Math.random()*6;
+        def[0] =(int) (Math.random()*5) + 1;
+        def[1] = (int) (Math.random()*5) + 1;
 
         int[] att = new int[3];
-        att[0] = (int) Math.random()*6;
-        att[1] = (int) Math.random()*6;
-        att[2] = (int) Math.random()*6;
+        att[0] = (int) (Math.random()*5) + 1 ;
+        att[1] = (int) (Math.random()*5) + 1;
+        att[2] = (int) (Math.random()*5) + 1;
 
         return MapToServerDice(def, att);
         //return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
@@ -205,15 +205,14 @@ public class ServerGame extends Game {
     }
 
     public MapChange GetMapChange(String countryFromID) {
-        Enumerable<MapChange> a =  Linq4j.asEnumerable(GetMap());
-        List<MapChange> b = a
+        return   Linq4j.asEnumerable(GetMap())
                 .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
                         return mapChange.CountryID.equals(countryFromID);
                     }
-                }).toList();
-               return b.get(0);
+                })
+                .first();
     }
 
     public void RemovePlayer(Player player) {

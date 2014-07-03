@@ -180,7 +180,11 @@ public class ServerLogic implements IServerLogic {
         if (game.CurrentGameStatus == GameStatus.Finished)
             _state.RemoveGame(game);
 
-        return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
+        List<MapChange> map = null;
+        if ((game.CurrentGameStatus != GameStatus.Finished && game.CurrentGameStatus != GameStatus.WaitingForPlayer))
+            map = game.GetMap();
+
+        return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player, map);
     }
 
     @Override
