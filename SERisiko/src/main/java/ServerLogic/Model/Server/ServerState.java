@@ -80,4 +80,16 @@ public class ServerState {
             return null;
         }
     }
+
+    public void SetGameToActiveGame(ServerGame game) {
+        Lobby.RemoveGame(game);
+        Lobby.RemovePlayer(game.Players);
+        ActiveGames.add(game);
+
+    }
+
+    public void RemoveGame(ServerGame game) {
+        Lobby.RemoveGame(game);
+        ActiveGames.remove(game);
+    }
 }

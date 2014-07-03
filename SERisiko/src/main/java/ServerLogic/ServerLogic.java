@@ -2,10 +2,7 @@ package ServerLogic;
 
 import ServerLogic.Helper.*;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.ClientMapChange;
-import ServerLogic.Model.Game;
-import ServerLogic.Model.Player;
-import ServerLogic.Model.PlayerStatus;
+import ServerLogic.Model.*;
 import ServerLogic.Model.Server.ServerDice;
 import ServerLogic.Model.Server.ServerGame;
 import ServerLogic.Model.Server.ServerState;
@@ -180,17 +177,8 @@ public class ServerLogic implements IServerLogic {
 
         game.RemovePlayer(player);
 
-        if (game.Players.size()== 0)
-        {
-            _state.Lobby.RemoveGame(game);
-        }
-
-        if (game.Creator.ID == playerID && game.Players.size()!= 0)
-        {
-            _state.Lobby.RemoveGame(game);
-            game.Finish();
-            return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
-        }
+        if (game.CurrentGameStatus == GameStatus.Finished)
+            _state.RemoveGame(game);
 
         return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player);
     }
@@ -225,9 +213,8 @@ public class ServerLogic implements IServerLogic {
             return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, null);
         }
 
-        _state.Lobby.RemoveGame(game);
-        _state.Lobby.RemovePlayer(game.Players);
-        _state.ActiveGames.add(game);
+        _state.SetGameToActiveGame(game);
+
         game.Start();
 
         return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), game, game.GetMap());

@@ -169,6 +169,62 @@ public class ServerLogicTests extends TestCase {
         // ...
     }
 
+    public void testPlayerStartGameThenTheCreatorLeaves() throws Exception {
+
+        //Arrange
+        ServerLogic logic = new ServerLogic();
+
+        //Act
+        final Player player1 = logic.CreatePlayer(10, "Player1").NewPlayer;
+        Player player2 = logic.CreatePlayer(11, "Player2").NewPlayer;
+
+        logic.JoinLobby(player1.ID);
+        logic.JoinLobby(player2.ID);
+
+        Game game = logic.CreateGame(player1.ID, "Game1", 6).NewGame;
+        logic.JoinGame(player2.ID, game.ID);
+
+        logic.ChangeReadyStatus(player1.ID, true);
+        logic.ChangeReadyStatus(player2.ID, true);
+
+        List<MapChange> map = logic.StartGame(player1.ID).Map;
+
+        logic.LeaveGame(player1.ID);
+
+        //Assert
+        assertEquals(player1.PlayerStatus, PlayerStatus.Undefined);
+        assertEquals(player2.PlayerStatus, PlayerStatus.Undefined);
+        assertEquals(game.CurrentGameStatus, GameStatus.Finished);
+    }
+
+    public void testPlayerStartGameThenAnotherPlayerLeaves() throws Exception {
+
+        //Arrange
+        ServerLogic logic = new ServerLogic();
+
+        //Act
+        final Player player1 = logic.CreatePlayer(10, "Player1").NewPlayer;
+        Player player2 = logic.CreatePlayer(11, "Player2").NewPlayer;
+
+        logic.JoinLobby(player1.ID);
+        logic.JoinLobby(player2.ID);
+
+        Game game = logic.CreateGame(player1.ID, "Game1", 6).NewGame;
+        logic.JoinGame(player2.ID, game.ID);
+
+        logic.ChangeReadyStatus(player1.ID, true);
+        logic.ChangeReadyStatus(player2.ID, true);
+
+        List<MapChange> map = logic.StartGame(player1.ID).Map;
+
+        logic.LeaveGame(player2.ID);
+
+        //Assert
+        assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
+        assertEquals(player2.PlayerStatus, PlayerStatus.Undefined);
+        assertEquals(game.CurrentGameStatus, GameStatus.FirstRoundPlacing);
+    }
+
     private void CheckIfAllPlayerHaveOneCountry(List<MapChange> map, Player player1, Player player2) {
         boolean error = false;
         if (map.size() != 2)

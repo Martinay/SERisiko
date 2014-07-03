@@ -32,7 +32,7 @@ public class ServerGame extends Game {
 
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
-        Players.add(player);
+        AddPlayer(player);
         Creator = player;
         Name = name;
         ID = id;
@@ -77,6 +77,7 @@ public class ServerGame extends Game {
     public void AddPlayer(Player player) {
         Players.add(player);
         player.PlayerStatus = PlayerStatus.WaitingForGameStart;
+        player.Ready = false;
     }
 
     public void Start() {
@@ -158,6 +159,12 @@ public class ServerGame extends Game {
         CurrentGameStatus = GameStatus.Finished;
         CurrentPlayer = null;
         NumberOfUnitsToPlace = 0;
+        SetPlayerStatusToUndefined();
+    }
+
+    private void SetPlayerStatusToUndefined() {
+        for (Player player : Players)
+            player.PlayerStatus = PlayerStatus.Undefined;
     }
 
     public List<MapChange> GetMap() {
@@ -198,6 +205,11 @@ public class ServerGame extends Game {
     }
 
     public void RemovePlayer(Player player) {
+
+        if (Creator.ID == player.ID && (CurrentGameStatus == GameStatus.WaitingForPlayer || CurrentGameStatus == GameStatus.FirstRoundPlacing))
+            Finish();
+        else
+            player.PlayerStatus = PlayerStatus.Undefined;
 
         if (_spiel != null)
         {
