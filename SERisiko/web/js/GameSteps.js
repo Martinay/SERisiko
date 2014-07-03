@@ -28,25 +28,28 @@ function GameSteps(){
     this.doFirstUnitPlacement = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
+        Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);
         document.getElementById("gameStatus").innerHTML = "Warten auf die Mitspieler";
         Core.connectionHandler.sendPlaceFirstUnits(Core.unitPlacementHandler.getPlacementArray());
         Core.unitPlacementHandler.clearPlacementArray();
     };
     
     this.doUnitPlacement = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
+        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
+        Core.changeButton("gamePhase", "", "", "",  true);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
-        Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray());
-        Core.svgHandler.refreshOwnerRights();  
+        Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray()); 
+        //  After Answer
+        Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
+        Core.svgHandler.refreshOwnerRights(); 
+        Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
     };
 
     this.doAttackEnd = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
+        Core.changeButton("gamePhase", "", "", "",  true);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
         Core.connectionHandler.sendEndAttack();        
     };

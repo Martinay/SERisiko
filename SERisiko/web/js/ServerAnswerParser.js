@@ -58,6 +58,9 @@ function ServerAnswerParser(doc){
                 case "EndTurnMessage":
                     handleEndTurnMessage(message);
                     break;
+                case "EndUnitPlacementMesage":
+                    handleEndUnitPlacementMesage(message);
+                    break;
                 default:
                     //nothing
             } 
@@ -193,6 +196,7 @@ function ServerAnswerParser(doc){
                    Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
                    Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
                    document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
+                   Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
                } else {
                    Core.setPlayerStatus(Core.gameSteps.state.IDLE);
                    document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe";
@@ -262,7 +266,14 @@ function ServerAnswerParser(doc){
     
     var handleAttackEndedMessage = function(message){
         Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
         Core.svgHandler.refreshOwnerRights();
+    };
+    
+    var handleEndUnitPlacementMesage = function(message){
+        Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
+        Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
+        Core.svgHandler.refreshOwnerRights(); 
     };
     
     var handleEndTurnMessage = function(message){
