@@ -37,8 +37,6 @@ function GameSteps(){
     this.doUnitPlacement = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "", "", "",  true);
-        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
         Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray()); 
         //  After Answer
         Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
@@ -49,16 +47,12 @@ function GameSteps(){
     this.doAttackEnd = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "", "", "",  true);
-        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
         Core.connectionHandler.sendEndAttack();        
     };
     
     this.doUnitmovement = function(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
-        Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);
-        document.getElementById("gameStatus").innerHTML = "";
         Core.connectionHandler.sendEndRound();
     };
     
@@ -88,6 +82,9 @@ function GameSteps(){
         document.getElementById("loading_overlay").innerHTML = "";
         document.getElementById("loading_overlay").style.display = "none";
         
-        Core.svgHandler.setRectsOnClickNull();
+        Core.changeButton("gamePhase", "", "", "",  true);
+        document.getElementById("gameStatus").innerHTML = "";
+        
+        Core.svgHandler.setRectsOnClickNull();  
     };
 }

@@ -14,7 +14,7 @@ function SvgFunctions(document){
     var root = document;
     var i = 0;
     var counter = 0;
-    var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png"];
+    var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
     
     //# Public Methods
@@ -277,5 +277,6 @@ function SvgFunctions(document){
         for(var i = 0; i < players.length; i++){
             playerColorHREF['"' + players[i].getPlayerId() + '"'] = colorArr[i];
         }
+        playerColorHREF["undefined"] = colorArr[6];
     };
 }
