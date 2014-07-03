@@ -121,16 +121,14 @@ function ServerAnswerParser(doc){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
             if(message.data[0].Player.ready == true){
-                Core.changeButton("gamePhase", "Nicht Bereit", "function () { alert('Test');};" , false);
-                document.getElementById("gamePhase").onclick = function () { Core.connectionHandler.setPlayerState(false);};
+                Core.changeButton("gamePhase", "Nicht Bereit", "", "alert('Test');" , false);
                 root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler";
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = false;
                 }
             } else {
                 root.getElementById("gameStatus").innerHTML = "Bitte melden Sie sich Spielbereit";
-                Core.changeButton("gamePhase", "Bereit zum Spielen", "function () { Core.connectionHandler.setPlayerState(true);};", false);
-                document.getElementById("gamePhase").onclick = function () { Core.connectionHandler.setPlayerState(true);};
+                Core.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true)", false);
                 if(root.getElementById("startGameBtn") != null){
                     root.getElementById("startGameBtn").disabled = true;
                 }
@@ -164,8 +162,7 @@ function ServerAnswerParser(doc){
         Core.setPlayerStatus(Core.gameSteps.state.FIRSTUNITPLACEMENT);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> Platzieren Sie ihre Einheiten";
         root.getElementById("startGame").innerHTML = "";
-        Core.changeButton("gamePhase", "Alle Einheiten Platziert", "Core.gameSteps.doFirstUnitPlacement();",  true);
-        document.getElementById("gamePhase").onclick = function () { Core.gameSteps.doFirstUnitPlacement();};
+        Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doFirstUnitPlacement();",  true);
         root.getElementById("backToLobbyBtn").disabled = false;
         Core.svgHandler.initUnitOnMap();
         for (var i = 0; i < message.data.length; i++){
