@@ -95,7 +95,7 @@ function Core() {
         $("#gameStatus").html("Bitte melden Sie sich Spielbereit");
         
         
-        this.changeButton("gamePhase", "Bereit zum Spielen", "Core.connectionHandler.setPlayerState(true);", false);
+        this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
     };
     
     this.leaveCreateGame = function(){
@@ -215,9 +215,9 @@ function Core() {
         }
     };
     
-    this.changeButton = function(id, innerhtml, onclick, state){
+    this.changeButton = function(id, innerhtml, onclick_params, onclick_function, state){
         document.getElementById(id).innerHTML = innerhtml;
-        //document.getElementById(id).onclick = onclick;
+        document.getElementById(id).onclick = new Function (onclick_params, onclick_function);
         document.getElementById(id).disabled = state;
     };
     
