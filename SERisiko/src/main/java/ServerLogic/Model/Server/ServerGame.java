@@ -175,6 +175,17 @@ public class ServerGame extends Game {
                 .toList();
     }
 
+    public List<MapChange> GetMapChanges(List<ClientMapChange> clientMapChanges) {
+        return Linq4j.asEnumerable(clientMapChanges)
+                .select(new Function1<ClientMapChange, MapChange>() {
+                    @Override
+                    public MapChange apply(ClientMapChange mapChange) {
+                        return GetMapChange(mapChange.CountryId);
+                    }
+                })
+                .toList();
+    }
+
     public MapChange GetMapChange(String countryFromID) {
         return Linq4j.asEnumerable(GetMap())
                 .where(new Predicate1<MapChange>() {
@@ -269,7 +280,7 @@ public class ServerGame extends Game {
     }
 
     private Collection<Integer> ConvertToList(int[] ints) {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>(ints.length);
         for (int anInt : ints) {
             list.add(anInt);
         }

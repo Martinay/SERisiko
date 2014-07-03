@@ -67,19 +67,15 @@ public class MessageCreator {
 
     public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, MapChange countryFrom, MapChange countryTo) {
 
-        MapChangedMessage message = CreateMapChangedMessage(idsToUpdate, countryFrom);
-
-        message.MapChange.add(countryTo);
-
-        return message;
+        return CreateMapChangedMessage(idsToUpdate, Arrays.asList(countryFrom,countryTo));
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate,  MapChange country) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate,  List<MapChange> countries) {
         MapChangedMessage message = new MapChangedMessage();
 
 
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.MapChange = Arrays.asList(country);
+        message.MapChange = countries;
 
         return message;
     }

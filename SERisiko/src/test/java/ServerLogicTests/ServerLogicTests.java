@@ -6,11 +6,21 @@ import junit.framework.TestCase;
 import net.hydromatic.linq4j.Linq4j;
 import net.hydromatic.linq4j.function.Predicate1;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by m.ayasse on 30.06.2014.
+ *
+ *
+ * map.txt:
+ *
+ * HEAD:extraUnits=4;
+ * A1:A2;
+ * A2:A1;
+ * ;
+ *
  */
 public class ServerLogicTests extends TestCase {
     public void testWorkflow() throws Exception {
@@ -57,6 +67,7 @@ public class ServerLogicTests extends TestCase {
 
         //Act
         List<MapChange> map = logic.StartGame(player1.ID).Map;
+        CheckIfAllPlayerHaveOneCountry(map, player1, player2);
 
         //Assert
         assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
@@ -88,7 +99,7 @@ public class ServerLogicTests extends TestCase {
         mapChange1.CountryId = placeUnitsCurrentLand1ID;
         mapChange1.AddedUnits = game.NumberOfUnitsToPlace;
 
-        logic.PlaceUnits(currentPlayerPlaceUnits1.ID, mapChange1);
+        logic.PlaceUnits(currentPlayerPlaceUnits1.ID, Arrays.asList(mapChange1));
 
         //Assert
         assertEquals(player1.PlayerStatus, PlayerStatus.Playing);
@@ -100,7 +111,7 @@ public class ServerLogicTests extends TestCase {
         String LandIdAttackCurrent1 = GetLandIdOfPlayer(currentPlayerAttack1,map);
         String LandIdAttackOpponent1 = GetLandIdOfPlayer(GetOpponentOf(currentPlayerAttack1, player1, player2), map);
 
-        logic.Attack(currentPlayerAttack1.ID,LandIdAttackCurrent1,LandIdAttackOpponent1,game.NumberOfUnitsToPlace);
+        logic.Attack(currentPlayerAttack1.ID, LandIdAttackCurrent1, LandIdAttackOpponent1, game.NumberOfUnitsToPlace);
 
         //Assert
         assertEquals(currentPlayerAttack1.ID,currentPlayerPlaceUnits1.ID);
@@ -135,7 +146,7 @@ public class ServerLogicTests extends TestCase {
         ClientMapChange mapChange2 = new ClientMapChange();
         mapChange2.CountryId = GetLandIdOfPlayer(currentPlayerPlace2,map);
         mapChange2.AddedUnits = game.NumberOfUnitsToPlace;
-        logic.PlaceUnits(currentPlayerPlace2.ID, mapChange2);
+        logic.PlaceUnits(currentPlayerPlace2.ID, Arrays.asList(mapChange2));
 
         //Assert
         assertEquals(GetOpponentOf(currentPlayerMove1,player1,player2).ID, currentPlayerPlace2.ID);
@@ -156,6 +167,20 @@ public class ServerLogicTests extends TestCase {
 
 
         // ...
+    }
+
+    private void CheckIfAllPlayerHaveOneCountry(List<MapChange> map, Player player1, Player player2) {
+        boolean error = false;
+        if (map.size() != 2)
+            error = true;
+
+        if (map.get(0).OwnedByPlayerId == player1.ID && map.get(1).OwnedByPlayerId == player1.ID)
+            error = true;
+        if (map.get(0).OwnedByPlayerId == player2.ID && map.get(1).OwnedByPlayerId == player2.ID)
+            error = true;
+
+            if (error)
+                throw new RuntimeException("Need to restart test!");
     }
 
     private Player GetCurrentPlayer(int currentPlayerId, Player player1, Player player2) {
