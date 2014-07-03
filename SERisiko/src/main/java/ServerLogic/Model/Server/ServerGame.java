@@ -114,7 +114,18 @@ public class ServerGame extends Game {
         Client_Response gameResponse = InteractWithGameLogic(units, from, to, false);
         UpdateGameStatus(gameResponse);
 
-        return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
+        //workaround //TODO
+        int[] def = new int[2];
+        def[0] =(int) Math.random()*6;
+        def[1] = (int) Math.random()*6;
+
+        int[] att = new int[3];
+        att[0] = (int) Math.random()*6;
+        att[1] = (int) Math.random()*6;
+        att[2] = (int) Math.random()*6;
+
+        return MapToServerDice(def, att);
+        //return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
     }
 
     public void EndAttack() {
