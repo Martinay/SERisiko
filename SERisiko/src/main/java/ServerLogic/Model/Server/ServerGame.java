@@ -160,7 +160,7 @@ public class ServerGame extends Game {
     public void EndTurn() {
 
         Client_Response gameResponse = InteractWithGameLogic(1, null, null, true);
-        while (gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() != Spielzustaende.Beenden)
+        while (!(gameResponse.gib_aktuellen_Zustand() == Spielzustaende.Armeen_hinzufuegen || gameResponse.gib_aktuellen_Zustand() == Spielzustaende.Beenden))
             gameResponse = InteractWithGameLogic(1, null, null, true);
 
         UpdateGameStatus(gameResponse);

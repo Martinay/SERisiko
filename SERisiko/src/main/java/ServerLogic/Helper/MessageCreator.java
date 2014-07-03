@@ -99,7 +99,7 @@ public class MessageCreator {
         AttackMessage message = new AttackMessage();
 
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.MapChange = Arrays.asList(countryFromID);
+        message.MapChange.add(countryFromID);
         message.MapChange.add(countryToID);
 
         if (dice.HasDice()) {
