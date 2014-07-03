@@ -72,8 +72,8 @@ function Connection(){
     };
     
     this.sendPlaceFirstUnits = function(PlaceUnitArray){
-        connection.endFirstUnitPlacement(JSON.parse(PlaceUnitArray));
         Core.unitPlacementHandler.changefirstRound();
+        connection.endFirstUnitPlacement(JSON.parse(PlaceUnitArray));
     };
     
     this.sendUnitMove = function(source, target, value){

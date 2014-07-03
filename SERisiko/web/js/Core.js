@@ -217,7 +217,7 @@ function Core() {
     
     this.changeButton = function(id, innerhtml, onclick, state){
         document.getElementById(id).innerHTML = innerhtml;
-        document.getElementById(id).onclick = function() { onclick };
+        //document.getElementById(id).onclick = onclick;
         document.getElementById(id).disabled = state;
     };
     

@@ -15,6 +15,10 @@ function UnitPlacement(document){
         svgDoc = svgElement;
     };
     
+    this.clearPlacementArray = function(){
+        placeUnit = {};
+    };
+    
     this.changefirstRound = function(){
         this.firstRound = false;
     };

@@ -29,14 +29,17 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.changeButton("gamePhase", "Alle Einheiten Platziert", "Core.gameSteps.doUnitPlacement();",  true);
-        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
+        document.getElementById("gamePhase").onclick = function () { Core.gameSteps.doUnitPlacement();};
+        document.getElementById("gameStatus").innerHTML = "Warten auf die Mitspieler";
         Core.connectionHandler.sendPlaceFirstUnits(Core.unitPlacementHandler.getPlacementArray());
+        Core.unitPlacementHandler.clearPlacementArray();
     };
     
     this.doUnitPlacement = function(){
         Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
         clearDisplay();
         Core.changeButton("gamePhase", "Angriffphase Beenden", "Core.gameSteps.doAttackEnd();",  false);
+        document.getElementById("gamePhase").onclick = function () { Core.gameSteps.doAttackEnd();};
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
         Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray());
         // After Answer
@@ -47,6 +50,7 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
         clearDisplay();
         Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "Core.gameSteps.doUnitmovement();",  false);
+        document.getElementById("gamePhase").onclick = function () { Core.gameSteps.doUnitmovement();};
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
         Core.connectionHandler.s
         // After Answer
@@ -57,6 +61,7 @@ function GameSteps(){
         Core.setPlayerStatus(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.changeButton("gamePhase", "Alle Einheiten Platziert", "Core.gameSteps.doUnitPlacement();",  true);
+        document.getElementById("gamePhase").onclick = function () { Core.gameSteps.doUnitPlacement();};
         document.getElementById("gameStatus").innerHTML = "Spieler <div id='playerInAction'></div> ist an der Reihe";
         Core.connectionHandler.sendEndRound();
         // After Answer
