@@ -194,14 +194,15 @@ public class ServerGame extends Game {
     }
 
     public MapChange GetMapChange(String countryFromID) {
-        return Linq4j.asEnumerable(GetMap())
+        Enumerable<MapChange> a =  Linq4j.asEnumerable(GetMap());
+        List<MapChange> b = a
                 .where(new Predicate1<MapChange>() {
                     @Override
                     public boolean apply(MapChange mapChange) {
-                        return mapChange.CountryID == countryFromID;
+                        return mapChange.CountryID.equals(countryFromID);
                     }
-                })
-                .first();
+                }).toList();
+               return b.get(0);
     }
 
     public void RemovePlayer(Player player) {
