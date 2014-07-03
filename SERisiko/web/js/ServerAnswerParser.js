@@ -263,6 +263,9 @@ function ServerAnswerParser(doc){
                     Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
                     attackstate = false;
                 }
+                if(i == 0){
+                    Core.svgHandler.refreshOwnerRights();
+                }
             }
             if(message.data[i].Dice){
                 if(message.data[i].Dice.type == "Attacker"){
@@ -281,7 +284,7 @@ function ServerAnswerParser(doc){
     };
     
     var handleAttackEndedMessage = function(message){
-        if(message.data[0].ServerGame){
+        if(message.data[0] != null && message.data[0].ServerGame ){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
                 Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
                 Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
@@ -293,10 +296,15 @@ function ServerAnswerParser(doc){
                 Core.gameSteps.clearMap();
             }
         }
+        //Bis GameObjekt kommt:
+        Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
+        document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
+        Core.svgHandler.refreshOwnerRights(); 
     };
     
     var handleEndUnitPlacementMessage = function(message){
-        if(message.data[0].ServerGame){
+        if(message.data[0] != null && message.data[0].ServerGame){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
                 Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
                 Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
@@ -311,7 +319,7 @@ function ServerAnswerParser(doc){
     };
     
     var handleEndTurnMessage = function(message){
-        if(message.data[0].ServerGame){
+        if(message.data[0] != null && message.data[0].ServerGame){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
                 Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[0].ServerGame.numberOfUnitsToPlace));

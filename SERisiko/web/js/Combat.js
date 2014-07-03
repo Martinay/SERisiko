@@ -36,7 +36,7 @@ function Combat(document){
             <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
             <button name='abortAttack' onClick='Core.combatHandler.abortAttack();'>Angriff Abbrechen</button>\
             <button name='setUnitAmount' onClick='Core.combatHandler.showAttack(\""+attacker+"\",\""+defender+"\", 0);' style='margin-left: 100px;'>Angriff Starten</button>";
-        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, parseInt(svgDoc.getElementById(attacker).getAttribute("Unitcount")));
+        Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, (parseInt(svgDoc.getElementById(attacker).getAttribute("Unitcount"))-1));
     };
     
     this.showAttack = function (attackId, defendId, difference){
