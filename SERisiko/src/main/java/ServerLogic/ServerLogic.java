@@ -78,7 +78,7 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.EndTurn();
 
-        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), null);
+        return MessageCreator.CreateEndTurnMessage(game.GetPlayerIds(), game);
     }
 
     @Override
@@ -144,9 +144,10 @@ public class ServerLogic implements IServerLogic {
     @Override
     public NewPlayerJoinedGameMessage JoinGame(int playerID, int gameId) {
         Player player = _state.GetPlayer(playerID);
+
         if (player.PlayerStatus != PlayerStatus.InLobby)
         {
-            Logger.Write("Spieler bereits in einem Spiel. PlayerId:" + playerID + "gameID: " + gameId);
+            Logger.Write("Spieler bereits in einem Spiel und nicht in der Lobby. PlayerId:" + playerID + "gameID: " + gameId);
             return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
         }
 
