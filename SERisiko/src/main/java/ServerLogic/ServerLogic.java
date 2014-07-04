@@ -46,13 +46,15 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         ServerDice dices = game.Attack(countryFromID, countryToID, units);
 
-        return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID), dices);
+        return MessageCreator.CreateAttackMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID), dices, game);
     }
 
     @Override
-    public void EndAttack(int playerID) {
+    public EndAttackMessage EndAttack(int playerID) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.EndAttack();
+
+        return MessageCreator.CreateEndAttackMessage(game.GetPlayerIds(), game);
     }
 
     @Override
@@ -60,17 +62,17 @@ public class ServerLogic implements IServerLogic {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
         game.Move(countryFromID, countryToID, units);
 
-        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID));
+        return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChange(countryFromID), game.GetMapChange(countryToID), game);
     }
 
     @Override
-    public MapChangedMessage PlaceUnits(int playerID, List<ClientMapChange> clientMapChanges) {
+    public EndUnitPlacementMessage PlaceUnits(int playerID, List<ClientMapChange> clientMapChanges) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
 
         for (ClientMapChange mapChange : clientMapChanges)
             game.PlaceUnits(mapChange.CountryId, mapChange.AddedUnits);
 
-       return MessageCreator.CreateMapChangedMessage(game.GetPlayerIds(), game.GetMapChanges(clientMapChanges));
+       return MessageCreator.CreateEndUnitPlacementMessage(game.GetPlayerIds(), game.GetMapChanges(clientMapChanges), game);
     }
 
     @Override

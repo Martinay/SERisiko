@@ -66,17 +66,18 @@ public class MessageCreator {
         return message;
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, MapChange countryFrom, MapChange countryTo) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate, MapChange countryFrom, MapChange countryTo, Game game) {
 
-        return CreateMapChangedMessage(idsToUpdate, Arrays.asList(countryFrom,countryTo));
+        return CreateMapChangedMessage(idsToUpdate, Arrays.asList(countryFrom,countryTo), game);
     }
 
-    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate,  List<MapChange> countries) {
+    public static MapChangedMessage CreateMapChangedMessage(List<Integer> idsToUpdate,  List<MapChange> countries, Game game) {
         MapChangedMessage message = new MapChangedMessage();
 
 
         message.PlayerIDsToUpdate = idsToUpdate;
         message.MapChange = countries;
+        message.Game = game;
 
         return message;
     }
@@ -96,12 +97,13 @@ public class MessageCreator {
         return message;
     }
 
-    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, MapChange countryFromID, MapChange countryToID, ServerDice dice) {
+    public static AttackMessage CreateAttackMessage(List<Integer> idsToUpdate, MapChange countryFromID, MapChange countryToID, ServerDice dice, Game game) {
         AttackMessage message = new AttackMessage();
 
         message.PlayerIDsToUpdate = idsToUpdate;
         message.MapChange.add(countryFromID);
         message.MapChange.add(countryToID);
+        message.Game = game;
 
         if (dice.HasDice()) {
             message.DiceAttacker = dice.Attacker;
@@ -122,4 +124,22 @@ public class MessageCreator {
         return message;
     }
 
+    public static EndAttackMessage CreateEndAttackMessage(List<Integer> idsToUpdate, Game game) {
+        EndAttackMessage message = new EndAttackMessage();
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.Game = game;
+
+        return message;
+    }
+
+    public static EndUnitPlacementMessage CreateEndUnitPlacementMessage(List<Integer> idsToUpdate, List<MapChange> mapChanges, Game game) {
+
+        EndUnitPlacementMessage message = new EndUnitPlacementMessage();
+
+        message.PlayerIDsToUpdate = idsToUpdate;
+        message.MapChange = mapChanges;
+        message.Game = game;
+
+        return message;
+    }
 }
