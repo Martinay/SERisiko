@@ -124,7 +124,7 @@ public class ServerGame extends Game {
         att[1] = (int) (Math.random()*5) + 1;
         att[2] = (int) (Math.random()*5) + 1;
 
-        return MapToServerDice(def, att);
+        return MapToServerDice(att, def);
         //return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
     }
 
