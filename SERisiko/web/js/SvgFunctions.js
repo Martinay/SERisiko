@@ -28,7 +28,7 @@ function SvgFunctions(document){
         neighborLands = theRect.getAttribute("neighbor").split(",");
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
-        if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
+        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
                 if(theRect.getAttribute("Owner") !=  Core.getPlayerId()){
@@ -77,7 +77,7 @@ function SvgFunctions(document){
         theRect.setAttribute('opacity','0.5');
         var theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.5');
-        if(Core.getPlayerStatus() == Core.gameSteps.state.ATTACK){
+        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
             for (var i = 0; i < neighborLands.length; i++) {
                 if(id != neighborLands[i]){
                     theRect = svgDoc.getElementById(neighborLands[i] + "_back");
@@ -133,25 +133,29 @@ function SvgFunctions(document){
     }
     
     this.refreshOwnerRights = function (){
-        var rects = svgDoc.getElementsByTagName("rect");
-        [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") == Core.getPlayerId()){
-                rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
-                rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
-                rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
-            }
-        });        
+        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() == Core.gameSteps.state.UNITMOVEMENT){
+            var rects = svgDoc.getElementsByTagName("rect");
+            [].slice.call(rects).forEach(function(rect){
+                if(rect.getAttribute("Owner") == Core.getPlayerId() && rect.getAttribute("Unitcount") > 2){
+                    rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
+                    rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
+                    rect.onclick = new Function("Core.svgHandler.identifyAttacker(this.id);");
+                }
+            });
+        }
     };
     
     this.refreshOwnerRightsForUnitPlace = function (value){
-        var rects = svgDoc.getElementsByTagName("rect");
-        [].slice.call(rects).forEach(function(rect){
-            if(rect.getAttribute("Owner") == Core.getPlayerId()){
-                rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
-                rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
-                rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
-            }
-        });        
+        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() == Core.gameSteps.state.FIRSTUNITPLACEMENT){
+            var rects = svgDoc.getElementsByTagName("rect");
+            [].slice.call(rects).forEach(function(rect){
+                if(rect.getAttribute("Owner") == Core.getPlayerId()){
+                    rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
+                    rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
+                    rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
+                }
+            });
+        }
     };
     
     this.setOpacityOnRect = function (id, opacity, cursor){
@@ -166,7 +170,7 @@ function SvgFunctions(document){
             var canvas = root.getElementById('canvas_' + id);
             var img = new Image();
             img.onload = function(){
-                if(canvas.getContext){
+                if(canvas != null && canvas.getContext){
                     var context = canvas.getContext('2d');
                     context.beginPath();    
                     context.rect(0, 0, 150, 150);    
@@ -183,7 +187,7 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            if(root.getElementById("startAttack") != null){
+            if(root.getElementById("startAttack") != null && Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
                 root.getElementById("startAttack").disabled = false;
             }
             drawDigitOnCanvas(id);

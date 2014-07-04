@@ -26,7 +26,7 @@ function GameSteps(){
     };
     
     this.doFirstUnitPlacement = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+        this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);
         document.getElementById("gameStatus").innerHTML = "Warten auf die Mitspieler";
@@ -35,23 +35,23 @@ function GameSteps(){
     };
     
     this.doUnitPlacement = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+        this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray()); 
         //  After Answer
-        Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
+        this.setGameStep(Core.gameSteps.state.ATTACK);
         Core.svgHandler.refreshOwnerRights(); 
         Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
     };
 
     this.doAttackEnd = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+        this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.connectionHandler.sendEndAttack();        
     };
     
     this.doUnitmovement = function(){
-        Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+        this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.connectionHandler.sendEndRound();
     };

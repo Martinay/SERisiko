@@ -40,27 +40,27 @@ function Core() {
     this.getPlayerName = function(){
         return myData.getPlayerName();
     };
-    this.setPlayerStatus = function(status){
-        myData.setPlayerStatus(status);
-    };
-    this.getPlayerStatus = function(){
-        return myData.getPlayerStatus();
-    };
+   
     this.setPlayerId = function(id){
         myData.setPlayerId(id);
     };
+    
     this.getPlayerId = function(){
         return myData.getPlayerId();
     };
+    
     this.setInGameLobby = function(arg){
         myData.setInGameLobby(arg);
     };
+    
     this.isInGameLobby = function(){
         return myData.isInGameLobby();
     };
+    
     this.setGameRunning = function(arg){
         gameRunning = arg;
     };
+    
     this.isGameRunning = function(){
         return gameRunning;
     };

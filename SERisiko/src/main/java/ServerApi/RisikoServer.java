@@ -137,10 +137,15 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.addTargetClient(clientId);
         
         //order is important !!!  (*mapchanges followed by game)
+       
         List<MapChange> changedMaps = message.Map;
-        for(int i = 0; i< changedMaps.size(); i++) {
-            response.addChangedObject( changedMaps.get(i) );
+        if(message.Map != null){
+            for(int i = 0; i< changedMaps.size(); i++) {
+                response.addChangedObject( changedMaps.get(i) );
+            }
         }
+        
+        response.addChangedObject( message.Player );
         
         response.addChangedObject( message.Game );
 

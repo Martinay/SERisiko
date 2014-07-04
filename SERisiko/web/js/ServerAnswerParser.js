@@ -173,6 +173,9 @@ function ServerAnswerParser(doc){
             }
             if(message.data[i].Player){
                 Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
+                if(message.data[i].Player.id == Core.getPlayerId()){
+                    Core.connectionHandler.joinLobby();
+                }
             }
         }
         Core.updatePlayerList();
@@ -192,12 +195,12 @@ function ServerAnswerParser(doc){
     
     var handleGameStartedMessage = function(message){
         Core.setGameRunning(true);
-        Core.setPlayerStatus(Core.gameSteps.state.FIRSTUNITPLACEMENT);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> Platzieren Sie ihre Einheiten";
         root.getElementById("startGame").innerHTML = "";
         Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doFirstUnitPlacement();",  true);
         root.getElementById("backToLobbyBtn").disabled = false;
         Core.svgHandler.initUnitOnMap();
+        Core.gameSteps.setGameStep(Core.gameSteps.state.FIRSTUNITPLACEMENT);
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame){
                  Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
@@ -211,12 +214,12 @@ function ServerAnswerParser(doc){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame){
                if(message.data[i].ServerGame.currentPlayerId == Core.getPlayerId()){
-                   Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
+                   Core.gameSteps.setGameStep(Core.gameSteps.state.UNITPLACEMENT);
                    Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
                    document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
                    Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[i].ServerGame.numberOfUnitsToPlace));
                } else {
-                   Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                   Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
                    document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe<br> Phase: Einheiten Setzen";
                }
             } else {
@@ -242,9 +245,12 @@ function ServerAnswerParser(doc){
     };
     
     var handleAttackMessage = function(message){
-        var defeat = false;
+        var defeater = false;
+        var attacker = false;
         var lands = new Array();
-        var attackstate = true;
+        var looseUnitCounts = new Array();
+        var defeatstate = true;
+        var attackstate = null;
         var attackDiceCount = 1;
         var defeatDiceCount = 1;
         Core.combatHandler.deleteDices();
@@ -252,19 +258,25 @@ function ServerAnswerParser(doc){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].MapChange){
                 lands[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
-                if(i == 1){
-                    if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == Core.getPlayerId()){
-                        defeat = true;
+                looseUnitCounts[i] = parseInt(lands[i]) - parseInt(message.data[i].MapChange.unitCount);
+                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == Core.getPlayerId()){
+                    if(i == 0){
+                        attacker = true;
+                    } else if(i == 1){
+                        defeater = true;
                     }
                 }
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
                     Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    if(i == 0 && message.data[i].MapChange.unitCount == 1){
+                       attackstate = false; 
+                    }
                 } else {
+                    looseUnitCounts[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
                     Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
-                    attackstate = false;
-                }
-                if(i == 0){
-                    Core.svgHandler.refreshOwnerRights();
+                    looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[i].MapChange.unitCount) + 1);
+                    defeatstate = false;
+                    attackstate = true;
                 }
             }
             if(message.data[i].Dice){
@@ -278,26 +290,33 @@ function ServerAnswerParser(doc){
                 }
             }
         } 
-        if(defeat == true){
-            Core.combatHandler.showDefeat(lands[0], lands[1], attackstate);
+        if(attacker == true){
+            Core.combatHandler.editUnitCount(looseUnitCounts[0], looseUnitCounts[1]);
+            Core.svgHandler.refreshOwnerRights();
+            if(attackstate != null){
+                setTimeout(function(){ Core.combatHandler.showAttackResult(attackstate);}, 4000);
+            }
+        } else if(defeater == true){
+            Core.combatHandler.showDefeat(lands[0], lands[1], defeatstate);
+            Core.combatHandler.editUnitCount(looseUnitCounts[0], looseUnitCounts[1]);
         }
     };
     
     var handleAttackEndedMessage = function(message){
         if(message.data[0] != null && message.data[0].ServerGame ){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
-                Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.UNITMOVEMENT);
                 Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
                 document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
                 Core.svgHandler.refreshOwnerRights(); 
             } else {
-                Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
                 document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe<br> Phase: Einheiten verlegen";
                 Core.gameSteps.clearMap();
             }
         }
         //Bis GameObjekt kommt:
-        Core.setPlayerStatus(Core.gameSteps.state.UNITMOVEMENT);
+        Core.gameSteps.setGameStep(Core.gameSteps.state.UNITMOVEMENT);
         Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
         document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> Verlegen Sie ihre Einheiten";
         Core.svgHandler.refreshOwnerRights(); 
@@ -306,12 +325,12 @@ function ServerAnswerParser(doc){
     var handleEndUnitPlacementMessage = function(message){
         if(message.data[0] != null && message.data[0].ServerGame){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
-                Core.setPlayerStatus(Core.gameSteps.state.ATTACK);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.ATTACK);
                 Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
                 document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> Erobern Sie neue Länder";
                 Core.svgHandler.refreshOwnerRights(); 
             } else {
-                Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
                 document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe<br> Phase: Länder Erobern";
                 Core.gameSteps.clearMap();
             }
@@ -321,12 +340,12 @@ function ServerAnswerParser(doc){
     var handleEndTurnMessage = function(message){
         if(message.data[0] != null && message.data[0].ServerGame){
             if(message.data[0].ServerGame.currentPlayerId == Core.getPlayerId()){
-                Core.setPlayerStatus(Core.gameSteps.state.UNITPLACEMENT);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.UNITPLACEMENT);
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(message.data[0].ServerGame.numberOfUnitsToPlace));
                 document.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> Platzieren Sie ihre Einheiten";
                 Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  false);
             } else {
-                Core.setPlayerStatus(Core.gameSteps.state.IDLE);
+                Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
                 document.getElementById("gameStatus").innerHTML = "Spieler " + Core.playerList.getPlayerById(parseInt(message.data[i].ServerGame.currentPlayerId)).getPlayerName() + " ist an der Reihe<br> Phase: Einheiten setzen";
                 Core.gameSteps.clearMap();
                 Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);

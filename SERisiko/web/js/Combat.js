@@ -108,11 +108,12 @@ function Combat(document){
     this.showAttackResult = function (arg){
         if(arg == true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endAttack()'>Angriff Beenden</button>";
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
         } else {
             root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
                                                                 <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beende</button>";
         }
+        setTimeout(function(){ Core.combatHandler.abortAttack();}, 2000);
     };
     
     this.abortAttack = function (){
@@ -127,6 +128,19 @@ function Combat(document){
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
+    };
+    
+    this.editUnitCount = function(looseUnitsAtt, looseUnitsDef){
+        if(looseUnitsAtt > 0){
+            var unitAtt = parseInt(document.getElementById("CountAttackerAnz").innerHTML ) - parseInt(looseUnitsAtt);
+            var attString = document.getElementById("CountAttackerAnz").innerHTML + "<br>- " + looseUnitsAtt + "<br>Rest Einheiten: <br>" + unitAtt;
+            setTimeout(function(){ document.getElementById("CountDefenderAnz").innerHTML = attString}, 420);
+        }  
+        if(looseUnitsDef > 0){
+            var unitDef = parseInt(document.getElementById("CountDefenderAnz").innerHTML ) - parseInt(looseUnitsAtt);
+            var defString = document.getElementById("CountDefenderAnz").innerHTML + "<br>- " + looseUnitsDef + "<br>Rest Einheiten: <br>" + unitDef;
+            setTimeout(function(){ document.getElementById("CountDefenderAnz").innerHTML = defString}, 420);
+        }      
     };
     
     this.showDefeat = function (countAttack, countDefend, attackState){
@@ -173,7 +187,6 @@ function Combat(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.showDefeatResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                      
                 setTimeout(function(){ Core.combatHandler.showDefeatResult(attackState);}, 7500);
     };
     
