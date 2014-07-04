@@ -34,7 +34,7 @@ function Combat(document){
             <label for='unitAmountAttack'> <div style='color: green;'> Sie greifen an, von " + attacker + " nach " + defender  + " </div><br />\
                                                                         Bitte wählen Sie, mit wie vielen Einheiten Sie Angreifen möchten:</label>\
             <select value='1' name='unitAmountAttack' id='unitAmountAttack' style='margin-bottom: 20px; margin-left: 60px;'></select><br>\
-            <button name='abortAttack' onClick='Core.combatHandler.abortAttack();'>Angriff Abbrechen</button>\
+            <button name='abortAttack' onClick='Core.combatHandler.abortAttack();'>Auswahl aufheben</button>\
             <button name='setUnitAmount' onClick='Core.combatHandler.showAttack(\""+attacker+"\",\""+defender+"\", 0);' style='margin-left: 100px;'>Angriff Starten</button>";
         Core.createSlider("unitAmountAttack", "unitAmountAttack", 1, (parseInt(svgDoc.getElementById(attacker).getAttribute("Unitcount"))-1));
     };
@@ -100,7 +100,6 @@ function Combat(document){
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;
-                
             }
         }
     };
@@ -108,10 +107,10 @@ function Combat(document){
     this.showAttackResult = function (arg){
         if(arg == true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beenden</button>";
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Schließen</button>";
         } else {
-            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Angriff Beende</button>";
+            root.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Schließen</button>";
         }
         setTimeout(function(){ Core.combatHandler.abortAttack();}, 2000);
     };
@@ -133,13 +132,13 @@ function Combat(document){
     this.editUnitCount = function(looseUnitsAtt, looseUnitsDef){
         if(looseUnitsAtt > 0){
             var unitAtt = parseInt(document.getElementById("CountAttackerAnz").innerHTML ) - parseInt(looseUnitsAtt);
-            var attString = document.getElementById("CountAttackerAnz").innerHTML + "<br>- " + looseUnitsAtt + "<br>Rest Einheiten: <br>" + unitAtt;
-            setTimeout(function(){ document.getElementById("CountDefenderAnz").innerHTML = attString}, 420);
+            var attString = document.getElementById("CountAttackerAnz").innerHTML + "<br>Verloren: " + looseUnitsAtt + "<br>Rest Einheiten: " + unitAtt;
+            setTimeout(function(){ document.getElementById("CountAttackerAnz").innerHTML = attString}, 1500);
         }  
         if(looseUnitsDef > 0){
-            var unitDef = parseInt(document.getElementById("CountDefenderAnz").innerHTML ) - parseInt(looseUnitsAtt);
-            var defString = document.getElementById("CountDefenderAnz").innerHTML + "<br>- " + looseUnitsDef + "<br>Rest Einheiten: <br>" + unitDef;
-            setTimeout(function(){ document.getElementById("CountDefenderAnz").innerHTML = defString}, 420);
+            var unitDef = parseInt(document.getElementById("CountDefenderAnz").innerHTML ) - parseInt(looseUnitsDef);
+            var defString = document.getElementById("CountDefenderAnz").innerHTML + "<br>Verloren: " + looseUnitsDef + "<br>Rest Einheiten: " + unitDef;
+            setTimeout(function(){ document.getElementById("CountDefenderAnz").innerHTML = defString}, 1500);
         }      
     };
     
@@ -187,18 +186,18 @@ function Combat(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.combatHandler.showDefeatResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                setTimeout(function(){ Core.combatHandler.showDefeatResult(attackState);}, 7500);
+                setTimeout(function(){ Core.combatHandler.showDefeatResult(attackState);}, 8500);
     };
     
     this.showDefeatResult = function(arg){
         if(arg == true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endDefeat()'>Anzeige Schließen</button>";
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Schließen</button>";
         } else {
-            root.getElementById("loading_overlay").innerHTML = "<span style='color:green;'>Sie haben verloren!</span>\n\
-                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.endDefeat()'>Anzeige Schließen</button>";
+            root.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
+                                                                <button style='margin-top: 20px;' name='abortAttack' onClick='Core.combatHandler.abortAttack()'>Anzeige Schließen</button>";
         }
-        setTimeout(function(){ Core.combatHandler.endDefeat();}, 300);
+        setTimeout(function(){ Core.combatHandler.endDefeat();}, 2000);
     };
     
     this.endDefeat = function(){

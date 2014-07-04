@@ -378,6 +378,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         response.addChangedObject( message.Game );
         
         
@@ -420,7 +421,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
+        response.addChangedObject( message.Player );
         if(message.Game != null){
             response.addChangedObject(message.Game);
         }

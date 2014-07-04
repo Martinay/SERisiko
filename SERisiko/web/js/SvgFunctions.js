@@ -40,7 +40,7 @@ function SvgFunctions(document){
             }
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
-                    <button name='abortAttack' onClick='Core.combatHandler.abortAttack2();' style='margin: 22px 398px;'>Attack Abbrechen</button>";
+                    <button name='abortAttack' onClick='Core.combatHandler.abortAttack2();' style='margin: 22px 398px;'>Auswahl aufheben</button>";
         } else {
             var newNeighorLands = null;
             var doneCountrys = new Array();
@@ -67,7 +67,7 @@ function SvgFunctions(document){
             }
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
-                    <button name='abortUnitMove' onClick='Core.unitMoveHandler.abortUnitMove();' style='margin: 22px 398px;'>Unitmove Abbrechen</button>";
+                    <button name='abortUnitMove' onClick='Core.unitMoveHandler.abortUnitMove();' style='margin: 22px 398px;'>Auswahl aufheben</button>";
         }
     };
     

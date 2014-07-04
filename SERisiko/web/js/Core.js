@@ -203,14 +203,27 @@ function Core() {
     };
     
     this.updatePlayerList = function(){
-        var rdy = '<img id="Ready" src="img/ready.png" width="15" align="right"/>';
-        var notRdy = '<img id="NoReady" src="img/not_ready.png" width="15" align="right"/>';
+        var rdy = "img/ready.png";
+        var notRdy = "img/not_ready.png";
         $("#playerList").html("");
         
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
              if(players[i] != null){
-                $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? rdy : notRdy) + "<br>");
+                $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
+            }
+        }
+    };
+    
+    this.changePlayerListPic = function(CurrentPlayerId){
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+            if(players[i] != null){
+                if(players[i].getPlayerId() == CurrentPlayerId){
+                    $("#" + players[i].getPlayerId()).attr("src", "img/play.png");
+                } else {
+                    $("#" + players[i].getPlayerId()).attr("src", "img/not_play.png");
+                } 
             }
         }
     };
