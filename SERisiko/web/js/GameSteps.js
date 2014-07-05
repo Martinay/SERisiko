@@ -5,7 +5,7 @@
  * @author Alexander Santana Losada
  */
     
-function GameSteps(){
+function GameSteps(document){
     //#Public Vars
     this.state = {
         IDLE: 0,
@@ -19,12 +19,9 @@ function GameSteps(){
     
     //#Private Vars
     var gameStep = this.state.IDLE;
+    var root = document;
     
     //# Public Methods
-    this.doIdle = function(){
-        clearDisplay();
-    };
-    
     this.doFirstUnitPlacement = function(){
         this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
@@ -38,15 +35,12 @@ function GameSteps(){
         this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.connectionHandler.sendUnitPlace(Core.unitPlacementHandler.getPlacementArray()); 
-        //  After Answer
-        this.setGameStep(Core.gameSteps.state.ATTACK);
-        Core.svgHandler.refreshOwnerRights(); 
-        Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
     };
 
     this.doAttackEnd = function(){
         this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
+        Core.connectionHandler.listPlayers();
         Core.connectionHandler.sendEndAttack();        
     };
     
@@ -72,6 +66,42 @@ function GameSteps(){
         clearDisplay();
     };
     
+    this.handleCurrentGameStatus = function(currentGameStatus, arg, status){
+        switch(currentGameStatus){
+            case "FirstRoundPlacing":
+                Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(arg));
+                break;
+            case "PlacingUnits":
+                Core.gameSteps.setGameStep(Core.gameSteps.state.UNITPLACEMENT);
+                Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
+                root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
+                Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(arg));
+                break;
+            case "Attack":
+                Core.gameSteps.setGameStep(Core.gameSteps.state.ATTACK);
+                Core.changeButton("gamePhase", "Angriffphase Beenden", "", "Core.gameSteps.doAttackEnd();",  false);
+                root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Angriffsphase:<br> <span style='color: red;'>Erobern Sie neue Länder</span>";
+                Core.svgHandler.refreshOwnerRights(); 
+                break;
+            case "Move":
+                Core.gameSteps.setGameStep(Core.gameSteps.state.UNITMOVEMENT);
+                Core.changeButton("gamePhase", "Einheiten Verlegung Beenden", "", "Core.gameSteps.doUnitmovement();",  false);
+                root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Verlegungsphase:<br> <span style='color: red;'>Verlegen Sie ihre Einheiten</span>";
+                Core.svgHandler.refreshOwnerRights();
+                break;
+            case "Finished":
+                Core.showEndOfGame();
+                break;
+            case "Idle":
+                clearDisplay();
+                Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
+                root.getElementById("gameStatus").innerHTML = "Aktiver Spieler: <span style='color: red;'>" + Core.playerList.getPlayerById(parseInt(arg)).getPlayerName() + "</span><br> Phase: <span style='color: blue;'> Phase: " + status + "</span>";
+                break;    
+            default:
+                    //nothing
+        } 
+    };
+    
     //Private Methods
     
     var clearDisplay = function(){
@@ -82,7 +112,7 @@ function GameSteps(){
         document.getElementById("loading_overlay").innerHTML = "";
         document.getElementById("loading_overlay").style.display = "none";
         
-        Core.changeButton("gamePhase", "", "", "",  true);
+        Core.changeButton("gamePhase", "Nicht Am Zug", "", "",  true);
         document.getElementById("gameStatus").innerHTML = "";
         
         Core.svgHandler.setRectsOnClickNull();  

@@ -6,23 +6,18 @@
 
 function UnitMove(document){
     var root = document;
-    var svgDoc = null;
-    
-    this.init = function(svgElement){
-        svgDoc = svgElement;
-    };
     
     this.selectCountMoveUnits = function(source, destination){
         Core.showElement(root.getElementById("mutex"));
-        if(parseInt(svgDoc.getElementById(source).getAttribute("Unitcount")) != 1){
+        if(parseInt(Core.svgHandler.getLandUnitcount(source)) != 1){
             root.getElementById("bottom_overlay").innerHTML = "\
                             <label for='unitAmount'>Anzahl Einheiten von: " + source + " nach: " + destination + "</label> \
                             <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                            <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.abortUnitMove()' style='margin-left: 460px;'>Abbrechen</Button>\
+                            <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.clearUnitMoveDisplay()' style='margin-left: 460px;'>Abbrechen</Button>\
                             <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitMoveHandler.moveUnits(\""+source+"\",\""+destination+"\")' style='margin-left: 20px;'>OK</button>";
-            Core.createSlider("unitAmount", "insertSliderAfter", 1, (parseInt(svgDoc.getElementById(source).getAttribute("Unitcount")) - 1));
+            Core.createSlider("unitAmount", "insertSliderAfter", 1, (parseInt(Core.svgHandler.getLandUnitcount(source)) - 1));
         } else {
-            this.abortUnitMove();
+            this.clearUnitMoveDisplay();
         }
     };
     
@@ -36,7 +31,7 @@ function UnitMove(document){
         Core.svgHandler.refreshOwnerRights();
     };
     
-    this.abortUnitMove = function(){
+    this.clearUnitMoveDisplay = function(){
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";

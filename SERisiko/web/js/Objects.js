@@ -135,21 +135,26 @@ function PlayerList(){
     //# Private Methods
 }
 
-function PlayerObject(name, id, rdy){
+function PlayerObject(name, id, state, rdyState){
     //#Public Vars
     
     //#Private Vars
     var playerName = name;
     var playerId = id;
-    var readyState = rdy;
+    var playerStatus = state;
+    var readyState = rdyState;
     
     //# Public Methods
     this.getPlayerName = function(){
         return playerName;
     };
     
-     this.getReadyState = function(){
+    this.getReadyState = function(){
         return readyState;
+    };
+    
+    this.getPlayerStatus = function(){
+        return playerStatus;
     };
     
     this.getPlayerId = function(){

@@ -9,12 +9,14 @@ var Core = new Core();
 
 function Core() {
     //#Public Vars
-    this.gameSteps = new GameSteps();
+    this.gameSteps = new GameSteps(document);
     this.gameList = new GameList();
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
-    this.combatHandler = new Combat(document);
+    this.attackHandler = new Attack(document);
+    this.defendHandler = new Defend(document);
+    this.combatHandler = new Combat();
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     this.unitMoveHandler = new UnitMove(document);
     this.unitPlacementHandler = new UnitPlacement(document);
@@ -66,6 +68,46 @@ function Core() {
     };
     //##############################
     
+    this.updatePlayerList = function(CurrentPlayerId){
+        var rdy = "img/ready.png";
+        var notRdy = "img/not_ready.png";
+        var defeated = "/img/defeated.png";
+        var not_play = "img/not_play.png"
+        $("#playerList").html("");
+        
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+             if(players[i] != null){
+                if(gameRunning == false){
+                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
+                } else {
+                    if(players[i].getPlayerStatus() == "Defeated"){
+                        $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + defeated + "' width='15' align='right'/><br>");
+                    } else {
+                        $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + not_play + "' width='15' align='right'/><br>");
+                    }
+                }
+            }
+        }
+    };
+    
+    this.changePlayerListPic = function(CurrentPlayerId){
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+            if(players[i] != null){
+                if(players[i].getPlayerStatus() == "Defeated"){
+                    $("#" + players[i].getPlayerId()).attr("src", "img/defeated.png");
+                }else {
+                    if(players[i].getPlayerId() == CurrentPlayerId){
+                        $("#" + players[i].getPlayerId()).attr("src", "img/play.png");
+                    } else {
+                        $("#" + players[i].getPlayerId()).attr("src", "img/not_play.png");
+                    } 
+                }
+            }
+        }
+    };
+    
     this.deletePlayerName = function(){
         this.connectionHandler.leaveLobby();
         myData.setPlayerName("");
@@ -96,6 +138,7 @@ function Core() {
         
         
         this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
+        $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
     };
     
     this.leaveCreateGame = function(){
@@ -125,11 +168,9 @@ function Core() {
     
     this.prepareJoinedGame = function(){
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-        //var svg = document.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
-        this.combatHandler.init(svg); 
         this.unitPlacementHandler.init(svg);
-        this.unitMoveHandler.init(svg);
+        
         this.setInGameLobby(true);
         
         document.getElementById("gamePhase").disabled = false;
@@ -141,6 +182,21 @@ function Core() {
         //verify 
         this.showElement(document.getElementById("game"));
         this.hideElement(document.getElementById("selectGame"));
+    };
+    
+    this.showEndOfGame = function(){
+        var players = this.playerList.getPlayers();
+        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
+            if(players[i] != null){
+                if(player[i].getPlayerId() == this.getPlayerId && getplayers[i].getPlayerStatus() != "Defeated"){
+                    document.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
+                                                                            <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
+                } else {
+                    document.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
+                                                                            <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
+                } 
+            }
+        }
     };
 
     this.minmax = function(value, min, max){
@@ -202,31 +258,7 @@ function Core() {
         select.val(maxValue);
     };
     
-    this.updatePlayerList = function(){
-        var rdy = "img/ready.png";
-        var notRdy = "img/not_ready.png";
-        $("#playerList").html("");
-        
-        var players = this.playerList.getPlayers();
-        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-             if(players[i] != null){
-                $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
-            }
-        }
-    };
     
-    this.changePlayerListPic = function(CurrentPlayerId){
-        var players = this.playerList.getPlayers();
-        for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-            if(players[i] != null){
-                if(players[i].getPlayerId() == CurrentPlayerId){
-                    $("#" + players[i].getPlayerId()).attr("src", "img/play.png");
-                } else {
-                    $("#" + players[i].getPlayerId()).attr("src", "img/not_play.png");
-                } 
-            }
-        }
-    };
     
     this.changeButton = function(id, innerhtml, onclick_params, onclick_function, state){
         document.getElementById(id).innerHTML = innerhtml;

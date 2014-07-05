@@ -36,7 +36,7 @@ function UnitPlacement(document){
         root.getElementById("bottom_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten auf " + id + "</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.abortPlaceUnits(\""+id+"\")' style='margin-left: 530px;'>Abbrechen</Button>\
+                        <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-left: 530px;'>Abbrechen</Button>\
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-left: 20px;'>OK</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", 1, maxValue);
     };
@@ -61,7 +61,7 @@ function UnitPlacement(document){
         }
     };
     
-    this.abortPlaceUnits = function(id){
+    this.cleanPlaceUnits = function(id){
         var theRect = svgDoc.getElementById(id);
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
