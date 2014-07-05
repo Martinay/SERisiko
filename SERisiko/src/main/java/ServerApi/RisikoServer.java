@@ -285,6 +285,9 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
             response.addChangedObject( dice2.get(i) );
         }
         
+        
+        response.addChangedObject( message.Game );
+        
         return response; 
         
         
@@ -296,12 +299,14 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
         
-        gameManager.EndAttack(clientId);
+        EndAttackMessage message = gameManager.EndAttack(clientId);
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( "AttackEndedMessage" );
         response.addTargetClient( clientId );
+        
+        response.addChangedObject( message.Game );
         
         return response;    
     }
@@ -324,6 +329,8 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         for(int i = 0; i< changedMaps.size(); i++) {
             response.addChangedObject( changedMaps.get(i) );
         }
+        
+        response.addChangedObject( message.Game );
         
         return response; 
     }
@@ -362,6 +369,8 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         for(int i = 0; i< changedMaps.size(); i++) {
             response.addChangedObject( changedMaps.get(i) );
         }
+        
+        response.addChangedObject( message.Game );
         
         return response;   
 
