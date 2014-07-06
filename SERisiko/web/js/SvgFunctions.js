@@ -248,10 +248,7 @@ function SvgFunctions(document){
         });
     };
     
-    this.test = function(){
-        var source = "P5";
-        var target = "P2";
-        var amount = 4;
+    this.doMovementAnimation = function(source, target, amount){
         var movementData, movementAData;
         
         var mapUnitID = svgDoc.getElementById("MapUnit");
@@ -281,7 +278,7 @@ function SvgFunctions(document){
             }
 
             yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + rect.getAttribute('xlink:href') + '" />';
+            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + svgDoc.getElementById(source+"_Unit").getAttribute('xlink:href') + '" />';
             
             if(countryWidth > 1234){
                 xPosition = xPosition + width * 1.4 ;
@@ -298,8 +295,8 @@ function SvgFunctions(document){
             var imgTarget = svgDoc.getElementById(svgDoc.getElementById(target).getAttribute("id") + '_Unit');
             var imgATarget = svgDoc.getElementById(svgDoc.getElementById(target).getAttribute("id") + '_UnitCount');
             
-            var movementData = new Array (imgMov.getAttribute("x"), imgMov.getAttribute("y"), imgTarget.getAttribute("x"), imgTarget.getAttribute("y"));
-            var movementAData = new Array (imgAMov.getAttribute("x"), imgAMov.getAttribute("y"), imgATarget.getAttribute("x"), imgATarget.getAttribute("y"));
+            var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
+            var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
             var xDirection = "-";
             var yDirection = "-";
             if (movementData[0] < movementData[2])
@@ -307,8 +304,8 @@ function SvgFunctions(document){
             if (movementData[1] < movementData[3])
                 yDirection = "+";
             
-            //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount_mov_moved" x="' + xPosition+50 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
-            //setTimeout(function(){ Core.svgHandler.killDomElement(rectID + '_UnitCount_mov_moved');}, 1000);
+            //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
+            //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
             
             this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
         }
@@ -340,31 +337,30 @@ function SvgFunctions(document){
             if (movementAData[1] <= movementAData[3])
                 finished++;
         }
-        if(finished < 4){    
-            
+        if(finished < 4){     
             if(xDirection == "+"){
                 if (movementData[0] < movementData[2])
                     movementData[0] += 5; imgMov.setAttribute("x", movementData[0]);
                 if (movementAData[0] < movementAData[2])
-                    movementAData[0] += 5; imgAMov.setAttribute("x", ++movementAData[0]);        
+                    movementAData[0] += 5; imgAMov.setAttribute("x", movementAData[0]);        
             }
             else{
                 if (movementData[0] > movementData[2])
                     movementData[0] -= 5; imgMov.setAttribute("x", movementData[0]);
                 if (movementAData[0] > movementAData[2])
-                    movementAData[0] -= 5; imgAMov.setAttribute("x", ++movementAData[0]);
+                    movementAData[0] -= 5; imgAMov.setAttribute("x", movementAData[0]);
             }
             if(yDirection == "+"){
                 if (movementData[1] < movementData[3])
-                    movementData[1] += 5; imgMov.setAttribute("y", ++movementData[1]);
+                    movementData[1] += 5; imgMov.setAttribute("y", movementData[1]);
                 if (movementAData[1] < movementAData[3])
-                    movementAData[1] += 5; imgAMov.setAttribute("y", ++movementAData[1]);
+                    movementAData[1] += 5; imgAMov.setAttribute("y", movementAData[1]);
             }
             else{
                 if (movementData[1] > movementData[3])
-                    movementData[1] -= 5; imgMov.setAttribute("y", ++movementData[1]);
+                    movementData[1] -= 5; imgMov.setAttribute("y", movementData[1]);
                 if (movementAData[1] > movementAData[3])
-                    movementAData[1] -= 5; imgAMov.setAttribute("y", ++movementAData[1]);
+                    movementAData[1] -= 5; imgAMov.setAttribute("y", movementAData[1]);
             }
             setTimeout(function(){ Core.svgHandler.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);}, 0);
         } 
