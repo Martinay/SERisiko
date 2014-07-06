@@ -38,8 +38,8 @@
 
         <rect id="A1_back" class="fil3 str0" x="11331" y="7324" width="1305" height="2152"/>
         <rect id="A2_back" class="fil3 str0" x="11331" y="9476" width="1305" height="1535"/>
-        <rect id="A4_back" class="fil3 str0" x="7644" y="10675" width="3034" height="917"/>
         <rect id="A3_back" class="fil3 str0" x="10678" y="11011" width="1958" height="1535"/>
+        <rect id="A4_back" class="fil3 str0" x="7644" y="10675" width="3034" height="917"/>
         <rect id="A5_back" class="fil3 str0" x="7644" y="11593" width="3034" height="953"/>
         <rect id="A6_back" class="fil3 str0" x="6409" y="11673" width="1235" height="510"/>
 
@@ -110,7 +110,7 @@
         <text x="19018" y="1634"  class="fil7 fnt2">E4</text>
 
 <!-- Parkplatz P -->
-        <text x="7219" y="4173"  class="fil6 fnt0">Parkplatz</text>
+        <text x="8019" y="4173"  class="fil6 fnt0">Parkplatz</text>
 
         <rect id="P1_back" class="fil0 str0" x="227" y="4519" width="6685" height="662"/>
         <rect id="P2_back" class="fil0 str0" x="6912" y="4519" width="3986" height="1808"/>
@@ -164,12 +164,12 @@
         <g id="mapOverlay" style="clip-path:url(#id2)">
             <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" owner="" unitcount="1" neighbor="A2,P13"/>
             <rect id="A2" class="fil6 str0" fill-opacity="0.0" x="11331" y="9476" width="1305" height="1535" owner="" unitcount="1" neighbor="A1,A3"/>
-            <rect id="A4" class="fil6 str0" fill-opacity="0.0" x="7644" y="10675" width="3034" height="917" owner="" unitcount="1" neighbor="A2,A4,A5"/>
-            <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" owner="" unitcount="1" neighbor="A3,A5"/>
+            <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" owner="" unitcount="1" neighbor="A2,A4,A5"/>
+            <rect id="A4" class="fil6 str0" fill-opacity="0.0" x="7644" y="10675" width="3034" height="917" owner="" unitcount="1" neighbor="A3,A5"/>            
             <rect id="A5" class="fil6 str0" fill-opacity="0.0" x="7644" y="11593" width="3034" height="953" owner="" unitcount="1" neighbor="A3,A4,A6"/>
             <rect id="A6" class="fil6 str0" fill-opacity="0.0" x="6409" y="11673" width="1235" height="510" owner="" unitcount="1" neighbor="A5,B1"/>
 
-            <rect id="B1" class="fil6 str0" fill-opacity="0.0" x="4751" y="10940" width="1658" height="1587" owner="" unitcount="1" neighbor="B2,B3,C1"/>
+            <rect id="B1" class="fil6 str0" fill-opacity="0.0" x="4751" y="10940" width="1658" height="1587" owner="" unitcount="1" neighbor="B2,B3,A6,C1"/>
             <rect id="B2" class="fil6 str0" fill-opacity="0.0" x="4751" y="7007" width="829" height="3933" owner="" unitcount="1" neighbor="B1,B3,B4,C4"/>
             <rect id="B3" class="fil6 str0" fill-opacity="0.0" x="5580" y="7007" width="829" height="3933" owner="" unitcount="1" neighbor="B1,B2,B4,P3"/>
             <rect id="B4" class="fil6 str0" fill-opacity="0.0" x="4751" y="5437" width="1658" height="1570" owner="" unitcount="1" neighbor="B2,B3,B5"/>

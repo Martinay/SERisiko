@@ -122,12 +122,11 @@ function SvgFunctions(document){
     this.setRectsOnClickNull = function(){
         var rects = svgDoc.getElementsByTagName("rect");
         [].slice.call(rects).forEach(function(rect){
-            rect.onmouseover = "";
-            rect.onmouseout = "";
+            rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");;
+            rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");;
             rect.onclick = "";
             if(rect.getAttribute("id").indexOf("_back") != -1){
                 svgDoc.getElementById(rect.getAttribute("id")).setAttribute('opacity','1');
-                svgDoc.getElementById(rect.getAttribute("id")).style='cursor: default';
             }
         });
     }
@@ -136,7 +135,7 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() == Core.gameSteps.state.UNITMOVEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") == Core.getPlayerId() && rect.getAttribute("unitcount") > 2){
+                if(rect.getAttribute("owner") == Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.svgHandler.identifySource(this.id);");

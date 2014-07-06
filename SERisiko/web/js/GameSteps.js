@@ -75,6 +75,7 @@ function GameSteps(document){
                 Core.gameSteps.setGameStep(Core.gameSteps.state.UNITPLACEMENT);
                 Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doUnitPlacement();",  true);
                 root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
+                Core.unitPlacementHandler.clearPlacementArray();
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(arg));
                 break;
             case "Attack":
@@ -95,7 +96,7 @@ function GameSteps(document){
             case "Idle":
                 clearDisplay();
                 Core.gameSteps.setGameStep(Core.gameSteps.state.IDLE);
-                root.getElementById("gameStatus").innerHTML = "Aktiver Spieler: <span style='color: red;'>" + Core.playerList.getPlayerById(parseInt(arg)).getPlayerName() + "</span><br> Phase: <span style='color: blue;'> Phase: " + status + "</span>";
+                root.getElementById("gameStatus").innerHTML = "Aktiver Spieler: <span style='color: red;'>" + Core.playerList.getPlayerById(parseInt(arg)).getPlayerName() + "</span><br> Phase: <span style='color: blue;'>" + status + "</span>";
                 break;    
             default:
                     //nothing

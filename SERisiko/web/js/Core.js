@@ -68,7 +68,7 @@ function Core() {
     };
     //##############################
     
-    this.updatePlayerList = function(CurrentPlayerId){
+    this.updatePlayerList = function(){
         var rdy = "img/ready.png";
         var notRdy = "img/not_ready.png";
         var defeated = "/img/defeated.png";
@@ -95,8 +95,15 @@ function Core() {
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] != null){
+                console.log(players[i].getPlayerStatus());
                 if(players[i].getPlayerStatus() == "Defeated"){
-                    $("#" + players[i].getPlayerId()).attr("src", "img/defeated.png");
+                    if(this.getPlayerId() == CurrentPlayerId){
+                        document.getElementById("loading_overlay").style.display = "block";
+                        document.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
+                                                                            <button style='margin-top: 20px;' name='clearShowDefeat' onClick='Core.backToLobby()'>Anzeige Schließen</button>";
+                    } else {
+                        $("#" + players[i].getPlayerId()).attr("src", "img/defeated.png");
+                    }
                 }else {
                     if(players[i].getPlayerId() == CurrentPlayerId){
                         $("#" + players[i].getPlayerId()).attr("src", "img/play.png");

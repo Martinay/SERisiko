@@ -28,17 +28,26 @@ function UnitPlacement(document){
     };
     
     this.unitPlacement = function (id, maxValue){
+        var oldValue = 0;
         var theRect = svgDoc.getElementById(id);
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'default');");
         $( "#bottom_overlay" ).slideDown( "slow");
         Core.showElement(root.getElementById("mutex"));
+        if(placeUnit[id] != null){
+            oldValue = parseInt(placeUnit[id]);
+            maxValue = parseInt(maxValue) + parseInt(placeUnit[id]);
+        }
         root.getElementById("bottom_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten auf " + id + "</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-left: 530px;'>Abbrechen</Button>\
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-left: 20px;'>OK</button>";
         Core.createSlider("unitAmount", "insertSliderAfter", 1, maxValue);
+        if(oldValue != 0){
+            $( "#slider" ).slider( "value", oldValue );
+            $("#unitAmount").val(oldValue);
+        }
     };
     
     this.placeUnits = function (id, maxValue){

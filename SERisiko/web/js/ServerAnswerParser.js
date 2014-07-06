@@ -126,10 +126,18 @@ function ServerAnswerParser(doc){
         Core.playerList.clear();
         // parse message			  	  
         for(var i = 0; i < message.data.length; i++){
-            var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[0].Player.playerStatus, message.data[i].Player.ready);
-            Core.playerList.addPlayer(player);
+            if(message.data[i].Player){
+                var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.playerStatus, message.data[i].Player.ready);
+                Core.playerList.addPlayer(player);
+                console.log(player.getPlayerStatus());
+            }
+            if(message.data[i].ServerGame){
+                Core.updatePlayerList();
+                if(message.data[i].ServerGame.currentGameStatus != "WaitingForPlayer"){
+                    Core.changePlayerListPic(parseInt(message.data[i].ServerGame.currentPlayerId));
+                }
+            }
         }
-        Core.updatePlayerList();
     };
     
     var handleReadyStateChangedMessage = function(message){
@@ -254,9 +262,10 @@ function ServerAnswerParser(doc){
                 if(message.data[i].ServerGame.currentPlayerId == Core.getPlayerId()){
                     Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, 0, "");
                 } else {
+                    Core.connectionHandler.listPlayers();
                     Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Einheiten verlegen</span>");
                 }
-                 Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
+                Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
             }
         }
     };

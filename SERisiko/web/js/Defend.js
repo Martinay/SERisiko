@@ -20,7 +20,7 @@ function Defend(document){
                                                 <td colspan="2">Defender:</td>\n\
                                             </tr>\n\
                                             <tr>\n\
-                                                <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + countAttack + '</div></td>\n\
+                                                <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + (parseInt(countAttack) - 1) + '</div></td>\n\
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
                 setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
@@ -50,6 +50,7 @@ function Defend(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.showDefendResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
+                document.getElementById();
                 setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 8500);
     };
     
