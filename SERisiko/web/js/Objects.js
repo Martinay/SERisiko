@@ -197,7 +197,7 @@ function MyDataObject(){
     this.setPlayerName = function(name){
         thePlayerName = name;
     };
-
+    
     this.setInGameLobby = function(arg){
         inGameLobby = arg;
     };

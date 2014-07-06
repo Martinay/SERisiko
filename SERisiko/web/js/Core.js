@@ -42,7 +42,7 @@ function Core() {
     this.getPlayerName = function(){
         return myData.getPlayerName();
     };
-   
+    
     this.setPlayerId = function(id){
         myData.setPlayerId(id);
     };
@@ -137,6 +137,7 @@ function Core() {
         showElement(document.getElementById("selectGame"));
         hideElement(document.getElementById("game"));
         
+        this.setGameRunning(false);
         this.playerList.clear();
         $("#playerList").html("");
         $("#startGame").html("");
@@ -264,6 +265,9 @@ function Core() {
         select.val(maxValue);
     };
     
+    this.test = function(){
+       this.svgHandler.test();
+    };
     
     
     this.changeButton = function(id, innerhtml, onclick_params, onclick_function, state){
