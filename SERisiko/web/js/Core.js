@@ -142,7 +142,8 @@ function Core() {
         $("#playerList").html("");
         $("#startGame").html("");
         $("#gameStatus").html("Bitte melden Sie sich Spielbereit");
-        
+        $("#chatbox").html("");
+        $("#usermsg").html("");
         
         this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
         $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
@@ -191,6 +192,13 @@ function Core() {
         this.hideElement(document.getElementById("selectGame"));
     };
     
+    this.validateChatMessage = function(){
+        if(validate(document.getElementById("usermsg").value)){
+            this.connectionHandler.sendChatMessage(document.getElementById("usermsg").value);
+            document.getElementById("usermsg").value = "";
+        }
+    };
+    
     this.showEndOfGame = function(){
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
@@ -219,6 +227,10 @@ function Core() {
             case "playerName":
                 if(key == 13)
                     this.setPlayerName();
+                break;
+            case "usermsg":
+                if(key == 13)
+                    this.validateChatMessage();
                 break;
             default:
                     //nothing

@@ -91,7 +91,10 @@ function Connection(){
     this.sendUnitPlace = function(PlaceUnitArray){
         connection.unitPlacement(JSON.parse(PlaceUnitArray));
     };
-
+    
+    this.sendChatMessage = function(msg){
+        connection.sendChatMessage(msg);
+    };
 }
 
 

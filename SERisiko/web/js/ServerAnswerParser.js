@@ -61,6 +61,9 @@ function ServerAnswerParser(doc){
                 case "EndUnitPlacementMessage":
                     handleEndUnitPlacementMessage(message);
                     break;
+                case "ChatMessage":
+                    handleChatMessage(message);
+                    break;
                 default:
                     //nothing
             } 
@@ -292,5 +295,14 @@ function ServerAnswerParser(doc){
                 Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
             }
         }
+    };
+    
+    var handleChatMessage = function(message){
+        var d = new Date();
+        var n = d.toLocaleTimeString(); 
+
+        message = "("+n+") <b>"+Core.playerList.getPlayerById(message.data[0].ChatMessage.player).getPlayerName()+"</b>: " + message.data[0].ChatMessage.message +"\n";
+        
+        root.getElementById("chatbox").innerHTML = root.getElementById("chatbox").innerHTML + message;
     };
 }

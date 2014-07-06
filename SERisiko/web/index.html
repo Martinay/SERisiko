@@ -87,6 +87,14 @@
             <button  id="gamePhase" name="gamePhase" onClick='Core.connectionHandler.setPlayerState(true);'>Bereit zum Spielen</button>
             <div id="startGame"></div>
             <button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();' style="width: 160px;">Spiel verlassen</button>
+            <div id="wrapper"> 
+                <div id="chatbox"></div>
+                   
+                <div id="message">
+                    <input name="usermsg" type="text" id="usermsg" size="63" onkeyup="Core.checkForKey('usermsg', event.keyCode)"/>
+                    <input name="submitmsg" type="button" onClick="Core.validateChatMessage();" id="submitmsg" value="Senden" />
+                </div>
+            </div>
         </div>
         <div style="clear:both"></div>
     </div>
