@@ -143,12 +143,11 @@ public class MessageCreator {
         return message;
     }
 
-    public static ListPlayerInGameMessage CreateListPlayerInGameMessage(List<Integer> idsToUpdate, List<Player> players, int currentPlayerId) {
+    public static ListPlayerInGameMessage CreateListPlayerInGameMessage(List<Integer> idsToUpdate, List<Player> players, Game game) {
         ListPlayerInGameMessage message = new ListPlayerInGameMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
-        message.CurrentPlayerID = currentPlayerId;
         message.Players = players;
-
+        message.Game = game;
         return message;
     }
 }

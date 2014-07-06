@@ -246,7 +246,7 @@ public class ServerLogic implements IServerLogic {
     @Override
     public ListPlayerInGameMessage GetPlayersInGame(int playerID) {
         ServerGame game = _state.GetGameByPlayerId(playerID);
-        return MessageCreator.CreateListPlayerInGameMessage(game.GetPlayerIds(), game.Players, game.GetCurrentPlayerId());
+        return MessageCreator.CreateListPlayerInGameMessage(game.GetPlayerIds(), game.Players, game );
     }
 
     @Override
