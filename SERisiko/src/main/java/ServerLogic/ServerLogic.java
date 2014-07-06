@@ -245,7 +245,7 @@ public class ServerLogic implements IServerLogic {
 
     @Override
     public List<Player> GetPlayersInGame(int playerID) {
-        return _state.Lobby.GetGameByPlayerId(playerID).Players;
+        return _state.GetGameByPlayerId(playerID).Players;
     }
 
     @Override
