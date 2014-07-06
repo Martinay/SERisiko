@@ -111,5 +111,8 @@ var RisikoApi = function() {
         socket.call("endTurn");
     }; 
     
+    socket.sendChatMessage = function(message) {      
+        socket.call("sendChatMessage", message);
+    }; 
     return socket;
 };
