@@ -32,7 +32,7 @@ public interface IServerLogic {
     PlayerLeftGameMessage LeaveGame(int playerID);
     GameCreatedMessage CreateGame(int playerID, String GameName, int maxPlayer);
     GameStartedMessage StartGame(int playerID);
-    List<Player> GetPlayersInGame(int playerID);
+    ListPlayerInGameMessage GetPlayersInGame(int playerID);
     ReadyStateChangedMessage ChangeReadyStatus(int playerID, boolean state);
 
 }

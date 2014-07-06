@@ -7,7 +7,6 @@ import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
 import ServerLogic.Model.MapChange;
-import ServerLogic.Model.Player;
 import ServerLogic.ServerLogic;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -238,16 +237,21 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         int clientId = gameClient.getIdentifyer();
         
-        List<Player> message = gameManager.GetPlayersInGame(clientId);
+        //List<Player> message = gameManager.GetPlayersInGame(clientId);
+        
+        ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);
+        
         
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( "PlayerList" );
         response.addTargetClient( clientId );
         
-        for(int i = 0; i< message.size(); i++) {
-            response.addChangedObject( message.get(i) );
+        for(int i = 0; i< message.Players.size(); i++) {
+            response.addChangedObject( message.Players.get(i) );
         }
+        
+        //response.addChangedObject(message.Game);
         
         return response;
     }
@@ -285,7 +289,6 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
             response.addChangedObject( dice2.get(i) );
         }
         
-        
         response.addChangedObject( message.Game );
         
         return response; 
@@ -304,7 +307,8 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( "AttackEndedMessage" );
-        response.addTargetClient( clientId );
+        
+        response.addTargetClientList( message.PlayerIDsToUpdate );
         
         response.addChangedObject( message.Game );
         
