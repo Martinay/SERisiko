@@ -459,7 +459,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         ChatMessage responseObject = new ChatMessage();
         responseObject.text = text;        
-      
+        responseObject.player = clientId;
        
         ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);
         
