@@ -16,7 +16,7 @@ function Core() {
     this.svgHandler = new SvgFunctions(document);
     this.attackHandler = new Attack(document);
     this.defendHandler = new Defend(document);
-    this.combatHandler = new Combat();
+    this.combatHandler = new Combat(document);
     this.serverAnswerParserHandler = new ServerAnswerParser(document);
     this.unitMoveHandler = new UnitMove(document);
     this.unitPlacementHandler = new UnitPlacement(document);

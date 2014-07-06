@@ -49,7 +49,14 @@ public class Spielsteuerung {
     public Client_Response gib_aktuellen_Zustand(){
             return aktueller_Response;
         }
-       	
+    
+    public void RemovePlayer(int id){
+        Spieler[] theNewPlayerList = new Spieler[dieSpieler.length-1];
+        for(int i = 0; i < dieSpieler.length; i++){
+            if(dieSpieler[i].Id != id)
+                theNewPlayerList[i] = dieSpieler[i];
+        }
+    }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
 		

@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function Combat(){
+function Combat(doc){
+    var root = doc;
     var DicesArr = {};
     
     this.setDice = function(id, count){
@@ -66,6 +67,7 @@ function Combat(){
         } 
         if(attacker == true){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
+            root.getElementById("attack").disabled = 'true';
             Core.svgHandler.refreshOwnerRights();
             if(attackstate != null){
                 setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 4000);
@@ -78,12 +80,12 @@ function Combat(){
     
     var editUnitCountDisplay = function(looseUnitsAttack, looseUnitsDefend){
         if(looseUnitsAttack > 0){
-            var unitsAfterAttack = parseInt(document.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack);
+            var unitsAfterAttack = parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack);
             var attackString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsAttack + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterAttack;
             setTimeout(function(){ $("#CountAttackAnzahl").append(attackString)}, 2000);
         }  
         if(looseUnitsDefend > 0){
-            var unitsAfterDefend = parseInt(document.getElementById("CountDefenderAnzahl").innerHTML ) - parseInt(looseUnitsDefend);
+            var unitsAfterDefend = parseInt(root.getElementById("CountDefenderAnzahl").innerHTML ) - parseInt(looseUnitsDefend);
             var defendString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsDefend + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterDefend;
             setTimeout(function(){ $("#CountDefenderAnzahl").append(defendString)}, 2000);
         }      
