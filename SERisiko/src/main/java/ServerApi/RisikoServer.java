@@ -251,7 +251,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
             response.addChangedObject( message.Players.get(i) );
         }
         
-        //response.addChangedObject(message.Game);
+        response.addChangedObject(message.Game);
         
         return response;
     }
