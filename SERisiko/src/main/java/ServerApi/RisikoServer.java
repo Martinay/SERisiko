@@ -3,6 +3,7 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
+import ServerLogic.Model.ChatMessage;
 import ServerLogic.Model.ClientMapChange;
 import ServerLogic.Model.Dice;
 import ServerLogic.Model.Game;
@@ -450,4 +451,27 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     }
     
 
+    public WebSocketResponse sendChatMessage(GameClient gameClient, String text) {
+        System.out.println("chat message: " + text);
+        
+       
+        int clientId = gameClient.getIdentifyer();
+        
+        ChatMessage responseObject = new ChatMessage();
+        responseObject.text = text;        
+        responseObject.player = clientId;
+       
+        ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);
+        
+        
+        RisikoServerResponse response = new RisikoServerResponse();
+        response.setState(1);
+        response.setMessage( "ChatMessage" );
+        response.addTargetClientList(message.PlayerIDsToUpdate );
+        response.addChangedObject(responseObject);
+        
+        return response;
+    }
+    
+    
 }
