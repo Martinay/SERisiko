@@ -193,7 +193,7 @@ function Core() {
     };
     
     this.validateChatMessage = function(){
-        if(validate(document.getElementById("usermsg").value)){
+        if(validateMessage(document.getElementById("usermsg").value)){
             this.connectionHandler.sendChatMessage(document.getElementById("usermsg").value);
             document.getElementById("usermsg").value = "";
         }
@@ -298,6 +298,14 @@ function Core() {
     };
     
     var validate = function(str){
+        var nameRegex = /^[a-zA-Z0-9]+$/;
+        var valid = str.match(nameRegex);
+        if(valid === null){
+            return false;
+        }
+        return true;
+    };
+    var validateMessage = function(str){
         var nameRegex = /^[a-zA-Z0-9]+$/;
         var valid = str.match(nameRegex);
         if(valid === null){

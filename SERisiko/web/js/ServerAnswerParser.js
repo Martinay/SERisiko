@@ -301,7 +301,7 @@ function ServerAnswerParser(doc){
         var d = new Date();
         var n = d.toLocaleTimeString(); 
 
-        message = "("+n+") <b>"+Core.playerList.getPlayerById(message.data[0].ChatMessage.player).getPlayerName()+"</b>: " + message.data[0].ChatMessage.message +"\n";
+        message = "("+n+") <b>"+Core.playerList.getPlayerById(message.data[0].ChatMessage.player).getPlayerName()+"</b>: " + message.data[0].ChatMessage.message + "<br>";
         
         root.getElementById("chatbox").innerHTML = root.getElementById("chatbox").innerHTML + message;
     };
