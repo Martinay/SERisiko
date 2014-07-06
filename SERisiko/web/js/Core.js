@@ -95,7 +95,6 @@ function Core() {
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] != null){
-                console.log(players[i].getPlayerStatus());
                 if(players[i].getPlayerStatus() == "Defeated"){
                     if(this.getPlayerId() == CurrentPlayerId){
                         document.getElementById("loading_overlay").style.display = "block";

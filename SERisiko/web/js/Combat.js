@@ -67,7 +67,7 @@ function Combat(doc){
         } 
         if(attacker == true){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
-            root.getElementById("attack").disabled = 'true';
+            root.getElementById("attack").disabled = false;
             Core.svgHandler.refreshOwnerRights();
             if(attackstate != null){
                 setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 4000);

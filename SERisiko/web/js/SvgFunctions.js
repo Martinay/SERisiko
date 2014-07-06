@@ -186,9 +186,6 @@ function SvgFunctions(document){
             setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
        }else{
             counter++;
-            if(root.getElementById("startAttack") != null && Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
-                root.getElementById("startAttack").disabled = false;
-            }
             drawDigitOnCanvas(id);
             if(counter == (rotate/18)){
                 counter = 0;

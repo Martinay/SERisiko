@@ -129,7 +129,6 @@ function ServerAnswerParser(doc){
             if(message.data[i].Player){
                 var player = new PlayerObject(message.data[i].Player.name, parseInt(message.data[i].Player.id), message.data[i].Player.playerStatus, message.data[i].Player.ready);
                 Core.playerList.addPlayer(player);
-                console.log(player.getPlayerStatus());
             }
             if(message.data[i].ServerGame){
                 Core.updatePlayerList();

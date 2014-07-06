@@ -78,7 +78,7 @@ function Attack(document){
                                             </tr>\n\
                                         </table>\n\
                                     </div>\n'+
-                                    "<button style='margin-top: 20px; margin-right: 60px;' disabled='true' id='startAttack' name='StartAttack' onClick='Core.attackHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
+                                    "<button style='margin-top: 20px; margin-right: 60px;' id='startAttack' name='StartAttack' onClick='Core.attackHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
                                     "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.attackHandler.clearAttackDisplay()'>Angriff Beenden</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
                 root.getElementById("startAttack").disabled = true;

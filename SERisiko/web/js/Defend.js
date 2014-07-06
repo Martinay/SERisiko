@@ -50,7 +50,6 @@ function Defend(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.showDefendResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                document.getElementById();
                 setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 8500);
     };
     
