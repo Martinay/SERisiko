@@ -211,13 +211,13 @@ public class ServerLogic implements IServerLogic {
         if (playerID != game.Creator.ID)
         {
             Logger.Write("Player != Creator hat versucht das Spiel zu starten Name:" + game.Name+ "SpielerID: "+ playerID);
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, null);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, new LinkedList<>());
         }
 
         if (!game.AreAllPlayerReady())
         {
             Logger.Write("Creator hat versucht das Spiel zu starten, ohne das alle Spieler bereit sind. Name:" + game.Name);
-            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, null);
+            return MessageCreator.CreateGameStartedMessage(Arrays.asList(playerID), game, new LinkedList<>());
         }
 
         _state.SetGameToActiveGame(game);
