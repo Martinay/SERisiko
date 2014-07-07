@@ -50,12 +50,8 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
-    public void RemovePlayer(int id){
-        Spieler[] theNewPlayerList = new Spieler[dieSpieler.length-1];
-        for(int i = 0; i < dieSpieler.length; i++){
-            if(dieSpieler[i].Id != id)
-                theNewPlayerList[i] = dieSpieler[i];
-        }
+    public void EntferneSpieler(Spieler spieler){
+        //TODO: Spieler entfernen, Karte neu verteilen
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){

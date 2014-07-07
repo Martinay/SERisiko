@@ -24,4 +24,8 @@ public class PlayerMapper {
     public static Player Map(Spieler player) {
         return _mappingSP.get(player);
     }
+
+    public static Spieler Map(Player player) {
+        return _mappingPS.get(player);
+    }
 }

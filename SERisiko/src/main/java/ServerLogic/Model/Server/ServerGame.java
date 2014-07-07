@@ -224,8 +224,7 @@ public class ServerGame extends Game {
 
         if (_spiel != null)
         {
-            //TODO Spieler aus Spiel entfernen
-            _spiel.RemovePlayer(player.ID);
+            _spiel.EntferneSpieler(PlayerMapper.Map(player));
         }
 
         Players.remove(player);
