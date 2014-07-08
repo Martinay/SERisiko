@@ -355,30 +355,46 @@ function SvgFunctions(document){
         }
         if(finished < 4){     
             if(xDirection == "+"){
-                if (movementData[0] < movementData[2])
-                    movementData[0] += 5; imgMov.setAttribute("x", movementData[0]);
-                if (movementAData[0] < movementAData[2])
-                    movementAData[0] += 5; imgAMov.setAttribute("x", movementAData[0]);        
+                if (movementData[0] < movementData[2]){
+                    movementData[0] += 5; 
+                    imgMov.setAttribute("x", movementData[0]);
+                }
+                if (movementAData[0] < movementAData[2]){
+                    movementAData[0] += 5; 
+                    imgAMov.setAttribute("x", movementAData[0]);       
+                 }
             }
             else{
-                if (movementData[0] > movementData[2])
-                    movementData[0] -= 5; imgMov.setAttribute("x", movementData[0]);
-                if (movementAData[0] > movementAData[2])
-                    movementAData[0] -= 5; imgAMov.setAttribute("x", movementAData[0]);
+                if (movementData[0] > movementData[2]){
+                    movementData[0] -= 5; 
+                    imgMov.setAttribute("x", movementData[0]);
+                }
+                if (movementAData[0] > movementAData[2]){
+                    movementAData[0] -= 5;
+                    imgAMov.setAttribute("x", movementAData[0]);
+                }
             }
             if(yDirection == "+"){
-                if (movementData[1] < movementData[3])
-                    movementData[1] += 5; imgMov.setAttribute("y", movementData[1]);
-                if (movementAData[1] < movementAData[3])
-                    movementAData[1] += 5; imgAMov.setAttribute("y", movementAData[1]);
+                if (movementData[1] < movementData[3]){
+                    movementData[1] += 5; 
+                    imgMov.setAttribute("y", movementData[1]);
+                }
+                if (movementAData[1] < movementAData[3]){
+                    movementAData[1] += 5;
+                    imgAMov.setAttribute("y", movementAData[1]);
+                }
             }
             else{
-                if (movementData[1] > movementData[3])
-                    movementData[1] -= 5; imgMov.setAttribute("y", movementData[1]);
-                if (movementAData[1] > movementAData[3])
-                    movementAData[1] -= 5; imgAMov.setAttribute("y", movementAData[1]);
+                if (movementData[1] > movementData[3]){
+                    movementData[1] -= 5; 
+                    imgMov.setAttribute("y", movementData[1]);
+                }
+                if (movementAData[1] > movementAData[3]){
+                    movementAData[1] -= 5; 
+                    imgAMov.setAttribute("y", movementAData[1]);
+                }
             }
-            setTimeout(callback(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, 20));
+            setTimeout(function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){callback(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection)}, 50);
         } 
         else{
             this.killDomElement(imgMov);
@@ -434,29 +450,25 @@ function SvgFunctions(document){
         var sourceN = neighborsParser.getNeighbors(source);
         var targetN = neighborsParser.getNeighbors(source);
         //check for direct neighborhood
-        for(var i = 0; i < sourceN.length; i++){
-           if($.inArray(sourceN[i], targetN)){
-               route.push(target);
-               return route
-           }
+        if($.inArray(source, targetN)){
+            route.push(target);
+            return route
         }
         //calc complexer route @ this point route will be empty
-        /*
-        for(var i = 0; i < sourceN.length; i++){
-            if($.inArray(sourceN[i], targetN)){
-                route.push(target);
-                return route
-            }
-            else{
-                for(var i = 0; i < sourceN.length; i++){
-                    if($.inArray(sourceN[i], targetN)){
-                      route.push(target);
-                        return route
-                    }
-                }
-            }
-        }   */
-        route.push(target); // snap fix
+        route = findRoute(source, target, route);    
+        console.log(route);
+        return route;
+    };
+    
+    var findRoute = function(source, target, route){
+        var sourceN = neighborsParser.getNeighbors(source);
+        
+        for(var i = 0; i < sourceN.length && !$.inArray(target, route); i++){
+            route.push(target);
+            if (sourceN[i] == target)
+                return route;
+            return findRoute (sourceN[i], target, route);
+        }
         return route;
     };
 }
