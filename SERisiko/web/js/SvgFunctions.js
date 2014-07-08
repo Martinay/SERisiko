@@ -21,7 +21,7 @@ function SvgFunctions(document){
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
-        neighborsParser.init("/maps/map_nachbarn.txt", svgDoc);
+        neighborsParser.init("/maps/map_nachbarn.txt");
     };
     
     this.getNeighborsParser = function(){

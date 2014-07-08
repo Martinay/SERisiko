@@ -207,12 +207,10 @@ function MyDataObject(){
 /*
  * Data abstraction class for the land data
  */
-function LandObject(name, data, x, y){
+function LandObject(name, data){
     //#Private Vars
     var me = name;
     var neighbors = data;
-    var myX = x;
-    var myY = y;
     
      //# Public Methods
     this.getNeighbors = function(){
@@ -233,12 +231,6 @@ function LandObject(name, data, x, y){
     this.getId = function(){
         return me;
     };
-    this.getX = function(){
-        return myX;
-    };
-    this.getY = function(){
-        return myY;
-    };
 }
 function LandList(){
     //#Public Vars
@@ -253,9 +245,9 @@ function LandList(){
         amount = 0;
     };
 
-    this.addLand = function(name, data, x, y, id){
+    this.addLand = function(name, data, id){
         amount++;
-        lands.push(new LandObject(name, data, x, y, id));
+        lands.push(new LandObject(name, data, id));
     };
 
     this.getLands = function(){
