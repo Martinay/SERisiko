@@ -24,6 +24,10 @@ function SvgFunctions(document){
         neighborsParser.init("/maps/map_nachbarn.txt", svgDoc);
     };
     
+    this.getNeighborsParser = function(){
+        return neighborsParser;
+    };
+    
     this.getLandOwner = function(landId){
         return parseInt(svgDoc.getElementById(landId).getAttribute("owner"));  
     };
