@@ -6,9 +6,10 @@
  */
 
 
-function NeighborsParser(document){
+function NeighborsParser(document, svg){
     //#Private Vars
     var root = document;
+    var svgDoc = svg;
     var landData = "";
        
      //# Public Methods
@@ -34,7 +35,8 @@ function NeighborsParser(document){
                     var dat = lines[i].split(":");
                     var dat2 = dat[1].split(",").slice(0, -1);
                     if(dat[0] != "" && dat[1] != ""){
-                        list.addLand(dat[0], dat2);
+                        var imgMov = svgDoc.getElementById(dat[0] + '_Unit');
+                        list.addLand(dat[0], dat2, parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")));
                     }
                 }
             }

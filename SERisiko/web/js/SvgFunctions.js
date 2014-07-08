@@ -21,7 +21,7 @@ function SvgFunctions(document){
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
-        neighborsParser.init("/maps/map_nachbarn.txt");
+        neighborsParser.init("/maps/map_nachbarn.txt", svgDoc);
     };
     
     this.getLandOwner = function(landId){
@@ -447,14 +447,6 @@ function SvgFunctions(document){
     
     var calcUnitRunWay = function(source, target){
         var route = new Array();
-        var sourceN = neighborsParser.getNeighbors(source);
-        var targetN = neighborsParser.getNeighbors(source);
-        //check for direct neighborhood
-        if($.inArray(source, targetN)){
-            route.push(target);
-            return route
-        }
-        //calc complexer route @ this point route will be empty
         route = findRoute(source, target, route);    
         console.log(route);
         return route;
@@ -463,12 +455,12 @@ function SvgFunctions(document){
     var findRoute = function(source, target, route){
         var sourceN = neighborsParser.getNeighbors(source);
         
-        for(var i = 0; i < sourceN.length && !$.inArray(target, route); i++){
+        for(var i = 0; i < sourceN.length; i++){
             route.push(target);
-            if (sourceN[i] == target)
+            console.log(sourceN[i]);
+            if (sourceN[i] == target && $.inArray(target, route))
                 return route;
             return findRoute (sourceN[i], target, route);
         }
-        return route;
     };
 }
