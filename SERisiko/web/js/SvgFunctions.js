@@ -16,10 +16,12 @@ function SvgFunctions(document){
     var counter = 0;
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
+    var neighborsParser = new NeighborsParser(root);
     
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
+        neighborsParser.init("/maps/map_nachbarn.txt");
     };
     
     this.getLandOwner = function(landId){
@@ -248,14 +250,13 @@ function SvgFunctions(document){
         });
     };
     
-    this.doMovementAnimation = function(source, target, amount){
-        var movementData, movementAData;
-        
+    this.doMovementAnimation = function(source, target, amount){     
+        var countryHeight, countryWidth, width, height, xPosition, yPosition;
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
         var rect = svgDoc.getElementById(source);
         var rectID = rect.getAttribute("id");
-
+        
         if(rectID != ""){
             countryHeight = parseInt(rect.getAttribute("height"));
             countryWidth = parseInt(rect.getAttribute("width"));
@@ -290,11 +291,24 @@ function SvgFunctions(document){
 
             mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount_mov" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
             
+            //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
+            //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
+            setTimeout(function(){Core.svgHandler.nextUnitTarget(source, target, "firstCall", 0);}, 0);
+        }
+    };
+    
+    
+    this.nextUnitTarget = function (source, target, route, pos){        
+        if(route == "firstCall")
+            route = calcUnitRunWay(source, target);
+        var tmp_target = route[pos];
+        
+        if(source != target){
             var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
             var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
-            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(target).getAttribute("id") + '_Unit');
-            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(target).getAttribute("id") + '_UnitCount');
-            
+            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
+            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
+
             var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
             var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
             var xDirection = "-";
@@ -302,16 +316,18 @@ function SvgFunctions(document){
             if (movementData[0] < movementData[2])
                 xDirection = "+";
             if (movementData[1] < movementData[3])
-                yDirection = "+";
+                yDirection = "+"; 
             
-            //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
-            //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
-            
-            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
+            this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
+               
+            this.nextUnitTarget(source, target, route, ++pos);
+        }
+        else{
+            //done
         }
     };
-        
-    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){
+    
+    this.moveUnitToTarget = function(callback, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){
         var finished = 0;
         if(xDirection == "+"){
             if (movementData[0] >= movementData[2])
@@ -362,7 +378,7 @@ function SvgFunctions(document){
                 if (movementAData[1] > movementAData[3])
                     movementAData[1] -= 5; imgAMov.setAttribute("y", movementAData[1]);
             }
-            setTimeout(function(){ Core.svgHandler.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);}, 0);
+            setTimeout(callback(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, 20));
         } 
         else{
             this.killDomElement(imgMov);
@@ -407,4 +423,40 @@ function SvgFunctions(document){
             context.fillText(count, 75, 90);
         }
     }; 
+    
+    
+    var sleep = function (millis, callback) {
+        setTimeout(function(){ callback(); }, millis);
+    };
+    
+    var calcUnitRunWay = function(source, target){
+        var route = new Array();
+        var sourceN = neighborsParser.getNeighbors(source);
+        var targetN = neighborsParser.getNeighbors(source);
+        //check for direct neighborhood
+        for(var i = 0; i < sourceN.length; i++){
+           if($.inArray(sourceN[i], targetN)){
+               route.push(target);
+               return route
+           }
+        }
+        //calc complexer route @ this point route will be empty
+        /*
+        for(var i = 0; i < sourceN.length; i++){
+            if($.inArray(sourceN[i], targetN)){
+                route.push(target);
+                return route
+            }
+            else{
+                for(var i = 0; i < sourceN.length; i++){
+                    if($.inArray(sourceN[i], targetN)){
+                      route.push(target);
+                        return route
+                    }
+                }
+            }
+        }   */
+        route.push(target); // snap fix
+        return route;
+    };
 }

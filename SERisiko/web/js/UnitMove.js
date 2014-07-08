@@ -29,7 +29,6 @@ function UnitMove(document){
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();
         Core.svgHandler.refreshOwnerRights();
-        setTimeout(function(){Core.svgHandler.doMovementAnimation(source, destination, parseInt(countSelector))}, 0);
     };
     
     this.clearUnitMoveDisplay = function(){

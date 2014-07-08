@@ -242,16 +242,32 @@ function ServerAnswerParser(doc){
     };
     
     var handleMapChangedMessage = function(message){
-        for (var i = 0; i < message.data.length; i++){
-            if(message.data[i].MapChange){
-                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
-                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
-                } else {
-                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
-
+        if(message.data.length == 3 && message.data[2].ServerGame.currentGameStatus == "Move"){
+            
+            var source = message.data[0].MapChange.countryId;
+            var destination = message.data[1].MapChange.countryId;
+            var amount = parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount);
+            Core.svgHandler.doMovementAnimation(source, destination, amount);
+            
+            if(Core.svgHandler.getLandOwner(message.data[0].MapChange.countryId) == message.data[0].MapChange.ownerId){
+                Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
+                Core.svgHandler.setLandComplete(message.data[1].MapChange.countryId, message.data[1].MapChange.ownerId, message.data[1].MapChange.unitCount);
+            } else {
+                Core.svgHandler.setLandComplete(message.data[0].MapChange.countryId, message.data[0].MapChange.ownerId, message.data[0].MapChange.unitCount);
+                Core.svgHandler.setLandUnitcount(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
+            }           
+        }   
+        else{
+            for (var i = 0; i < message.data.length; i++){
+                if(message.data[i].MapChange){
+                    if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
+                        Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    } else {
+                        Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+                    }
                 }
-            }
-        } 
+            } 
+        }
     };
     
     var handleAttackMessage = function(message){

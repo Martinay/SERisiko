@@ -178,6 +178,7 @@ function MyDataObject(){
     var thePlayerName = "";
     var inGameLobby = false;
     
+     //# Public Methods
     this.getPlayerId = function(){
         return thePlayerId;
     };
@@ -202,3 +203,58 @@ function MyDataObject(){
         inGameLobby = arg;
     };
 }
+
+/*
+ * Data abstraction class for the land data
+ */
+function LandObject(name, data){
+    //#Private Vars
+    var me = name;
+    var neighbors = data;
+    
+     //# Public Methods
+    this.getNeighbors = function(){
+        return neighbors;
+    };
+    this.getId = function(){
+        return me;
+    };    
+}
+function LandList(){
+    //#Public Vars
+
+    //#Private Vars
+    var amount = 0;
+    var lands = new Array();
+
+    //# Public Methods
+    this.clear = function(){
+        lands = [];
+        amount = 0;
+    };
+
+    this.addLand = function(name, data){
+        amount++;
+        lands.push(new LandObject(name, data));
+    };
+
+    this.getLands = function(){
+        if(lands != null)
+            return lands;
+        else
+            alert('no lands found');
+    };
+
+    this.getLandAmount = function(){
+        return amount;
+    };
+
+    this.getLandById = function(name){
+        for(var i = 0; i < amount; i++){
+            if (lands[i].getId() == name)
+                return lands[i];
+        }
+        return "land not found";
+    };
+}
+
