@@ -52,6 +52,7 @@ function Connection(){
     };
     
     this.joinGame = function(id){
+        //Core.setGameName(parseInt(id));
         connection.joinGame(parseInt(id));
     };
     

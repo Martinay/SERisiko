@@ -41,9 +41,9 @@ function UnitPlacement(document){
         root.getElementById("bottom_overlay").innerHTML = "\
                         <label for='unitAmount'>Anzahl Einheiten auf " + id + "</label> \
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                        <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-left: 530px;'>Abbrechen</Button>\
-                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-left: 20px;'>OK</button>";
-        Core.createSlider("unitAmount", "insertSliderAfter", 1, maxValue);
+                        <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>OK</button>\
+                        <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>Abbrechen</Button>";
+        Core.createSlider("unitAmount", "abortUnitPlacement", 1, maxValue);
         if(oldValue != 0){
             $( "#slider" ).slider( "value", oldValue );
             $("#unitAmount").val(oldValue);

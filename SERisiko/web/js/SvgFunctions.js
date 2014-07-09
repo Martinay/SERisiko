@@ -59,6 +59,8 @@ function SvgFunctions(document){
         this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
         neighborLands = theRect.getAttribute("neighbor").split(",");
+        theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'pointer');");
+        theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'default');");
         theRect = svgDoc.getElementById(id + "_back");
         theRect.setAttribute('opacity','0.3');
         if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){

@@ -67,19 +67,19 @@
     </div>
     <div id="game"> 
         <div id="GameScreen">
-            <h3 class="playerNameDisplay" style="text-align: center;">NoPlayerName given!</h3>
+            <h3 style="text-align: center;"><span class="playerNameDisplay"></span> - <span id="gameNameAnzeige"></span></h3>
             <div id="gameMap">
                 <object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml">
                     <img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/>
                 </object>
                 <!-- Map Blocker -->
                 <div id='mutex'></div>
-                 <!-- Select Unit Amount Overlay -->
+                <!-- Select Unit Amount Overlay -->
                 <div id ="bottom_overlay"></div>
                 <!-- Loading Overlay -->
                 <div id="loading_overlay"></div>
             </div>
-        </div> 
+        </div>
         <div id="gameOptions">
             <div id="gameStatus">Bitte melden Sie sich Spielbereit</div>
             <br>
@@ -88,16 +88,16 @@
             <button  id="gamePhase" name="gamePhase" onClick='Core.connectionHandler.setPlayerState(true);'>Bereit zum Spielen</button>
             <div id="startGame"></div>
             <button  id="backToLobbyBtn" name="backToLobby" onClick='Core.backToLobby();' style="width: 160px;">Spiel verlassen</button>
-            <div id="wrapper"> 
-                <div id="chatbox"></div>
-                   
-                <div id="message">
-                    <input name="usermsg" type="text" id="usermsg" size="63" onkeyup="Core.checkForKey('usermsg', event.keyCode)"/>
-                    <input name="submitmsg" type="button" onClick="Core.validateChatMessage();" id="submitmsg" value="Senden" />
-                </div>
-            </div>
         </div>
         <div style="clear:both"></div>
+        <hr />
+        <div id="chat">
+            <div id="chatbox"></div>
+            <div id="message">
+                <input name="usermsg" type="text" id="usermsg" size="63" onkeyup="Core.checkForKey('usermsg', event.keyCode)"/>
+                <input name="submitmsg" type="button" onClick="Core.validateChatMessage();" id="submitmsg" value="Senden" />
+            </div>
+        </div>
     </div>
     <br /><br/>
     <!-- Results -->

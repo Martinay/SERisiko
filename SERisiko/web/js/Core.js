@@ -66,6 +66,10 @@ function Core() {
     this.isGameRunning = function(){
         return gameRunning;
     };
+    
+    this.setGameName = function(id){
+        document.getElementById("gameNameAnzeige").innerHTML = this.gameList.getGame(id).getGameName();
+    };
     //##############################
     
     this.updatePlayerList = function(){

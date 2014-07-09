@@ -71,22 +71,24 @@
     /*display: block;*/
     display: none;
     margin: 0px auto;
-    width: 90%;
+    width: 99%;
 }
 
-#gameOptions{
-    display: block;
-    float: right;
+#gameOptions { 	
+    width: 180px; 
+    padding-bottom: 10000px; 
+    margin-bottom: -10000px;
+    float: right; 
     text-align: center;
-    width: 180px;
-}
+}		
 
-#GameScreen { 
-    display: block; 
-    position: static;
+#GameScreen { 	
     width: 950px;
-    float: left;
     min-height: 700px;
+    overflow: hidden;
+    overflow-y: hidden;
+    float: left;
+    margin: -30px 50px 0px 50px;    
 }
 
 #svg_obj{
@@ -100,15 +102,15 @@
 }
 
 #gameStatus{
-    padding-top: 80px;
+    padding-top: 120px;
     height: 150px;
 }
 
 #playerList{
     padding: 7px;
-    border: 3px solid black;
+    border: 2px solid black;
     width: 160px;
-    height: 140px;
+    height: 180px;
     text-align: center;
     margin: 0px 10px;
     position: absolute;
@@ -116,6 +118,7 @@
 /**anderes **/
 hr{
     color: #000000;
+    margin: 8px 0px;
 }
 
 /** loading overlay **/
@@ -190,23 +193,28 @@ label[for=unitAmountAttack]{
     margin-bottom: 10px; 
     width: 160px;
     position: relative;
-    margin-top: 160px;
+    margin-top: 180px;
 }
 
 /** Chat Stuff **/
 input { 
     font:12px arial; 
+    color: black;
 }
-#wrapper{
+
+#chat { 
+    width: 950px;
+    height: 150px;
+    margin: 10px auto;
+    font-family: Vani, Arial; 
+    font-size: 13px; 
+    color: #FFFFFF;
+    text-align: center;
     background:#EBF4FB;
     padding: 7px;
-    border: 3px solid black;
-    width: 160px;
-    height: 275px;
-    text-align: center;
-    margin: 0px 10px;
-    position: absolute;
+    border: 2px solid black;
 }
+
 
 #chatbox {
     text-align:left;
@@ -214,10 +222,11 @@ input {
     margin-bottom:10px;
     padding:10px;
     background:#fff;
-    height:200px;
-    width:140px;
+    height: 100px;
+    width: 930px;
     border:1px solid #ACD8F0;
-    overflow:auto; 
+    overflow:auto;
+    color: black;
 }
   
 #usermsg {
