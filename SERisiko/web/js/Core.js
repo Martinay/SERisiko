@@ -145,6 +145,14 @@ function Core() {
         $("#chatbox").html("");
         $("#usermsg").html("");
         
+        if(this.sctTable != null){
+            this.sctTable.clear("availableGames");
+            this.gameList.clear();
+            this.connectionHandler.listOpenGames();
+        }
+        else
+            alert("Error! no gameTable");	
+        
         this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
         $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
     };

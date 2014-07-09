@@ -40,7 +40,7 @@ function NeighborsParser(document){
                 if(lines[i] != ""){
                     var dat = lines[i].split(":");
                     var dat2 = dat[1].split(",");
-                    dat2[dat2.length-1] = dat2[dat2.length-1].slice(0, -1);
+                    dat2[dat2.length-1] = dat2[dat2.length-1].substr(0, dat2[dat2.length-1].length-1);
                     if(dat[0] != "" && dat[1] != ""){
                         list.addLand(dat[0], dat2);
                     }
