@@ -482,7 +482,7 @@ function SvgFunctions(document){
         }
             
         for(var i = 0; i < sourceN.length; i++){
-            if($.inArray(sourceN[i], route) != 1){
+            if($.inArray(sourceN[i], route) == -1){
                 route.push(sourceN[i]);
                 console.log("add "+sourceN[i]+" to route: "+route);
                 route = findRoute (sourceN[i], target, route);
