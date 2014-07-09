@@ -68,7 +68,7 @@ function Core() {
     };
     
     this.setGameName = function(id){
-        document.getElementById("gameNameAnzeige").innerHTML = this.gameList.getGame(id).getGameName();
+        document.getElementById("gameNameAnzeige").innerHTML = this.gameList.getGameNameById(id);
     };
     //##############################
     

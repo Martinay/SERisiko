@@ -38,6 +38,15 @@ function GameList(){
     this.getGame = function(index){
         return games[index];
     };
+    
+    this.getGameNameById = function(id){
+        for(var i = 0; i < amount; i++){
+            if(games[i].getGameId() == id){
+                return games[i].getGameName();
+            }
+        }
+    }
+    
     this.deleteGame = function(index){
         if(index < amount){
             for(var i = 0; i < amount; i++){
