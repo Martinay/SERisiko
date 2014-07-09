@@ -464,7 +464,7 @@ function SvgFunctions(document){
         var sourceN = neighborsParser.getOwnNeighbors(source);
         if($.inArray(target, route) != -1)
             return route;
-        if(sourceN.length == 0){
+        if(sourceN.length == 0 || (sourceN.length == 1 && $.inArray(sourceN[0], route) != -1)){
             route.splice(route.length-1, 1);
             return route;
         }
