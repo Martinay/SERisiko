@@ -221,7 +221,7 @@ function LandObject(name, data){
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
         var ownerId = svg.getElementById(me).getAttribute("owner");
         
-        for(var i; i < neighbors.length;i++){
+        for(var i = 0; i < neighbors.length; i++){
             if (Core.svgHandler.getNeighborsParser.getLandById(neighbors[i]).getOwnerId == ownerId)
                 ngbhs.push(neighbors[i]);
         }
