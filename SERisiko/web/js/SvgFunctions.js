@@ -462,7 +462,11 @@ function SvgFunctions(document){
     
     var findRoute = function(source, target, route){
         var sourceN = neighborsParser.getOwnNeighbors(source);
-        if($.inArray(target, route) != -1)
+        if(source == target){
+            route.push("finish");
+            return route;
+        }      
+        if($.inArray(target, route) != -1 || route[route.length-1] == "finish")
             return route;
         if(sourceN.length == 0 || (sourceN.length == 1 && $.inArray(sourceN[0], route) != -1)){
             route.splice(route.length-1, 1);
