@@ -299,7 +299,7 @@ function SvgFunctions(document){
             
             //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
             //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
-            setTimeout(function(){Core.svgHandler.nextUnitTarget(source, target, "firstCall", 0);}, 0);
+            setTimeout(this.nextUnitTarget(source, target, "firstCall", 0), 0);
         }
     };
     
@@ -325,13 +325,16 @@ function SvgFunctions(document){
             if (movementData[1] < movementData[3])
                 yDirection = "+"; 
 
-            this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
+            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, ++pos);
 
-            this.nextUnitTarget(tmp_target, target, route, ++pos);
          }
+         else{
+            this.killDomElement(imgMov);
+            this.killDomElement(imgAMov);
+        }
     };
     
-    this.moveUnitToTarget = function(callback, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){
+    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, pos){
         var finished = 0;
         if(xDirection == "+"){
             if (movementData[0] >= movementData[2])
@@ -398,11 +401,10 @@ function SvgFunctions(document){
                     imgAMov.setAttribute("y", movementAData[1]);
                 }
             }
-            setTimeout(function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){callback(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection)}, 50);
+            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection), 50);
         } 
         else{
-            this.killDomElement(imgMov);
-            this.killDomElement(imgAMov);
+            this.nextUnitTarget(tmp_target, target, route, pos);
         }
     };
     
