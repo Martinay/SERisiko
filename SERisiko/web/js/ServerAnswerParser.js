@@ -204,7 +204,10 @@ function ServerAnswerParser(doc){
     };
     
     var handleGameStartedMessage = function(message){
-        Core.setGameRunning(true);
+        if(message.data[0].ServerGame && message.data[0].ServerGame.currentGameStatus == "WaitingForPlayer")
+            return;
+        
+        Core.setGameRunning(true)
         root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
         root.getElementById("startGame").innerHTML = "";
         Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doFirstUnitPlacement();",  true);
