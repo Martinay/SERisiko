@@ -204,8 +204,10 @@ function ServerAnswerParser(doc){
     };
     
     var handleGameStartedMessage = function(message){
-        if(message.data[0].ServerGame && message.data[0].ServerGame.currentGameStatus == "WaitingForPlayer")
+        if(message.data[0].ServerGame && message.data[0].ServerGame.currentGameStatus == "WaitingForPlayer"){
+            root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler<br> <span style='color: red;'>Nicht alle Spieler sind bereit!</span>";
             return;
+        }
         
         Core.setGameRunning(true)
         root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";

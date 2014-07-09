@@ -216,16 +216,19 @@ function LandObject(name, data){
     this.getNeighbors = function(){
         return neighbors;
     };
-    this.getOwnNeighbors = function(){
+    this.getOwnNeighbors = function(landData){
         var ngbhs = new Array();
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
-        var ownerId = svg.getElementById(me).getAttribute("owner");
         
         for(var i = 0; i < neighbors.length; i++){
-            if (Core.svgHandler.getNeighborsParser.getLandById(neighbors[i]).getOwnerId == ownerId)
+            if (landData.getLandById(neighbors[i]).getOwnerId(svg) == this.getOwnerId(svg))
                 ngbhs.push(neighbors[i]);
         }
         return ngbhs;
+    };
+    
+    this.getOwnerId = function(svg){
+        return svg.getElementById(me).getAttribute("owner"); 
     };
     
     this.getId = function(){
@@ -245,9 +248,9 @@ function LandList(){
         amount = 0;
     };
 
-    this.addLand = function(name, data, id){
+    this.addLand = function(name, data){
         amount++;
-        lands.push(new LandObject(name, data, id));
+        lands.push(new LandObject(name, data));
     };
 
     this.getLands = function(){

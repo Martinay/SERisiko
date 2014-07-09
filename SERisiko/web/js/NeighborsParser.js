@@ -24,6 +24,13 @@ function NeighborsParser(document){
         return landData.getLandById(source).getNeighbors();
     };
     
+    this.getOwnNeighbors = function(source){
+        return landData.getLandById(source).getOwnNeighbors(landData);
+    };
+    this.getLands = function(){
+        return landData;
+    };
+    
      //# Private Methode    
     var buildLandData = function (path) {
         var list = new LandList();
@@ -32,7 +39,8 @@ function NeighborsParser(document){
             for(var i  in lines){
                 if(lines[i] != ""){
                     var dat = lines[i].split(":");
-                    var dat2 = dat[1].split(",").slice(0, -1);
+                    var dat2 = dat[1].split(",");
+                    dat2[dat2.length-1] = dat2[dat2.length-1].slice(0, -1);
                     if(dat[0] != "" && dat[1] != ""){
                         list.addLand(dat[0], dat2);
                     }

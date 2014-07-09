@@ -307,28 +307,28 @@ function SvgFunctions(document){
             route = calcUnitRunWay(source, target);
         var tmp_target = route[pos];
         
-        if(source != target){
-            var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
-            var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
-            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
-            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
+        
+        var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
+        var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
+        var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
+        var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
 
-            var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
-            var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
-            var xDirection = "-";
-            var yDirection = "-";
-            if (movementData[0] < movementData[2])
-                xDirection = "+";
-            if (movementData[1] < movementData[3])
-                yDirection = "+"; 
-            
-            this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
-               
-            this.nextUnitTarget(source, target, route, ++pos);
-        }
-        else{
-            //done
-        }
+        var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
+        var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
+        var xDirection = "-";
+        var yDirection = "-";
+        if (movementData[0] < movementData[2])
+            xDirection = "+";
+        if (movementData[1] < movementData[3])
+            yDirection = "+"; 
+
+        this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
+        
+        if(source == target || pos == route.length-1)
+            return;
+        else
+         this.nextUnitTarget(tmp_target, target, route, ++pos);
+
     };
     
     this.moveUnitToTarget = function(callback, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){
@@ -457,14 +457,17 @@ function SvgFunctions(document){
     };
     
     var findRoute = function(source, target, route){
-        var sourceN = neighborsParser.getNeighbors(source);
+        var sourceN = neighborsParser.getOwnNeighbors(source);
         
         for(var i = 0; i < sourceN.length; i++){
-            route.push(target);
-            console.log(sourceN[i]);
-            if (sourceN[i] == target && $.inArray(target, route))
+            if($.inArray(sourceN[i], route) != -1)
+                return route;
+            route.push(sourceN[i]);
+            console.log("add "+sourceN[i]+" to route: "+route);
+            if($.inArray(target, route) != -1)
                 return route;
             return findRoute (sourceN[i], target, route);
         }
+        return route;
     };
 }
