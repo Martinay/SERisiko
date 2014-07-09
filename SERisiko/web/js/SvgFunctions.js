@@ -305,30 +305,28 @@ function SvgFunctions(document){
     this.nextUnitTarget = function (source, target, route, pos){        
         if(route == "firstCall")
             route = calcUnitRunWay(source, target);
-        var tmp_target = route[pos];
-        
-        
-        var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
-        var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
-        var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
-        var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
+        if(!pos == route.length){
+            var tmp_target = route[pos];
 
-        var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
-        var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
-        var xDirection = "-";
-        var yDirection = "-";
-        if (movementData[0] < movementData[2])
-            xDirection = "+";
-        if (movementData[1] < movementData[3])
-            yDirection = "+"; 
 
-        this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
-        
-        if(source == target || pos == route.length-1)
-            return;
-        else
-         this.nextUnitTarget(tmp_target, target, route, ++pos);
+            var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
+            var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
+            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
+            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
 
+            var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
+            var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
+            var xDirection = "-";
+            var yDirection = "-";
+            if (movementData[0] < movementData[2])
+                xDirection = "+";
+            if (movementData[1] < movementData[3])
+                yDirection = "+"; 
+
+            this.moveUnitToTarget(this.moveUnitToTarget, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection);
+
+            this.nextUnitTarget(tmp_target, target, route, ++pos);
+         }
     };
     
     this.moveUnitToTarget = function(callback, movementData, movementAData, imgMov, imgAMov, xDirection, yDirection){
@@ -451,22 +449,32 @@ function SvgFunctions(document){
     
     var calcUnitRunWay = function(source, target){
         var route = new Array();
-        route = findRoute(source, target, route);    
-        console.log(route);
+        
+        if($.inArray(target, neighborsParser.getOwnNeighbors(source)) != -1){   //check direct neighbors
+            route.push(target);
+        }
+        else{                                                                    //calc complex pathfinding route
+            route = findRoute(source, target, route);      
+        }
+        console.log("Calculated Route: " + route);
         return route;
     };
     
     var findRoute = function(source, target, route){
         var sourceN = neighborsParser.getOwnNeighbors(source);
-        
+        if($.inArray(target, route) != -1)
+            return route;
+        if(sourceN.length == 0){
+            route.splice(route.length-1, 1);
+            return route;
+        }
+            
         for(var i = 0; i < sourceN.length; i++){
-            if($.inArray(sourceN[i], route) != -1)
-                return route;
-            route.push(sourceN[i]);
-            console.log("add "+sourceN[i]+" to route: "+route);
-            if($.inArray(target, route) != -1)
-                return route;
-            return findRoute (sourceN[i], target, route);
+            if($.inArray(sourceN[i], route) != 1){
+                route.push(sourceN[i]);
+                console.log("add "+sourceN[i]+" to route: "+route);
+                route = findRoute (sourceN[i], target, route);
+            }
         }
         return route;
     };
