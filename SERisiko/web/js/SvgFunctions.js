@@ -17,6 +17,7 @@ function SvgFunctions(document){
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
     var neighborsParser = new NeighborsParser(root);
+    var route = null;
     
     //# Public Methods
     this.init = function(doc){       
@@ -63,10 +64,10 @@ function SvgFunctions(document){
         var neighborLands = getLandNeighbors(id);
         var neighborLandsToReturn = new Array();
         for (i = 0; i < neighborLands.length; i++){
-            if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  Core.getPlayerId()){
+            if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  svgDoc.getElementById(id).getAttribute("owner")){
                 neighborLandsToReturn.push(neighborLands[i]);
             } 
-            if (own == false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") !=  Core.getPlayerId()) {
+            if (own == false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") != svgDoc.getElementById(id).getAttribute("owner")) {
                 neighborLandsToReturn.push(neighborLands[i]);
             }
         }
@@ -274,7 +275,8 @@ function SvgFunctions(document){
         });
     };
     
-    this.doMovementAnimation = function(source, target, amount){     
+    this.doMovementAnimation = function(source, target, amount){
+        route = null;
         var countryHeight, countryWidth, width, height, xPosition, yPosition;
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
@@ -318,9 +320,9 @@ function SvgFunctions(document){
             //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
             //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
             
-            var route = calcUnitRunWay(source, target);
-            
-            this.nextUnitTarget(source, target, route);
+            route = calcUnitRunWay(source, target);
+            console.log("ErgebnisRoute: " + route.toString())
+            //this.nextUnitTarget(source, target, route);
         }
     };
     
@@ -468,10 +470,15 @@ function SvgFunctions(document){
         setTimeout(function(){ callback(); }, millis);
     };
     
+   
+  
+    
     var calcUnitRunWay = function(source, target){
-       var route = new Array();
-       route.push(source);
-       return findRoute2(route, route, getLandNeighbors(source), target) 
+        var arrayToDelete = new Array();
+        arrayToDelete.push(source);
+        var routeArr = new Array();
+        routeArr.push(source);
+        return findRoute(routeArr, target, arrayToDelete); 
     };
     
     /*var calcUnitRunWay = function(source, target){
@@ -531,25 +538,22 @@ function SvgFunctions(document){
      * @param string target country
      */
     
-    var RoutesArr = new Array();
-    
-    var prepairFindRoute = function(source, target){
-        var myNeighbors = getLandNeighborsFiltered(source, true);
-        for(i = 0; i < myNeighbors.length; i++){
-            if(myNeighbors[i] != target){
-                RoutesArr[i].push(source);
-                RoutesArr[i].push(RoutesArr[i]);
-                findRoute(RoutesArr[i], target, i);
-            }
-        }
-    };
-    
-    var findRoute = function(source, target , id){
-        var myNeighbors = getLandNeighborsFiltered(source, true);
-        for(i = 0; i < myNeighbors.length; i++){
-            if(myNeighbors[i] != target){
-                RoutesArr[id][i].push(RoutesArr[RoutesArr[id]]);
-                findRoute(RoutesArr[i], target, i);
+    var findRoute = function(sourceArr, target, arrayDelete){
+        var neighborlands = Core.svgHandler.getLandNeighborsFiltered(sourceArr[sourceArr.length - 1], true);
+        neighborlands = arraySchnittmengeDelete(neighborlands, arrayDelete);
+        for(i = 0; i < neighborlands.length; i++){
+            var newArrayDelete = new Array();
+            var newSource = new Array();
+            newArrayDelete = arrayDelete;
+            newSource = sourceArr;
+            newSource.push(neighborlands[i]);
+            console.log(newSource.toString());
+            if(neighborlands[i] == target){
+                route = newSource;
+                return newSource;
+            } else {
+                arrayDelete.push(neighborlands[i]);
+                setTimeout(function() {findRoute(newSource, target, newArrayDelete)}, 10);
             }
         }
     };

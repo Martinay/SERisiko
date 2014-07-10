@@ -16,6 +16,9 @@
                 .fil2 {fill:#E51A4B}
                 .fil4 {fill:#E31E24}
                 .fil7 {fill: rgba(43,42,41, 0.6)}
+                .fil8 {fill:#CC0000}
+                .fil9 {fill:#009900}
+                .fnt4 {font-weight:bold;font-size:623.33px;font-family:'Arial'}
                 .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
                 .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
                 .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
