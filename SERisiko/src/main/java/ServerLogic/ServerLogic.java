@@ -176,7 +176,10 @@ public class ServerLogic implements IServerLogic {
     @Override
     public PlayerLeftGameMessage LeaveGame(int playerID) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.GetGameByPlayerId(playerID);
+        ServerGame game = _state.TryGetGameByPlayerId(playerID);
+
+        if (game == null)
+            return MessageCreator.CreatePlayerLeftGameMessage(Arrays.asList(playerID),null,player,null);
 
         game.RemovePlayer(player);
 

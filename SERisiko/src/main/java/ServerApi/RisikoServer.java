@@ -3,17 +3,14 @@ package ServerApi;
 import Network.WebSocket.WebSocketHandler;
 import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
-import ServerLogic.Model.ChatMessage;
-import ServerLogic.Model.ClientMapChange;
-import ServerLogic.Model.Dice;
-import ServerLogic.Model.Game;
-import ServerLogic.Model.MapChange;
+import ServerLogic.Model.*;
 import ServerLogic.ServerLogic;
+import org.json.simple.JSONObject;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import org.json.simple.JSONObject;
 
 
 /**
@@ -146,8 +143,9 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         }
         
         response.addChangedObject( message.Player );
-        
-        response.addChangedObject( message.Game );
+
+        if (message.Game != null)
+            response.addChangedObject( message.Game );
 
         
         return response;
