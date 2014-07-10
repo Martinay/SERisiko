@@ -95,7 +95,7 @@ public class ServerLogic implements IServerLogic {
 
         if (helper.AllPlayerFinished()) {
             helper.ApplyChangesToGame();
-            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(),game.GetMap(), game, player);
+            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(),helper.GetMapChanges(), game, player);
         }
         return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(), null, null, player);
 
