@@ -169,6 +169,7 @@ public class ServerGame extends Game {
     }
 
     public List<MapChange> GetMap() {
+
         return Linq4j.asEnumerable(Arrays.asList(_spiel.gib_aktuellen_Zustand().gib_Laender()))
                 .select(new Function1<Land, MapChange>() {
                     @Override
@@ -207,7 +208,7 @@ public class ServerGame extends Game {
 
     public void RemovePlayer(Player player) {
 
-        if (Creator.ID == player.ID && (CurrentGameStatus == GameStatus.WaitingForPlayer || CurrentGameStatus == GameStatus.FirstRoundPlacing))
+        if (Creator.ID == player.ID && (CurrentGameStatus == GameStatus.WaitingForPlayer || CurrentGameStatus == GameStatus.FirstRoundPlacing) || Players.size() == 1)
             Finish();
         else
             player.PlayerStatus = PlayerStatus.Undefined;

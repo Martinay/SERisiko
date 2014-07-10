@@ -1,10 +1,12 @@
 package ServerLogic.Helper;
 
 import ServerLogic.Model.ClientMapChange;
+import ServerLogic.Model.MapChange;
 import ServerLogic.Model.Player;
 import ServerLogic.Model.Server.ServerGame;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,7 +14,8 @@ import java.util.List;
  */
 public class FirstUnitPlacementHelper {
     private ServerGame _game;
-    private HashMap<Player, List<ClientMapChange>> finishedPlayers = new HashMap<>();
+    private HashMap<Player, List<ClientMapChange>> _finishedPlayers = new HashMap<>();
+    private List<ClientMapChange> _clientChanges = new LinkedList<>();
 
     public FirstUnitPlacementHelper(ServerGame game) {
 
@@ -20,27 +23,33 @@ public class FirstUnitPlacementHelper {
     }
 
     public void Collect(Player player, List<ClientMapChange> clientMapChanges) {
-        finishedPlayers.put(player, clientMapChanges);
+        _finishedPlayers.put(player, clientMapChanges);
+        _clientChanges.addAll(clientMapChanges);
     }
 
     public boolean AllPlayerFinished() {
-        return _game.Players.size() == finishedPlayers.size();
+        return _game.Players.size() == _finishedPlayers.size();
     }
 
     public void ApplyChangesToGame() {
         if (!AllPlayerFinished())
             return;
 
-        while (finishedPlayers.size() != 0)
+        while (_finishedPlayers.size() != 0)
         {
             Player currentPlayer = _game.CurrentPlayer;
             ApplyChangesToGame(currentPlayer);
-            finishedPlayers.remove(currentPlayer);
+            _finishedPlayers.remove(currentPlayer);
         }
     }
 
+    public List<MapChange> GetMapChanges() {
+
+        return _game.GetMapChanges(_clientChanges);
+    }
+
     private void ApplyChangesToGame(Player currentPlayer) {
-        List<ClientMapChange> changes = finishedPlayers.get(currentPlayer);
+        List<ClientMapChange> changes = _finishedPlayers.get(currentPlayer);
         for(ClientMapChange change : changes)
         {
             if (_game.CurrentPlayer.ID != currentPlayer.ID)

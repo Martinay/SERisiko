@@ -95,7 +95,7 @@ public class ServerLogic implements IServerLogic {
 
         if (helper.AllPlayerFinished()) {
             helper.ApplyChangesToGame();
-            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(),game.GetMap(), game, player);
+            return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(),helper.GetMapChanges(), game, player);
         }
         return MessageCreator.CreateEndFirstUnitPlacementMessage(game.GetPlayerIds(), null, null, player);
 
@@ -176,7 +176,10 @@ public class ServerLogic implements IServerLogic {
     @Override
     public PlayerLeftGameMessage LeaveGame(int playerID) {
         Player player = _state.GetPlayer(playerID);
-        ServerGame game = _state.GetGameByPlayerId(playerID);
+        ServerGame game = _state.TryGetGameByPlayerId(playerID);
+
+        if (game == null)
+            return MessageCreator.CreatePlayerLeftGameMessage(Arrays.asList(playerID),null,player,null);
 
         game.RemovePlayer(player);
 
