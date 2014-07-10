@@ -114,7 +114,7 @@ function ServerAnswerParser(doc){
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-           Core.prepareJoinedGame();
+            Core.prepareJoinedGame();
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);
@@ -224,6 +224,8 @@ function ServerAnswerParser(doc){
             }
         }
         Core.changePlayerListPic(0);
+        Core.svgHandler.getLandNeighborsFiltered("P2", true);
+        Core.svgHandler.getLandNeighborsFiltered("P2", false);
     };
     
     var handleEndFirstUnitPlacementMessage = function(message){

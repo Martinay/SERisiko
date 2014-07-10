@@ -36,6 +36,7 @@ function Connection(){
     };
     
     this.createGame = function(gameName, maxPlayers){
+        document.getElementById("gameNameAnzeige").innerHTML = gameName;
         connection.createGame(gameName, maxPlayers);
     };
     

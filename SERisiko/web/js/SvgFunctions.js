@@ -54,11 +54,29 @@ function SvgFunctions(document){
     this.getLandUnitcount = function(landId){
         return parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));  
     };
-
+ 
+    var getLandNeighbors = function(id){
+        return svgDoc.getElementById(id).getAttribute("neighbor").split(",");
+    };
+    
+    this.getLandNeighborsFiltered = function(id, own){
+        var neighborLands = getLandNeighbors(id);
+        var neighborLandsToReturn = new Array();
+        for (i = 0; i < neighborLands.length; i++){
+            if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  Core.getPlayerId()){
+                neighborLandsToReturn.push(neighborLands[i]);
+            } 
+            if (own == false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") !=  Core.getPlayerId()) {
+                neighborLandsToReturn.push(neighborLands[i]);
+            }
+        }
+        return neighborLandsToReturn;
+    };
+    
     this.identifySource = function(id){
         this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
-        neighborLands = theRect.getAttribute("neighbor").split(",");
+        neighborLands = getLandNeighbors(id);
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'default');");
         theRect = svgDoc.getElementById(id + "_back");
@@ -451,6 +469,12 @@ function SvgFunctions(document){
     };
     
     var calcUnitRunWay = function(source, target){
+       var route = new Array();
+       route.push(source);
+       return findRoute2(route, route, getLandNeighbors(source), target) 
+    };
+    
+    /*var calcUnitRunWay = function(source, target){
         //var route = new Array(source);
         //route = findRoute2(route, route, neighborsParser.getLands(), target);
         
@@ -495,6 +519,7 @@ function SvgFunctions(document){
         }
         return route;
     };
+     */
     
     /**
      * Könnte memmory leeks enthalten
@@ -505,14 +530,39 @@ function SvgFunctions(document){
      * 
      * @param string target country
      */
-     var findRoute2 = function(source, route, stack, target) {       
+    
+    var RoutesArr = new Array();
+    
+    var prepairFindRoute = function(source, target){
+        var myNeighbors = getLandNeighborsFiltered(source, true);
+        for(i = 0; i < myNeighbors.length; i++){
+            if(myNeighbors[i] != target){
+                RoutesArr[i].push(source);
+                RoutesArr[i].push(RoutesArr[i]);
+                findRoute(RoutesArr[i], target, i);
+            }
+        }
+    };
+    
+    var findRoute = function(source, target , id){
+        var myNeighbors = getLandNeighborsFiltered(source, true);
+        for(i = 0; i < myNeighbors.length; i++){
+            if(myNeighbors[i] != target){
+                RoutesArr[id][i].push(RoutesArr[RoutesArr[id]]);
+                findRoute(RoutesArr[i], target, i);
+            }
+        }
+    };
+    
+     var findRoute2 = function(source, route, stack, target) { 
+         console.log("Test");
         //check the given source list (countrys to test)
         //and drop the elements from stack
         for(var i = 0; i < source.length; i++){
             
             //target found, first match is shortest route
             if(source[i] === target) {
-                route[route.indexOf(source[i])].push(target);
+                route.push(target);
                 return route[route.indexOf(source[i])]; //return the complete route
             }  
             //delete source[i] from stack
@@ -535,11 +585,12 @@ function SvgFunctions(document){
                     newSource.push(neighbors[j]);               // push the neighbor to new sources to check
                     
                     newRoute[neighbors.indexOf(neighbors[j])] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
-                    newRoute[neighbors.indexOf(neighbors[j])].push(neighbors[j]);  // and add himself to his own list for the next call
+                    newRoute.push(neighbors[j]);  // and add himself to his own list for the next call
                 }                 
             }
         }    
         //call recursive if neighbors exists  
-        return  (newSource.lenth > 0) ? findRoute (newSource, newRoute, newStack, target) : false;
+        console.log("Pfad: " + newSource.toString())
+        return  (newSource.length > 0) ? findRoute2(newSource, newRoute, newStack, target) : false;
      };
 }
