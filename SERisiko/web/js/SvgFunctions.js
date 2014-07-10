@@ -299,18 +299,18 @@ function SvgFunctions(document){
             
             //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
             //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
-            setTimeout(this.nextUnitTarget(source, target, "firstCall", 0), 0);
+            
+            var route = calcUnitRunWay(source, target);
+            
+            this.nextUnitTarget(source, target, route);
         }
     };
     
     
-    this.nextUnitTarget = function (source, target, route, pos){        
-        if(route == "firstCall")
-            route = calcUnitRunWay(source, target);
-        if(!pos == route.length){
-            var tmp_target = route[pos];
-
-
+    this.nextUnitTarget = function (source, target, route){        
+        if(route.length > 0){
+            var tmp_target = route.shift();
+            
             var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
             var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
             var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
@@ -325,8 +325,7 @@ function SvgFunctions(document){
             if (movementData[1] < movementData[3])
                 yDirection = "+"; 
 
-            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, ++pos);
-
+            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route);
          }
          else{
             this.killDomElement(imgMov);
@@ -334,7 +333,7 @@ function SvgFunctions(document){
         }
     };
     
-    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, pos){
+    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route){
         var finished = 0;
         if(xDirection == "+"){
             if (movementData[0] >= movementData[2])
@@ -401,10 +400,10 @@ function SvgFunctions(document){
                     imgAMov.setAttribute("y", movementAData[1]);
                 }
             }
-            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection), 50);
+            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route), 50);
         } 
         else{
-            this.nextUnitTarget(tmp_target, target, route, pos);
+            this.nextUnitTarget(tmp_target, target, route);
         }
     };
     
@@ -452,7 +451,7 @@ function SvgFunctions(document){
     };
     
     var calcUnitRunWay = function(source, target){
-        var route = new Array(source);
+        //var route = new Array(source);
         //route = findRoute2(route, route, neighborsParser.getLands(), target);
         
         var route = new Array();
@@ -535,8 +534,8 @@ function SvgFunctions(document){
                     
                     newSource.push(neighbors[j]);               // push the neighbor to new sources to check
                     
-                    newRoute[neighbors[j]] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
-                    newRoute[neighbors[j]].push(neighbors[j]);  // and add himself to his own list for the next call
+                    newRoute[neighbors.indexOf(neighbors[j])] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
+                    newRoute[neighbors.indexOf(neighbors[j])].push(neighbors[j]);  // and add himself to his own list for the next call
                 }                 
             }
         }    
