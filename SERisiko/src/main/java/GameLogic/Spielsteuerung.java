@@ -38,6 +38,7 @@ public class Spielsteuerung {
 
     private void setzeBesitzer(Kontinent[] kontinente) {
         //TODO
+        //Einfügen der Spielerverteilfunktion von Simon aus Ursprünglichem Programm
 
         for (Kontinent kontinent : kontinente)
         {
@@ -50,8 +51,21 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
-    public void EntferneSpieler(Spieler spieler){
-        //TODO: Spieler entfernen, Karte neu verteilen
+    public void EntferneSpieler(Spieler zuentfernenderspieler){
+        Spieler[] dienewSpieler = Spieler[dieSpieler.length-1];
+        i=0;
+        
+        while((dieSpieler[i]!=zuentfernenderspieler)and(i<(dieSpieler.length-1)){
+        	dienewSpieler[i]=dieSpieler[i];
+        	i++;
+        }
+        i++;
+        while (i<dieSpieler.length){
+        	dienewSpieler[i-1]=dieSpieler[i];
+        	i++;
+        }
+        dieSpieler=dienewSpieler;
+        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] dieSpieler);
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
@@ -124,8 +138,26 @@ public class Spielsteuerung {
 	private Client_Response armeen_hinzufuegen_betreten(){
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-                zwischen.hinzufuegbare_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
-               
+                
+                if (ist_erste_runde==true){
+                	switch (month) {
+
+            		case 2:  hinzuzufuegende_Armeen=40;
+		                     break;
+		        case 3:  hinzuzufuegende_Armeen=35;
+		                     break;
+		        case 4:  hinzuzufuegende_Armeen=30;
+		                     break;
+		        case 5:  hinzuzufuegende_Armeen=25;
+		                     break;
+		        default: hinzuzufuegende_Armeen=20;
+		                     break;
+                }else{
+                	hinzuzufuegende_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
+                }
+                
+               	zwischen.hinzufuegbare_Armeen=hinzuzufuegende_Armeen;
+               	
         aktueller_Response=zwischen;
 	return zwischen;
 	}
@@ -264,6 +296,8 @@ public class Spielsteuerung {
 		}else{
 			aktueller_Spieler=dieSpieler[pos+1];
 		}
+		
+		if (dieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
 		
 		return armeen_hinzufuegen_betreten();
 	}
