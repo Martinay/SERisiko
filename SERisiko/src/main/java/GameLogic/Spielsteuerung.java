@@ -137,8 +137,9 @@ public class Spielsteuerung {
 	private Client_Response armeen_hinzufuegen_betreten(){
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-                zwischen.hinzufuegbare_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
-               
+                hinzuzufuegende_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
+               	zwischen.hinzufuegbare_Armeen=hinzuzufuegende_Armeen;
+               	
         aktueller_Response=zwischen;
 	return zwischen;
 	}
