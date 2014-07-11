@@ -42,7 +42,7 @@ function Combat(doc){
                     }
                 }
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
-                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId,  message.data[i].MapChange.unitCount);
                     if(i == 0 && message.data[i].MapChange.unitCount == 1){
                        attackstate = false; 
                     }

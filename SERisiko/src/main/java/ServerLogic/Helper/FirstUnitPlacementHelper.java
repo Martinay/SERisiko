@@ -50,11 +50,6 @@ public class FirstUnitPlacementHelper {
 
     private void ApplyChangesToGame(Player currentPlayer) {
         List<ClientMapChange> changes = _finishedPlayers.get(currentPlayer);
-        for(ClientMapChange change : changes)
-        {
-            if (_game.CurrentPlayer.ID != currentPlayer.ID)
-                return;
-            _game.PlaceUnits(change.CountryId,change.AddedUnits);
-        }
+        _game.PlaceUnits(changes);
     }
 }

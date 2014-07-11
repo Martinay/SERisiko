@@ -60,7 +60,7 @@ function UnitPlacement(document){
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
         maxValue = maxValue - countSelector;
         placeUnit[id] = parseInt(countSelector);
-        Core.svgHandler.setLandUnitcount(id, parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id)));
+        Core.mapAnimationHandler.prepareUnitAddRemove(id, parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id)));
         root.getElementById("bottom_overlay").innerHTML = "";
         if(maxValue == 0){
             Core.svgHandler.setRectsOnClickNull();

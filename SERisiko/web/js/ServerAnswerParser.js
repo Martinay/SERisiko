@@ -172,6 +172,7 @@ function ServerAnswerParser(doc){
     };
     
     var handlePlayerLeftGameMessage = function(message){
+        var gameStatusFinished = false;
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].MapChange){
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
@@ -183,17 +184,23 @@ function ServerAnswerParser(doc){
             }
             if(message.data[i].Player){
                 Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
+                var playerId = message.data[i].Player.id;
                 if(message.data[i].Player.id == Core.getPlayerId()){
                     Core.connectionHandler.joinLobby();
                 }
             }
             if(message.data[i].ServerGame){
                 if(message.data[i].ServerGame.currentGameStatus == "Finished"){
-                    Core.backToLobby();
+                    gameStatusFinished = true;
+                } else {
+                    Core.updatePlayerList();
                 }
             }
         }
-        Core.updatePlayerList();
+        if(gameStatusFinished && playerId != Core.getPlayerId()){
+            Core.connectionHandler.joinLobby();
+            Core.clearDisplayBackToLobby();
+        }
     };
     
     var handlePlayerCreatedMessage = function(message){
@@ -259,6 +266,8 @@ function ServerAnswerParser(doc){
             var source = message.data[0].MapChange.countryId;
             var destination = message.data[1].MapChange.countryId;
             var amount = parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount);
+            
+            Core.svgHandler.refreshOwnerRights();
             Core.svgHandler.doMovementAnimation(source, destination, amount);
             
             if(Core.svgHandler.getLandOwner(message.data[0].MapChange.countryId) == message.data[0].MapChange.ownerId){

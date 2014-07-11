@@ -28,7 +28,6 @@ function UnitMove(document){
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();
-        Core.svgHandler.refreshOwnerRights();
     };
     
     this.clearUnitMoveDisplay = function(){
