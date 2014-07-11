@@ -50,6 +50,8 @@ public class FirstUnitPlacementHelper {
 
     private void ApplyChangesToGame(Player currentPlayer) {
         List<ClientMapChange> changes = _finishedPlayers.get(currentPlayer);
+        if (changes == null)
+            throw new RuntimeException("currentPlayer ID:" + currentPlayer.ID + "nicht mehr vorhanden" );
         _game.PlaceUnits(changes);
     }
 }
