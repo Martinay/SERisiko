@@ -50,8 +50,21 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
-    public void EntferneSpieler(Spieler spieler){
-        //TODO: Spieler entfernen, Karte neu verteilen
+    public void EntferneSpieler(Spieler zuentfernenderspieler){
+        Spieler[] dienewSpieler = Spieler[dieSpieler.length-1];
+        i=0;
+        
+        while((dieSpieler[i]!=zuentfernenderspieler)and(i<(dieSpieler.length-1)){
+        	dienewSpieler[i]=dieSpieler[i];
+        	i++;
+        }
+        i++;
+        while (i<dieSpieler.length){
+        	dienewSpieler[i-1]=dieSpieler[i];
+        	i++;
+        }
+        dieSpieler=dienewSpieler;
+        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler);
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
