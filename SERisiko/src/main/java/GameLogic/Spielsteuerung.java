@@ -51,11 +51,15 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
+    /*
+    
+    kein kommentar ..............
+    */
     public void EntferneSpieler(Spieler zuentfernenderspieler){
-        Spieler[] dienewSpieler = Spieler[dieSpieler.length-1];
-        i=0;
+        Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
+        int i=0;
         
-        while((dieSpieler[i]!=zuentfernenderspieler)and(i<(dieSpieler.length-1)){
+        while((dieSpieler[i]!=zuentfernenderspieler) && (i<(dieSpieler.length-1))){
         	dienewSpieler[i]=dieSpieler[i];
         	i++;
         }
@@ -65,7 +69,7 @@ public class Spielsteuerung {
         	i++;
         }
         dieSpieler=dienewSpieler;
-        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] dieSpieler);
+        DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
@@ -139,20 +143,26 @@ public class Spielsteuerung {
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                 
+                /*
+                also wenn man sich schon so switch cases irg wo raus kopiert
+                dann bitte auch richt anpassen, was für nen monat bitte XDDDDDDD
+                want to buy cat
+                */
                 if (ist_erste_runde==true){
-                	switch (month) {
-
-            		case 2:  hinzuzufuegende_Armeen=40;
-		                     break;
-		        case 3:  hinzuzufuegende_Armeen=35;
-		                     break;
-		        case 4:  hinzuzufuegende_Armeen=30;
-		                     break;
-		        case 5:  hinzuzufuegende_Armeen=25;
-		                     break;
-		        default: hinzuzufuegende_Armeen=20;
-		                     break;
-                }else{
+                	switch (dieSpieler.length){
+                            case 2:  hinzuzufuegende_Armeen=40;
+                                         break;
+                            case 3:  hinzuzufuegende_Armeen=35;
+                                         break;
+                            case 4:  hinzuzufuegende_Armeen=30;
+                                         break;
+                            case 5:  hinzuzufuegende_Armeen=25;
+                                         break;
+                            default: hinzuzufuegende_Armeen=20;
+                                         break;
+                        }
+                }
+                else{
                 	hinzuzufuegende_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
                 }
                 
@@ -297,7 +307,7 @@ public class Spielsteuerung {
 			aktueller_Spieler=dieSpieler[pos+1];
 		}
 		
-		if (dieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
+		if (DieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
 		
 		return armeen_hinzufuegen_betreten();
 	}
