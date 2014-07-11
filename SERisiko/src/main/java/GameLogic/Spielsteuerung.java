@@ -64,7 +64,7 @@ public class Spielsteuerung {
         	i++;
         }
         dieSpieler=dienewSpieler;
-        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler);
+        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] dieSpieler);
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
