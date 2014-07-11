@@ -13,6 +13,8 @@ import java.util.List;
 /**
  * Created by m.ayasse on 30.06.2014.
  *
+ * expected und assert sind vertauscht!
+ *
  *
  * map.txt:
  *

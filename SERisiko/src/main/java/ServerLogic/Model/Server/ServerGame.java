@@ -118,7 +118,6 @@ public class ServerGame extends Game {
         Client_Response gameResponse = InteractWithGameLogic(units, from, to, false);
         UpdateGameStatus(gameResponse);
 
-        //return MapToServerDice(att, def);
         return MapToServerDice(gameResponse.angreifer_wuerfel, gameResponse.verteidiger_wuerfel);
     }
 
@@ -141,14 +140,16 @@ public class ServerGame extends Game {
         UpdateGameStatus(gameResponse);
     }
 
-    public void PlaceUnits(String countryID, int units) {
-        if (_spiel.Zustand != Spielzustaende.Armeen_hinzufuegen)
-            return;
+    public void PlaceUnits(List<ClientMapChange> clientMapChanges) {
+        for(ClientMapChange change : clientMapChanges)
+        {
+            PlaceUnits(change.CountryId, change.AddedUnits);
+        }
 
-        Land land = _countryService.GetCountryById(countryID);
-
-        Client_Response gameResponse = InteractWithGameLogic(units, land, null, false);
-        UpdateGameStatus(gameResponse);
+        if (_spiel.Zustand == Spielzustaende.Armeen_hinzufuegen) {
+            Client_Response gameResponse = InteractWithGameLogic(1, null, null, true);
+            UpdateGameStatus(gameResponse);
+        }
     }
 
     public void EndTurn() {
@@ -167,9 +168,19 @@ public class ServerGame extends Game {
         SetPlayerStatusToUndefined();
     }
 
-    private void SetPlayerStatusToUndefined() {
-        for (Player player : Players)
+    public void RemovePlayer(Player player) {
+
+        if (Creator.ID == player.ID && (CurrentGameStatus == GameStatus.WaitingForPlayer || CurrentGameStatus == GameStatus.FirstRoundPlacing) || Players.size() == 1)
+            Finish();
+        else
             player.PlayerStatus = PlayerStatus.Undefined;
+
+        if (_spiel != null)
+        {
+            _spiel.EntferneSpieler(PlayerMapper.Map(player));
+        }
+
+        Players.remove(player);
     }
 
     public List<MapChange> GetMap() {
@@ -210,19 +221,9 @@ public class ServerGame extends Game {
                 .first();
     }
 
-    public void RemovePlayer(Player player) {
-
-        if (Creator.ID == player.ID && (CurrentGameStatus == GameStatus.WaitingForPlayer || CurrentGameStatus == GameStatus.FirstRoundPlacing) || Players.size() == 1)
-            Finish();
-        else
+    private void SetPlayerStatusToUndefined() {
+        for (Player player : Players)
             player.PlayerStatus = PlayerStatus.Undefined;
-
-        if (_spiel != null)
-        {
-            _spiel.EntferneSpieler(PlayerMapper.Map(player));
-        }
-
-        Players.remove(player);
     }
 
     private void UpdateGameStatus(Client_Response gameResponse) {
@@ -261,6 +262,16 @@ public class ServerGame extends Game {
             default:
                 throw new RuntimeException("Gamestatus not defined");
         }
+    }
+
+    private void PlaceUnits(String countryID, int units) {
+        if (_spiel.Zustand != Spielzustaende.Armeen_hinzufuegen)
+            return;
+
+        Land land = _countryService.GetCountryById(countryID);
+
+        Client_Response gameResponse = InteractWithGameLogic(units, land, null, false);
+        UpdateGameStatus(gameResponse);
     }
 
     private Client_Response InteractWithGameLogic(int units, Land erstesLand, Land zweitesLand, boolean changeState) {
