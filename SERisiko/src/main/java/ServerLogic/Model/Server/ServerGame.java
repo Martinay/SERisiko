@@ -24,11 +24,14 @@ public class ServerGame extends Game {
 
     public Player Creator;
     public List<Player> Players = new LinkedList<>();
+    public boolean HasStarted = false;
+    public Player CurrentPlayer;
+    public FirstUnitPlacementHelper FirstUnitPlacementHelper = new FirstUnitPlacementHelper(this);
+
+
     private Spielsteuerung _spiel;
     private IMapLoader _mapLoader = new MapLoader();
     private CountryService _countryService = new CountryService();
-    public Player CurrentPlayer;
-    public FirstUnitPlacementHelper FirstUnitPlacementHelper = new FirstUnitPlacementHelper(this);
 
 
     public ServerGame(Player player, String name, int id, int maxPlayer) {
@@ -101,6 +104,7 @@ public class ServerGame extends Game {
         CurrentGameStatus = GameStatus.FirstRoundPlacing;
 
         SetPlayerStatusToPlaying();
+        HasStarted = true;
     }
 
     public ServerDice Attack(String countryFromID, String countryToID, int units) {

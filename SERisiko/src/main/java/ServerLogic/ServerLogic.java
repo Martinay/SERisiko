@@ -122,7 +122,7 @@ public class ServerLogic implements IServerLogic {
 
         Player player = _state.TryGetPlayer(playerID);
         if (player == null)
-            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<Integer>(), null);
+            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<>(), null);
 
         List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
 
@@ -130,8 +130,8 @@ public class ServerLogic implements IServerLogic {
             ServerGame game = _state.TryGetGameByPlayerId(playerID);
             if (game != null)
             {
-                LeaveGame(playerID);
-                idsToUpdate = game.GetPlayerIds();
+                PlayerLeftGameMessage message = LeaveGame(playerID);
+                idsToUpdate = message.PlayerIDsToUpdate;
             }
         }
 
@@ -186,11 +186,16 @@ public class ServerLogic implements IServerLogic {
         if (game.CurrentGameStatus == GameStatus.Finished)
             _state.RemoveGame(game);
 
+        List<Integer> idsToUpdate = new LinkedList<>(game.GetPlayerIds());
+
         List<MapChange> map = null;
         if ((game.CurrentGameStatus != GameStatus.Finished && game.CurrentGameStatus != GameStatus.WaitingForPlayer))
             map = game.GetMap();
 
-        return MessageCreator.CreatePlayerLeftGameMessage(game.GetPlayerIds(), game, player, map);
+        if (game.CurrentGameStatus == GameStatus.WaitingForPlayer || (game.CurrentGameStatus == GameStatus.Finished && !game.HasStarted))
+            idsToUpdate.addAll(_state.Lobby.GetPlayerIDs());
+
+        return MessageCreator.CreatePlayerLeftGameMessage(idsToUpdate, game, player, map);
     }
 
     @Override
@@ -227,7 +232,10 @@ public class ServerLogic implements IServerLogic {
 
         game.Start();
 
-        return MessageCreator.CreateGameStartedMessage(game.GetPlayerIds(), game, game.GetMap());
+        List<Integer> idsToSend = new LinkedList<>(game.GetPlayerIds());
+        idsToSend.addAll(_state.Lobby.GetPlayerIDs());
+
+        return MessageCreator.CreateGameStartedMessage(idsToSend, game, game.GetMap());
     }
 
     @Override
