@@ -278,6 +278,8 @@ public class Spielsteuerung {
 			aktueller_Spieler=dieSpieler[pos+1];
 		}
 		
+		if (dieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
+		
 		return armeen_hinzufuegen_betreten();
 	}
 	
