@@ -38,6 +38,7 @@ public class Spielsteuerung {
 
     private void setzeBesitzer(Kontinent[] kontinente) {
         //TODO
+        //Einfügen der Spielerverteilfunktion von Simon aus Ursprünglichem Programm
 
         for (Kontinent kontinent : kontinente)
         {
@@ -137,7 +138,24 @@ public class Spielsteuerung {
 	private Client_Response armeen_hinzufuegen_betreten(){
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-                hinzuzufuegende_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
+                
+                if (ist_erste_runde==true){
+                	switch (month) {
+
+            		case 2:  hinzuzufuegende_Armeen=40;
+		                     break;
+		        case 3:  hinzuzufuegende_Armeen=35;
+		                     break;
+		        case 4:  hinzuzufuegende_Armeen=30;
+		                     break;
+		        case 5:  hinzuzufuegende_Armeen=25;
+		                     break;
+		        default: hinzuzufuegende_Armeen=20;
+		                     break;
+                }else{
+                	hinzuzufuegende_Armeen = DieSpielwelt.gib_anz_neue_Armeen(aktueller_Spieler);
+                }
+                
                	zwischen.hinzufuegbare_Armeen=hinzuzufuegende_Armeen;
                	
         aktueller_Response=zwischen;
