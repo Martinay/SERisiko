@@ -311,7 +311,7 @@ function Core() {
     };
     
     var validate = function(str){
-        var nameRegex = /^[a-zA-Z0-9]+$/;
+        var nameRegex = /^[a-zA-Z0-9$äöüÄÖÜ]+$/;
         var valid = str.match(nameRegex);
         if(valid === null){
             return false;
@@ -319,7 +319,7 @@ function Core() {
         return true;
     };
     var validateMessage = function(str){
-        var nameRegex = /^[a-zA-Z0-9]+$/;
+        var nameRegex = /^[\w\d\s();,.:\[\]{}=?ßäöüÄÖÜ\-_*-+~'#^°²³!"§$%&\\/´`@€|]+$/;
         var valid = str.match(nameRegex);
         if(valid === null){
             return false;
