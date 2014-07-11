@@ -48,6 +48,19 @@ public class Spielwelt {
 		return anzahl;
 	}
 	
+	public void verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] andereSpieler){
+		pos=0;
+		for (int i=0; i<dieLaender.length; i++){
+			if (dieLaender[i].gib_besitzer()=zuentfernenderspieler){
+				dieLaender[i].neuerBesitzer(andereSpieler[pos]);
+				pos++;
+				while(dieLaender[i].decArmeen){}
+				dieLaender[i].mehr_Armeen(1);
+			}
+			if (pos==andereSpieler.length) pos=0;
+		}
+	}
+	
 	protected int gib_anz_Laender(Spieler derSpieler){
 		int anzahl = 0;
 		
