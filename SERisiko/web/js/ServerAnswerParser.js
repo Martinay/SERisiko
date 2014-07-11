@@ -114,7 +114,7 @@ function ServerAnswerParser(doc){
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
         if(message.data[0].Player.id == Core.getPlayerId()){
-           Core.prepareJoinedGame();
+            Core.prepareJoinedGame();
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);
@@ -187,6 +187,12 @@ function ServerAnswerParser(doc){
                     Core.connectionHandler.joinLobby();
                 }
             }
+            if(message.data[i].ServerGame){
+                Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
+                if(essage.data[i].ServerGame.currentGameStatus == "Finished"){
+                    Core.backToLobby();
+                }
+            }
         }
         Core.updatePlayerList();
     };
@@ -224,6 +230,8 @@ function ServerAnswerParser(doc){
             }
         }
         Core.changePlayerListPic(0);
+        Core.svgHandler.getLandNeighborsFiltered("P2", true);
+        Core.svgHandler.getLandNeighborsFiltered("P2", false);
     };
     
     var handleEndFirstUnitPlacementMessage = function(message){
@@ -238,7 +246,7 @@ function ServerAnswerParser(doc){
             } 
             if(message.data[i].MapChange){
                 if(Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId) != message.data[i].MapChange.unitCount)
-                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
             }
             if(message.data[i].Player){
                 root.getElementById(String(message.data[i].Player.id)).setAttribute("src", "img/ready.png");
@@ -310,6 +318,11 @@ function ServerAnswerParser(doc){
                     Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, 0, "");
                 } else {
                     Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Länder Erobern");
+                }
+            }
+            if(message.data[i].MapChange){
+                if(message.data[i].MapChange.ownerId != Core.getPlayerId()){
+                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
                 }
             }
         }

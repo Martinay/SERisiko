@@ -16,6 +16,9 @@
                 .fil2 {fill:#E51A4B}
                 .fil4 {fill:#E31E24}
                 .fil7 {fill: rgba(43,42,41, 0.6)}
+                .fil8 {fill:#CC0000}
+                .fil9 {fill:#009900}
+                .fnt4 {font-weight:bold;font-size:623.33px;font-family:'Arial'}
                 .fnt2 {font-weight:normal;font-size:352.77px;font-family:'Arial'}
                 .fnt3 {font-weight:normal;font-size:352.78px;font-family:'Arial'}
                 .fnt1 {font-weight:normal;font-size:423.32px;font-family:'Arial'}
@@ -29,6 +32,9 @@
             <rect id="" x="0" y="0" width="20879" height="14605"/>
         </clipPath>
         <clipPath id="id2">
+            <rect id="" x="0" y="0" width="20879" height="14605"/>
+        </clipPath>
+        <clipPath id="id3">
             <rect id="" x="0" y="0" width="20879" height="14605"/>
         </clipPath>
     </defs>
@@ -161,7 +167,8 @@
         </g>
         <g id="MapUnit" style="clip-path:url(#id1)"></g>
         <g id="UnitCountCountry" style="clip-path:url(#id1)"></g>
-        <g id="mapOverlay" style="clip-path:url(#id2)">
+        <g id="unitAnimations" style="clip-path:url(#id1)"></g>
+        <g id="mapOverlay" style="clip-path:url(#id3)">
             <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" owner="" unitcount="1" neighbor="A2,P13"/>
             <rect id="A2" class="fil6 str0" fill-opacity="0.0" x="11331" y="9476" width="1305" height="1535" owner="" unitcount="1" neighbor="A1,A3"/>
             <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" owner="" unitcount="1" neighbor="A2,A4,A5"/>

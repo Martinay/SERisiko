@@ -17,6 +17,7 @@ function SvgFunctions(document){
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
     var neighborsParser = new NeighborsParser(root);
+    var route = null;
     
     //# Public Methods
     this.init = function(doc){       
@@ -54,11 +55,29 @@ function SvgFunctions(document){
     this.getLandUnitcount = function(landId){
         return parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));  
     };
-
+ 
+    var getLandNeighbors = function(id){
+        return svgDoc.getElementById(id).getAttribute("neighbor").split(",");
+    };
+    
+    this.getLandNeighborsFiltered = function(id, own){
+        var neighborLands = getLandNeighbors(id);
+        var neighborLandsToReturn = new Array();
+        for (i = 0; i < neighborLands.length; i++){
+            if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  svgDoc.getElementById(id).getAttribute("owner")){
+                neighborLandsToReturn.push(neighborLands[i]);
+            } 
+            if (own == false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") != svgDoc.getElementById(id).getAttribute("owner")) {
+                neighborLandsToReturn.push(neighborLands[i]);
+            }
+        }
+        return neighborLandsToReturn;
+    };
+    
     this.identifySource = function(id){
         this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
-        neighborLands = theRect.getAttribute("neighbor").split(",");
+        neighborLands = getLandNeighbors(id);
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'default');");
         theRect = svgDoc.getElementById(id + "_back");
@@ -256,7 +275,8 @@ function SvgFunctions(document){
         });
     };
     
-    this.doMovementAnimation = function(source, target, amount){     
+    this.doMovementAnimation = function(source, target, amount){
+        route = null;
         var countryHeight, countryWidth, width, height, xPosition, yPosition;
         var mapUnitID = svgDoc.getElementById("MapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
@@ -299,18 +319,18 @@ function SvgFunctions(document){
             
             //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
             //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
-            setTimeout(this.nextUnitTarget(source, target, "firstCall", 0), 0);
+            
+            route = calcUnitRunWay(source, target);
+            console.log("ErgebnisRoute: " + route.toString())
+            //this.nextUnitTarget(source, target, route);
         }
     };
     
     
-    this.nextUnitTarget = function (source, target, route, pos){        
-        if(route == "firstCall")
-            route = calcUnitRunWay(source, target);
-        if(!pos == route.length){
-            var tmp_target = route[pos];
-
-
+    this.nextUnitTarget = function (source, target, route){        
+        if(route.length > 0){
+            var tmp_target = route.shift();
+            
             var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
             var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
             var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
@@ -325,8 +345,7 @@ function SvgFunctions(document){
             if (movementData[1] < movementData[3])
                 yDirection = "+"; 
 
-            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, ++pos);
-
+            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route);
          }
          else{
             this.killDomElement(imgMov);
@@ -334,7 +353,7 @@ function SvgFunctions(document){
         }
     };
     
-    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route, pos){
+    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route){
         var finished = 0;
         if(xDirection == "+"){
             if (movementData[0] >= movementData[2])
@@ -401,10 +420,10 @@ function SvgFunctions(document){
                     imgAMov.setAttribute("y", movementAData[1]);
                 }
             }
-            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection), 50);
+            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route), 50);
         } 
         else{
-            this.nextUnitTarget(tmp_target, target, route, pos);
+            this.nextUnitTarget(tmp_target, target, route);
         }
     };
     
@@ -451,8 +470,19 @@ function SvgFunctions(document){
         setTimeout(function(){ callback(); }, millis);
     };
     
+   
+  
+    
     var calcUnitRunWay = function(source, target){
-        var route = new Array(source);
+        var arrayToDelete = new Array();
+        arrayToDelete.push(source);
+        var routeArr = new Array();
+        routeArr.push(source);
+        return findRoute(routeArr, target, arrayToDelete); 
+    };
+    
+    /*var calcUnitRunWay = function(source, target){
+        //var route = new Array(source);
         //route = findRoute2(route, route, neighborsParser.getLands(), target);
         
         var route = new Array();
@@ -496,6 +526,7 @@ function SvgFunctions(document){
         }
         return route;
     };
+     */
     
     /**
      * Könnte memmory leeks enthalten
@@ -506,14 +537,36 @@ function SvgFunctions(document){
      * 
      * @param string target country
      */
-     var findRoute2 = function(source, route, stack, target) {       
+    
+    var findRoute = function(sourceArr, target, arrayDelete){
+        var neighborlands = Core.svgHandler.getLandNeighborsFiltered(sourceArr[sourceArr.length - 1], true);
+        neighborlands = arraySchnittmengeDelete(neighborlands, arrayDelete);
+        for(i = 0; i < neighborlands.length; i++){
+            var newArrayDelete = new Array();
+            var newSource = new Array();
+            newArrayDelete = arrayDelete;
+            newSource = sourceArr;
+            newSource.push(neighborlands[i]);
+            console.log(newSource.toString());
+            if(neighborlands[i] == target){
+                route = newSource;
+                return newSource;
+            } else {
+                arrayDelete.push(neighborlands[i]);
+                setTimeout(function() {findRoute(newSource, target, newArrayDelete)}, 10);
+            }
+        }
+    };
+    
+     var findRoute2 = function(source, route, stack, target) { 
+         console.log("Test");
         //check the given source list (countrys to test)
         //and drop the elements from stack
         for(var i = 0; i < source.length; i++){
             
             //target found, first match is shortest route
             if(source[i] === target) {
-                route[route.indexOf(source[i])].push(target);
+                route.push(target);
                 return route[route.indexOf(source[i])]; //return the complete route
             }  
             //delete source[i] from stack
@@ -535,12 +588,13 @@ function SvgFunctions(document){
                     
                     newSource.push(neighbors[j]);               // push the neighbor to new sources to check
                     
-                    newRoute[neighbors[j]] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
-                    newRoute[neighbors[j]].push(neighbors[j]);  // and add himself to his own list for the next call
+                    newRoute[neighbors.indexOf(neighbors[j])] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
+                    newRoute.push(neighbors[j]);  // and add himself to his own list for the next call
                 }                 
             }
         }    
         //call recursive if neighbors exists  
-        return  (newSource.lenth > 0) ? findRoute (newSource, newRoute, newStack, target) : false;
+        console.log("Pfad: " + newSource.toString())
+        return  (newSource.length > 0) ? findRoute2(newSource, newRoute, newStack, target) : false;
      };
 }

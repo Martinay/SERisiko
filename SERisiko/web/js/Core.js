@@ -14,6 +14,7 @@ function Core() {
     this.playerList = new PlayerList();
     this.sctTable = new SelectableTable(document);
     this.svgHandler = new SvgFunctions(document);
+    this.mapAnimationHandler = new MapAnimation(document);
     this.attackHandler = new Attack(document);
     this.defendHandler = new Defend(document);
     this.combatHandler = new Combat(document);
@@ -29,13 +30,13 @@ function Core() {
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "" || !validate(name))
-            return false;
-        myData.setPlayerName(name);
-        
-        
-        // create Player on Server + joinLobby
-        this.connectionHandler.joinServer(name); // includes joinlobby
+        if(name == "" || !validate(name)){
+            document.getElementById("errorInName").innerHTML = "Ihren Spielernamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Spielernamen ein der nur aus Buchstaben und Zahlen besteht";
+        } else{
+            myData.setPlayerName(name);
+            // create Player on Server + joinLobby
+            this.connectionHandler.joinServer(name); // includes joinlobby
+        }
     };
     
     //# MyData Setters and Getters
@@ -152,7 +153,6 @@ function Core() {
         if(this.sctTable != null){
             this.sctTable.clear("availableGames");
             this.gameList.clear();
-            this.connectionHandler.listOpenGames();
         }
         else
             alert("Error! no gameTable");	
@@ -190,6 +190,7 @@ function Core() {
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
         this.unitPlacementHandler.init(svg);
+        this.mapAnimationHandler.init(svg);
         
         this.setInGameLobby(true);
         

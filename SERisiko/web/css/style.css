@@ -103,7 +103,7 @@
 
 #gameStatus{
     padding-top: 120px;
-    height: 150px;
+    height: 200px;
 }
 
 #playerList{
@@ -230,7 +230,7 @@ input {
 }
   
 #usermsg {
-    width:140px;
+    width:865px;
     border:1px solid #ACD8F0; 
     margin-bottom:10px;
 }

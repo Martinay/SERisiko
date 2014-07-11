@@ -21,6 +21,7 @@
     <script src="js/SelectableTable.js"></script>
     <script src="js/NeighborsParser.js"></script>
     <script src="js/SvgFunctions.js"></script>
+    <script src="js/MapAnimation.js"></script>
     <script src="js/Attack.js"></script>
     <script src="js/Defend.js"></script>
     <script src="js/Combat.js"></script>
@@ -39,7 +40,8 @@
 <body>
     <br />
     <div id="setPlayerName">
-        <h1>Bitte geben Sie Ihren Spielernamen ein</h1><br /><br />
+        <h1>Bitte geben Sie Ihren Spielernamen ein</h1><br />
+        <div id="errorInName" style="color: red; font-size: 14pt;"></div><br />
         <input id="playerName" value="" placeholder="Ihr Spielername" onkeyup="Core.checkForKey('playerName', event.keyCode)" />
         <button onClick="Core.setPlayerName()">Go</button>
     </div>
