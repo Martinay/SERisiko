@@ -52,10 +52,12 @@ public class Spielsteuerung {
         }
     
     public void EntferneSpieler(Spieler zuentfernenderspieler){
+    	/**
+    	//Zu testen...
         Spieler[] dienewSpieler = Spieler[dieSpieler.length-1];
         i=0;
         
-        while((dieSpieler[i]!=zuentfernenderspieler)and(i<(dieSpieler.length-1)){
+        while((dieSpieler[i]!=zuentfernenderspieler)&&(i<(dieSpieler.length-1)){
         	dienewSpieler[i]=dieSpieler[i];
         	i++;
         }
@@ -65,7 +67,8 @@ public class Spielsteuerung {
         	i++;
         }
         dieSpieler=dienewSpieler;
-        dieSpielwelt.verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] dieSpieler);
+        dieSpielwelt.verteile_neu_ohne(zuentfernenderspieler,dieSpieler);
+        */
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
