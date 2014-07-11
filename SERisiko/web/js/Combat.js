@@ -6,6 +6,8 @@
 function Combat(doc){
     var root = doc;
     var DicesArr = {};
+    var counter = 0;
+    var i = 0;
     
     this.setDice = function(id, count){
         DicesArr[id] = count;
@@ -22,6 +24,7 @@ function Combat(doc){
     this.showCombat = function(message){
         var defeater = false;
         var attacker = false;
+        var attackerId = "";
         var lands = new Array();
         var looseUnitCounts = new Array();
         var defeatstate = true;
@@ -36,6 +39,7 @@ function Combat(doc){
                 looseUnitCounts[i] = parseInt(lands[i]) - parseInt(message.data[i].MapChange.unitCount);
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == Core.getPlayerId()){
                     if(i == 0){
+                        attackerId = message.data[i].MapChange.countryId;
                         attacker = true;
                     } else if(i == 1){
                         defeater = true;
@@ -48,7 +52,7 @@ function Combat(doc){
                     }
                 } else {
                     looseUnitCounts[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
-                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+                    Core.mapAnimationHandler.prepareNewMapOwner(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
                     looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[i].MapChange.unitCount) + 1);
                     defeatstate = false;
                     attackstate = true;
@@ -105,4 +109,47 @@ function Combat(doc){
         
         return (attackCount + defendCount) * countRotate;
     };
+    
+    this.drawRotatePaperOnCanvas = function(id, rotate){
+        if (i < rotate){
+            var canvas = root.getElementById('canvas_' + id);
+            var img = new Image();
+            img.onload = function(){
+                if(canvas != null && canvas.getContext){
+                    var context = canvas.getContext('2d');
+                    context.beginPath();    
+                    context.rect(0, 0, 150, 150);    
+                    context.fillStyle = 'rgba(0, 0, 0, .9)';
+                    context.fill();
+                    context.translate(75, 75);
+                    context.rotate(20 * Math.PI / 180);
+                    context.translate(-75, -75);
+                    context.drawImage(img, 0, 0, 150, 150);
+                }
+            };
+            img.src = '/img/paper.png';
+            i++;
+            setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas(id, rotate);},50);
+       }else{
+            counter++;
+            drawDigitOnCanvas(id);
+            if(counter == (rotate/18)){
+                counter = 0;
+                i = 0;
+            }
+       }
+    };
+    
+    var drawDigitOnCanvas = function(id){
+        var count = Core.combatHandler.getDice(id);
+        count = 7-count;
+        var canvas = root.getElementById('canvas_' + id);
+        if(canvas != null && canvas.getContext){
+            var context = canvas.getContext('2d');
+            context.font = '40pt Arial';
+            context.textAlign = 'center';
+            context.fillStyle = 'red';
+            context.fillText(count, 75, 90);
+        }
+    }; 
 }

@@ -54,13 +54,13 @@ function Attack(document){
                                                 <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + countAttack + '</div></td>\n\
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
-                setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
+                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
                 if(countAttack > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
-                    setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A2", rotate);},50); 
+                    setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A2", rotate);},50); 
                     if(countAttack > 2){
                         OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
-                        setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("A3", rotate);},50);
+                        setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A3", rotate);},50);
                     }
                 }
                 OverlayString = OverlayString + '</td>\n\
@@ -68,10 +68,10 @@ function Attack(document){
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
 
-                setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("D1", rotate);},50);
+                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D1", rotate);},50);
                 if(countDefend > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
-                    setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas("D2", rotate);},50); 
+                    setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D2", rotate);},50); 
                 }
                 OverlayString = OverlayString + '</td>\n\
                                                 <td> Einheiten zum Verteidigen:<div id="CountDefenderAnzahl" style="color: red;"> ' + countDefend + '</div></td>\n\

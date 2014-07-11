@@ -165,8 +165,8 @@
         <g style="clip-path:url(#id0)">
             <image id="dhbw_logo.jpg" x="438" y="598" width="6113" height="3116" xlink:href="/maps/dhbw_logo.png"/>
         </g>
-        <g id="MapUnit" style="clip-path:url(#id1)"></g>
-        <g id="UnitCountCountry" style="clip-path:url(#id1)"></g>
+        <g id="mapUnit" style="clip-path:url(#id1)"></g>
+        <g id="unitCountCountry" style="clip-path:url(#id1)"></g>
         <g id="unitAnimations" style="clip-path:url(#id1)"></g>
         <g id="mapOverlay" style="clip-path:url(#id3)">
             <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" owner="" unitcount="1" neighbor="A2,P13"/>

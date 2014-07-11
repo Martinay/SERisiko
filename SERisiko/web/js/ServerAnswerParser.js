@@ -176,10 +176,9 @@ function ServerAnswerParser(doc){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].MapChange){
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
-                    Core.svgHandler.setLandUnitcount(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
                 } else {
-                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
-
+                    Core.mapAnimationHandler.prepareUnitAddRemove("", message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
                 }
             }
             if(message.data[i].Player){
@@ -292,16 +291,6 @@ function ServerAnswerParser(doc){
     };
     
     var handleAttackMessage = function(message){
-        if(message.data[0].MapChange && message.data[1].MapChange){
-            for (var i = 0; i < message.data.length; i++){
-                if(message.data[i].ServerGame ){
-                    var source = message.data[0].MapChange.countryId;
-                    var destination = message.data[1].MapChange.countryId;
-                    var amount = parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount);
-                    Core.svgHandler.doMovementAnimation(source, destination, amount);
-                }
-            }
-        }
         Core.combatHandler.showCombat(message);
     };
     

@@ -7,13 +7,10 @@
 
 function SvgFunctions(document){
     //#Public Vars    
-    
+
     //#Private Vars
     var svgDoc = null;
-    var neighborLands = null;
     var root = document;
-    var i = 0;
-    var counter = 0;
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
     var neighborsParser = new NeighborsParser(root);
@@ -63,7 +60,7 @@ function SvgFunctions(document){
     this.getLandNeighborsFiltered = function(id, own){
         var neighborLands = getLandNeighbors(id);
         var neighborLandsToReturn = new Array();
-        for (i = 0; i < neighborLands.length; i++){
+        for (var i = 0; i < neighborLands.length; i++){
             if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  svgDoc.getElementById(id).getAttribute("owner")){
                 neighborLandsToReturn.push(neighborLands[i]);
             } 
@@ -77,12 +74,12 @@ function SvgFunctions(document){
     this.identifySource = function(id){
         this.setRectsOnClickNull();
         var theRect = svgDoc.getElementById(id);
-        neighborLands = getLandNeighbors(id);
+        var neighborLands = null;
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'default');");
-        theRect = svgDoc.getElementById(id + "_back");
-        theRect.setAttribute('opacity','0.3');
+        svgDoc.getElementById(id + "_back").setAttribute('opacity','0.3');
         if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
+            neighborLands = this.getLandNeighborsFiltered(id, false);
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
                 if(theRect.getAttribute("owner") !=  Core.getPlayerId()){
@@ -96,6 +93,7 @@ function SvgFunctions(document){
             root.getElementById("bottom_overlay").innerHTML = "\
                     <button name='clearAttackBottomDisplay' onClick='Core.attackHandler.clearAttackBottomDisplay();' style='margin: 22px 398px;'>Auswahl aufheben</button>";
         } else {
+            neighborLands = this.getLandNeighborsFiltered(id, true); 
             var newNeighorLands = null;
             var doneCountrys = new Array();
             doneCountrys.push(id);
@@ -108,14 +106,12 @@ function SvgFunctions(document){
                     if(doneCountrys.indexOf(theRect.getAttribute('id')) == -1){
                         doneCountrys.push(theRect.getAttribute('id'));
                     }
-                    if(theRect.getAttribute("owner") ==  Core.getPlayerId()){
-                        theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
-                        theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
-                        theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
-                        svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
-                        newNeighorLands = newNeighorLands.concat(theRect.getAttribute("neighbor").split(","));
-                        goOn = true;
-                    }
+                    theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
+                    theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
+                    theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
+                    svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
+                    newNeighorLands = newNeighorLands.concat(theRect.getAttribute("neighbor").split(","));
+                    goOn = true;
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
             }
@@ -127,18 +123,9 @@ function SvgFunctions(document){
     
     this.identifyDestination = function(id, attacker){
         this.setRectsOnClickNull();
-        var theRect = svgDoc.getElementById(attacker + "_back");
-        theRect.setAttribute('opacity','0.5');
-        var theRect = svgDoc.getElementById(id + "_back");
-        theRect.setAttribute('opacity','0.5');
+        svgDoc.getElementById(attacker + "_back").setAttribute('opacity','0.5');
+        svgDoc.getElementById(id + "_back").setAttribute('opacity','0.5');
         if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
-            for (var i = 0; i < neighborLands.length; i++) {
-                if(id != neighborLands[i]){
-                    theRect = svgDoc.getElementById(neighborLands[i] + "_back");
-                    theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
-                    theRect.setAttribute('opacity','1');
-                }
-            }
             Core.attackHandler.selectAmountUnit(attacker, id);
         } else {
             Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
@@ -191,36 +178,6 @@ function SvgFunctions(document){
         rect.style = 'cursor: ' + cursor;
     };
     
-    this.drawRotatePaperOnCanvas = function(id, rotate){
-        if (i < rotate){
-            var canvas = root.getElementById('canvas_' + id);
-            var img = new Image();
-            img.onload = function(){
-                if(canvas != null && canvas.getContext){
-                    var context = canvas.getContext('2d');
-                    context.beginPath();    
-                    context.rect(0, 0, 150, 150);    
-                    context.fillStyle = 'rgba(0, 0, 0, .9)';
-                    context.fill();
-                    context.translate(75, 75);
-                    context.rotate(20 * Math.PI / 180);
-                    context.translate(-75, -75);
-                    context.drawImage(img, 0, 0, 150, 150);
-                }
-            };
-            img.src = '/img/paper.png';
-            i++;
-            setTimeout(function(){Core.svgHandler.drawRotatePaperOnCanvas(id, rotate);},50);
-       }else{
-            counter++;
-            drawDigitOnCanvas(id);
-            if(counter == (rotate/18)){
-                counter = 0;
-                i = 0;
-            }
-       }
-    };
-    
     this.initUnitOnMap = function(){
         var rects = svgDoc.getElementsByTagName("rect");
         var xPosition = 0;
@@ -229,8 +186,8 @@ function SvgFunctions(document){
         var width = 0;
         var countryHeight = 0;
         var countryWidth = 0;
-        var mapUnitID = svgDoc.getElementById("MapUnit");
-        var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
+        var mapUnitID = svgDoc.getElementById("mapUnit");
+        var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
         var rectID = "";
                 
         initPlayerColor();
@@ -278,8 +235,8 @@ function SvgFunctions(document){
     this.doMovementAnimation = function(source, target, amount){
         route = null;
         var countryHeight, countryWidth, width, height, xPosition, yPosition;
-        var mapUnitID = svgDoc.getElementById("MapUnit");
-        var mapUnitCountCountry = svgDoc.getElementById("UnitCountCountry");
+        var mapUnitID = svgDoc.getElementById("mapUnit");
+        var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
         var rect = svgDoc.getElementById(source);
         var rectID = rect.getAttribute("id");
         
@@ -328,7 +285,7 @@ function SvgFunctions(document){
     
     //Private Methods
     var arraySchnittmengeDelete = function(array, arrayDelete){
-        for(i = 0; i < arrayDelete.length; i++){
+        for(var i = 0; i < arrayDelete.length; i++){
             while(array.indexOf(arrayDelete[i]) != -1){
                 array.splice(array.indexOf(arrayDelete[i]), 1);
             }
@@ -343,19 +300,6 @@ function SvgFunctions(document){
         }
         playerColorHREF["undefined"] = colorArr[6];
     };
-    
-    var drawDigitOnCanvas = function(id){
-        var count = Core.combatHandler.getDice(id);
-        count = 7-count;
-        var canvas = root.getElementById('canvas_' + id);
-        if(canvas != null && canvas.getContext){
-            var context = canvas.getContext('2d');
-            context.font = '40pt Arial';
-            context.textAlign = 'center';
-            context.fillStyle = 'red';
-            context.fillText(count, 75, 90);
-        }
-    }; 
     
     
     var sleep = function (millis, callback) {
@@ -416,29 +360,6 @@ function SvgFunctions(document){
         }
         return route;
     };
-/*
-    
-    var findRoute = function(sourceArr, target, arrayDelete){
-        var neighborlands = Core.svgHandler.getLandNeighborsFiltered(sourceArr[sourceArr.length - 1], true);
-        neighborlands = arraySchnittmengeDelete(neighborlands, arrayDelete);
-        for(i = 0; i < neighborlands.length; i++){
-            var newArrayDelete = new Array();
-            var newSource = new Array();
-            newArrayDelete = arrayDelete;
-            newSource = sourceArr;
-            newSource.push(neighborlands[i]);
-            console.log(newSource.toString());
-            if(neighborlands[i] == target){
-                route = newSource;
-                return newSource;
-            } 
-            else {
-                arrayDelete.push(neighborlands[i]);
-                setTimeout(function() {findRoute(newSource, target, newArrayDelete)}, 10);
-            }
-        }
-    };*/
-    
     /**
      * Könnte memmory leeks enthalten
      * 
