@@ -72,7 +72,14 @@ public class Spielwelt {
 	}
 	
         protected int gib_anz_neue_Armeen(Spieler aktueller_Spieler){
-            int anzahl = gib_anz_Armeen_insgesamt(aktueller_Spieler) / 2;
+            int anzahl = 0;
+            Laenderanzahl = gib_anz_Armeen_insgesamt(aktueller_Spieler);
+            if (Laenderanzahl>0)  anzahl = anzahl+3;
+	    if (Laenderanzahl>7) anzahl = anzahl+1;
+	    if (Laenderanzahl>14) anzahl = anzahl+1;
+	    if (Laenderanzahl>22) anzahl = anzahl+1;
+	    if (Laenderanzahl>29) anzahl = anzahl+1;
+	    if (Laenderanzahl>37) anzahl = anzahl+2;
             
             for (int i=0; i<dieKontinente.length; i++){
                 Spieler besitzer=aktueller_Spieler;
