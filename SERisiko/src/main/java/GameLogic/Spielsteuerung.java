@@ -56,6 +56,9 @@ public class Spielsteuerung {
     kein kommentar ..............
     */
     public void EntferneSpieler(Spieler zuentfernenderspieler){
+        if (dieSpieler.length == 0)
+            return;
+
         Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
         int i=0;
 

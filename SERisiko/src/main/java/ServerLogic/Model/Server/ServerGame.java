@@ -141,6 +141,7 @@ public class ServerGame extends Game {
     }
 
     public void PlaceUnits(List<ClientMapChange> clientMapChanges) {
+
         for(ClientMapChange change : clientMapChanges)
         {
             PlaceUnits(change.CountryId, change.AddedUnits);
