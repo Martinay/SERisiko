@@ -58,7 +58,7 @@ public class Spielsteuerung {
     public void EntferneSpieler(Spieler zuentfernenderspieler){
         Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
         int i=0;
-        
+
         while((dieSpieler[i]!=zuentfernenderspieler) && (i<(dieSpieler.length-1))){
         	dienewSpieler[i]=dieSpieler[i];
         	i++;
