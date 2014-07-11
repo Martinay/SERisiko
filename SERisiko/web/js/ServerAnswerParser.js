@@ -35,7 +35,7 @@ function ServerAnswerParser(doc){
                     handleReadyStateChangedMessage(message);
                     break;
                 case "PlayerLeftGameMessage":
-                    handlePlayerLeftMessage(message);
+                    handlePlayerLeftGameMessage(message);
                     break;
                 case "PlayerCreatedMessage":
                     handlePlayerCreatedMessage(message);
@@ -171,7 +171,7 @@ function ServerAnswerParser(doc){
         }
     };
     
-    var handlePlayerLeftMessage = function(message){
+    var handlePlayerLeftGameMessage = function(message){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].MapChange){
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
@@ -188,8 +188,7 @@ function ServerAnswerParser(doc){
                 }
             }
             if(message.data[i].ServerGame){
-                Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
-                if(essage.data[i].ServerGame.currentGameStatus == "Finished"){
+                if(message.data[i].ServerGame.currentGameStatus == "Finished"){
                     Core.backToLobby();
                 }
             }

@@ -305,7 +305,7 @@ function SvgFunctions(document){
             }
 
             yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + svgDoc.getElementById(source+"_Unit").getAttribute('xlink:href') + '" />';
+            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + 'Runner_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + svgDoc.getElementById(source+"_Unit").getAttribute('xlink:href') + '" />';
             
             if(countryWidth > 1234){
                 xPosition = xPosition + width * 1.4 ;
@@ -315,14 +315,14 @@ function SvgFunctions(document){
                 yPosition = yPosition + height * 1.5;
             }
 
-            mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount_mov" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
+            mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + 'Runner_UnitCount_mov" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
             
             //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
             //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
             
             route = calcUnitRunWay(source, target);
             console.log("ErgebnisRoute: " + route.toString())
-            //this.nextUnitTarget(source, target, route);
+            this.nextUnitTarget(source, target, route);
         }
     };
     
@@ -331,8 +331,8 @@ function SvgFunctions(document){
         if(route.length > 0){
             var tmp_target = route.shift();
             
-            var imgMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_Unit_mov');
-            var imgAMov = svgDoc.getElementById(svgDoc.getElementById(source).getAttribute("id") + '_UnitCount_mov');            
+            var imgMov = svgDoc.getElementById('Runner_Unit_mov');
+            var imgAMov = svgDoc.getElementById('Runner_UnitCount_mov');            
             var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
             var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
 
@@ -470,9 +470,7 @@ function SvgFunctions(document){
         setTimeout(function(){ callback(); }, millis);
     };
     
-   
-  
-    
+    /*
     var calcUnitRunWay = function(source, target){
         var arrayToDelete = new Array();
         arrayToDelete.push(source);
@@ -480,8 +478,8 @@ function SvgFunctions(document){
         routeArr.push(source);
         return findRoute(routeArr, target, arrayToDelete); 
     };
-    
-    /*var calcUnitRunWay = function(source, target){
+    */
+   var calcUnitRunWay = function(source, target){
         //var route = new Array(source);
         //route = findRoute2(route, route, neighborsParser.getLands(), target);
         
@@ -526,17 +524,7 @@ function SvgFunctions(document){
         }
         return route;
     };
-     */
-    
-    /**
-     * Könnte memmory leeks enthalten
-     * 
-     * @param array sourceList (first call with only one source element)
-     * @param array matched route (first call with only one source element)
-     * @param array complete countryList (owned by the player) array
-     * 
-     * @param string target country
-     */
+/*
     
     var findRoute = function(sourceArr, target, arrayDelete){
         var neighborlands = Core.svgHandler.getLandNeighborsFiltered(sourceArr[sourceArr.length - 1], true);
@@ -551,14 +539,24 @@ function SvgFunctions(document){
             if(neighborlands[i] == target){
                 route = newSource;
                 return newSource;
-            } else {
+            } 
+            else {
                 arrayDelete.push(neighborlands[i]);
                 setTimeout(function() {findRoute(newSource, target, newArrayDelete)}, 10);
             }
         }
-    };
+    };*/
     
-     var findRoute2 = function(source, route, stack, target) { 
+    /**
+     * Könnte memmory leeks enthalten
+     * 
+     * @param array sourceList (first call with only one source element)
+     * @param array matched route (first call with only one source element)
+     * @param array complete countryList (owned by the player) array
+     * 
+     * @param string target country
+     */
+    var findRoute2 = function(source, route, stack, target) { 
          console.log("Test");
         //check the given source list (countrys to test)
         //and drop the elements from stack
