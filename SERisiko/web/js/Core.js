@@ -136,7 +136,11 @@ function Core() {
     };
 
     this.backToLobby = function(){
-        this.connectionHandler.leaveGame();        
+        this.connectionHandler.leaveGame(); 
+        this.clearDisplayBackToLobby();
+    };
+    
+    this.clearDisplayBackToLobby = function(){
         this.setInGameLobby(false);
         
         showElement(document.getElementById("selectGame"));
