@@ -91,11 +91,9 @@ public class Spielsteuerung {
 	}
 	
 	
-	private int[] wuerfele(int angreifer_wuerfel ,Land defLand, int[] angreifer_wuerfel_array, int[]verteidiger_wuerfel_array) {
-        int verteidiger_wuerfel;
-
-        if (angreifer_wuerfel < defLand.gib_anzahl_armeen()) verteidiger_wuerfel = angreifer_wuerfel;
-        else verteidiger_wuerfel = defLand.gib_anzahl_armeen();
+	private int[] wuerfele(int[] angreifer_wuerfel_array, int[]verteidiger_wuerfel_array) {
+        int angreifer_wuerfel = angreifer_wuerfel_array.length;
+        int verteidiger_wuerfel = verteidiger_wuerfel_array.length;
 
         int[] ang_wuerfel = new int[angreifer_wuerfel];
         int[] ver_wuerfel = new int[verteidiger_wuerfel];
@@ -242,10 +240,13 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
 
-        int[] angreifer_wuerfel_array = new int[Ereigniss.anz_Armeen]; // TODO: eigentlich ja maximal 3 ...
-        int[] verteidiger_wuerfel_array = new int[Ereigniss.zweitesLand.gib_anzahl_armeen()]; // TODO: eigentlich ja maximal 2 ...
+        int dicesA = Ereigniss.anz_Armeen > 3?3:Ereigniss.anz_Armeen;
+        int dicesD = Ereigniss.zweitesLand.gib_anzahl_armeen() > 2?2:Ereigniss.zweitesLand.gib_anzahl_armeen();
+        
+        int[] angreifer_wuerfel_array = new int[dicesA];
+        int[] verteidiger_wuerfel_array = new int[dicesD];
 
-        int[] wuerfel_erg = wuerfele(Ereigniss.anz_Armeen, Ereigniss.zweitesLand, angreifer_wuerfel_array, verteidiger_wuerfel_array);
+        int[] wuerfel_erg = wuerfele(angreifer_wuerfel_array, verteidiger_wuerfel_array);
         DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0], wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
 
         if (pruefe_Spiel_ende()) {

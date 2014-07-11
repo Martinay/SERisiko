@@ -67,10 +67,9 @@ function Combat(doc){
         } 
         if(attacker == true){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
-            root.getElementById("attack").disabled = false;
             Core.svgHandler.refreshOwnerRights();
             if(attackstate != null){
-                setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 4000);
+                setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 2000);
             }
         } else if(defeater == true){
             Core.defendHandler.showDefend(lands[0], lands[1], defeatstate);
@@ -82,13 +81,15 @@ function Combat(doc){
         if(looseUnitsAttack > 0){
             var unitsAfterAttack = parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack);
             var attackString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsAttack + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterAttack;
-            setTimeout(function(){ $("#CountAttackAnzahl").append(attackString)}, 2000);
+            setTimeout(function(){ $("#CountAttackAnzahl").append(attackString)}, 1000);
         }  
         if(looseUnitsDefend > 0){
             var unitsAfterDefend = parseInt(root.getElementById("CountDefenderAnzahl").innerHTML ) - parseInt(looseUnitsDefend);
             var defendString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsDefend + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterDefend;
-            setTimeout(function(){ $("#CountDefenderAnzahl").append(defendString)}, 2000);
+            setTimeout(function(){ $("#CountDefenderAnzahl").append(defendString)}, 1000);
         }      
+        if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0)
+            root.getElementById("startAttack").disabled = false;
     };
     
     this.getDicesCountRotate = function(attackCount, defendCount){
