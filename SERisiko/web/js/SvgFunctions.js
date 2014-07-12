@@ -32,8 +32,14 @@ function SvgFunctions(document){
     
     this.setNewLandOwner = function(landId, playerId){
         svgDoc.getElementById(landId).setAttribute("owner", playerId); 
+    };
+    
+    this.changeLandVisible = function(landId){
         if(svgDoc.getElementById(landId + "_Unit") != null){
-            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + playerId + '"']);
+            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
+        }
+        if(svgDoc.getElementById(landId + "_UnitCount") != null){
+            svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
         }
     };
     
@@ -44,9 +50,6 @@ function SvgFunctions(document){
     
     this.setLandUnitcount = function(landId, count){
         svgDoc.getElementById(landId).setAttribute("unitcount", count);
-        if(svgDoc.getElementById(landId + "_UnitCount") != null){
-            svgDoc.getElementById(landId + "_UnitCount").innerHTML = count;
-        }
     };
     
     this.getLandUnitcount = function(landId){

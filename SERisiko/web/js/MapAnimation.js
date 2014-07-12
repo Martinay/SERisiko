@@ -33,32 +33,33 @@ function MapAnimation(doc){
        
         var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
         mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="' + id + '_UnitCount_mov" x="' + movementData[0] + '" y="' + movementData[1] + '" class="'+ fillstyle +' fnt4" text-anchor="middle"> ' + vorzeichen + tempCount + '</text>';
+        Core.svgHandler.setLandUnitcount(id, count);
         if(tempCount < 0){
-            setTimeout(animateUnitRemove(id, movementData[1], count), 50);
+            setTimeout(animateUnitRemove(id, movementData[1]), 50);
         } else {
-            setTimeout(animateUnitAdd(id, movementData[1], count), 50);
+            setTimeout(animateUnitAdd(id, movementData[1]), 50);
         }
     };
 
-    var animateUnitAdd = function(id, yPosition, count){
+    var animateUnitAdd = function(id, yPosition){
         if(yPosition > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
-            Core.svgHandler.setLandUnitcount(id, count);
+            Core.svgHandler.changeLandVisible(id);
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
         } else {
             yPosition = yPosition + 40;
             svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPosition);
-            setTimeout(function() {animateUnitAdd(id, yPosition, count)}, 50);
+            setTimeout(function() {animateUnitAdd(id, yPosition)}, 50);
         }
     };
     
-    var animateUnitRemove = function(id, yPosition, count){
+    var animateUnitRemove = function(id, yPosition){
         if(yPosition < parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y")) - 2000){
-            Core.svgHandler.setLandUnitcount(id, count);
+            Core.svgHandler.changeLandVisible(id);
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
         } else {
             yPosition = yPosition - 40;
             svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPosition);
-            setTimeout(function() {animateUnitRemove(id, yPosition, count)}, 50);
+            setTimeout(function() {animateUnitRemove(id, yPosition)}, 50);
         }
     };
     
@@ -81,7 +82,9 @@ function MapAnimation(doc){
             var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
             mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="' + destination + '_UnitCount_mov" x="' + movementDataText[0] + '" y="' + movementDataText[1] + '" class="fil9 fnt4" text-anchor="middle"> +' + count + '</text>\
                                                                          <image id="' + destination + '_Unit_mov" x="' + movementDataImg[0] + '" y="' + movementDataImg[1] + '" width="' + movementDataImg[2] + '" height="' + movementDataImg[3] + '" xlink:href="/img/player_img/player_red.png" />';
-            setTimeout(moveNewMapOwner(destination, movementDataText[1], movementDataImg[1], newOwner, count), 50);
+            
+            Core.svgHandler.setLandComplete(destination, newOwner, count);
+            setTimeout(moveNewMapOwner(destination, movementDataText[1], movementDataImg[1]), 50);
         } else {
             var textMov = svgDoc.getElementById(source + '_UnitCount');
             var imageMov = svgDoc.getElementById(source + '_Unit');
@@ -103,14 +106,14 @@ function MapAnimation(doc){
             var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
             mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="' + destination + '_UnitCount_mov" x="' + movementDataTextSource[0] + '" y="' + movementDataTextSource[1] + '" class="fil9 fnt4" text-anchor="middle"> +' + count + '</text>\
                                                                          <image id="' + destination + '_Unit_mov" x="' + movementDataImgSource[0] + '" y="' + movementDataImgSource[1] + '" width="600" height="800" xlink:href="' + movementDataImgSource[2] + '" />';
-            
-            setTimeout(moveNewMapOwnerComplete(destination, movementDataTextSource[1], movementDataImgSource[1], gradient, newOwner, count), 50);
+            Core.svgHandler.setLandComplete(destination, newOwner, count);
+            setTimeout(moveNewMapOwnerComplete(destination, movementDataTextSource[1], movementDataImgSource[1], gradient), 50);
         }
     };
     
-    var moveNewMapOwnerComplete = function(id, yPositionText, yPositionImg, gradient, newOwner, count){
+    var moveNewMapOwnerComplete = function(id, yPositionText, yPositionImg, gradient){
         if(yPositionText > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
-            Core.svgHandler.setLandComplete(id, newOwner, count);
+            Core.svgHandler.changeLandVisible(id);
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_Unit_mov'));
         } else {
@@ -118,13 +121,13 @@ function MapAnimation(doc){
             yPositionImg = yPositionImg + 40 * gradient;
             svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPositionText);
             svgDoc.getElementById(id + "_Unit_mov").setAttribute("y", yPositionImg);
-            setTimeout(function() {moveNewMapOwnerComplete(id, yPositionText, yPositionImg, gradient, newOwner, count)}, 50);
+            setTimeout(function() {moveNewMapOwnerComplete(id, yPositionText, yPositionImg, gradient)}, 50);
         }
     };
     
-    var moveNewMapOwner = function(id, yPositionText, yPositionImg, newOwner, count){
+    var moveNewMapOwner = function(id, yPositionText, yPositionImg){
         if(yPositionText > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
-            Core.svgHandler.setLandComplete(id, newOwner, count);
+            Core.svgHandler.changeLandVisible(id);
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_Unit_mov'));
         } else {
@@ -132,7 +135,7 @@ function MapAnimation(doc){
             yPositionImg = yPositionImg + 40;
             svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPositionText);
             svgDoc.getElementById(id + "_Unit_mov").setAttribute("y", yPositionImg);
-            setTimeout(function() {moveNewMapOwner(id, yPositionText, yPositionImg, newOwner, count)}, 50);
+            setTimeout(function() {moveNewMapOwner(id, yPositionText, yPositionImg)}, 50);
         }
     };
     

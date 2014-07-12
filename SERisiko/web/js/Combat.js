@@ -92,7 +92,7 @@ function Combat(doc){
             var defendString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsDefend + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterDefend;
             setTimeout(function(){ $("#CountDefenderAnzahl").append(defendString)}, 1000);
         }      
-        if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0)
+        if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0 &&  root.getElementById("startAttack") != null)
             root.getElementById("startAttack").disabled = false;
     };
     

@@ -232,6 +232,7 @@ function ServerAnswerParser(doc){
                 Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, message.data[i].ServerGame.numberOfUnitsToPlace, "");
             } else if(message.data[i].MapChange) {
                 Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+                Core.svgHandler.changeLandVisible(message.data[i].MapChange.countryId);
             }
         }
         Core.changePlayerListPic(0);
