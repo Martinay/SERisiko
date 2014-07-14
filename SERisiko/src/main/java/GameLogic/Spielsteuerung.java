@@ -1,6 +1,7 @@
 package GameLogic;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 
 public class Spielsteuerung {
@@ -37,14 +38,42 @@ public class Spielsteuerung {
 	}
 
     private void setzeBesitzer(Kontinent[] kontinente) {
-        //TODO
-        //Einfügen der Spielerverteilfunktion von Simon aus Ursprünglichem Programm
+
+        //Todo testen...
+        
+        int[] verteilung = new int[dieSpieler.length];
+        for (int i=0; i<dieSpieler.length; i++){
+            verteilung[i]=0;			
+	} 
 
         for (Kontinent kontinent : kontinente)
         {
             for (Land land : kontinent.GETLands())
-                land.neuerBesitzer(dieSpieler[(int)(Math.random()*dieSpieler.length)]);
+                land.neuerBesitzer(auswahl_zufall_spieler(dieSpieler, verteilung));
         }
+    }
+        
+    private Spieler auswahl_zufall_spieler(Spieler[] spieler, int[] verteilung){
+        int merk=10000;
+	int pos=0;
+		
+	for (int i=0; i<verteilung.length; i++){
+			
+            if (verteilung[i]==merk){
+                if (((int)(Math.random()*2))==1){
+                    pos=i;
+                    merk=verteilung[i];
+                }
+            }
+
+            if (verteilung[i]<merk){
+                pos=i;
+                merk=verteilung[i];
+            }
+	}
+        
+	verteilung[pos]++;
+	return spieler[pos];
     }
 
     public Client_Response gib_aktuellen_Zustand(){
@@ -56,7 +85,7 @@ public class Spielsteuerung {
     kein kommentar ..............
     */
     public void EntferneSpieler(Spieler zuentfernenderspieler){
-        if (dieSpieler.length == 0)
+        if (dieSpieler.length == 0)             // wozu? schwachsinn??? Wer pfuscht da rumm?
             return;
 
         Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
@@ -94,44 +123,27 @@ public class Spielsteuerung {
 	}
 	
 	
-	private int[] wuerfele(int[] angreifer_wuerfel_array, int[]verteidiger_wuerfel_array) {
-        int angreifer_wuerfel = angreifer_wuerfel_array.length;
-        int verteidiger_wuerfel = verteidiger_wuerfel_array.length;
-
-        int[] ang_wuerfel = new int[angreifer_wuerfel];
-        int[] ver_wuerfel = new int[verteidiger_wuerfel];
-
-        for (int i = 0; i < angreifer_wuerfel; i++) {
-            int zahl = (int) (1 + Math.random() * 5);
-            ang_wuerfel[i] = zahl;
-            angreifer_wuerfel_array[i] = zahl;
+    private void wuerfele(int[] angreifer_wuerfel_array, int[]verteidiger_wuerfel_array) {
+            //zufaellig wuerfeln
+            for (int i=0; i<angreifer_wuerfel_array.length;i++){
+                angreifer_wuerfel_array[i]=(int)(1+Math.random()*6);
+            }
+            Arrays.sort(angreifer_wuerfel_array);
+            array_drehen(angreifer_wuerfel_array);
+            //zufaellig wuerfeln
+            for (int i=0; i<verteidiger_wuerfel_array.length;i++){
+                verteidiger_wuerfel_array[i]=(int)(1+Math.random()*6);
+            }
+            Arrays.sort(verteidiger_wuerfel_array);
+            array_drehen(verteidiger_wuerfel_array);        
+    }
+    
+    private void array_drehen(int[] array){
+        for (int i=0; i<(array.length/2);i++){
+            int zwischen = array [i];
+            array[i]=array[(array.length-1)-i];
+            array[(array.length-1)-i]=zwischen;
         }
-        Arrays.sort(ang_wuerfel);
-
-        for (int i = 0; i < verteidiger_wuerfel; i++) {
-            int zahl = (int) (1 + Math.random() * 5);
-            ver_wuerfel[i] = zahl;
-            verteidiger_wuerfel_array[i] = zahl;
-        }
-        Arrays.sort(ver_wuerfel);
-
-        int tote_angreifer = 0;
-        int tote_verteidiger = 0;
-
-        int unterschied = ang_wuerfel.length - ver_wuerfel.length;
-        for (int i = ver_wuerfel.length - 1; i >= 0; i--) {
-            if (ang_wuerfel[unterschied + i] > ver_wuerfel[i]) tote_angreifer++;
-            else tote_verteidiger++;
-        }
-        tote_verteidiger = tote_verteidiger + unterschied;
-
-
-        int[] rueck = new int[2];
-
-        rueck[0] = tote_angreifer;
-        rueck[1] = tote_verteidiger;
-
-        return rueck;
     }
 		
 	
@@ -150,7 +162,7 @@ public class Spielsteuerung {
                 want to buy cat
                 */
                 if (ist_erste_runde==true){
-                	switch (dieSpieler.length){
+                	switch (dieSpieler.length){     // i want to switch a month var
                             case 2:  hinzuzufuegende_Armeen=40;
                                          break;
                             case 3:  hinzuzufuegende_Armeen=35;
@@ -234,37 +246,71 @@ public class Spielsteuerung {
         // http://i.imgur.com/6xGoQrf.gif
         //
         //
+        // nochmal was soll der mist - pfusch nicht im Code herrum - nicht du Martin... Irgendein Depp macht die ganze Logik kaputt
 
+            
+            
+        //***********wechsel der Phase????********************
         if (Ereigniss.phasenwechsel)
             return angriff_verlassen();
 
+        //***********Darf der Angriff durchgefuehrt werden???********************
+        
         if (!DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)) {
             aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
             return aktueller_Response;
-        }
-
-        int dicesA = Ereigniss.anz_Armeen > 3?3:Ereigniss.anz_Armeen;
-        int dicesD = Ereigniss.zweitesLand.gib_anzahl_armeen() > 2?2:Ereigniss.zweitesLand.gib_anzahl_armeen();
+        }        
         
-        int[] angreifer_wuerfel_array = new int[dicesA];
-        int[] verteidiger_wuerfel_array = new int[dicesD];
-
-        int[] wuerfel_erg = wuerfele(angreifer_wuerfel_array, verteidiger_wuerfel_array);
-        DieSpielwelt.fuehre_Angriff_durch(wuerfel_erg[0], wuerfel_erg[1], Ereigniss.erstesLand, Ereigniss.zweitesLand);
-
+        //***********Angriff an sich********************
+  
+        Land angreifer_Land = Ereigniss.erstesLand;
+        Land verteidiger_Land = Ereigniss.zweitesLand;
+        int angreifer = Ereigniss.anz_Armeen;
+        
+        int angreifer_wuerfel=0;
+        int verteidiger_wuerfel=0;
+        
+        if (angreifer>3) angreifer_wuerfel=3; else angreifer_wuerfel=angreifer;
+        if (verteidiger_Land.gib_anzahl_armeen()>2) verteidiger_wuerfel=2; else verteidiger_wuerfel=verteidiger_Land.gib_anzahl_armeen();
+        if (verteidiger_wuerfel>angreifer_wuerfel) verteidiger_wuerfel=angreifer_wuerfel;
+        
+        //wuerfeln...
+        int[] angreifer_wuerfel_array = new int[angreifer_wuerfel];
+        int[]verteidiger_wuerfel_array = new int[verteidiger_wuerfel];        
+        wuerfele(angreifer_wuerfel_array, verteidiger_wuerfel_array);    
+        
+        //vergleichen
+        int tote_angreifer=0;
+        int tote_verteidiger=0;
+        
+        for (int i=0; i<angreifer_wuerfel_array.length;i++){
+            
+            if (i>=verteidiger_wuerfel_array.length){
+                tote_verteidiger++;                
+            }else{
+                if (angreifer_wuerfel_array[i]<=verteidiger_wuerfel_array[i]){
+                    tote_angreifer++;
+                }else{
+                    tote_verteidiger++;
+                }
+            }       
+        }
+        
+        //Angriff durchfuehren
+        DieSpielwelt.fuehre_Angriff_durch(tote_angreifer, angreifer, tote_verteidiger, angreifer_Land, verteidiger_Land);
+        
+        //Spiel zu ende?
+        
         if (pruefe_Spiel_ende()) {
             Zustand = Spielzustaende.Beenden;
-            Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-            zwischen.angreifer_wuerfel = angreifer_wuerfel_array;
-            zwischen.verteidiger_wuerfel = verteidiger_wuerfel_array;
-            aktueller_Response = zwischen;
-            return zwischen;
-        }
-
-        Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-        zwischen.angreifer_wuerfel = angreifer_wuerfel_array;
-        zwischen.verteidiger_wuerfel = verteidiger_wuerfel_array;
-        aktueller_Response = zwischen;
+        }  
+        
+        //Baue Response
+        
+        aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+        aktueller_Response.angreifer_wuerfel = angreifer_wuerfel_array;
+        aktueller_Response.verteidiger_wuerfel = verteidiger_wuerfel_array;
+        
         return aktueller_Response;
     }
 		

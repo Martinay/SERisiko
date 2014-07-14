@@ -49,19 +49,23 @@ public class Spielwelt {
 	}
 	
 	public void verteile_neu_ohne(Spieler zuentfernenderspieler, Spieler[] andereSpieler){
-		int pos=0;
+		/*
+                sag mal codest du mit dem editor??
+                wie gesagt , ja - und ich finde fuer Editor programmieren hab ich relativ wenig falsch gemacht.
+                und vlt. pfuscht du in zukunft nicht so rum, dass du die Logik zerhaust.
+                */
+            
+                int pos=0;
 		for (int i=0; i<dieLaender.length; i++){
 			if (dieLaender[i].gib_besitzer()==zuentfernenderspieler){
 				dieLaender[i].neuerBesitzer(andereSpieler[pos]);
 				pos++;
-                                /*
-                                sag mal codest du mit dem editor??
-                                */
+                                
                                       
-				while(dieLaender[i].decArmeen())
-                                    dieLaender[i].mehr_Armeen(1);
+				while(dieLaender[i].decArmeen()); // ist so richtig - versau nicht wieder den code
+                                dieLaender[i].mehr_Armeen(1);
 			}
-			if (pos==andereSpieler.length) pos=0;
+			if (pos>=andereSpieler.length) pos=0;
 		}
 	}
 	
@@ -115,17 +119,20 @@ public class Spielwelt {
 		return verteidiger.gib_anzahl_armeen();		
 	}
 	
-	protected void fuehre_Angriff_durch(int angreifer_gestorben,int verteidiger_gestorben, Land angreifer, Land verteidiger){
+	protected void fuehre_Angriff_durch(int angreifer_gestorben, int angreifer_ausgesandt,int verteidiger_gestorben, Land angreifer, Land verteidiger){
 
-		for (int i=0; i<angreifer_gestorben; i++) angreifer.decArmeen();
+		for (int i=0; i<angreifer_gestorben; i++) {
+                    angreifer.decArmeen();
+                    angreifer_ausgesandt--;
+                }
 		
 		int neue_anz_ver=verteidiger.gib_anzahl_armeen()-verteidiger_gestorben;
 		for (int i=0; i<verteidiger_gestorben; i++) verteidiger.decArmeen(); 
 		
 		if (neue_anz_ver<=0){
 			verteidiger.neuerBesitzer(angreifer.gib_besitzer());
-			verteidiger.mehr_Armeen(Math.abs(neue_anz_ver)+1);
-			for (int i=0; i<=Math.abs(neue_anz_ver); i++) angreifer.decArmeen();
+			verteidiger.mehr_Armeen(angreifer_ausgesandt);
+			for (int i=0; i<angreifer_ausgesandt; i++) angreifer.decArmeen();
 		}
 		
 	}
