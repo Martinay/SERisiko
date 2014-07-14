@@ -24,7 +24,7 @@ function Attack(document){
     this.showAttack = function (attackId, defendId, difference){
         
         var select = root.getElementById("unitAmountAttack");
-        if(select != null){
+        if(select !== null){
             var countAttack = parseInt(select.options[select.selectedIndex].value);
             difference = parseInt(Core.svgHandler.getLandUnitcount(attackId)) - countAttack;
         }else{
@@ -33,10 +33,10 @@ function Attack(document){
         
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
         
-        if(Core.svgHandler.getLandOwner(defendId) == Core.getPlayerName()){
+        if(Core.svgHandler.getLandOwner(defendId) === Core.getPlayerName()){
             Core.attackHandler.showAttackResult(true);
         } else {
-            if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) == 1){
+            if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) === 1){
                 Core.attackHandler.showAttackResult(false);
             }else{ 
                 Core.connectionHandler.sendAttack(attackId, defendId, countAttack);
@@ -87,7 +87,7 @@ function Attack(document){
     };
     
     this.showAttackResult = function (arg){
-        if(arg == true){
+        if(arg === true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                 <button style='margin-top: 20px;' name='clearAttackDisplay' onClick='Core.attackHandler.clearAttackDisplay()'>Anzeige Schließen</button>";
         } else {

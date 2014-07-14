@@ -9,7 +9,7 @@ function UnitMove(document){
     
     this.selectCountMoveUnits = function(source, destination){
         Core.showElement(root.getElementById("mutex"));
-        if(parseInt(Core.svgHandler.getLandUnitcount(source)) != 1){
+        if(parseInt(Core.svgHandler.getLandUnitcount(source)) !== 1){
             root.getElementById("bottom_overlay").innerHTML = "\
                             <label for='unitAmount'>Anzahl Einheiten von: " + source + " nach: " + destination + "</label> \
                             <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \

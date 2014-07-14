@@ -30,7 +30,7 @@ function Core() {
     //# Public Methods
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
-        if(name == "" || !validate(name)){
+        if(name === "" || !validate(name)){
             document.getElementById("errorInName").innerHTML = "Ihren Spielernamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Spielernamen ein der nur aus Buchstaben und Zahlen besteht";
         } else{
             myData.setPlayerName(name);
@@ -77,16 +77,16 @@ function Core() {
         var rdy = "img/ready.png";
         var notRdy = "img/not_ready.png";
         var defeated = "/img/defeated.png";
-        var not_play = "img/not_play.png"
+        var not_play = "img/not_play.png";
         $("#playerList").html("");
         
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-             if(players[i] != null){
-                if(gameRunning == false){
-                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() == 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
+             if(players[i] !== null){
+                if(gameRunning === false){
+                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() === 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
                 } else {
-                    if(players[i].getPlayerStatus() == "Defeated"){
+                    if(players[i].getPlayerStatus() === "Defeated"){
                         $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + defeated + "' width='15' align='right'/><br>");
                     } else {
                         $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + not_play + "' width='15' align='right'/><br>");
@@ -99,9 +99,9 @@ function Core() {
     this.changePlayerListPic = function(CurrentPlayerId){
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-            if(players[i] != null){
-                if(players[i].getPlayerStatus() == "Defeated"){
-                    if(this.getPlayerId() == CurrentPlayerId){
+            if(players[i] !== null){
+                if(players[i].getPlayerStatus() === "Defeated"){
+                    if(this.getPlayerId() === CurrentPlayerId){
                         document.getElementById("loading_overlay").style.display = "block";
                         document.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='clearShowDefeat' onClick='Core.backToLobby()'>Anzeige Schließen</button>";
@@ -109,7 +109,7 @@ function Core() {
                         $("#" + players[i].getPlayerId()).attr("src", "img/defeated.png");
                     }
                 }else {
-                    if(players[i].getPlayerId() == CurrentPlayerId){
+                    if(players[i].getPlayerId() === CurrentPlayerId){
                         $("#" + players[i].getPlayerId()).attr("src", "img/play.png");
                     } else {
                         $("#" + players[i].getPlayerId()).attr("src", "img/not_play.png");
@@ -154,15 +154,17 @@ function Core() {
         $("#chatbox").html("");
         $("#usermsg").html("");
         
-        if(this.sctTable != null){
-            this.sctTable.clear("availableGames");
-            this.gameList.clear();
-        }
-        else
-            alert("Error! no gameTable");	
+        this.clearOpenGames();
         
         this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
-        $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
+        $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><!--<img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/> OUT OF ORDER --></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
+    };
+    
+    this.clearOpenGames = function(){
+        if(this.sctTable !== null){
+            this.sctTable.clear("availableGames");
+            this.gameList.clear();
+        } 
     };
     
     this.leaveCreateGame = function(){
@@ -219,8 +221,8 @@ function Core() {
     this.showEndOfGame = function(){
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
-            if(players[i] != null){
-                if(player[i].getPlayerId() == this.getPlayerId && getplayers[i].getPlayerStatus() != "Defeated"){
+            if(players[i] !== null){
+                if(player[i].getPlayerId() === this.getPlayerId && getplayers[i].getPlayerStatus() !== "Defeated"){
                     document.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
                 } else {
@@ -242,11 +244,11 @@ function Core() {
     this.checkForKey = function(caller, key){
         switch(caller){
             case "playerName":
-                if(key == 13)
+                if(key === 13)
                     this.setPlayerName();
                 break;
             case "usermsg":
-                if(key == 13)
+                if(key === 13)
                     this.validateChatMessage();
                 break;
             default:
@@ -293,11 +295,6 @@ function Core() {
         slider.slider( "value", maxValue );
         select.val(maxValue);
     };
-    
-    this.test = function(){
-       this.svgHandler.test();
-    };
-    
     
     this.changeButton = function(id, innerhtml, onclick_params, onclick_function, state){
         document.getElementById(id).innerHTML = innerhtml;

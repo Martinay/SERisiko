@@ -7,7 +7,7 @@ function Connection(){
     var connection = null;
     
     this.init = function(){
-        if (connection != null)
+        if (connection !== null)
             connection.close();
         connection = new RisikoApi();
 
@@ -26,7 +26,7 @@ function Connection(){
     
     this.joinLobby = function(){
         connection.joinLobby();
-        if(Core.sctTable != null){
+        if(Core.sctTable !== null){
             Core.sctTable.clear("availableGames");
             Core.gameList.clear();
             Core.connectionHandler.listOpenGames();

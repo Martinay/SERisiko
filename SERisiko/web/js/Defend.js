@@ -54,7 +54,7 @@ function Defend(document){
     };
     
     this.showDefendResult = function(arg){
-        if(arg == true){
+        if(arg === true){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                 <button style='margin-top: 20px;' name='clearShowDefend' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
         } else {

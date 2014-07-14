@@ -25,7 +25,7 @@ function GameList(){
     };
 
     this.getGames = function(){
-        if(games != null)
+        if(games !== null)
             return games;
         else
             alert('no games found');
@@ -41,16 +41,16 @@ function GameList(){
     
     this.getGameNameById = function(id){
         for(var i = 0; i < amount; i++){
-            if(games[i].getGameId() == id){
+            if(games[i].getGameId() === id){
                 return games[i].getGameName();
             }
         }
-    }
+    };
     
     this.deleteGame = function(index){
         if(index < amount){
             for(var i = 0; i < amount; i++){
-                if(games[i].getGameId() == index){
+                if(games[i].getGameId() === index){
                     games.splice(index, 1);
                 }
             }
@@ -81,7 +81,7 @@ function GameObject(name, id, actualP, maxP){
     };
     this.getGameId = function(){
         return gameId;
-    }
+    };
     //# Private Methods
 }
 
@@ -105,7 +105,7 @@ function PlayerList(){
     };
 
     this.getPlayers = function(){
-        if(players != null)
+        if(players !== null)
             return players;
         else
             alert('no players found');
@@ -121,16 +121,16 @@ function PlayerList(){
     
     this.getPlayerById = function(id){
        for(var i = 0; i < amount; i++){
-            if(players[i].getPlayerId() == id){
+            if(players[i].getPlayerId() === id){
                 return players[i];
             }
         }
         return new PlayerObject("Player not found", -1, false);
-    }
+    };
 
     this.deletePlayerById = function(id){
         for(var i = 0; i < amount; i++){
-            if(players[i].getPlayerId() == id){
+            if(players[i].getPlayerId() === id){
                 players.splice(i, 1);
                 amount--;
             }
@@ -168,10 +168,6 @@ function PlayerObject(name, id, state, rdyState){
     
     this.getPlayerId = function(){
         return playerId;
-    };
-    
-    this.getColorId = function(){
-      return playerColorId;  
     };
     //# Private Methods
 }

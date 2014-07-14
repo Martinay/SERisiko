@@ -28,10 +28,10 @@ function SvgFunctions(document){
     };
     
     this.changeLandVisible = function(landId){
-        if(svgDoc.getElementById(landId + "_Unit") != null){
+        if(svgDoc.getElementById(landId + "_Unit") !== null){
             svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
-        if(svgDoc.getElementById(landId + "_UnitCount") != null){
+        if(svgDoc.getElementById(landId + "_UnitCount") !== null){
             svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
         }
     };
@@ -39,7 +39,7 @@ function SvgFunctions(document){
     this.setLandComplete = function(landId, playerId, count){
         this.setNewLandOwner(landId, playerId);
         this.setLandUnitcount(landId, count);
-    }
+    };
     
     this.setLandUnitcount = function(landId, count){
         svgDoc.getElementById(landId).setAttribute("unitcount", count);
@@ -57,10 +57,10 @@ function SvgFunctions(document){
         var neighborLands = getLandNeighbors(id);
         var neighborLandsToReturn = new Array();
         for (var i = 0; i < neighborLands.length; i++){
-            if(own == true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ==  svgDoc.getElementById(id).getAttribute("owner")){
+            if(own === true && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") ===  svgDoc.getElementById(id).getAttribute("owner")){
                 neighborLandsToReturn.push(neighborLands[i]);
             } 
-            if (own == false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") != svgDoc.getElementById(id).getAttribute("owner")) {
+            if (own === false && svgDoc.getElementById(neighborLands[i]).getAttribute("owner") !== svgDoc.getElementById(id).getAttribute("owner")) {
                 neighborLandsToReturn.push(neighborLands[i]);
             }
         }
@@ -74,11 +74,11 @@ function SvgFunctions(document){
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.3, 'default');");
         svgDoc.getElementById(id + "_back").setAttribute('opacity','0.3');
-        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
+        if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK){
             neighborLands = this.getLandNeighborsFiltered(id, false);
             for (var i = 0; i < neighborLands.length; i++) {
                 theRect = svgDoc.getElementById(neighborLands[i]);
-                if(theRect.getAttribute("owner") !=  Core.getPlayerId()){
+                if(theRect.getAttribute("owner") !==  Core.getPlayerId()){
                     theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                     theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
@@ -94,12 +94,12 @@ function SvgFunctions(document){
             var doneCountrys = new Array();
             doneCountrys.push(id);
             var goOn = true;
-            while(goOn == true){
+            while(goOn === true){
                 goOn = false;
                 newNeighorLands = new Array();
                 for (var i = 0; i < neighborLands.length; i++) {
                     theRect = svgDoc.getElementById(neighborLands[i]);
-                    if(doneCountrys.indexOf(theRect.getAttribute('id')) == -1){
+                    if(doneCountrys.indexOf(theRect.getAttribute('id')) === -1){
                         doneCountrys.push(theRect.getAttribute('id'));
                     }
                     theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
@@ -121,7 +121,7 @@ function SvgFunctions(document){
         this.setRectsOnClickNull();
         svgDoc.getElementById(attacker + "_back").setAttribute('opacity','0.5');
         svgDoc.getElementById(id + "_back").setAttribute('opacity','0.5');
-        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK){
+        if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK){
             Core.attackHandler.selectAmountUnit(attacker, id);
         } else {
             Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
@@ -135,17 +135,17 @@ function SvgFunctions(document){
             rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");;
             rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");;
             rect.onclick = "";
-            if(rect.getAttribute("id").indexOf("_back") != -1){
+            if(rect.getAttribute("id").indexOf("_back") !== -1){
                 svgDoc.getElementById(rect.getAttribute("id")).setAttribute('opacity','1');
             }
         });
-    }
+    };
     
     this.refreshOwnerRights = function (){
-        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() == Core.gameSteps.state.UNITMOVEMENT){
+        if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITMOVEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") == Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
+                if(rect.getAttribute("owner") === Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.svgHandler.identifySource(this.id);");
@@ -155,10 +155,10 @@ function SvgFunctions(document){
     };
     
     this.refreshOwnerRightsForUnitPlace = function (value){
-        if(Core.gameSteps.getGameStep() == Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() == Core.gameSteps.state.FIRSTUNITPLACEMENT){
+        if(Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() === Core.gameSteps.state.FIRSTUNITPLACEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") == Core.getPlayerId()){
+                if(rect.getAttribute("owner") === Core.getPlayerId()){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
@@ -191,7 +191,7 @@ function SvgFunctions(document){
         [].slice.call(rects).forEach(function(rect){
             rectID = rect.getAttribute("id");
             
-            if(rectID != "" && rectID.indexOf("_back") == -1){
+            if(rectID !== "" && rectID.indexOf("_back") === -1){
                 countryHeight = parseInt(rect.getAttribute("height"));
                 countryWidth = parseInt(rect.getAttribute("width"));
                 if(countryWidth < 800){
@@ -206,7 +206,7 @@ function SvgFunctions(document){
                         width = height * 0.75;
                     }
                 }
-                if(height == 800 && !("B3B2C3C4P7P13".indexOf(rectID) > -1)){
+                if(height === 800 && !("B3B2C3C4P7P13".indexOf(rectID) > -1)){
                     xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2) - 150;
                 }else{
                     xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2);
@@ -231,7 +231,7 @@ function SvgFunctions(document){
     //Private Methods
     var arraySchnittmengeDelete = function(array, arrayDelete){
         for(var i = 0; i < arrayDelete.length; i++){
-            while(array.indexOf(arrayDelete[i]) != -1){
+            while(array.indexOf(arrayDelete[i]) !== -1){
                 array.splice(array.indexOf(arrayDelete[i]), 1);
             }
         }

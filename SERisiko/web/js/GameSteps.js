@@ -5,7 +5,7 @@
  * @author Alexander Santana Losada
  */
     
-function GameSteps(document){
+function GameSteps(doc){
     //#Public Vars
     this.state = {
         IDLE: 0,
@@ -19,14 +19,14 @@ function GameSteps(document){
     
     //#Private Vars
     var gameStep = this.state.IDLE;
-    var root = document;
+    var root = doc;
     
     //# Public Methods
     this.doFirstUnitPlacement = function(){
         this.setGameStep(Core.gameSteps.state.IDLE);
         clearDisplay();
         Core.changeButton("gamePhase", "Nicht am Zug", "", "",  true);
-        document.getElementById("gameStatus").innerHTML = "Warten auf die Mitspieler";
+        root.getElementById("gameStatus").innerHTML = "Warten auf die Mitspieler";
         Core.connectionHandler.sendPlaceFirstUnits(Core.unitPlacementHandler.getPlacementArray());
         Core.unitPlacementHandler.clearPlacementArray();
     };
@@ -107,14 +107,14 @@ function GameSteps(document){
     
     var clearDisplay = function(){
         $( "#bottom_overlay" ).slideUp( "slow");
-        Core.hideElement(document.getElementById("mutex"));
-        document.getElementById("bottom_overlay").innerHTML = "";
+        Core.hideElement(root.getElementById("mutex"));
+        root.getElementById("bottom_overlay").innerHTML = "";
         
-        document.getElementById("loading_overlay").innerHTML = "";
-        document.getElementById("loading_overlay").style.display = "none";
+        root.getElementById("loading_overlay").innerHTML = "";
+        root.getElementById("loading_overlay").style.display = "none";
         
         Core.changeButton("gamePhase", "Nicht Am Zug", "", "",  true);
-        document.getElementById("gameStatus").innerHTML = "";
+        root.getElementById("gameStatus").innerHTML = "";
         
         Core.svgHandler.setRectsOnClickNull();  
     };

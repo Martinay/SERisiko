@@ -34,7 +34,7 @@ function UnitPlacement(document){
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'default');");
         $( "#bottom_overlay" ).slideDown( "slow");
         Core.showElement(root.getElementById("mutex"));
-        if(placeUnit[id] != null){
+        if(placeUnit[id] !== null){
             oldValue = parseInt(placeUnit[id]);
             maxValue = parseInt(maxValue) + parseInt(placeUnit[id]);
         }
@@ -44,7 +44,7 @@ function UnitPlacement(document){
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>OK</button>\
                         <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>Abbrechen</Button>";
         Core.createSlider("unitAmount", "abortUnitPlacement", 1, maxValue);
-        if(oldValue != 0){
+        if(oldValue !== 0){
             $( "#slider" ).slider( "value", oldValue );
             $("#unitAmount").val(oldValue);
         }
@@ -62,7 +62,7 @@ function UnitPlacement(document){
         placeUnit[id] = parseInt(countSelector);
         Core.mapAnimationHandler.prepareUnitAddRemove(id, parseInt(countSelector) + parseInt(Core.svgHandler.getLandUnitcount(id)));
         root.getElementById("bottom_overlay").innerHTML = "";
-        if(maxValue == 0){
+        if(maxValue === 0){
             Core.svgHandler.setRectsOnClickNull();
             document.getElementById("gamePhase").disabled = false;
         } else {
