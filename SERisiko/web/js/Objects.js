@@ -182,6 +182,7 @@ function MyDataObject(){
     var thePlayerId = -1;
     var thePlayerName = "";
     var inGameLobby = false;
+    var gameId = -1;
     
      //# Public Methods
     this.getPlayerId = function(){
@@ -196,6 +197,10 @@ function MyDataObject(){
         return inGameLobby;
     };
     
+    this.getGameId = function(){
+        return gameId;
+    };
+    
     this.setPlayerId = function(id){
         thePlayerId = id;
     };
@@ -207,4 +212,8 @@ function MyDataObject(){
     this.setInGameLobby = function(arg){
         inGameLobby = arg;
     };
+    
+    this.setGameId = function(id){
+        gameId = id;
+    };    
 }

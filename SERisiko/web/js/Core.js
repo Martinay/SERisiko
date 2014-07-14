@@ -48,6 +48,10 @@ function Core() {
         myData.setPlayerId(id);
     };
     
+    this.setGameId = function(id){
+        myData.setGameId(id);
+    };
+    
     this.getPlayerId = function(){
         return myData.getPlayerId();
     };
@@ -67,6 +71,10 @@ function Core() {
     this.isGameRunning = function(){
         return gameRunning;
     };
+    
+    this.getGameId = function(){
+        return myData.getGameId();
+    }
     
     this.setGameName = function(id){
         document.getElementById("gameNameAnzeige").innerHTML = this.gameList.getGameNameById(id);

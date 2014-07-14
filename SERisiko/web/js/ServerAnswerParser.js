@@ -219,8 +219,8 @@ function ServerAnswerParser(doc){
             root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler<br> <span style='color: red;'>Nicht alle Spieler sind bereit!</span>";
             return;
         }
-        if(Core.isInGameLobby()){
-            Core.setGameRunning(true)
+        if(Core.isInGameLobby()){ //@TODO check for gameid if it is  mine, also write gameid @ playerjoinedmessage
+            Core.setGameRunning(true);
             root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
             root.getElementById("startGame").innerHTML = "";
             Core.changeButton("gamePhase", "Alle Einheiten Platziert", "", "Core.gameSteps.doFirstUnitPlacement();",  true);
