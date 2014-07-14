@@ -39,17 +39,6 @@
             <url>http://conjars.org/repo</url>
             <layout>default</layout>
         </repository>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-            <id>clojars</id>
-            <name>Clojars</name>
-            <url>http://clojars.org/repo</url>
-            <layout>default</layout>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -65,19 +54,14 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
+            <groupId>org.webbitserver</groupId>
+            <artifactId>webbit</artifactId>
+            <version>0.4.15</version>
+        </dependency>
+        <dependency>
             <groupId>net.hydromatic</groupId>
             <artifactId>linq4j</artifactId>
             <version>0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty</artifactId>
-            <version>3.5.2.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.clojars.dsabanin</groupId>
-            <artifactId>webbit</artifactId>
-            <version>0.4.16</version>
         </dependency>
     </dependencies>
 </project>
