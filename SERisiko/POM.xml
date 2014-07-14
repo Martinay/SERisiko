@@ -38,8 +38,15 @@
             <name>Conjars</name>
             <url>http://conjars.org/repo</url>
             <layout>default</layout>
+        </repository>        
+        <repository>
+            <id>localRepo</id>
+            <name>SERisiko-TINF12</name>
+            <url>file://${project.basedir}\libs</url>
         </repository>
+        
     </repositories>
+
 
     <dependencies>
         <dependency>
@@ -54,14 +61,24 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-            <groupId>org.webbitserver</groupId>
-            <artifactId>webbit</artifactId>
-            <version>0.4.15</version>
-        </dependency>
-        <dependency>
             <groupId>net.hydromatic</groupId>
             <artifactId>linq4j</artifactId>
             <version>0.4</version>
+        </dependency> 
+
+
+
+        <dependency>
+            <groupId>webbitserver-temp</groupId>
+            <artifactId>webbit</artifactId>
+            <version>0.4.16-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.6.5.Final</version>
+            <scope>compile</scope>
+        </dependency>                
+        
     </dependencies>
 </project>
