@@ -24,6 +24,9 @@ public class Lobby {
     }
 
     public void AddPlayer(Player player) {
+        if (_players.contains(player))
+            return;
+            
         _players.add(player);
         player.PlayerStatus = PlayerStatus.InLobby;
     }
