@@ -32,12 +32,29 @@ public class Spielsteuerung {
 		
 		this.aktueller_Spieler=dieSpieler[0];
 
-        setzeBesitzer(kontinente); //TODO
+                setzeBesitzer(kontinente);
 		
-		armeen_hinzufuegen_betreten();
-	}
+                if (constructor_ok()){
+                    armeen_hinzufuegen_betreten();
+                }else{
+                   Zustand=Spielzustaende.Beenden;
+                   new Client_Response(null, null, null, true); 
+                   System.out.println("Spiel konnte nicht erstellt werden. Unzulaessige Eingaben");
+                }
+      	}
+        
+        private boolean constructor_ok(){
+           
+            if (dieSpieler.length<2) return false;
+            if (DieSpielwelt.gibLaender()==null) return false;
+            if (DieSpielwelt.gibLaender().length<5) return false;
+            
+            //Falls noch Fehlzustaende zur Erzeugung fuehren bitte hier Abfrage erstellen 
+            
+            return true;
+        }
 
-    private void setzeBesitzer(Kontinent[] kontinente) {
+        private void setzeBesitzer(Kontinent[] kontinente) {
 
         //Todo testen...
         
