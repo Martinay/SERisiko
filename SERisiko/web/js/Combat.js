@@ -52,7 +52,8 @@ function Combat(doc){
                     }
                 } else {
                     looseUnitCounts[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
-                    Core.mapAnimationHandler.prepareNewMapOwner(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
+                    //Core.mapAnimationHandler.prepareNewMapOwner(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
+                    Core.mapAnimationHandler.doMovementAnimation(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
                     looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[i].MapChange.unitCount) + 1);
                     defeatstate = false;
                     attackstate = true;

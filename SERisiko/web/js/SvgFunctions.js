@@ -235,57 +235,6 @@ function SvgFunctions(document){
         });
     };
     
-    this.doMovementAnimation = function(source, target, amount){
-        route = null;
-        var countryHeight, countryWidth, width, height, xPosition, yPosition;
-        var mapUnitID = svgDoc.getElementById("mapUnit");
-        var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
-        var rect = svgDoc.getElementById(source);
-        var rectID = rect.getAttribute("id");
-        
-        if(rectID != ""){
-            countryHeight = parseInt(rect.getAttribute("height"));
-            countryWidth = parseInt(rect.getAttribute("width"));
-            if(countryWidth < 800){
-                width = countryWidth * 0.677;
-                height = countryWidth * 0.9;
-            }else{
-                height = 800;
-                if(countryHeight < height){
-                    width = countryHeight * 0.8;
-                    height = countryHeight * 0.6;
-                } else{
-                    width = height * 0.75;
-                }
-            }
-            if(height == 800 && !("B3B2C3C4P7P13".indexOf(rectID) > -1)){
-                xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2) - 150;
-            }else{
-                xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2);
-            }
-
-            yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + 'Runner_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + svgDoc.getElementById(source+"_Unit").getAttribute('xlink:href') + '" />';
-            
-            if(countryWidth > 1234){
-                xPosition = xPosition + width * 1.4 ;
-                yPosition = yPosition + height/2 + 130;
-            } else {
-                xPosition = xPosition + width/2 ;
-                yPosition = yPosition + height * 1.5;
-            }
-
-            mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + 'Runner_UnitCount_mov" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
-            
-            //mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="tmp_negativ_amount" x="' + xPosition+150 + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">-' + amount + '</text>';
-            //setTimeout(function(){ Core.svgHandler.killDomElement(svgDoc.getElementById('tmp_negativ_amount'));}, 1000);
-            
-            route = calcUnitRunWay(source, target);
-            console.log("ErgebnisRoute: " + route.toString())
-            Core.mapAnimationHandler.nextUnitTarget(source, target, route);
-        }
-    };
-    
     //Private Methods
     var arraySchnittmengeDelete = function(array, arrayDelete){
         for(var i = 0; i < arrayDelete.length; i++){
@@ -318,51 +267,6 @@ function SvgFunctions(document){
         return findRoute(routeArr, target, arrayToDelete); 
     };
     */
-   var calcUnitRunWay = function(source, target){
-        //var route = new Array(source);
-        //route = findRoute2(route, route, neighborsParser.getLands(), target);
-        
-        var route = new Array();
-        if($.inArray(target, neighborsParser.getOwnNeighbors(source)) != -1){   //check direct neighbors
-            route.push(target);
-        }
-        else{                                                                    //calc complex pathfinding route
-            route = findRoute(source, target, route);    
-            
-            var index = route.indexOf("finish"); 
-            if (index > -1){
-                while(route.length > index)
-                    route.splice(route.length-1, 1);
-            }
-        }
-        console.log("Calculated Route: " + route);
-        return route;
-    };
-    
-    var findRoute = function(source, target, route){
-        if($.inArray("finish", route) != -1)
-            return route;
-        var sourceN = neighborsParser.getOwnNeighbors(source);
-        if(source == target){
-            route.push("finish");
-            return route;
-        }      
-        if($.inArray(target, route) != -1)
-            return route;
-        if(sourceN.length == 0 || (sourceN.length == 1 && $.inArray(sourceN[0], route) != -1)){
-            route.splice(route.length-1, 1);
-            return route;
-        }
-            
-        for(var i = 0; i < sourceN.length; i++){
-            if($.inArray(sourceN[i], route) == -1){
-                route.push(sourceN[i]);
-                console.log("add "+sourceN[i]+" to route: "+route);
-                route = findRoute (sourceN[i], target, route);
-            }
-        }
-        return route;
-    };
     /**
      * Könnte memmory leeks enthalten
      * 

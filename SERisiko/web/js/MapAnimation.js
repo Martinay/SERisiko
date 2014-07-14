@@ -139,14 +139,62 @@ function MapAnimation(doc){
         }
     };
     
-    this.nextUnitTarget = function (source, target, route){        
-        if(route.length > 0){
-            var tmp_target = route.shift();
+    this.doMovementAnimation = function(source, target, amount){
+        var route = null;
+        var countryHeight, countryWidth, width, height, xPosition, yPosition;
+        var mapUnitID = svgDoc.getElementById("mapUnit");
+        var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
+        var rect = svgDoc.getElementById(source);
+        var rectID = rect.getAttribute("id");
+        
+        if(rectID != ""){
+            countryHeight = parseInt(rect.getAttribute("height"));
+            countryWidth = parseInt(rect.getAttribute("width"));
+            if(countryWidth < 800){
+                width = countryWidth * 0.677;
+                height = countryWidth * 0.9;
+            }else{
+                height = 800;
+                if(countryHeight < height){
+                    width = countryHeight * 0.8;
+                    height = countryHeight * 0.6;
+                } else{
+                    width = height * 0.75;
+                }
+            }
+            if(height == 800 && !("B3B2C3C4P7P13".indexOf(rectID) > -1)){
+                xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2) - 150;
+            }else{
+                xPosition = (parseInt(rect.getAttribute("x")) + countryWidth/2) - (width / 2);
+            }
+
+            yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
+            mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + 'Runner_Unit_mov" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="' + svgDoc.getElementById(source+"_Unit").getAttribute('xlink:href') + '" />';
+            
+            if(countryWidth > 1234){
+                xPosition = xPosition + width * 1.4 ;
+                yPosition = yPosition + height/2 + 130;
+            } else {
+                xPosition = xPosition + width/2 ;
+                yPosition = yPosition + height * 1.5;
+            }
+
+            mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + 'Runner_UnitCount_mov" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
+
+            route = calcUnitRunWay(source, target);
+            console.log("ErgebnisRoute: " + route.toString());
+            this.nextUnitTarget(route, 0);
+        }
+    };    
+    this.nextUnitTarget = function (route, pos){
+        ++pos;
+        if(pos < route.length){
+            console.log("Animation @: " + route[pos]);
             
             var imgMov = svgDoc.getElementById('Runner_Unit_mov');
             var imgAMov = svgDoc.getElementById('Runner_UnitCount_mov');            
-            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_Unit');
-            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(tmp_target).getAttribute("id") + '_UnitCount');
+            var imgTarget = svgDoc.getElementById(svgDoc.getElementById(route[pos]).getAttribute("id") + '_Unit');
+            var imgATarget = svgDoc.getElementById(svgDoc.getElementById(route[pos]).getAttribute("id") + '_UnitCount');
 
             var movementData = new Array (parseInt(imgMov.getAttribute("x")), parseInt(imgMov.getAttribute("y")), parseInt(imgTarget.getAttribute("x")), parseInt(imgTarget.getAttribute("y")));
             var movementAData = new Array (parseInt(imgAMov.getAttribute("x")),parseInt(imgAMov.getAttribute("y")), parseInt(imgATarget.getAttribute("x")), parseInt(imgATarget.getAttribute("y")));
@@ -157,15 +205,18 @@ function MapAnimation(doc){
             if (movementData[1] < movementData[3])
                 yDirection = "+"; 
 
-            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route);
+            this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, route, pos);
          }
          else{
+            var imgMov = svgDoc.getElementById('Runner_Unit_mov');
+            var imgAMov = svgDoc.getElementById('Runner_UnitCount_mov'); 
+            
             this.killDomElement(imgMov);
             this.killDomElement(imgAMov);
         }
     };
     
-    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route){
+    this.moveUnitToTarget = function(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, route, pos){
         var finished = 0;
         if(xDirection == "+"){
             if (movementData[0] >= movementData[2])
@@ -194,49 +245,91 @@ function MapAnimation(doc){
         if(finished < 4){     
             if(xDirection == "+"){
                 if (movementData[0] < movementData[2]){
-                    movementData[0] += 5; 
+                    movementData[0] += 15; 
                     imgMov.setAttribute("x", movementData[0]);
                 }
                 if (movementAData[0] < movementAData[2]){
-                    movementAData[0] += 5; 
+                    movementAData[0] += 15; 
                     imgAMov.setAttribute("x", movementAData[0]);       
                  }
             }
             else{
                 if (movementData[0] > movementData[2]){
-                    movementData[0] -= 5; 
+                    movementData[0] -= 15; 
                     imgMov.setAttribute("x", movementData[0]);
                 }
                 if (movementAData[0] > movementAData[2]){
-                    movementAData[0] -= 5;
+                    movementAData[0] -= 15;
                     imgAMov.setAttribute("x", movementAData[0]);
                 }
             }
             if(yDirection == "+"){
                 if (movementData[1] < movementData[3]){
-                    movementData[1] += 5; 
+                    movementData[1] += 15; 
                     imgMov.setAttribute("y", movementData[1]);
                 }
                 if (movementAData[1] < movementAData[3]){
-                    movementAData[1] += 5;
+                    movementAData[1] += 15;
                     imgAMov.setAttribute("y", movementAData[1]);
                 }
             }
             else{
                 if (movementData[1] > movementData[3]){
-                    movementData[1] -= 5; 
+                    movementData[1] -= 15; 
                     imgMov.setAttribute("y", movementData[1]);
                 }
                 if (movementAData[1] > movementAData[3]){
-                    movementAData[1] -= 5; 
+                    movementAData[1] -= 15; 
                     imgAMov.setAttribute("y", movementAData[1]);
                 }
             }
-            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, tmp_target, target, route), 50);
+            setTimeout(this.moveUnitToTarget(movementData, movementAData, imgMov, imgAMov, xDirection, yDirection, route, pos), 100);
         } 
         else{
-            this.nextUnitTarget(tmp_target, target, route);
+            this.nextUnitTarget(route, pos);
         }
+    };
+    
+     
+    var calcUnitRunWay = function(source, target){        
+        var route = new Array();
+        if($.inArray(target, Core.svgHandler.getLandNeighborsFiltered(source, true)) != -1){   //check direct neighbors
+            route.push(target);
+        }
+        else{                                                                    //calc complex pathfinding route
+            route = findRoute(source, target, route);    
+            
+            var index = route.indexOf("finish"); 
+            if (index > -1){
+                while(route.length > index)
+                    route.splice(route.length-1, 1);
+            }
+        }
+        return route;
+    };
+    
+    var findRoute = function(source, target, route){
+        if($.inArray("finish", route) != -1)
+            return route;
+        var sourceN = Core.svgHandler.getLandNeighborsFiltered(source, true);
+        if(source == target){
+            route.push("finish");
+            return route;
+        }      
+        if($.inArray(target, route) != -1)
+            return route;
+        if(sourceN.length == 0 || (sourceN.length == 1 && $.inArray(sourceN[0], route) != -1)){
+            route.splice(route.length-1, 1);
+            return route;
+        }
+        for(var i = 0; i < sourceN.length; i++){
+            if($.inArray(sourceN[i], route) == -1){
+                route.push(sourceN[i]);
+                console.log("add "+sourceN[i]+" to route: "+route);
+                route = findRoute (sourceN[i], target, route);
+            }
+        }
+        return route;
     };
     
     this.killDomElement = function(element) {  // BE CARFEUL THIS FUNCTION IS EVIL IT KILLS THE POOR DOM ELEMENTS !!! .... R.I.P. ....

@@ -268,7 +268,7 @@ function ServerAnswerParser(doc){
             var amount = parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount);
             
             Core.svgHandler.refreshOwnerRights();
-            Core.svgHandler.doMovementAnimation(source, destination, amount);
+            Core.mapAnimationHandler.doMovementAnimation(source, destination, amount);
             
             if(Core.svgHandler.getLandOwner(message.data[0].MapChange.countryId) == message.data[0].MapChange.ownerId){
                 Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
