@@ -40,6 +40,9 @@
         <clipPath id="id4">
             <rect id="" x="0" y="0" width="20879" height="14605"/>
         </clipPath>
+        <clipPath id="id5">
+            <rect id="" x="0" y="0" width="20879" height="14605"/>
+        </clipPath>
     </defs>
     <g id="viewport">
         <g style="clip-path:url(#id0)">
@@ -170,9 +173,9 @@
                 <line class="fil5 str1" x1="14215" y1="8100" x2="15088" y2= "8100" /><!-- D1-P13 -->
         </g>        
         <g id="mapUnit" style="clip-path:url(#id2)"></g>
-        <g id="unitCountCountry" style="clip-path:url(#id2)"></g>
-        <g id="unitAnimations" style="clip-path:url(#id3)"></g>
-        <g id="mapOverlay" style="clip-path:url(#id4)">
+        <g id="unitCountCountry" style="clip-path:url(#id3)"></g>
+        <g id="unitAnimations" style="clip-path:url(#id4)"></g>
+        <g id="mapOverlay" style="clip-path:url(#id5)">
             <rect id="A1" class="fil6 str0" fill-opacity="0.0" x="11331" y="7324" width="1305" height="2152" owner="" unitcount="1" neighbor="A2,P13"/>
             <rect id="A2" class="fil6 str0" fill-opacity="0.0" x="11331" y="9476" width="1305" height="1535" owner="" unitcount="1" neighbor="A1,A3"/>
             <rect id="A3" class="fil6 str0" fill-opacity="0.0" x="10678" y="11011" width="1958" height="1535" owner="" unitcount="1" neighbor="A2,A4,A5"/>

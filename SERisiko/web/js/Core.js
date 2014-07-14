@@ -92,7 +92,7 @@ function Core() {
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
              if(players[i] !== null){
                 if(gameRunning === false){
-                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() === 1)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
+                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() === true)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
                 } else {
                     if(players[i].getPlayerStatus() === "Defeated"){
                         $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + defeated + "' width='15' align='right'/><br>");

@@ -28,10 +28,12 @@ function SvgFunctions(document){
     };
     
     this.changeLandVisible = function(landId){
-        if(svgDoc.getElementById(landId + "_Unit") !== null){
-            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
+        console.log(svgDoc.getElementById(landId + "_Unit"));
+        console.log(svgDoc.getElementById(landId + "_UnitCount"));
+        if(svgDoc.getElementById(landId + "_Unit") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
+            svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
-        if(svgDoc.getElementById(landId + "_UnitCount") !== null){
+        if(svgDoc.getElementById(landId + "_UnitCount") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
             svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
         }
     };
@@ -182,10 +184,10 @@ function SvgFunctions(document){
         var width = 0;
         var countryHeight = 0;
         var countryWidth = 0;
+        var rectID = "";
         var mapUnitID = svgDoc.getElementById("mapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
-        var rectID = "";
-                
+            
         initPlayerColor();
         
         [].slice.call(rects).forEach(function(rect){
@@ -213,7 +215,12 @@ function SvgFunctions(document){
                 }
                 
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                
+                if(mapUnitID.innerHTML === undefined || mapUnitID.innerHTML === ""){
+                    mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                } else {
+                    mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                }
                 
                 if(countryWidth > 1234){
                     xPosition = xPosition + width * 1.4 ;
@@ -222,8 +229,12 @@ function SvgFunctions(document){
                     xPosition = xPosition + width/2 ;
                     yPosition = yPosition + height * 1.5;
                 }
-               
-                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
+                
+                if(mapUnitCountCountry.innerHTML === undefined || mapUnitCountCountry.innerHTML === ""){
+                    mapUnitCountCountry.innerHTML = '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
+                } else {
+                    mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
+                }
             }
         });
     };
