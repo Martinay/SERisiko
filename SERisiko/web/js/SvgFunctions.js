@@ -13,17 +13,10 @@ function SvgFunctions(document){
     var root = document;
     var colorArr = ["/img/player_img/player_blue.png", "/img/player_img/player_green.png", "/img/player_img/player_purple.png", "/img/player_img/player_yellow.png", "/img/player_img/player_black.png", "/img/player_img/player_gray.png", "/img/player_img/player_red.png"];
     var playerColorHREF = {};
-    var neighborsParser = new NeighborsParser(root);
-    var route = null;
     
     //# Public Methods
     this.init = function(doc){       
         svgDoc = doc;
-        neighborsParser.init("/maps/map_nachbarn.txt");
-    };
-    
-    this.getNeighborsParser = function(){
-        return neighborsParser;
     };
     
     this.getLandOwner = function(landId){
@@ -252,67 +245,4 @@ function SvgFunctions(document){
         }
         playerColorHREF["undefined"] = colorArr[6];
     };
-    
-    
-    var sleep = function (millis, callback) {
-        setTimeout(function(){ callback(); }, millis);
-    };
-    
-    /*
-    var calcUnitRunWay = function(source, target){
-        var arrayToDelete = new Array();
-        arrayToDelete.push(source);
-        var routeArr = new Array();
-        routeArr.push(source);
-        return findRoute(routeArr, target, arrayToDelete); 
-    };
-    */
-    /**
-     * Könnte memmory leeks enthalten
-     * 
-     * @param array sourceList (first call with only one source element)
-     * @param array matched route (first call with only one source element)
-     * @param array complete countryList (owned by the player) array
-     * 
-     * @param string target country
-     */
-    var findRoute2 = function(source, route, stack, target) { 
-         console.log("Test");
-        //check the given source list (countrys to test)
-        //and drop the elements from stack
-        for(var i = 0; i < source.length; i++){
-            
-            //target found, first match is shortest route
-            if(source[i] === target) {
-                route.push(target);
-                return route[route.indexOf(source[i])]; //return the complete route
-            }  
-            //delete source[i] from stack
-            var newStack = $.grep(stack, function(value) {
-                return value !== source[i]; //return all elements without source[i]
-            });
-        }
-
-        // a second round because we need to wait for all given sources are deleted from stack
-        // to add only unused countrys for the next call
-        // if a source has no neighbor, the path following ends at this point
-        var newSource = [];
-        var newRoute = [];
-        for(var i = 0; i < source.length; i++){
-            var neighbors = neighborsParser.getOwnNeighbors(source[i]);
-            for(var j = 0; j < neighbors.length; j++){
-                
-                if($.inArray(neighbors[j], stack)) {
-                    
-                    newSource.push(neighbors[j]);               // push the neighbor to new sources to check
-                    
-                    newRoute[neighbors.indexOf(neighbors[j])] = route[route.indexOf(source[i])];  // create a personal route for the neighbor from the current route
-                    newRoute.push(neighbors[j]);  // and add himself to his own list for the next call
-                }                 
-            }
-        }    
-        //call recursive if neighbors exists  
-        console.log("Pfad: " + newSource.toString())
-        return  (newSource.length > 0) ? findRoute2(newSource, newRoute, newStack, target) : false;
-     };
 }

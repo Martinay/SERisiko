@@ -24,7 +24,6 @@ function Combat(doc){
     this.showCombat = function(message){
         var defeater = false;
         var attacker = false;
-        var attackerId = "";
         var lands = new Array();
         var looseUnitCounts = new Array();
         var defeatstate = true;
@@ -39,24 +38,10 @@ function Combat(doc){
                 looseUnitCounts[i] = parseInt(lands[i]) - parseInt(message.data[i].MapChange.unitCount);
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == Core.getPlayerId()){
                     if(i == 0){
-                        attackerId = message.data[i].MapChange.countryId;
                         attacker = true;
                     } else if(i == 1){
                         defeater = true;
                     }
-                }
-                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) == message.data[i].MapChange.ownerId){
-                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId,  message.data[i].MapChange.unitCount);
-                    if(i == 0 && message.data[i].MapChange.unitCount == 1){
-                       attackstate = false; 
-                    }
-                } else {
-                    looseUnitCounts[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
-                    //Core.mapAnimationHandler.prepareNewMapOwner(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
-                    Core.mapAnimationHandler.doMovementAnimation(attackerId, message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
-                    looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[i].MapChange.unitCount) + 1);
-                    defeatstate = false;
-                    attackstate = true;
                 }
             }
             if(message.data[i].Dice){
@@ -69,7 +54,25 @@ function Combat(doc){
                     defeatDiceCount++;
                 }
             }
-        } 
+        }
+        if(Core.svgHandler.getLandOwner(message.data[1].MapChange.countryId) == message.data[1].MapChange.countryId){
+            Core.mapAnimationHandler.prepareUnitAddRemove(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
+            Core.mapAnimationHandler.prepareUnitAddRemove(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
+            if(message.data[0].MapChange.unitCount == 1){
+                attackstate = false; 
+            }
+        } else {
+            looseUnitCounts[1] = Core.svgHandler.getLandUnitcount(message.data[1].MapChange.countryId);
+            looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[1].MapChange.unitCount) + 1);
+            defeatstate = false;
+            attackstate = true;
+            Core.mapAnimationHandler.prepareUnitAddRemove(message.data[1].MapChange.countryId,  0);
+            Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
+            Core.svgHandler.setLandComplete(message.data[1].MapChange.countryId, message.data[1].MapChange.ownerId, message.data[1].MapChange.unitCount);
+            Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
+            Core.svgHandler.changeLandVisible(message.data[0].MapChange.countryId);
+            Core.svgHandler.changeLandVisible(message.data[1].MapChange.countryId);
+        }
         if(attacker == true){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
             Core.svgHandler.refreshOwnerRights();
