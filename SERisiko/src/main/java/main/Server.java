@@ -20,8 +20,7 @@ public class Server
     {
         URL serverLocation = Server.class.getProtectionDomain().getCodeSource().getLocation();
 
-        //add devFix
-        String docRoot = serverLocation.getPath() + "../../web";
+        String docRoot = "web";
         System.out.println("set documentRoot: " + docRoot);
         
         WebServer webServer = WebServers.createWebServer(HTTP_SERVER_PORT)
