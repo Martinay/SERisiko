@@ -351,15 +351,12 @@ public class Spielsteuerung {
         int tote_angreifer=0;
         int tote_verteidiger=0;
         
-        for (int i=0; i<angreifer_wuerfel_array.length;i++){
-            
-            if (i<verteidiger_wuerfel_array.length){
+        for (int i=0; i<verteidiger_wuerfel_array.length;i++){
                 if (angreifer_wuerfel_array[i]<=verteidiger_wuerfel_array[i]){
                     tote_angreifer++;
                 }else{
                     tote_verteidiger++;
-                }
-            }       
+                }     
         }
         
         //Angriff durchfuehren
