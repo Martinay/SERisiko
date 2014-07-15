@@ -116,10 +116,14 @@ function ServerAnswerParser(doc){
         if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame){
             Core.prepareJoinedGame(message.data[1].ServerGame.id);
         }
-        else{
+        else if(Core.isInGameLobby()){
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);
             Core.playerList.addPlayer(player);
             Core.updatePlayerList();
+        }
+        else{
+            Core.clearOpenGames();
+            Core.connectionHandler.listOpenGames();
         }
     };
     
@@ -173,26 +177,32 @@ function ServerAnswerParser(doc){
     
     var handlePlayerLeftGameMessage = function(message){
         var gameStatusFinished = false;
-        for (var i = 0; i < message.data.length; i++){
-            if(message.data[i].MapChange){
-                if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) === message.data[i].MapChange.ownerId){
-                    Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
-                } else {
-                    Core.mapAnimationHandler.prepareUnitAddRemove("", message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
+        if(!Core.isInGameLobby() && message.data[0].Player && message.data[0].Player.id !== Core.getPlayerId){
+            Core.clearOpenGames();
+            Core.connectionHandler.listOpenGames();
+        }
+        else{    
+            for (var i = 0; i < message.data.length; i++){
+                if(message.data[i].MapChange){
+                    if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) === message.data[i].MapChange.ownerId){
+                        Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
+                    } else {
+                        Core.mapAnimationHandler.prepareUnitAddRemove("", message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
+                    }
                 }
-            }
-            if(message.data[i].Player){
-                Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
-                var playerId = message.data[i].Player.id;
-                if(message.data[i].Player.id === Core.getPlayerId()){
-                    Core.connectionHandler.joinLobby();
+                if(message.data[i].Player){
+                    Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
+                    var playerId = message.data[i].Player.id;
+                    if(message.data[i].Player.id === Core.getPlayerId()){
+                        Core.connectionHandler.joinLobby();
+                    }
                 }
-            }
-            if(message.data[i].ServerGame){
-                if(message.data[i].ServerGame.currentGameStatus === "Finished"){
-                    gameStatusFinished = true;
-                } else {
-                    Core.updatePlayerList();
+                if(message.data[i].ServerGame){
+                    if(message.data[i].ServerGame.currentGameStatus === "Finished"){
+                        gameStatusFinished = true;
+                    } else {
+                        Core.updatePlayerList();
+                    }
                 }
             }
         }

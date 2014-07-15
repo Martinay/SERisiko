@@ -74,9 +74,7 @@ function MapAnimation(doc){
 
             mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="Runner_UnitCount_mov" x="' + sourceCountText.getAttribute("x") + '" y="' +  sourceCountText.getAttribute("y") + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
 
-            //route = calcUnitRunWay(source, target);
-            route = new Array();
-            route.push(target);
+            route = calcUnitRunWay(source, target);
             console.log("ErgebnisRoute: " + route.toString());
             this.nextUnitTarget(route, 0);
         }
