@@ -113,7 +113,7 @@ function ServerAnswerParser(doc){
     
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
-        if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame){
+        if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame !== undefined){
             Core.prepareJoinedGame(message.data[1].ServerGame.id);
         }
         else if(Core.isInGameLobby()){
@@ -177,7 +177,7 @@ function ServerAnswerParser(doc){
     
     var handlePlayerLeftGameMessage = function(message){
         var gameStatusFinished = false;
-        if(!Core.isInGameLobby() && message.data[0].Player && message.data[0].Player.id !== Core.getPlayerId){
+        if(!Core.isInGameLobby() && message.data[0].Player !== undefined && message.data[0].Player.id !== Core.getPlayerId()){
             Core.clearOpenGames();
             Core.connectionHandler.listOpenGames();
         }
