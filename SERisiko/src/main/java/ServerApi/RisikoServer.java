@@ -52,8 +52,10 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
         
-        response.addChangedObject(message.Player);
         
+        if(message.Player != null) { //check player (neccessary if player leve lobby before)
+            response.addChangedObject(message.Player);
+        }
         
         
         
