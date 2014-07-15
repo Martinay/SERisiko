@@ -177,7 +177,7 @@ function ServerAnswerParser(doc){
     
     var handlePlayerLeftGameMessage = function(message){
         var gameStatusFinished = false;
-        if(!Core.isInGameLobby() && message.data[0].Player && message.data[0].Player.id !== Core.getPlayerId){
+        if(!Core.isInGameLobby() && message.data[0].Player !== undefined && message.data[0].Player.id !== Core.getPlayerId()){
             Core.clearOpenGames();
             Core.connectionHandler.listOpenGames();
         }
