@@ -1,76 +1,111 @@
 package GameLogic;
 
 import java.util.Arrays;
-import java.util.Collections;
-
 
 public class Spielsteuerung {
 
 	
-	private boolean ist_erste_runde;
-	public Spieler aktueller_Spieler;
-	
-	public Spielwelt DieSpielwelt;
-	private Spieler[] dieSpieler;
-	
-	public Spielzustaende Zustand;
-        
-        
-        private Client_Response aktueller_Response;
-	
-	
-	//Zustandsvariabeln
-	
-	private int hinzuzufuegende_Armeen;
+    private boolean ist_erste_runde;
+    public Spieler aktueller_Spieler;
 
-	public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
-		ist_erste_runde=true;
+    public Spielwelt DieSpielwelt;
+    private Spieler[] dieSpieler;
 
-		this.dieSpieler = dieSpieler;
-		
-		DieSpielwelt = new Spielwelt(kontinente);
-		
-		this.aktueller_Spieler=dieSpieler[0];
+    public Spielzustaende Zustand;
 
-                setzeBesitzer(kontinente);
-		
-                if (constructor_ok()){
-                    armeen_hinzufuegen_betreten();
-                }else{
-                   Zustand=Spielzustaende.Beenden;
-                   new Client_Response(null, null, null, true); 
-                   System.out.println("Spiel konnte nicht erstellt werden. Unzulaessige Eingaben");
-                }
-      	}
-        
-        private boolean constructor_ok(){
-           
-            if (dieSpieler.length<2) return false;
-            if (DieSpielwelt.gibLaender()==null) return false;
-            if (DieSpielwelt.gibLaender().length<5) return false;
+
+    private Client_Response aktueller_Response;
+
+
+    //Zustandsvariabeln
+
+    private int hinzuzufuegende_Armeen;
+
+    public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
+            ist_erste_runde=true;
+
+            this.dieSpieler = dieSpieler;
+
+            DieSpielwelt = new Spielwelt(kontinente);
+
+            this.aktueller_Spieler=dieSpieler[0];
+
+            //setzeBesitzer(kontinente);
+            setFairRandomOwner(kontinente); // this coud be a kind of more handy
             
-            //Falls noch Fehlzustaende zur Erzeugung fuehren bitte hier Abfrage erstellen 
-            
-            return true;
-        }
+            if (constructor_ok()){
+                armeen_hinzufuegen_betreten();
+            }else{
+               Zustand=Spielzustaende.Beenden;
+               new Client_Response(null, null, null, true); 
+               System.out.println("Spiel konnte nicht erstellt werden. Unzulaessige Eingaben");
+            }
+    }
 
-        private void setzeBesitzer(Kontinent[] kontinente) {
+    private boolean constructor_ok(){
 
-        //Todo testen...
-        
+        if (dieSpieler.length<2) return false;
+        if (DieSpielwelt.gibLaender()==null) return false;
+        if (DieSpielwelt.gibLaender().length<5) return false;
+
+        //Falls noch Fehlzustaende zur Erzeugung fuehren bitte hier Abfrage erstellen 
+
+        return true;
+    }
+
+    private void setzeBesitzer(Kontinent[] kontinente) {
+        //Todo testen... 
+
         int[] verteilung = new int[dieSpieler.length];
-        for (int i=0; i<dieSpieler.length; i++){
+        for (int i=0; i<dieSpieler.length; i++){ //default für int ist 0 also kann man sich die loop sparen ;)
             verteilung[i]=0;			
-	} 
+        } 
 
         for (Kontinent kontinent : kontinente)
         {
             for (Land land : kontinent.GETLands())
                 land.neuerBesitzer(auswahl_zufall_spieler(dieSpieler, verteilung));
+
         }
     }
-        
-    private Spieler auswahl_zufall_spieler(Spieler[] spieler, int[] verteilung){
+    
+    /*
+    choose a fair player for each land, dependedd by a priotity list
+    */
+    private void setFairRandomOwner(Kontinent[] kontinente){
+        int[] priorities = new int[dieSpieler.length]; 
+        for (Kontinent kontinent : kontinente){
+            for (Land land : kontinent.GetLandsShuffeld())
+                land.neuerBesitzer(dieSpieler[choosePriotedPlayer(dieSpieler.length, priorities)]);
+        }
+         System.out.println(Arrays.toString(priorities));
+    }
+    
+   /*
+    returns a random integer number with given boundaries
+    */
+    private static int myRandom(int low, int high) {
+        return (int) (Math.random() * (high - low) + low);
+    }
+    
+    /*
+    returns a player by given player list, depended by a priotity list
+    */
+    private int choosePriotedPlayer(int playerAmount, int[] priorities){
+        int highestPrio = myRandom(0, playerAmount);
+        int i = 0;
+        if (playerAmount > 0){
+            for (; i < playerAmount; i++){
+                if (priorities[i] < priorities[highestPrio]){
+                    highestPrio = i;
+                }
+            }  
+            priorities[highestPrio]++;
+        }
+        return highestPrio;
+    }
+       
+    private Spieler auswahl_zufall_spieler(Spieler[] spieler, int[] verteilung){ // ja bei 2 spielern ist es fair wenn einer 30% und der andere 70% bekommt, bei 4 Spieler aufwärts ist die funktion in ordnung
         int merk=10000;
 	int pos=0;
 		

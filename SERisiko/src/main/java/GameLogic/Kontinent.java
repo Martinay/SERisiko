@@ -2,7 +2,7 @@ package GameLogic;
 
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Collections;
 
 public class Kontinent {
 
@@ -21,6 +21,14 @@ public class Kontinent {
     
     public Land[] GETLands(){
     	return  _laender.toArray(new Land[_laender.size()]);
+    }
+    
+    public Land[] GetLandsShuffeld(){
+        
+        List<Land> shuffeldLands = new LinkedList<Land>(_laender);
+        Collections.shuffle(shuffeldLands);
+        
+        return shuffeldLands.toArray(new Land[_laender.size()]);
     }
     
     public int GETAnzahlBonusArmeen(){
