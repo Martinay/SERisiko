@@ -179,11 +179,11 @@ public class ServerGame extends Game {
         if (_spiel != null)
         {
             _spiel.EntferneSpieler(PlayerMapper.Map(player));
+            Client_Response gameResponse = _spiel.gib_aktuellen_Zustand();
+            UpdateGameStatus(gameResponse);
         }
 
         Players.remove(player);
-        Client_Response gameResponse = _spiel.gib_aktuellen_Zustand();
-        UpdateGameStatus(gameResponse);
     }
 
     public List<MapChange> GetMap() {
