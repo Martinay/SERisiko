@@ -177,6 +177,13 @@ public class ServerLogic implements IServerLogic {
     public GameCreatedMessage CreateGame(int playerID, String gameName, int maxPlayer) {
         Player player = _state.GetPlayer(playerID);
 
+        if (maxPlayer > 6)
+        {
+            Logger.Write("SpielerID:" + playerID + " zu hohe maxPlayer Anzahl : " + maxPlayer);
+            return MessageCreator.CreateGameCreatedMessage(Arrays.asList(playerID), null, player);
+        }
+
+
         if (_state.TryGetGameByPlayerId(playerID) != null)
         {
             Logger.Write("SpielerID:" + playerID + " ist bereits in einem Spiel");
