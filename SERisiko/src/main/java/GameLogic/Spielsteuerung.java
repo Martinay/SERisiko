@@ -227,13 +227,9 @@ public class Spielsteuerung {
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                 
-                /*
-                also wenn man sich schon so switch cases irg wo raus kopiert
-                dann bitte auch richt anpassen, was für nen monat bitte XDDDDDDD
-                want to buy cat
-                */
+                
                 if (ist_erste_runde==true){
-                	switch (dieSpieler.length){     // i want to switch a month var
+                	switch (dieSpieler.length){  
                             case 2:  hinzuzufuegende_Armeen=40;
                                          break;
                             case 3:  hinzuzufuegende_Armeen=35;
@@ -285,6 +281,8 @@ public class Spielsteuerung {
                     
 			spieler_wechsel();
 			
+                        if (this.aktueller_Spieler==dieSpieler[0])ist_erste_runde=false;
+                                
 			return armeen_hinzufuegen_betreten();
 			
 		}else{
