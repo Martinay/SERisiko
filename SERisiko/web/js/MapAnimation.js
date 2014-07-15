@@ -74,7 +74,9 @@ function MapAnimation(doc){
 
             mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="Runner_UnitCount_mov" x="' + sourceCountText.getAttribute("x") + '" y="' +  sourceCountText.getAttribute("y") + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
 
-            route = calcUnitRunWay(source, target);
+            //route = calcUnitRunWay(source, target);
+            route = new Array();
+            route.push(target);
             console.log("ErgebnisRoute: " + route.toString());
             this.nextUnitTarget(route, 0);
         }
@@ -87,11 +89,11 @@ function MapAnimation(doc){
             var imageMov =  svgDoc.getElementById('Runner_Unit_mov');
             var textMov = svgDoc.getElementById('Runner_UnitCount_mov'); 
             
-            var movementDataTextSource = new Array (parseInt(textMov.getAttribute("x")), parseInt(textMov.getAttribute("y")));
-            var movementDataImgSource = new Array (parseInt(imageMov.getAttribute("x")), parseInt(imageMov.getAttribute("y")), imageMov.getAttribute("xlink:href"));
+            var movementDataTextSource = new Array (parseInt(textMov.getAttribute("x")), (14605 - parseInt(textMov.getAttribute("y"))));
+            var movementDataImgSource = new Array (parseInt(imageMov.getAttribute("x")), (14605 - parseInt(imageMov.getAttribute("y"))), imageMov.getAttribute("xlink:href"));
             
             imageMov = svgDoc.getElementById(route[pos] + '_Unit');
-            var movementDataImgDestination = new Array (parseInt(imageMov.getAttribute("x")), parseInt(imageMov.getAttribute("y")));
+            var movementDataImgDestination = new Array (parseInt(imageMov.getAttribute("x")), (14605 - parseInt(imageMov.getAttribute("y"))));
             var gradient = "";
             var b = 0;
             if(movementDataImgSource[0] - movementDataImgDestination[0] === 0 || movementDataImgSource[1] - movementDataImgDestination[1] === 0){
@@ -105,8 +107,10 @@ function MapAnimation(doc){
                 }
             } 
             else {
-                gradient = (movementDataImgSource[1] - movementDataImgDestination[1])/(movementDataImgSource[0] - movementDataImgDestination[0]);
-                b = (movementDataImgSource[0]*movementDataImgDestination[1])-(movementDataImgDestination[0]*movementDataImgSource[1])/(movementDataImgSource[0]-movementDataImgDestination[0]);
+                gradient = (movementDataImgDestination[1] - movementDataImgSource[1])/(movementDataImgDestination[0] - movementDataImgSource[0]);
+                var b = movementDataImgSource[1];
+                var x1 = movementDataImgSource[0];
+                var xRichtung = movementDataImgSource[0] - movementDataImgDestination[0] > 0 ? "-":"+";
             }
             switch(gradient){
                 case "x":
@@ -114,33 +118,36 @@ function MapAnimation(doc){
                 case "y":
                     this.moveNewMapOwnerCompleteY(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos); break;
                 default:
-                    this.moveNewMapOwnerComplete(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos);
+                    this.moveNewMapOwnerComplete(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, x1, route, pos, xRichtung);
             }
         }
         else{
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_Unit_mov'));
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_UnitCount_mov'));
+            //svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_Unit_mov'));
+            //svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_UnitCount_mov'));
         }
     };
     
-    this.moveNewMapOwnerComplete = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos){
-        if(gradient < 0 && yPositionText < parseInt(gradient/Math.abs(gradient) * parseInt(svgDoc.getElementById(route[pos]).getAttribute("y")))){
+    this.moveNewMapOwnerComplete = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, x1, route, pos, xRichtung){
+        if(xRichtung === "+" && xPositionText > parseInt(svgDoc.getElementById(route[pos]).getAttribute("x"))){
             this.nextUnitTarget(route, ++pos);
         } 
-        else if (gradient > 0 && yPositionText > parseInt(gradient/Math.abs(gradient) * parseInt(svgDoc.getElementById(route[pos]).getAttribute("y")))){
+        if(xRichtung === "-" && xPositionText < parseInt(svgDoc.getElementById(route[pos]).getAttribute("x"))){
             this.nextUnitTarget(route, ++pos);
         } 
-        else {
+        if( xRichtung == "+"){
             xPositionText = xPositionText + 40;
-            yPositionText = b + gradient * xPositionText;
             xPositionImg = xPositionImg + 40;
-            yPositionImg = b + gradient * xPositionImg;
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
-            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerComplete(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos);}, 50);
+        } else {
+            xPositionText = xPositionText - 40; 
+            xPositionImg = xPositionImg - 40;
         }
+        yPositionText = b + gradient * (xPositionText - x1);
+        yPositionImg = b + gradient * (xPositionImg - x1);
+        svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
+        svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
+        svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
+        svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
+        setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerComplete(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, x1, route, pos, xRichtung);}, 1000);
     };
     
     this.moveNewMapOwnerCompleteX = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos){
