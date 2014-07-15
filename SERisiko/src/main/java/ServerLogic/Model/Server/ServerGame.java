@@ -232,7 +232,7 @@ public class ServerGame extends Game {
     private void UpdateGameStatus(Client_Response gameResponse) {
         CurrentPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
         CurrentGameStatus = MapSpielZustand(gameResponse.gib_aktuellen_Zustand());
-        NumberOfUnitsToPlace = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
+        NumberOfUnitsToPlace = gameResponse.hinzufuegbare_Armeen;
         UpdatePlayerStatus();
     }
 
