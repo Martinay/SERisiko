@@ -353,9 +353,7 @@ public class Spielsteuerung {
         
         for (int i=0; i<angreifer_wuerfel_array.length;i++){
             
-            if (i>=verteidiger_wuerfel_array.length){
-                tote_verteidiger++;                
-            }else{
+            if (i<verteidiger_wuerfel_array.length){
                 if (angreifer_wuerfel_array[i]<=verteidiger_wuerfel_array[i]){
                     tote_angreifer++;
                 }else{
