@@ -69,6 +69,22 @@ public class Spielsteuerung {
         }
     }
     
+    private void spieler_wechsel(){
+        int pos=0;
+	while(this.aktueller_Spieler!=dieSpieler[pos]){
+            pos++;
+	}
+		
+	if (pos>=dieSpieler.length-1){
+            aktueller_Spieler=dieSpieler[0];
+	}else{
+            aktueller_Spieler=dieSpieler[pos+1];
+	}
+		
+	if (DieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) spieler_wechsel();
+        
+    }
+    
     /*
     choose a fair player for each land, dependedd by a priotity list
     */
@@ -131,12 +147,9 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
-    /*
-    
-    kein kommentar ..............
-    */
+
     public void EntferneSpieler(Spieler zuentfernenderspieler){
-        if (dieSpieler.length == 0)             // wozu? schwachsinn??? Wer pfuscht da rumm?
+        if (dieSpieler.length == 0)             
             return;
 
         Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
@@ -155,6 +168,11 @@ public class Spielsteuerung {
 
         if (dieSpieler.length != 0)
             DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
+        
+        if (zuentfernenderspieler==this.aktueller_Spieler){           // Case den ich nicht bedacht habe
+            this.spieler_wechsel();
+            this.armeen_hinzufuegen_betreten();
+        }
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
@@ -264,17 +282,8 @@ public class Spielsteuerung {
 	
 	private Client_Response armeen_hinzufuegen_verlassen(){
 		if (ist_erste_runde==true){
-			int pos=0;
-			while(this.aktueller_Spieler!=dieSpieler[pos]){
-				pos++;
-			}
-			
-			if (pos>=dieSpieler.length-1){
-				ist_erste_runde=false;
-				aktueller_Spieler=dieSpieler[0];
-			}else{
-				aktueller_Spieler=dieSpieler[pos+1];
-			}
+                    
+			spieler_wechsel();
 			
 			return armeen_hinzufuegen_betreten();
 			
@@ -299,7 +308,6 @@ public class Spielsteuerung {
         // http://i.imgur.com/6xGoQrf.gif
         //
         //
-        // nochmal was soll der mist - pfusch nicht im Code herrum - nicht du Martin... Irgendein Depp macht die ganze Logik kaputt
 
             
             
@@ -399,18 +407,7 @@ public class Spielsteuerung {
 	}
 			
 	private Client_Response verschieben_verlassen(){
-		int pos=0;
-		while(this.aktueller_Spieler!=dieSpieler[pos]){
-			pos++;
-		}
-		
-		if (pos>=dieSpieler.length-1){
-			aktueller_Spieler=dieSpieler[0];
-		}else{
-			aktueller_Spieler=dieSpieler[pos+1];
-		}
-		
-		if (DieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
+		this.spieler_wechsel();
 		
 		return armeen_hinzufuegen_betreten();
 	}
