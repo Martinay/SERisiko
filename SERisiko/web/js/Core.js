@@ -202,13 +202,14 @@ function Core() {
         }
     };
     
-    this.prepareJoinedGame = function(){
+    this.prepareJoinedGame = function(id){
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
         this.unitPlacementHandler.init(svg);
         this.mapAnimationHandler.init(svg);
         
         this.setInGameLobby(true);
+        this.setGameId(id);
         
         document.getElementById("gamePhase").disabled = false;
         
