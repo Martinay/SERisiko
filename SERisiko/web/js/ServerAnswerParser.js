@@ -364,5 +364,6 @@ function ServerAnswerParser(doc){
         message = "("+n+") <b>"+Core.playerList.getPlayerById(message.data[0].ChatMessage.player).getPlayerName()+"</b>: " + message.data[0].ChatMessage.message + "<br>";
         
         root.getElementById("chatbox").innerHTML = root.getElementById("chatbox").innerHTML + message;
+        root.getElementById("chatbox").scrollTop = root.getElementById("chatbox").scrollHeight;
     };
 }
