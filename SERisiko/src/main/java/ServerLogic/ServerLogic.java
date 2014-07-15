@@ -168,7 +168,10 @@ public class ServerLogic implements IServerLogic {
         game.AddPlayer(player);
         _state.Lobby.RemovePlayer(player);
 
-        return MessageCreator.CreateNewPlayerJoinedGameMessage(game.GetPlayerIds(), player, game);
+        List<Integer> idsToUpdate = new LinkedList<>(game.GetPlayerIds());
+        idsToUpdate.addAll(_state.Lobby.GetPlayerIDs());
+
+        return MessageCreator.CreateNewPlayerJoinedGameMessage(idsToUpdate, player, game);
     }
 
     @Override
