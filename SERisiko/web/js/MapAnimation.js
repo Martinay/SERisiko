@@ -72,9 +72,11 @@ function MapAnimation(doc){
         if(sourceUnit !== null && sourceUnit !== undefined && sourceCountText !== null && sourceUnit !== sourceCountText){
             mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<image id="Runner_Unit_mov" x="' + sourceUnit.getAttribute("x") + '" y="' +  sourceUnit.getAttribute("y") + '" width="' +  sourceUnit.getAttribute("width") + '" height="' +  sourceUnit.getAttribute("height") + '" xlink:href="' + sourceUnit.getAttribute('xlink:href') + '" />';
 
-            mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="Runner_UnitCount_mov" x="' + sourceCountText.getAttribute("x") + '" y="' +  sourceCountText.getAttribute("y") + '" class="fil6 fnt2" text-anchor="middle">' + amount + '</text>';
+            mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="Runner_UnitCount_mov" x="' + sourceCountText.getAttribute("x") + '" y="' +  sourceCountText.getAttribute("y") + '" class="fil9 fnt4" text-anchor="middle">+ ' + amount + '</text>';
 
-            route = calcUnitRunWay(source, target);
+            //route = calcUnitRunWay(source, target);
+            route = new Array();
+            route.push(target);
             console.log("ErgebnisRoute: " + route.toString());
             this.nextUnitTarget(route, 0);
         }
@@ -106,46 +108,56 @@ function MapAnimation(doc){
             } 
             else {
                 gradient = (movementDataImgDestination[1] - movementDataImgSource[1])/(movementDataImgDestination[0] - movementDataImgSource[0]);
-                var b = movementDataImgSource[1];
-                var x1 = movementDataImgSource[0];
+                var imgY1 = movementDataImgSource[1];
+                var textY1 = movementDataTextSource[1];
+                var imgX1 = movementDataImgSource[0];
+                var textX1 = movementDataTextSource[0];
                 var xRichtung = movementDataImgSource[0] - movementDataImgDestination[0] > 0 ? "-":"+";
             }
             switch(gradient){
                 case "x":
-                    this.moveNewMapOwnerCompleteX(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos); break;
+                    this.moveNewMapOwnerCompleteX(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos);
+                    break;
                 case "y":
-                    this.moveNewMapOwnerCompleteY(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos); break;
+                    this.moveNewMapOwnerCompleteY(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos); 
+                    break;
                 default:
-                    this.moveNewMapOwnerComplete(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, x1, route, pos, xRichtung);
+                    this.moveNewMapOwnerComplete(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, textX1, textY1, imgX1, imgY1, route, pos, xRichtung);
+                    break;
             }
-        }
-        else{
-            //svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_Unit_mov'));
-            //svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_UnitCount_mov'));
+        } else {
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_Unit_mov'));
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_UnitCount_mov'));
+            
         }
     };
     
-    this.moveNewMapOwnerComplete = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, x1, route, pos, xRichtung){
-        if(xRichtung === "+" && xPositionText > parseInt(svgDoc.getElementById(route[pos]).getAttribute("x"))){
+    this.moveNewMapOwnerComplete = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, textX1, textY1, imgX1, imgY1, route, pos, xRichtung){
+        var animate = true;    
+        if(xRichtung === "+" && xPositionImg > parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("x"))){
             this.nextUnitTarget(route, ++pos);
+            animate = false;
         } 
-        if(xRichtung === "-" && xPositionText < parseInt(svgDoc.getElementById(route[pos]).getAttribute("x"))){
+        if(xRichtung === "-" && xPositionImg < parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("x"))){
             this.nextUnitTarget(route, ++pos);
+            animate = false;
         } 
-        if( xRichtung == "+"){
-            xPositionText = xPositionText + 40;
-            xPositionImg = xPositionImg + 40;
-        } else {
-            xPositionText = xPositionText - 40; 
-            xPositionImg = xPositionImg - 40;
-        }
-        yPositionText = b + gradient * (xPositionText - x1);
-        yPositionImg = b + gradient * (xPositionImg - x1);
-        svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
-        svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
-        svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
-        svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
-        setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerComplete(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, x1, route, pos, xRichtung);}, 1000);
+        if(animate === true){
+            if( xRichtung == "+"){
+                xPositionText = xPositionText + 40;
+                xPositionImg = xPositionImg + 40;
+            } else {
+                xPositionText = xPositionText - 40; 
+                xPositionImg = xPositionImg - 40;
+            }
+            yPositionText = 14605 - (textY1 + gradient * (xPositionText - textX1));
+            yPositionImg = 14605 - (imgY1 + gradient * (xPositionImg - imgX1));
+            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
+            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
+            svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
+            svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
+            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerComplete(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, textX1, textY1, imgX1, imgY1, route, pos, xRichtung);}, 50);
+        }    
     };
     
     this.moveNewMapOwnerCompleteX = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos){

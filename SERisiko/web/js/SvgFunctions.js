@@ -158,7 +158,6 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() === Core.gameSteps.state.FIRSTUNITPLACEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                console.log("Vergelich: " + rect.getAttribute("owner") === Core.getPlayerId());
                 if(parseInt(rect.getAttribute("owner")) === Core.getPlayerId()){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");

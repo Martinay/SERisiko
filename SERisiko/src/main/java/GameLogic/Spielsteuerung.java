@@ -148,28 +148,42 @@ public class Spielsteuerung {
         }
     
 
-    public void EntferneSpieler(Spieler zuentfernenderspieler){
-        if (dieSpieler.length == 0)             
+    public void EntferneSpieler(Spieler zuentfernenderspieler) {
+
+        if (dieSpieler.length <= 1) {
+            dieSpieler = new Spieler[0];
+            Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
             return;
+        }
 
-        Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
-        int i=0;
+        Spieler[] dienewSpieler = new Spieler[dieSpieler.length - 1];
+        int i = 0;
 
-        while((dieSpieler[i]!=zuentfernenderspieler) && (i<(dieSpieler.length-1))){
-        	dienewSpieler[i]=dieSpieler[i];
-        	i++;
+        while ((dieSpieler[i] != zuentfernenderspieler) && (i < (dieSpieler.length - 1))) {
+            dienewSpieler[i] = dieSpieler[i];
+            i++;
         }
         i++;
-        while (i<dieSpieler.length){
-        	dienewSpieler[i-1]=dieSpieler[i];
-        	i++;
+        while (i < dieSpieler.length) {
+            dienewSpieler[i - 1] = dieSpieler[i];
+            i++;
         }
-        dieSpieler=dienewSpieler;
+        dieSpieler = dienewSpieler;
 
-        if (dieSpieler.length != 0)
-            DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
-        
-        if (zuentfernenderspieler==this.aktueller_Spieler){           // Case den ich nicht bedacht habe
+        if (dieSpieler.length == 1){
+            Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
+
+            for (Land land : DieSpielwelt.gibLaender())
+                land.neuerBesitzer(dieSpieler[0]);
+            return;
+        }
+
+
+        DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
+
+        if (zuentfernenderspieler == this.aktueller_Spieler) {           // Case den ich nicht bedacht habe
             this.spieler_wechsel();
             this.armeen_hinzufuegen_betreten();
         }
@@ -302,13 +316,7 @@ public class Spielsteuerung {
 		
 	private Client_Response angriff(SpielEreigniss Ereigniss) {
 
-        //
-        //
-        // http://i.imgur.com/6xGoQrf.gif
-        //
-        //
 
-            
             
         //***********wechsel der Phase????********************
         if (Ereigniss.phasenwechsel)
