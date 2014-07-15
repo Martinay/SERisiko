@@ -281,7 +281,8 @@ public class Spielsteuerung {
                     
 			spieler_wechsel();
 			
-                        if (this.aktueller_Spieler==dieSpieler[0])ist_erste_runde=false;
+                        if (this.aktueller_Spieler == dieSpieler[0])
+                            ist_erste_runde=false;
                                 
 			return armeen_hinzufuegen_betreten();
 			
