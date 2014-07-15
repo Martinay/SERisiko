@@ -148,7 +148,7 @@ public class ServerLogic implements IServerLogic {
         if (player.PlayerStatus != PlayerStatus.InLobby)
         {
             Logger.Write("Spieler bereits in einem Spiel und nicht in der Lobby. PlayerId:" + playerID + "gameID: " + gameId);
-            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player, null);
         }
 
         ServerGame game = _state.Lobby.TryGetGameById(gameId);
@@ -156,19 +156,19 @@ public class ServerLogic implements IServerLogic {
         if (game == null)
         {
             Logger.Write("Kein Spiel gefunden PlayerId:" + playerID + "gameID: " + gameId);
-            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player, null);
         }
 
         if (game.MaxPlayer<=game.GetPlayerCount())
         {
             Logger.Write("Max Spieler erreicht PlayerId:" + playerID + "gameID: " + gameId);
-            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player);
+            return MessageCreator.CreateNewPlayerJoinedGameMessage(Arrays.asList(playerID), player, null);
         }
 
         game.AddPlayer(player);
         _state.Lobby.RemovePlayer(player);
 
-        return MessageCreator.CreateNewPlayerJoinedGameMessage(game.GetPlayerIds(), player);
+        return MessageCreator.CreateNewPlayerJoinedGameMessage(game.GetPlayerIds(), player, game);
     }
 
     @Override

@@ -27,10 +27,11 @@ public class MessageCreator {
         return message;
     }
 
-    public static NewPlayerJoinedGameMessage CreateNewPlayerJoinedGameMessage(List<Integer> idsToUpdate, Player player) {
+    public static NewPlayerJoinedGameMessage CreateNewPlayerJoinedGameMessage(List<Integer> idsToUpdate, Player player, Game game) {
         NewPlayerJoinedGameMessage message = new NewPlayerJoinedGameMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
+        message.Game = game;
         return message;
     }
 
