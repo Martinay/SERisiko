@@ -150,9 +150,10 @@ public class Spielsteuerung {
 
     public void EntferneSpieler(Spieler zuentfernenderspieler) {
 
-        if (dieSpieler.length <= 2) {
+        if (dieSpieler.length <= 1) {
             dieSpieler = new Spieler[0];
             Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
             return;
         }
 
@@ -169,6 +170,16 @@ public class Spielsteuerung {
             i++;
         }
         dieSpieler = dienewSpieler;
+
+        if (dieSpieler.length == 1){
+            Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
+
+            for (Land land : DieSpielwelt.gibLaender())
+                land.neuerBesitzer(dieSpieler[0]);
+            return;
+        }
+
 
         DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
 

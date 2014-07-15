@@ -34,7 +34,12 @@ public class Client_Response {
 	public int gib_Anzahl_Armeen_von_Spieler(Spieler gesuchter_Spieler){
 		return dieSpielwelt.gib_anz_Laender(gesuchter_Spieler);
 	}
-	
+
+    public void setzeAktuellenZustand(Spielzustaende zustand)
+    {
+        aktuellerZustand = zustand;
+    }
+
 	public boolean ist_ein_fehler_aufgetreten(){
 		return fehler;
 	}

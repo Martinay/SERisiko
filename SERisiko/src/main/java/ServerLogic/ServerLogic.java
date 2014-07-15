@@ -15,32 +15,6 @@ public class ServerLogic implements IServerLogic {
 
     private ServerState _state = new ServerState();
 
-    public ServerLogic() {
-        SetExampleData();
-    }
-
-    private void SetExampleData() {
-        CreatePlayer(1,"Player1");
-        CreatePlayer(2,"Player2");
-        CreatePlayer(3,"Player3");
-        CreatePlayer(4,"Player4");
-        CreatePlayer(5,"Player5");
-
-        Player player1 = _state.Players.get(0);
-        Player player2 = _state.Players.get(1);
-        Player player3 = _state.Players.get(2);
-        Player player4 = _state.Players.get(3);
-        Player player5 = _state.Players.get(4);
-
-        CreateGame(player1.ID,"Game1", 6);
-        Game game1 = _state.Lobby.GetGameByPlayerId(player1.ID);
-        JoinGame(player2.ID,game1.ID);
-        CreateGame(player3.ID,"Game2", 3);
-
-        JoinLobby(player4.ID);
-        JoinLobby(player5.ID);
-    }
-
     @Override
     public AttackMessage Attack(int playerID, String countryFromID, String countryToID, int units) {
         ServerGame game = _state.GetActiveGameByPlayerId(playerID);
@@ -122,14 +96,14 @@ public class ServerLogic implements IServerLogic {
         if (player == null)
             return MessageCreator.CreatePlayerLeftMessage(new LinkedList<>(), null);
 
-        List<Integer> idsToUpdate = _state.Lobby.GetPlayerIDs();
+        List<Integer> idsToUpdate = new LinkedList<>(_state.Lobby.GetPlayerIDs());
 
         if (player.PlayerStatus != PlayerStatus.InLobby && player.PlayerStatus != PlayerStatus.Undefined) {
             ServerGame game = _state.TryGetGameByPlayerId(playerID);
             if (game != null)
             {
                 PlayerLeftGameMessage message = LeaveGame(playerID);
-                idsToUpdate = message.PlayerIDsToUpdate;
+                idsToUpdate = new LinkedList<>(message.PlayerIDsToUpdate);
             }
         }
 
@@ -202,6 +176,13 @@ public class ServerLogic implements IServerLogic {
     @Override
     public GameCreatedMessage CreateGame(int playerID, String gameName, int maxPlayer) {
         Player player = _state.GetPlayer(playerID);
+
+        if (_state.TryGetGameByPlayerId(playerID) != null)
+        {
+            Logger.Write("SpielerID:" + playerID + " ist bereits in einem Spiel");
+            return MessageCreator.CreateGameCreatedMessage(Arrays.asList(playerID), null, player);
+        }
+
         ServerGame game = GameCreator.Create(player, gameName, maxPlayer);
 
         _state.Lobby.RemovePlayer(player);

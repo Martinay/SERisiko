@@ -182,6 +182,8 @@ public class ServerGame extends Game {
         }
 
         Players.remove(player);
+        Client_Response gameResponse = _spiel.gib_aktuellen_Zustand();
+        UpdateGameStatus(gameResponse);
     }
 
     public List<MapChange> GetMap() {
