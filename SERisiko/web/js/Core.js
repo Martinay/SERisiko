@@ -194,20 +194,21 @@ function Core() {
         var gameName = document.getElementById("gameName").value;
         var maxPlayers = document.getElementById("maxPlayers").value;
         // validate name
-        if(gameName === "" || !validate(gameName))
-            return;
-        //parse data to server
-        this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
+        if(gameName === "" || !validate(gameName)){
+            document.getElementById("errorInGameName").innerHTML = "Ihren Gamenamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Gamenamen ein der nur aus Buchstaben und Zahlen besteht";
+        }else {
+            //parse data to server
+            this.connectionHandler.createGame(gameName, parseInt(maxPlayers));
+        }
     };
     
-    this.prepareJoinedGame = function(id){
+    this.prepareJoinedGame = function(){
         var svg = document.getElementsByTagName('object')[0].contentDocument.getElementsByTagName('svg')[0];
         this.svgHandler.init(svg);
         this.unitPlacementHandler.init(svg);
         this.mapAnimationHandler.init(svg);
         
         this.setInGameLobby(true);
-        this.setGameId(id);
         
         document.getElementById("gamePhase").disabled = false;
         
