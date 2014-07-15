@@ -152,7 +152,9 @@ public class Spielsteuerung {
         	i++;
         }
         dieSpieler=dienewSpieler;
-        DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
+
+        if (dieSpieler.length != 0)
+            DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
