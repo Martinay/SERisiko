@@ -113,8 +113,8 @@ function ServerAnswerParser(doc){
     
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
-        if(message.data[0].Player.id === Core.getPlayerId()){
-            Core.prepareJoinedGame();
+        if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame){
+            Core.prepareJoinedGame(message.data[1].ServerGame.id);
         }
         else{
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);
@@ -219,7 +219,14 @@ function ServerAnswerParser(doc){
             root.getElementById("gameStatus").innerHTML = "Warte auf Weitere Mitspieler<br> <span style='color: red;'>Nicht alle Spieler sind bereit!</span>";
             return;
         }
-        if(Core.isInGameLobby()){ //@TODO check for gameid if it is  mine, also write gameid @ playerjoinedmessage
+        var korrektBroadcaster = false;
+        if(message.data[message.data.length-1].ServerGame && Core.getGameId() == message.data[message.data.length-1].ServerGame.id)
+            korrektBroadcaster = true;
+        else if(message.data[message.data.length-1].ServerGame && message.data[message.data.length-1].ServerGame.currentPlayerId == Core.getPlayerId()){
+            korrektBroadcaster = true;
+            Core.setGameId(message.data[message.data.length-1].ServerGame.id);
+        }
+        if(Core.isInGameLobby() && korrektBroadcaster){
             Core.setGameRunning(true);
             root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Platzierungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
             root.getElementById("startGame").innerHTML = "";
@@ -236,8 +243,6 @@ function ServerAnswerParser(doc){
                 }
             }
             Core.changePlayerListPic(0);
-            Core.svgHandler.getLandNeighborsFiltered("P2", true);
-            Core.svgHandler.getLandNeighborsFiltered("P2", false);
         }
         else{
             Core.clearOpenGames();
