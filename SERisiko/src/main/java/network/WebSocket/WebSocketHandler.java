@@ -56,7 +56,8 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
         connection.close();
         System.out.println(connection.hashCode() + " disconnected");
         
-        this.connectionTerminated(gameClient);
+        //inform the logic and the other clients about the disconnected player
+        this.sendAnswer( this.connectionTerminated(gameClient) );
     }
 
     /**
@@ -112,24 +113,9 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
             
             //@TODO WRONG (specific object type) ..... NEW ..... !!!!!!!
             RisikoServerResponse ret = (RisikoServerResponse)m.invoke(this, arguments.toArray() );
-            
-            String response = ret.toJSON();
-            
-            LinkedList targetList = ret.getTargetClientList();
-            
-            for(int i = 0; i < targetList.size(); i++) {
-                
-                GameClient client = this.clientList.get( (Integer)targetList.get(i) );
-                if(client != null) {
-                    client.sendMessage(response); //send msg to client
-                } else {
-                    //send back playerHasDisconnected
-                }
-            }
+            this.sendAnswer(ret);
             
         } catch (ParseException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
             Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
             Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,10 +123,33 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
             Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
             Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedOperationException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    protected abstract void connectionTerminated(GameClient gameClient);
+    
+    private void sendAnswer(RisikoServerResponse ret) {
+        
+        try {
+            String response = ret.toJSON();
+
+            LinkedList targetList = ret.getTargetClientList();
+
+            for(int i = 0; i < targetList.size(); i++) {
+
+                GameClient client = this.clientList.get( (Integer)targetList.get(i) );
+                if(client != null) {
+                    client.sendMessage(response); //send msg to client
+                } else {
+                    //send back playerHasDisconnected
+                }
+            }  
+            
+        } catch (Exception ex) {
+            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+    protected abstract RisikoServerResponse connectionTerminated(GameClient gameClient);
 }
