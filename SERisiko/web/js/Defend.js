@@ -48,9 +48,9 @@ function Defend(document){
                                         </table>\n\
                                     </div>\n'+
                                     
-                                   "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.showDefendResult(\""+attackState+"\")'>Angriffsresultat ansehen</button>";
+                                   "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 8500);
+                //setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 8500);
     };
     
     this.showDefendResult = function(arg){

@@ -102,15 +102,15 @@
 }
 
 #gameStatus{
-    padding-top: 120px;
-    height: 200px;
+    padding-top: 45px;
+    height: 150px;
 }
 
 #playerList{
     padding: 7px;
     border: 2px solid black;
     width: 160px;
-    height: 180px;
+    height: 260px;
     text-align: center;
     margin: 0px 10px;
     position: absolute;
@@ -193,7 +193,7 @@ label[for=unitAmountAttack]{
     margin-bottom: 10px; 
     width: 160px;
     position: relative;
-    margin-top: 180px;
+    margin-top: 260px;
 }
 
 /** Chat Stuff **/
@@ -235,7 +235,6 @@ input {
     margin-bottom:10px;
 }
   
-#submit { width: 60px; 
+#submit { width: 60px; }
 
-.msgln { margin:0 0 2px 0;
-}
+.msgln { margin: 0px 0px 2px 0px;}

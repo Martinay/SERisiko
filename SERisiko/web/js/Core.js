@@ -92,12 +92,21 @@ function Core() {
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
              if(players[i] !== null){
                 if(gameRunning === false){
-                    $("#playerList").append(players[i].getPlayerName() + ((players[i].getReadyState() === true)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='15' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='15' align='right'/>") + "<br>");
+                    var div = document.createElement("div");
+                    div.style.height = "30px";
+                    div.innerHTML = players[i].getPlayerName() + ((players[i].getReadyState() === true)? "<img id='" + players[i].getPlayerId() + "' src='" + rdy + "' width='20' align='right'/>"  : "<img id='" + players[i].getPlayerId() + "' src='" + notRdy + "' width='20' align='right'/>");
+                    $("#playerList").append(div);
                 } else {
                     if(players[i].getPlayerStatus() === "Defeated"){
-                        $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + defeated + "' width='15' align='right'/><br>");
+                        var div = document.createElement("div");
+                        div.style.height = "30px";
+                        div.innerHTML = "<img src='" + Core.svgHandler.getPlayerColor(players[i].getPlayerId()) + "' width='20' align='left' />" + players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + defeated + "' width='20' align='right'/>";
+                        $("#playerList").append(div);
                     } else {
-                        $("#playerList").append(players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + not_play + "' width='15' align='right'/><br>");
+                        var div = document.createElement("div");
+                        div.style.height = "30px";
+                        div.innerHTML = "<img src='" + Core.svgHandler.getPlayerColor(players[i].getPlayerId()) + "' width='20' align='left' />" + players[i].getPlayerName() + "<img id='" + players[i].getPlayerId() + "' src='" + not_play + "' width='20' align='right'/>";
+                        $("#playerList").append(div);
                     }
                 }
             }

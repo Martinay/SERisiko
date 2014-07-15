@@ -55,7 +55,7 @@ function Combat(doc){
                 }
             }
         }
-        if(Core.svgHandler.getLandOwner(message.data[1].MapChange.countryId) === message.data[1].MapChange.countryId){
+        if(Core.svgHandler.getLandOwner(message.data[1].MapChange.countryId) === parseInt(message.data[1].MapChange.ownerId)){
             Core.mapAnimationHandler.prepareUnitAddRemove(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
             Core.mapAnimationHandler.prepareUnitAddRemove(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
             if(message.data[0].MapChange.unitCount === 1){
@@ -77,7 +77,7 @@ function Combat(doc){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
             Core.svgHandler.refreshOwnerRights();
             if(attackstate !== null){
-                setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 2000);
+                //setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 2000);
             }
         } else if(defeater === true){
             Core.defendHandler.showDefend(lands[0], lands[1], defeatstate);

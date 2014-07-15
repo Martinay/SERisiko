@@ -19,6 +19,10 @@ function SvgFunctions(document){
         svgDoc = doc;
     };
     
+    this.getPlayerColor = function(playerId){
+        return playerColorHREF['"' + playerId + '"'];
+    }
+    
     this.getLandOwner = function(landId){
         return parseInt(svgDoc.getElementById(landId).getAttribute("owner"));  
     };
@@ -32,7 +36,7 @@ function SvgFunctions(document){
             svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
         if(svgDoc.getElementById(landId + "_UnitCount") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
-            svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
+            svgDoc.getElementById(landId + "_UnitCount").replaceChild(document.createTextNode(svgDoc.getElementById(landId).getAttribute("unitcount")), svgDoc.getElementById(landId + "_UnitCount").firstChild);
         }
     };
     
@@ -106,7 +110,7 @@ function SvgFunctions(document){
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                     theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
-                    newNeighorLands = newNeighorLands.concat(theRect.getAttribute("neighbor").split(","));
+                    newNeighorLands = newNeighorLands.concat(this.getLandNeighborsFiltered(theRect.getAttribute("neighbor"), true));
                     goOn = true;
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
@@ -239,7 +243,8 @@ function SvgFunctions(document){
                 text.setAttribute("y", yPosition);
                 text.setAttribute("class", "fil6 fnt2");
                 text.setAttribute("text-anchor", "middle");
-                
+                var textChild = document.createTextNode("0");
+                text.appendChild(textChild);
                 mapUnitID.appendChild(image);
                 mapUnitCountCountry.appendChild(text);
             }

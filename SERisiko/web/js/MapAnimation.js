@@ -32,7 +32,20 @@ function MapAnimation(doc){
             }
 
             var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
-            mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="' + id + '_UnitCount_mov" x="' + movementData[0] + '" y="' + movementData[1] + '" class="'+ fillstyle +' fnt4" text-anchor="middle"> ' + vorzeichen + tempCount + '</text>';
+            var xmlns = "http://www.w3.org/2000/svg";
+            
+            var text = root.createElementNS(xmlns, "text");
+                
+            text.setAttribute("id", id + "_UnitCount_mov");
+            text.setAttribute("x", movementData[0]);
+            text.setAttribute("y", movementData[1]);
+            text.setAttribute("class", fillstyle + " fnt4");
+            text.setAttribute("text-anchor", "middle");
+            var textNode = root.createTextNode(vorzeichen + tempCount);
+            text.appendChild(textNode);
+            
+            mapUnitAnimations.appendChild(text);
+           
             Core.svgHandler.setLandUnitcount(id, count);
             if(tempCount < 0)
                 setTimeout(function() {animateUnitRemove(id, movementData[1]);}, 50);
@@ -70,9 +83,28 @@ function MapAnimation(doc){
         var sourceUnit = svgDoc.getElementById(source + "_Unit");
         var sourceCountText = svgDoc.getElementById(source + "_UnitCount");
         if(sourceUnit !== null && sourceUnit !== undefined && sourceCountText !== null && sourceUnit !== sourceCountText){
-            mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<image id="Runner_Unit_mov" x="' + sourceUnit.getAttribute("x") + '" y="' +  sourceUnit.getAttribute("y") + '" width="' +  sourceUnit.getAttribute("width") + '" height="' +  sourceUnit.getAttribute("height") + '" xlink:href="' + sourceUnit.getAttribute('xlink:href') + '" />';
-
-            mapUnitAnimations.innerHTML = mapUnitAnimations.innerHTML + '<text id="Runner_UnitCount_mov" x="' + sourceCountText.getAttribute("x") + '" y="' +  sourceCountText.getAttribute("y") + '" class="fil9 fnt4" text-anchor="middle">+ ' + amount + '</text>';
+            var xmlns = "http://www.w3.org/2000/svg";
+            var image = root.createElementNS(xmlns, "image");
+                
+            image.setAttribute("id", "Runner_Unit_mov");
+            image.setAttribute("x", sourceUnit.getAttribute("x"));
+            image.setAttribute("y", sourceUnit.getAttribute("y"));
+            image.setAttribute("width", 800);
+            image.setAttribute("height", 600);
+            image.setAttributeNS("http://www.w3.org/1999/xlink", "href", sourceUnit.getAttribute('href'));
+            
+            var text = root.createElementNS(xmlns, "text");
+                
+            text.setAttribute("id", 'Runner_UnitCount_mov');
+            text.setAttribute("x", sourceCountText.getAttribute("x"));
+            text.setAttribute("y", sourceCountText.getAttribute("y"));
+            text.setAttribute("class", "fil9 fnt4");
+            text.setAttribute("text-anchor", "middle");
+            var textNode = root.createTextNode(amount);
+            text.appendChild(textNode);
+            
+            mapUnitAnimations.appendChild(image);
+            mapUnitAnimations.appendChild(text);
 
             //route = calcUnitRunWay(source, target);
             route = new Array();

@@ -256,6 +256,7 @@ function ServerAnswerParser(doc){
                     Core.svgHandler.changeLandVisible(message.data[i].MapChange.countryId);
                 }
             }
+            Core.updatePlayerList();
             Core.changePlayerListPic(0);
         }
         else{
