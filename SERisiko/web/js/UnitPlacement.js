@@ -34,7 +34,7 @@ function UnitPlacement(document){
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'default');");
         $( "#bottom_overlay" ).slideDown( "slow");
         Core.showElement(root.getElementById("mutex"));
-        if(placeUnit[id] !== null){
+        if(placeUnit[id] !== undefined){
             oldValue = parseInt(placeUnit[id]);
             maxValue = parseInt(maxValue) + parseInt(placeUnit[id]);
         }
@@ -43,7 +43,7 @@ function UnitPlacement(document){
                         <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
                         <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitPlacementHandler.placeUnits(\""+id+"\",\""+maxValue+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>OK</button>\
                         <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitPlacementHandler.cleanPlaceUnits(\""+id+"\")' style='margin-right: 20px; margin-top: 10px; float: right;'>Abbrechen</Button>";
-        Core.createSlider("unitAmount", "abortUnitPlacement", 1, maxValue);
+        Core.createSlider("unitAmount", "abortUnitPlacement", 1, parseInt(maxValue));
         if(oldValue !== 0){
             $( "#slider" ).slider( "value", oldValue );
             $("#unitAmount").val(oldValue);

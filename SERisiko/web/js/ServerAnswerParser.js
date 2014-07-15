@@ -236,8 +236,6 @@ function ServerAnswerParser(doc){
                 }
             }
             Core.changePlayerListPic(0);
-            Core.svgHandler.getLandNeighborsFiltered("P2", true);
-            Core.svgHandler.getLandNeighborsFiltered("P2", false);
         }
         else{
             Core.clearOpenGames();

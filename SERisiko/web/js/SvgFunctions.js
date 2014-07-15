@@ -28,8 +28,6 @@ function SvgFunctions(document){
     };
     
     this.changeLandVisible = function(landId){
-        console.log(svgDoc.getElementById(landId + "_Unit"));
-        console.log(svgDoc.getElementById(landId + "_UnitCount"));
         if(svgDoc.getElementById(landId + "_Unit") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
             svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
@@ -147,7 +145,7 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITMOVEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") === Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
+                if(parseInt(rect.getAttribute("owner")) === Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.svgHandler.identifySource(this.id);");
@@ -160,7 +158,8 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() === Core.gameSteps.state.FIRSTUNITPLACEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") === Core.getPlayerId()){
+                console.log("Vergelich: " + rect.getAttribute("owner") === Core.getPlayerId());
+                if(parseInt(rect.getAttribute("owner")) === Core.getPlayerId()){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
@@ -217,7 +216,7 @@ function SvgFunctions(document){
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
                 
                 if(mapUnitID.innerHTML === undefined || mapUnitID.innerHTML === ""){
-                    mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                    mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>';
                 } else {
                     mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
                 }
