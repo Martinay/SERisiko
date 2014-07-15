@@ -78,7 +78,6 @@ public class Spielsteuerung {
             for (Land land : kontinent.GetLandsShuffeld())
                 land.neuerBesitzer(dieSpieler[choosePriotedPlayer(dieSpieler.length, priorities)]);
         }
-         System.out.println(Arrays.toString(priorities));
     }
     
    /*
