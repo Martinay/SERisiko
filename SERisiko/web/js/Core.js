@@ -218,7 +218,6 @@ function Core() {
         this.playerList.clear();
         this.connectionHandler.listPlayers();
         //verify 
-        this.showElement(document.getElementById("game"));
         this.hideElement(document.getElementById("selectGame"));
     };
     
