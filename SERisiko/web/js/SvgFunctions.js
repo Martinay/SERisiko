@@ -214,10 +214,24 @@ function SvgFunctions(document){
                 
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
                 
+                console.log(mapUnitID.innerHTML);
+                
+                var xmlns = "http://www.w3.org/2000/svg";
+                var elem = document.createElementNS(null, "image");
+                
+                elem.setAttributeNS(null, "x", xPosition);
+                elem.setAttributeNS(null, "y", yPosition);
+                elem.setAttributeNS(null, "width", width);
+                elem.setAttributeNS(null, "height", height);
+                elem.setAttributeNS(null, "xlink:href", "/img/player_img/player_red.png");
+                elem.setAttributeNS(null, "id", rectID + '_Unit');
+                
+                mapUnitID.documentElement.appendChild(elem);
+                
                 if(mapUnitID.innerHTML === undefined || mapUnitID.innerHTML === ""){
-                    mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>';
+                   // mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' +  + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>';
                 } else {
-                    mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                   // mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
                 }
                 
                 if(countryWidth > 1234){
