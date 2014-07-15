@@ -29,7 +29,7 @@ function SvgFunctions(document){
     
     this.changeLandVisible = function(landId){
         if(svgDoc.getElementById(landId + "_Unit") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
-            svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
+            svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
         if(svgDoc.getElementById(landId + "_UnitCount") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
             svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
@@ -185,6 +185,7 @@ function SvgFunctions(document){
         var rectID = "";
         var mapUnitID = svgDoc.getElementById("mapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
+        var xmlns = "http://www.w3.org/2000/svg";
             
         initPlayerColor();
         
@@ -214,25 +215,14 @@ function SvgFunctions(document){
                 
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
                 
-                console.log(mapUnitID.innerHTML);
+                var image = document.createElementNS(xmlns, "image");
                 
-                var xmlns = "http://www.w3.org/2000/svg";
-                var elem = document.createElementNS(null, "image");
-                
-                elem.setAttributeNS(null, "x", xPosition);
-                elem.setAttributeNS(null, "y", yPosition);
-                elem.setAttributeNS(null, "width", width);
-                elem.setAttributeNS(null, "height", height);
-                elem.setAttributeNS(null, "xlink:href", "/img/player_img/player_red.png");
-                elem.setAttributeNS(null, "id", rectID + '_Unit');
-                
-                mapUnitID.documentElement.appendChild(elem);
-                
-                if(mapUnitID.innerHTML === undefined || mapUnitID.innerHTML === ""){
-                   // mapUnitID.innerHTML = '<image id="' + rectID + '_Unit" x="' +  + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="/img/player_img/player_red.png" xmlns:xlink="http://www.w3.org/1999/xlink"/>';
-                } else {
-                   // mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
-                }
+                image.setAttribute("id", rectID + '_Unit');
+                image.setAttribute("x", xPosition);
+                image.setAttribute("y", yPosition);
+                image.setAttribute("width", width);
+                image.setAttribute("height", height);
+                image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/img/player_img/player_red.png");
                 
                 if(countryWidth > 1234){
                     xPosition = xPosition + width * 1.4 ;
@@ -242,11 +232,16 @@ function SvgFunctions(document){
                     yPosition = yPosition + height * 1.5;
                 }
                 
-                if(mapUnitCountCountry.innerHTML === undefined || mapUnitCountCountry.innerHTML === ""){
-                    mapUnitCountCountry.innerHTML = '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
-                } else {
-                    mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
-                }
+                var text = document.createElementNS(xmlns, "text");
+                
+                text.setAttribute("id", rectID + '_UnitCount');
+                text.setAttribute("x", xPosition);
+                text.setAttribute("y", yPosition);
+                text.setAttribute("class", "fil6 fnt2");
+                text.setAttribute("text-anchor", "middle");
+                
+                mapUnitID.appendChild(image);
+                mapUnitCountCountry.appendChild(text);
             }
         });
     };
