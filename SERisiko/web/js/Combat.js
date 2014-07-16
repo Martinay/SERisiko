@@ -67,11 +67,9 @@ function Combat(doc){
             defeatstate = false;
             attackstate = true;
             Core.mapAnimationHandler.prepareUnitAddRemove(message.data[1].MapChange.countryId,  0);
+            Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
             Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
             Core.svgHandler.setLandComplete(message.data[1].MapChange.countryId, message.data[1].MapChange.ownerId, message.data[1].MapChange.unitCount);
-            Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
-            Core.svgHandler.changeLandVisible(message.data[0].MapChange.countryId);
-            Core.svgHandler.changeLandVisible(message.data[1].MapChange.countryId);
         }
         if(attacker === true){
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
@@ -96,6 +94,10 @@ function Combat(doc){
             var defendString = "<div style='color: #FFFFFF;'>Verloren: </div>-" + looseUnitsDefend + "<div style='color: #FFFFFF;'>Rest Einheiten: </div>" + unitsAfterDefend;
             setTimeout(function(){ $("#CountDefenderAnzahl").append(defendString);}, 1000);
         }      
+        setTimeout(function(){enableStartAttack(looseUnitsAttack)}, 1000);
+    };
+    
+    var enableStartAttack = function(looseUnitsAttack){
         if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0 &&  root.getElementById("startAttack") !== null)
             root.getElementById("startAttack").disabled = false;
     };

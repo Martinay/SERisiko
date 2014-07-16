@@ -24,12 +24,12 @@ function MapAnimation(doc){
                 if(tempCount < 0){
                     fillstyle = "fil8";
                     vorzeichen = "- ";
-                } 
-                
-                if(movementData[1] - 2000 < 0){
-                    movementData[1] = 0;
                 } else {
-                    movementData[1] = movementData[1] - 2000;
+                    if(movementData[1] - 2000 < 0){
+                        movementData[1] = 0;
+                    } else {
+                        movementData[1] = movementData[1] - 2000;
+                    }
                 }
 
                 var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
@@ -70,11 +70,11 @@ function MapAnimation(doc){
     };
     
     var animateUnitRemove = function(id, yPosition){
-        if(yPosition > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
+        if(yPosition < parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y") - 2000)){
             Core.svgHandler.changeLandVisible(id);
             svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_Remove'));
         } else {
-            yPosition = yPosition + 40;
+            yPosition = yPosition - 40;
             svgDoc.getElementById(id + "_UnitCount_Remove").setAttribute("y", yPosition);
             setTimeout(function() {animateUnitRemove(id, yPosition);}, 50);
         }
@@ -89,7 +89,7 @@ function MapAnimation(doc){
         if(sourceUnit !== null && sourceUnit !== undefined){
             var xmlns = "http://www.w3.org/2000/svg";
             var image = root.createElementNS(xmlns, "image");
-                
+            Core.svgHandler.changeLandVisible(source);
             image.setAttribute("id", target + "_Unit_mov");
             image.setAttribute("x", sourceUnit.getAttribute("x"));
             image.setAttribute("y", sourceUnit.getAttribute("y"));

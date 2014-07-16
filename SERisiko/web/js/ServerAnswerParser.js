@@ -290,9 +290,11 @@ function ServerAnswerParser(doc){
             Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount));
 
             Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
-            Core.svgHandler.changeLandVisible(message.data[0].MapChange.countryId); 
             Core.svgHandler.setLandUnitcount(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount); 
-            Core.svgHandler.changeLandVisible(message.data[1].MapChange.countryId); 
+            
+            if(parseInt(message.data[2].ServerGame.currentPlayerId) === Core.getPlayerId()){
+                Core.gameSteps.handleCurrentGameStatus(message.data[2].ServerGame.currentGameStatus, 0, "");
+            }
         }   
         else{
             for (var i = 0; i < message.data.length; i++){

@@ -33,7 +33,7 @@ function Attack(document){
         
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
         
-        if(Core.svgHandler.getLandOwner(defendId) === Core.getPlayerName()){
+        if(parseInt(Core.svgHandler.getLandOwner(defendId)) === Core.getPlayerId()){
             Core.attackHandler.showAttackResult(true);
         } else {
             if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) === 1){
