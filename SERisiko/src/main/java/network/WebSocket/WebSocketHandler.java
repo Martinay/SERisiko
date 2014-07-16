@@ -114,7 +114,7 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
             
         } catch(Exception e) {
             
-            Throwable ex = ExceptionUtils.getRootCause(e);
+            Throwable ex = ExceptionUtils.getCause(e);
  
             //Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
             
