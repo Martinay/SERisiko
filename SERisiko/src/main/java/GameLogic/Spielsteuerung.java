@@ -37,8 +37,8 @@ public class Spielsteuerung {
                 armeen_hinzufuegen_betreten();
             }else{
                Zustand=Spielzustaende.Beenden;
-               new Client_Response(null, null, null, true); 
-               System.out.println("Spiel konnte nicht erstellt werden. Unzulaessige Eingaben");
+               this.aktueller_Response = new Client_Response(null, null, null, true); 
+               throw new IllegalArgumentException("Init failed -> not enought data");
             }
     }
 
@@ -279,7 +279,7 @@ public class Spielsteuerung {
 				hinzuzufuegende_Armeen=hinzuzufuegende_Armeen-Ereigniss.anz_Armeen;
 			}else{
                                 aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
-				return aktueller_Response;
+				throw new IllegalArgumentException("This is not the Players county! - can not increment armis");
 			}
 		
 			if (hinzuzufuegende_Armeen<=0) return armeen_hinzufuegen_verlassen();
@@ -324,9 +324,9 @@ public class Spielsteuerung {
 
         //***********Darf der Angriff durchgefuehrt werden???********************
         
-        if (!DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)) {
+        if (!(DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler))) {
             aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
-            return aktueller_Response;
+            throw new IllegalArgumentException("can not attack!");
         }        
         
         //***********Angriff an sich********************
@@ -401,11 +401,15 @@ public class Spielsteuerung {
 	private Client_Response verschieben(SpielEreigniss Ereigniss){
 		if (Ereigniss.phasenwechsel){
 			return verschieben_verlassen();	
-		}else{
-			DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
-                        aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-			return aktueller_Response;
 		}
+                if (DieSpielwelt.pruefe_zusatz_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
+                    DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
+                    aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                    return aktueller_Response;
+                }else{
+                    aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+                    throw new IllegalArgumentException("Can not move armis, because aktiv Player is not owner of both countries...");   
+                }
 	}
 			
 	private Client_Response verschieben_verlassen(){

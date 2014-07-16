@@ -103,12 +103,13 @@ public class Spielwelt {
         }
 	
 	protected boolean pruefe_Attacke(Land angreifer, Land verteidiger, Spieler aktuellerSpieler){
-		if ((angreifer.gib_besitzer()==aktuellerSpieler) && (angreifer.gib_besitzer()!=verteidiger.gib_besitzer()) && (angreifer.gib_anzahl_armeen()>1)){
+		if (!(angreifer.gib_besitzer()==aktuellerSpieler))          throw new IllegalArgumentException("Not the own country!");
+                if (angreifer.gib_besitzer()==verteidiger.gib_besitzer())   throw new IllegalArgumentException("Player attack himself");
+                if (!(angreifer.gib_anzahl_armeen()>1))                     throw new IllegalArgumentException("not enougth armis");
 			
-			return angreifer.ist_angrenzendes_Land(verteidiger);
+		if (!(angreifer.ist_angrenzendes_Land(verteidiger)))        throw new IllegalArgumentException("att country is not next to dev country");
 						
-		}
-		else {return false;}
+		return true;
 	}
 	
 	protected int gib_Anzahl_Angreifer(Land angreifer){
@@ -155,8 +156,9 @@ public class Spielwelt {
 		Ziel.mehr_Armeen(anzahl_Armeen);
 	}
 	
-	protected boolean pruefe_zusatz_Armeen (Land Zielland, Spieler aktueller_Spieler){
-		if (Zielland.gib_besitzer()==aktueller_Spieler) return true;
+	protected boolean pruefe_zusatz_Armeen (Land Ausgangsland, Land Zielland, Spieler aktueller_Spieler){
+                if (!(Ausgangsland.ist_angrenzendes_Land(Zielland))) throw new IllegalArgumentException("Country not next to the other one!");
+                if ((Ausgangsland.gib_besitzer()==aktueller_Spieler) && (Zielland.gib_besitzer()==aktueller_Spieler)) return true;
 		return false;
 	}
 	
