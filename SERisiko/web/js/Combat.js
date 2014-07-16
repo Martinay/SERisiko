@@ -80,7 +80,7 @@ function Combat(doc){
                 //setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 2000);
             }
         } else if(defeater === true){
-            Core.defendHandler.showDefend(lands[0], lands[1], defeatstate);
+            Core.defendHandler.showDefend(lands[0], lands[1], attackDiceCount,  defeatstate);
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
         }
     };
