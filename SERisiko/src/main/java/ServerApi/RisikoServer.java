@@ -53,7 +53,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.addTargetClientList( message.PlayerIDsToUpdate );
         
         
-        if(message.Player != null) { //check player (neccessary if player leve lobby before)
+        if(message.Player != null) { //check player (neccessary if player leave lobby before)
             response.addChangedObject(message.Player);
         }
         
