@@ -188,11 +188,8 @@ function ServerAnswerParser(doc){
         else{    
             for (var i = 0; i < message.data.length; i++){
                 if(message.data[i].MapChange){
-                    if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) === message.data[i].MapChange.ownerId){
-                        Core.mapAnimationHandler.prepareUnitAddRemove(message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount);
-                    } else {
-                        Core.mapAnimationHandler.prepareUnitAddRemove("", message.data[i].MapChange.countryId, message.data[i].MapChange.unitCount, message.data[i].MapChange.ownerId);
-                    }
+                    Core.svgHandler.setLandComplete(message.data[i].MapChange.countryId, message.data[i].MapChange.ownerId, message.data[i].MapChange.unitCount);
+                    Core.svgHandler.changeLandVisible(message.data[i].MapChange.countryId);
                 }
                 if(message.data[i].Player){
                     Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
@@ -287,7 +284,7 @@ function ServerAnswerParser(doc){
     
     var handleMapChangedMessage = function(message){
         if(message.data.length === 3 && message.data[2].ServerGame.currentGameStatus === "Move"){
-            Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, parseInt(message.data[1].MapChange.unitCount) - parseInt(message.data[0].MapChange.unitCount));
+            Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, parseInt(Core.svgHandler.getLandUnitcount(message.data[0].MapChange.countryId)) - parseInt(message.data[0].MapChange.unitCount));
 
             Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
             Core.svgHandler.setLandUnitcount(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount); 

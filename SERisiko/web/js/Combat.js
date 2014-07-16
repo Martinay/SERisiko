@@ -25,6 +25,7 @@ function Combat(doc){
         var defeater = false;
         var attacker = false;
         var lands = new Array();
+        var landIds = new Array();
         var looseUnitCounts = new Array();
         var defeatstate = true;
         var attackstate = null;
@@ -35,6 +36,7 @@ function Combat(doc){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].MapChange){
                 lands[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
+                landIds[i] = message.data[i].MapChange.countryId;
                 looseUnitCounts[i] = parseInt(lands[i]) - parseInt(message.data[i].MapChange.unitCount);
                 if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) === Core.getPlayerId()){
                     if(i === 0){
@@ -78,7 +80,7 @@ function Combat(doc){
                 //setTimeout(function(){ Core.attackHandler.showAttackResult(attackstate);}, 2000);
             }
         } else if(defeater === true){
-            Core.defendHandler.showDefend(lands[0], lands[1], attackDiceCount,  defeatstate);
+            Core.defendHandler.showDefend(lands[0], lands[1], attackDiceCount-1, defeatDiceCount-1, landIds[0], landIds[1], defeatstate);
             editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
         }
     };
