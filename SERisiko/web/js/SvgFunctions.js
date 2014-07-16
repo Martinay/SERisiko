@@ -110,7 +110,7 @@ function SvgFunctions(document){
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                     theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
-                    newNeighorLands = newNeighorLands.concat(this.getLandNeighborsFiltered(theRect.getAttribute("neighbor"), true));
+                    newNeighorLands = newNeighorLands.concat(this.getLandNeighborsFiltered(theRect.getAttribute("id"), true));
                     goOn = true;
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);

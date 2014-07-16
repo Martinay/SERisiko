@@ -17,61 +17,65 @@ function MapAnimation(doc){
             var movementData = new Array (parseInt(textMov.getAttribute("x")), parseInt(textMov.getAttribute("y")));
 
             var tempCount = parseInt(count) - parseInt(svgDoc.getElementById(id).getAttribute("unitcount"));
-            var fillstyle = "fil9";
-            var vorzeichen = "+ ";
+            if(parseInt(tempCount) !== 0){
+                var fillstyle = "fil9";
+                var vorzeichen = "+ ";
 
-            if(tempCount < 0){
-                fillstyle = "fil8";
-                vorzeichen = "- ";
-            } 
-            else {
-                if(movementData[1]-2000 < 0)
-                    movementData[1] = 0;
-                else
-                    movementData[1] = movementData[1]-2000;
-            }
-
-            var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
-            var xmlns = "http://www.w3.org/2000/svg";
-            
-            var text = root.createElementNS(xmlns, "text");
+                if(tempCount < 0){
+                    fillstyle = "fil8";
+                    vorzeichen = "- ";
+                } 
                 
-            text.setAttribute("id", id + "_UnitCount_mov");
-            text.setAttribute("x", movementData[0]);
-            text.setAttribute("y", movementData[1]);
-            text.setAttribute("class", fillstyle + " fnt4");
-            text.setAttribute("text-anchor", "middle");
-            var textNode = root.createTextNode(vorzeichen + tempCount);
-            text.appendChild(textNode);
+                if(movementData[1] - 2000 < 0){
+                    movementData[1] = 0;
+                } else {
+                    movementData[1] = movementData[1] - 2000;
+                }
+
+                var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
+                var xmlns = "http://www.w3.org/2000/svg";
+
+                var text = root.createElementNS(xmlns, "text");
+
+                text.setAttribute("id", id + "_UnitCount_Remove");
+                text.setAttribute("x", movementData[0]);
+                text.setAttribute("y", movementData[1]);
+                text.setAttribute("class", fillstyle + " fnt4");
+                text.setAttribute("text-anchor", "middle");
+                var textNode = root.createTextNode(vorzeichen + Math.abs(tempCount));
+                text.appendChild(textNode);
+
+                mapUnitAnimations.appendChild(text);
+
+                Core.svgHandler.setLandUnitcount(id, count);
             
-            mapUnitAnimations.appendChild(text);
-           
-            Core.svgHandler.setLandUnitcount(id, count);
-            if(tempCount < 0)
-                setTimeout(function() {animateUnitRemove(id, movementData[1]);}, 50);
-            else
-                setTimeout(function() {animateUnitAdd(id, movementData[1]);}, 50);
+                if(tempCount < 0){
+                    setTimeout(function() {animateUnitRemove(id, movementData[1]);}, 50);
+                } else {
+                    setTimeout(function() {animateUnitAdd(id, movementData[1]);}, 50);
+                }
+            }   
         }
     };
 
     var animateUnitAdd = function(id, yPosition){
         if(yPosition > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
             Core.svgHandler.changeLandVisible(id);
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_Remove'));
         } else {
             yPosition = yPosition + 40;
-            svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPosition);
+            svgDoc.getElementById(id + "_UnitCount_Remove").setAttribute("y", yPosition);
             setTimeout(function() {animateUnitAdd(id, yPosition);}, 50);
         }
     };
     
     var animateUnitRemove = function(id, yPosition){
-        if(yPosition < parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y")) - 2000){
+        if(yPosition > parseInt(svgDoc.getElementById(id + "_UnitCount").getAttribute("y"))){
             Core.svgHandler.changeLandVisible(id);
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_mov'));
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(id + '_UnitCount_Remove'));
         } else {
-            yPosition = yPosition - 40;
-            svgDoc.getElementById(id + "_UnitCount_mov").setAttribute("y", yPosition);
+            yPosition = yPosition + 40;
+            svgDoc.getElementById(id + "_UnitCount_Remove").setAttribute("y", yPosition);
             setTimeout(function() {animateUnitRemove(id, yPosition);}, 50);
         }
     };
@@ -81,23 +85,26 @@ function MapAnimation(doc){
         var mapUnitAnimations = svgDoc.getElementById("unitAnimations");
         
         var sourceUnit = svgDoc.getElementById(source + "_Unit");
-        var sourceCountText = svgDoc.getElementById(source + "_UnitCount");
-        if(sourceUnit !== null && sourceUnit !== undefined && sourceCountText !== null && sourceUnit !== sourceCountText){
+        
+        if(sourceUnit !== null && sourceUnit !== undefined){
             var xmlns = "http://www.w3.org/2000/svg";
             var image = root.createElementNS(xmlns, "image");
                 
-            image.setAttribute("id", "Runner_Unit_mov");
+            image.setAttribute("id", target + "_Unit_mov");
             image.setAttribute("x", sourceUnit.getAttribute("x"));
             image.setAttribute("y", sourceUnit.getAttribute("y"));
-            image.setAttribute("width", 800);
-            image.setAttribute("height", 600);
+            image.setAttribute("width", 600);
+            image.setAttribute("height", 800);
             image.setAttributeNS("http://www.w3.org/1999/xlink", "href", sourceUnit.getAttribute('href'));
             
             var text = root.createElementNS(xmlns, "text");
+            
+            var xText = parseInt(sourceUnit.getAttribute("x")) + 1000;
+            var yText = parseInt(sourceUnit.getAttribute("y")) + 620;
                 
-            text.setAttribute("id", 'Runner_UnitCount_mov');
-            text.setAttribute("x", sourceCountText.getAttribute("x"));
-            text.setAttribute("y", sourceCountText.getAttribute("y"));
+            text.setAttribute("id", target + '_UnitCount_mov');
+            text.setAttribute("x", xText);
+            text.setAttribute("y", yText);
             text.setAttribute("class", "fil9 fnt4");
             text.setAttribute("text-anchor", "middle");
             var textNode = root.createTextNode(amount);
@@ -116,26 +123,27 @@ function MapAnimation(doc){
     
     this.nextUnitTarget = function (route, pos){
         if(pos < route.length){
-            console.log("Animation @: " + route[pos]);
             
-            var imageMov =  svgDoc.getElementById('Runner_Unit_mov');
-            var textMov = svgDoc.getElementById('Runner_UnitCount_mov'); 
+            var imageMov =  svgDoc.getElementById(route[pos] + "_Unit_mov");
+            var textMov = svgDoc.getElementById(route[pos] + "_UnitCount_mov"); 
             
-            var movementDataTextSource = new Array (parseInt(textMov.getAttribute("x")), (14605 - parseInt(textMov.getAttribute("y"))));
             var movementDataImgSource = new Array (parseInt(imageMov.getAttribute("x")), (14605 - parseInt(imageMov.getAttribute("y"))), imageMov.getAttribute("xlink:href"));
+            var movementDataTextSource = new Array (parseInt(textMov.getAttribute("x")), (14605 - parseInt(textMov.getAttribute("y"))));
             
-            imageMov = svgDoc.getElementById(route[pos] + '_Unit');
-            var movementDataImgDestination = new Array (parseInt(imageMov.getAttribute("x")), (14605 - parseInt(imageMov.getAttribute("y"))));
+            var imageMov2 = svgDoc.getElementById(route[pos] + '_Unit');
+            var movementDataImgDestination = new Array (parseInt(imageMov2.getAttribute("x")), (14605 - parseInt(imageMov2.getAttribute("y"))));
             var gradient = "";
             var b = 0;
             if(movementDataImgSource[0] - movementDataImgDestination[0] === 0 || movementDataImgSource[1] - movementDataImgDestination[1] === 0){
                 if(movementDataImgSource[0] - movementDataImgDestination[0] === 0){
                     gradient = "y";
                     b = movementDataImgSource[1] - movementDataImgDestination[1] > 0?"-":"+";
+                    movementDataTextSource[1] = parseInt(textMov.getAttribute("y"));
+                    movementDataImgSource[1] = parseInt(imageMov.getAttribute("y"));
                 } 
                 else {
                     gradient = "x";
-                    b = movementDataImgSource[0] - movementDataImgDestination[0] > 0?"-":"+";
+                    b = movementDataImgSource[0] - movementDataImgDestination[0] > 0?"+":"-";
                 }
             } 
             else {
@@ -148,19 +156,19 @@ function MapAnimation(doc){
             }
             switch(gradient){
                 case "x":
-                    this.moveNewMapOwnerCompleteX(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos);
+                    this.moveNewMapOwnerCompleteX(movementDataTextSource[0], movementDataImgSource[0], b, route, pos);
                     break;
                 case "y":
-                    this.moveNewMapOwnerCompleteY(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, b, route, pos); 
+                    this.moveNewMapOwnerCompleteY(movementDataTextSource[1], movementDataImgSource[1], b, route, pos); 
                     break;
                 default:
                     this.moveNewMapOwnerComplete(movementDataTextSource[0], movementDataTextSource[1], movementDataImgSource[0], movementDataImgSource[1], gradient, textX1, textY1, imgX1, imgY1, route, pos, xRichtung);
                     break;
             }
         } else {
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_Unit_mov'));
-            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById('Runner_UnitCount_mov'));
-            
+            Core.svgHandler.changeLandVisible(route[pos-1]);
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(route[pos-1] + "_Unit_mov"));
+            svgDoc.getElementById("unitAnimations").removeChild(svgDoc.getElementById(route[pos-1] + "_UnitCount_mov"));
         }
     };
     
@@ -175,7 +183,7 @@ function MapAnimation(doc){
             animate = false;
         } 
         if(animate === true){
-            if( xRichtung == "+"){
+            if( xRichtung === "+"){
                 xPositionText = xPositionText + 40;
                 xPositionImg = xPositionImg + 40;
             } else {
@@ -184,51 +192,51 @@ function MapAnimation(doc){
             }
             yPositionText = 14605 - (textY1 + gradient * (xPositionText - textX1));
             yPositionImg = 14605 - (imgY1 + gradient * (xPositionImg - imgX1));
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
+            svgDoc.getElementById(route[pos] + "_UnitCount_mov").setAttribute("y", yPositionText);
+            svgDoc.getElementById(route[pos] + "_UnitCount_mov").setAttribute("x", xPositionText);
+            svgDoc.getElementById(route[pos] + "_Unit_mov").setAttribute("y", yPositionImg);
+            svgDoc.getElementById(route[pos] + "_Unit_mov").setAttribute("x", xPositionImg);
             setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerComplete(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, textX1, textY1, imgX1, imgY1, route, pos, xRichtung);}, 50);
         }    
     };
     
-    this.moveNewMapOwnerCompleteX = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos){
-        if(b === "-" && xPositionText < parseInt(svgDoc.getElementById(route[pos] + "_UnitCount").getAttribute("x"))){
+    this.moveNewMapOwnerCompleteX = function(xPositionText, xPositionImg, b, route, pos){
+        if(b === "-" && xPositionImg > parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("x"))){
             this.nextUnitTarget(route, ++pos);
         } 
-        else if(b === "+" && xPositionText > parseInt(svgDoc.getElementById(route[pos] + "_UnitCount").getAttribute("x"))){
-            this.nextUnitTarget(route, pos++);
+        else if(b === "+" && xPositionImg < parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("x"))){
+            this.nextUnitTarget(route, ++pos);
         } 
         else {
-            if(b === "-"){
+            if(b === "+"){
                 xPositionText = xPositionText - 40;
                 xPositionImg = xPositionImg - 40;
             } else {
                 xPositionText = xPositionText + 40;
                 xPositionImg = xPositionImg + 40;
             }
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("x", xPositionText);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("x", xPositionImg);
-            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerCompleteX(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos);}, 50);
+            svgDoc.getElementById(route[pos] + "_UnitCount_mov").setAttribute("x", xPositionText);
+            svgDoc.getElementById(route[pos] + "_Unit_mov").setAttribute("x", xPositionImg);
+            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerCompleteX(xPositionText, xPositionImg, b, route, pos);}, 50);
         }
     };
     
-    this.moveNewMapOwnerCompleteY = function(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos){
-        if(b === "-" && yPositionText < parseInt(svgDoc.getElementById(route[pos] + "_UnitCount").getAttribute("y"))){
+    this.moveNewMapOwnerCompleteY = function(yPositionText, yPositionImg, b, route, pos){
+        if(b === "-" && yPositionImg > parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("y"))){
             this.nextUnitTarget(route, ++pos);
-        } else if(b === "+" && yPositionText > parseInt(svgDoc.getElementById(route[pos] + "_UnitCount").getAttribute("y"))){
-            this.nextUnitTarget(route, pos++);
+        } else if(b === "+" && yPositionImg < parseInt(svgDoc.getElementById(route[pos] + "_Unit").getAttribute("y"))){
+            this.nextUnitTarget(route, ++pos);
         } else {
-            if(b === "-"){
+            if(b === "+"){
                 yPositionText = yPositionText - 40;
                 yPositionImg = yPositionImg - 40;
             } else {
                 yPositionText = yPositionText + 40;
                 yPositionImg = yPositionImg + 40;
             }
-            svgDoc.getElementById("Runner_UnitCount_mov").setAttribute("y", yPositionText);
-            svgDoc.getElementById("Runner_Unit_mov").setAttribute("y", yPositionImg);
-            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerCompleteY(xPositionText, yPositionText, xPositionImg, yPositionImg, gradient, b, route, pos);}, 50);
+            svgDoc.getElementById(route[pos] + "_UnitCount_mov").setAttribute("y", yPositionText);
+            svgDoc.getElementById(route[pos] + "_Unit_mov").setAttribute("y", yPositionImg);
+            setTimeout(function() {Core.mapAnimationHandler.moveNewMapOwnerCompleteY(yPositionText, yPositionImg, b, route, pos);}, 50);
         }
     };
    
