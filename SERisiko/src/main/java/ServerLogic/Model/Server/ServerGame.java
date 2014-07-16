@@ -141,13 +141,12 @@ public class ServerGame extends Game {
     }
 
     public void PlaceUnits(List<ClientMapChange> clientMapChanges) {
+        int currentPlayerId = _spiel.aktueller_Spieler.Id;
 
         for(ClientMapChange change : clientMapChanges)
-        {
             PlaceUnits(change.CountryId, change.AddedUnits);
-        }
 
-        if (_spiel.Zustand == Spielzustaende.Armeen_hinzufuegen) {
+        if (_spiel.Zustand == Spielzustaende.Armeen_hinzufuegen && _spiel.aktueller_Spieler.Id == currentPlayerId) {
             Client_Response gameResponse = InteractWithGameLogic(1, null, null, true);
             UpdateGameStatus(gameResponse);
         }
