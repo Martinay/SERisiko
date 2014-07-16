@@ -13,8 +13,8 @@ public class MapLoader implements IMapLoader {
     IMapParser _mapParser;
 
     public MapLoader() {
-        _fileReader = new TestMapFileReader();
-        //_fileReader = new DummyMapFileReader();
+        //_fileReader = new TestMapFileReader();
+        _fileReader = new DummyMapFileReader();
         _mapParser = new MapParser();
     }
 
