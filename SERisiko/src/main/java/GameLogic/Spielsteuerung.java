@@ -189,7 +189,7 @@ public class Spielsteuerung {
         }
     }
 	
-	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
+	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){          
 		
 		switch (Zustand) {
 		

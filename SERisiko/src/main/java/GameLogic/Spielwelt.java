@@ -137,16 +137,7 @@ public class Spielwelt {
 		}
 		
 	}
-	
-	protected boolean pruefe_verschieben(Land Ausgang, Land Ziel, Spieler aktuellerSpieler){
-		if ((Ausgang.gib_besitzer()==aktuellerSpieler) && (Ausgang.gib_besitzer()==Ziel.gib_besitzer()) && (Ausgang.gib_anzahl_armeen()>1)){
-			
-			return Ausgang.ist_angrenzendes_Land(Ziel);
-						
-		}
-		else {return false;}
-	}
-	
+		
 	protected int max_anzahl_verschiebbare_Armeen(Land Frageland){
 		return (Frageland.gib_anzahl_armeen()-1);		
 	}
