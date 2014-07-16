@@ -174,7 +174,7 @@ function Core() {
         this.clearOpenGames();
         
         this.changeButton("gamePhase", "Bereit zum Spielen", "", "Core.connectionHandler.setPlayerState(true);", false);
-        $("#gameMap").html('<object data="maps/map_dhbw.svg" id="svg_obj" type="image/svg+xml"><!--<img id="svg_obj" src="maps/map_dhbw.jpg" alt="Playmap - DHBW"/> OUT OF ORDER --></object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
+        $("#gameMap").html('<object data="maps/map_dhbw.svg" type="image/svg+xml" width="950" height="660">Die Map ist ein SVG-Objekt, welches leider in Ihrem Browser nicht angezeigt werden kann.</object><!-- Map Blocker --><div id="mutex"></div><!-- Select Unit Amount Overlay --><div id ="bottom_overlay"></div><!-- Loading Overlay --><div id="loading_overlay"></div>');
     };
     
     this.clearOpenGames = function(){

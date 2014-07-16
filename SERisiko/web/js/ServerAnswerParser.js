@@ -99,7 +99,7 @@ function ServerAnswerParser(doc){
             Core.hideElement(root.getElementById("newGame"));
             Core.showElement(root.getElementById("game"));
             
-            setTimeout(function () {Core.prepareJoinedGame(message.data[0].ServerGame.id);}, 50);
+            setTimeout(function () {Core.prepareJoinedGame(message.data[0].ServerGame.id);}, 100);
 
             root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.connectionHandler.startGame();" style="width: 160px; margin-bottom: 10px;">Spielstarten</button>';
             root.getElementById("startGameBtn").disabled = true;
@@ -115,10 +115,10 @@ function ServerAnswerParser(doc){
     
     var handleNewPlayerJoinedMessage = function(message){
         //is it me?
-        if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame){
+        if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame !== undefined){
             Core.showElement(root.getElementById("game"));
             
-            setTimeout(function () {Core.prepareJoinedGame(message.data[1].ServerGame.id);}, 50);
+            setTimeout(function () {Core.prepareJoinedGame(message.data[1].ServerGame.id);},    100);
         }
         else if(Core.isInGameLobby()){
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);

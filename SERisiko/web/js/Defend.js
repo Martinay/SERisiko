@@ -6,7 +6,7 @@
 function Defend(document){
     var root = document;
     
-    this.showDefend = function (countAttack, countDefend, attackState){
+    this.showDefend = function (countAttack, countDefend, attackDiceCount, attackState){
         root.getElementById("loading_overlay").innerHTML = "";
         root.getElementById("loading_overlay").style.display = "block";
         
@@ -24,10 +24,10 @@ function Defend(document){
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
                 setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
-                if(countAttack > 1){
+                if(attackDiceCount > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
                     setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A2", rotate);},50); 
-                    if(countAttack > 2){
+                    if(attackDiceCount > 2){
                         OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
                         setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A3", rotate);},50);
                     }
