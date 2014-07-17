@@ -1,5 +1,7 @@
 package GameLogic;
 
+import java.util.List;
+
 public class Land {
 	
     private Spieler besitzer; //Spieler mit Armeen auf Land
@@ -49,6 +51,22 @@ public class Land {
 			if (angrenzendeLaender[i]==frage_Land) return true;
 		}
 		return false;
+	}
+        
+        protected boolean ist_angrenzendes_Land_verschieben(Land frage_Land, Spieler aktuellerSpieler, List<Land> gepruefte_laender){
+		for (int i=0;i<angrenzendeLaender.length; i++){
+			if (angrenzendeLaender[i]==frage_Land) return true;
+		}
+		
+		gepruefte_laender.add(this);
+		boolean ist_angrenzend=false;
+		for (int i=0;i<angrenzendeLaender.length; i++){
+			if ((angrenzendeLaender[i].gib_besitzer()==aktuellerSpieler) && (!(gepruefte_laender.contains(angrenzendeLaender[i]))) && (ist_angrenzend==false)){
+				ist_angrenzend = angrenzendeLaender[i].ist_angrenzendes_Land_verschieben(frage_Land, aktuellerSpieler, gepruefte_laender);
+			}
+		}
+		
+		return ist_angrenzend;
 	}
 	
 	public void setze_angrenzende_Laender(Land[] Laender){

@@ -1,5 +1,8 @@
 package GameLogic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Spielwelt {
 
 	private Land [] dieLaender;
@@ -148,9 +151,14 @@ public class Spielwelt {
 	}
 	
 	protected boolean pruefe_zusatz_Armeen (Land Ausgangsland, Land Zielland, Spieler aktueller_Spieler){
-                if (!(Ausgangsland.ist_angrenzendes_Land(Zielland))) throw new IllegalArgumentException("Country not next to the other one!");
+                List<Land> gepruefte_laender = new ArrayList<Land>();
+                if (!(Ausgangsland.ist_angrenzendes_Land_verschieben(Zielland, aktueller_Spieler, gepruefte_laender))) return false;
+                
                 if ((Ausgangsland.gib_besitzer()==aktueller_Spieler) && (Zielland.gib_besitzer()==aktueller_Spieler)) return true;
-		return false;
+		
+                return false;
+                
+                
 	}
 	
 	protected void fuege_Armeen_hinzu(Land Zielland, int anzahl_Armeen){
