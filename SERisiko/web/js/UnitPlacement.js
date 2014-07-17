@@ -32,7 +32,8 @@ function UnitPlacement(document){
         var theRect = svgDoc.getElementById(id);
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.5, 'default');");
-        document.getElementById("gameMap").style.height = "730px";
+        root.getElementById("gameMap").style.height = "730px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideDown( "slow");
         Core.showElement(root.getElementById("mutex"));
         if(placeUnit[id] !== undefined){
@@ -56,7 +57,8 @@ function UnitPlacement(document){
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
         svgDoc.getElementById(id + "_back").setAttribute('opacity','1'); 
-        document.getElementById("gameMap").style.height = "660px";
+        root.getElementById("gameMap").style.height = "660px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex")); 
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
@@ -70,7 +72,7 @@ function UnitPlacement(document){
         root.getElementById("bottom_overlay").innerHTML = "";
         if(maxValue === 0){
             Core.svgHandler.setRectsOnClickNull();
-            document.getElementById("gamePhase").disabled = false;
+            root.getElementById("gamePhase").disabled = false;
         } else {
             Core.svgHandler.refreshOwnerRightsForUnitPlace(maxValue);
         }
@@ -81,7 +83,8 @@ function UnitPlacement(document){
         theRect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
         theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
         svgDoc.getElementById(id + "_back").setAttribute('opacity','1');
-        document.getElementById("gameMap").style.height = "660px";
+        root.getElementById("gameMap").style.height = "660px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";

@@ -9,7 +9,8 @@ function Attack(document){
     var root = document;
     
     this.selectAmountUnit = function(attacker, defender){
-        document.getElementById("gameMap").style.height = "660px";
+        root.getElementById("gameMap").style.height = "660px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideUp( "slow");
         root.getElementById("bottom_overlay").innerHTML = "";
         root.getElementById("loading_overlay").style.display = "block";
@@ -73,7 +74,7 @@ function Attack(document){
                                         </table>\n\
                                     </div>\n'+
                                     "<button style='margin-top: 20px; margin-right: 60px;' id='startAttack' name='StartAttack' onClick='Core.attackHandler.showAttack(\""+attackId+"\",\""+defendId+"\",\""+difference+"\")'>Nochmal Angreifen</button>"+
-                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.attackHandler.clearAttackDisplay()'>Angriff Beenden</button>";
+                                    "<button style='margin-top: 20px;' id='abortAttack' name='AbortAttack' onClick='Core.attackHandler.clearAttackDisplay()'>Angriff Beenden</button>";
         root.getElementById("loading_overlay").innerHTML = OverlayString;
         root.getElementById("startAttack").disabled = true;
     };
@@ -86,7 +87,7 @@ function Attack(document){
     };
     
     this.clearAttackBottomDisplay = function(){
-        document.getElementById("gameMap").style.height = "660px";
+        root.getElementById("gameMap").style.height = "660px";
         $( "#bottom_overlay" ).slideUp( "slow");
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();

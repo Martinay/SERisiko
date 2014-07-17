@@ -10,7 +10,7 @@ function Defend(document){
         root.getElementById("loading_overlay").innerHTML = "";
         root.getElementById("loading_overlay").style.display = "block";
         
-        var rotate = Core.combatHandler.getDicesCountRotate(countAttack, countDefend);
+        var rotate = Core.combatHandler.getDicesCountRotate(attackDiceCount, defendDiceCount);
         
         var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\

@@ -8,8 +8,6 @@ function UnitMove(document){
     var root = document;
     
     this.selectCountMoveUnits = function(source, destination){
-        root.getElementById("gameMap").style.height = "730px";
-        root.getElementById("bottom_overlay").style.height = "70px";
         Core.showElement(root.getElementById("mutex"));
         if(parseInt(Core.svgHandler.getLandUnitcount(source)) !== 1){
             root.getElementById("bottom_overlay").innerHTML = "\
@@ -27,6 +25,7 @@ function UnitMove(document){
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
         Core.connectionHandler.sendUnitMove(source, destination, parseInt(countSelector));
         root.getElementById("gameMap").style.height = "660px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
@@ -34,7 +33,8 @@ function UnitMove(document){
     };
     
     this.clearUnitMoveDisplay = function(){
-        document.getElementById("gameMap").style.height = "660px";
+        root.getElementById("gameMap").style.height = "660px";
+        root.getElementById("bottom_overlay").style.height = "70px";
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";

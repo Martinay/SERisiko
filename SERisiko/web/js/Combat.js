@@ -31,8 +31,8 @@ function Combat(doc){
             var lands = new Array();
             var landIds = new Array();
             var looseUnitCounts = new Array();
-            var attackDiceCount = 1;
-            var defeatDiceCount = 1;
+            var attackDiceCount = 0;
+            var defeatDiceCount = 0;
             this.deleteDices();
             for (var i = 0; i < message.data.length; i++){
                 if(message.data[i].MapChange){
@@ -49,12 +49,12 @@ function Combat(doc){
                 }
                 if(message.data[i].Dice){
                     if(message.data[i].Dice.type === "Attacker"){
-                        this.setDice("A" + attackDiceCount, message.data[i].Dice.value);
                         attackDiceCount++;
+                        this.setDice("A" + attackDiceCount, message.data[i].Dice.value);
                     }
                     if(message.data[i].Dice.type === "Defender"){
-                        this.setDice("D" + defeatDiceCount, message.data[i].Dice.value);
                         defeatDiceCount++;
+                        this.setDice("D" + defeatDiceCount, message.data[i].Dice.value);
                     }
                 }
             }
@@ -76,7 +76,7 @@ function Combat(doc){
                 Core.svgHandler.refreshOwnerRights();
             } else if(defeater === true){
                 setBlockedStatus(true);
-                Core.defendHandler.showDefend(lands[0] - 1, lands[1], attackDiceCount-1, defeatDiceCount-1, landIds[0], landIds[1]);
+                Core.defendHandler.showDefend(lands[0]-1, lands[1], attackDiceCount, defeatDiceCount, landIds[0], landIds[1]);
                 editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
             }
         }
@@ -103,8 +103,12 @@ function Combat(doc){
     
     var enableStartAttack = function(){
         setBlockedStatus(false);
-        if((root.getElementById("unitRestAttack") != null && parseInt(root.getElementById("unitRestAttack").innerHTML) > 0) && (root.getElementById("unitRestDefend") !== null && parseInt(root.getElementById("unitRestDefend").innerHTML) > 0) &&  root.getElementById("startAttack") !== null)
+        if((root.getElementById("unitRestAttack") != null && parseInt(root.getElementById("unitRestAttack").innerHTML) > 0) && (root.getElementById("unitRestDefend") !== null && parseInt(root.getElementById("unitRestDefend").innerHTML) > 0) &&  root.getElementById("startAttack") !== null){
             root.getElementById("startAttack").disabled = false;
+        } else {
+            if(root.getElementById("abortAttack") !== null)
+                root.getElementById("abortAttack").innerHTML = "Anzeige Schließen";
+        }
     };
     
     var getBlockedStatus = function(){

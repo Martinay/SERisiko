@@ -36,7 +36,7 @@ function SvgFunctions(document){
             svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
         if(svgDoc.getElementById(landId + "_UnitCount") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
-            svgDoc.getElementById(landId + "_UnitCount").replaceChild(document.createTextNode(svgDoc.getElementById(landId).getAttribute("unitcount")), svgDoc.getElementById(landId + "_UnitCount").firstChild);
+            svgDoc.getElementById(landId + "_UnitCount").replaceChild(root.createTextNode(svgDoc.getElementById(landId).getAttribute("unitcount")), svgDoc.getElementById(landId + "_UnitCount").firstChild);
         }
     };
     
@@ -89,8 +89,8 @@ function SvgFunctions(document){
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
                 }
             }
-            document.getElementById("gameMap").style.height = "700px";
-            document.getElementById("bottom_overlay").style.height = "40px";
+            root.getElementById("gameMap").style.height = "700px";
+            root.getElementById("bottom_overlay").style.height = "40px";
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
                     <button name='clearAttackBottomDisplay' onClick='Core.attackHandler.clearAttackBottomDisplay();' style='margin: 7px 400px;'>Auswahl aufheben</button>";
@@ -117,8 +117,8 @@ function SvgFunctions(document){
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
             }
-            document.getElementById("gameMap").style.height = "700px";
-            document.getElementById("bottom_overlay").style.height = "40px";
+            root.getElementById("gameMap").style.height = "700px";
+            root.getElementById("bottom_overlay").style.height = "40px";
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
                     <button name='clearUnitMoveDisplay' onClick='Core.unitMoveHandler.clearUnitMoveDisplay();' style='margin: 7px 400px;'>Auswahl aufheben</button>";
@@ -132,6 +132,8 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK){
             Core.attackHandler.selectAmountUnit(attacker, id);
         } else {
+            root.getElementById("gameMap").style.height = "730px";
+            root.getElementById("bottom_overlay").style.height = "70px";
             Core.unitMoveHandler.selectCountMoveUnits(attacker, id);
         }
         
@@ -223,7 +225,7 @@ function SvgFunctions(document){
                 
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
                 
-                var image = document.createElementNS(xmlns, "image");
+                var image = root.createElementNS(xmlns, "image");
                 
                 image.setAttribute("id", rectID + '_Unit');
                 image.setAttribute("x", xPosition);
@@ -240,14 +242,14 @@ function SvgFunctions(document){
                     yPosition = yPosition + height * 1.5;
                 }
                 
-                var text = document.createElementNS(xmlns, "text");
+                var text = root.createElementNS(xmlns, "text");
                 
                 text.setAttribute("id", rectID + '_UnitCount');
                 text.setAttribute("x", xPosition);
                 text.setAttribute("y", yPosition);
                 text.setAttribute("class", "fil6 fnt2");
                 text.setAttribute("text-anchor", "middle");
-                var textChild = document.createTextNode("0");
+                var textChild = root.createTextNode("0");
                 text.appendChild(textChild);
                 mapUnitID.appendChild(image);
                 mapUnitCountCountry.appendChild(text);

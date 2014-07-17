@@ -338,7 +338,7 @@ function ServerAnswerParser(doc){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame ){
                 if(message.data[i].ServerGame.currentGameStatus === "Finished"){
-                    Core.showEndOfGame();
+                    Core.showEndOfGame(message.data[i].ServerGame.currentPlayerId);
                 }else {
                     if(message.data[i].ServerGame.currentPlayerId === Core.getPlayerId()){
                         Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, 0, "");
