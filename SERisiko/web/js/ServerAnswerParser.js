@@ -180,7 +180,8 @@ function ServerAnswerParser(doc){
     };
     
     var handlePlayerLeftGameMessage = function(message){
-        var gameStatusFinished = false;
+        var gameStatusFinished = false, lastPlayer = false;
+        var playerId = -1;
         if(!Core.isInGameLobby() && message.data[0].Player !== undefined && message.data[0].Player.id !== Core.getPlayerId()){
             Core.clearOpenGames();
             Core.connectionHandler.listOpenGames();
@@ -193,7 +194,7 @@ function ServerAnswerParser(doc){
                 }
                 if(message.data[i].Player){
                     Core.playerList.deletePlayerById(parseInt(message.data[i].Player.id));
-                    var playerId = message.data[i].Player.id;
+                    playerId = message.data[i].Player.id;
                     if(message.data[i].Player.id === Core.getPlayerId()){
                         Core.connectionHandler.joinLobby();
                     }
@@ -201,15 +202,24 @@ function ServerAnswerParser(doc){
                 if(message.data[i].ServerGame){
                     if(message.data[i].ServerGame.currentGameStatus === "Finished"){
                         gameStatusFinished = true;
+                        if(message.data[i].ServerGame.playerCount === 1)
+                            lastPlayer = true;
                     } else {
                         Core.updatePlayerList();
-                    }
+                    }   
                 }
             }
         }
         if(gameStatusFinished && playerId !== Core.getPlayerId()){
-            Core.connectionHandler.joinLobby();
-            Core.clearDisplayBackToLobby();
+            if(!lastPlayer){
+                Core.connectionHandler.joinLobby();
+                Core.clearDisplayBackToLobby();
+                }
+            else{
+                root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!<br> Alle anderen Spieler haben das Spiel verlaasen!</div><br /><br />\n\
+                                                                            <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
+                Core.showElement(root.getElementById("loading_overlay"));
+            }      
         }
     };
     
