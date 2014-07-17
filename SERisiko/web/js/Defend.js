@@ -6,7 +6,7 @@
 function Defend(document){
     var root = document;
     
-    this.showDefend = function (countAttack, countDefend, attackDiceCount, defendDiceCount, attackId, defendId, attackState){
+    this.showDefend = function (countAttack, countDefend, attackDiceCount, defendDiceCount, attackId, defendId){
         root.getElementById("loading_overlay").innerHTML = "";
         root.getElementById("loading_overlay").style.display = "block";
         
@@ -23,13 +23,13 @@ function Defend(document){
                                                 <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + (parseInt(countAttack) - 1) + '</div></td>\n\
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_A1"></canvas><br />';
-                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A1", rotate);},50);                                    
+                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A1", rotate);},100);                                    
                 if(attackDiceCount > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A2" style="margin: 10px 0px;"></canvas><br />\n';
-                    setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A2", rotate);},50); 
+                    setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A2", rotate);},100); 
                     if(attackDiceCount > 2){
                         OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_A3"></canvas>\n';
-                        setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A3", rotate);},50);
+                        setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("A3", rotate);},100);
                     }
                 }
                 OverlayString = OverlayString + '</td>\n\
@@ -37,7 +37,7 @@ function Defend(document){
                                                 <td>\n\
                                                     <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
 
-                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D1", rotate);},50);
+                setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D1", rotate);},100);
                 if(defendDiceCount > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
                     setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D2", rotate);},50); 
@@ -50,18 +50,6 @@ function Defend(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 7500);
-    };
-    
-    this.showDefendResult = function(arg){
-        if(arg === true){
-            root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
-                                                                <button style='margin-top: 20px;' name='clearShowDefend' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
-        } else {
-            root.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
-                                                                <button style='margin-top: 20px;' name='clearShowDefend' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
-        }
-        setTimeout(function(){ Core.defendHandler.clearShowDefend();}, 1500);
     };
     
     this.clearShowDefend = function(){

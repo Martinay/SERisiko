@@ -102,7 +102,7 @@ function ServerAnswerParser(doc){
             Core.hideElement(root.getElementById("newGame"));
             Core.showElement(root.getElementById("game"));
             
-            setTimeout(function () {Core.prepareJoinedGame(message.data[0].ServerGame.id);}, 100);
+            setTimeout(function () {Core.prepareJoinedGame(message.data[0].ServerGame.id);}, 300);
 
             root.getElementById("startGame").innerHTML = '<button  id="startGameBtn" name="startGameBtn" onClick="Core.connectionHandler.startGame();" style="width: 160px; margin-bottom: 10px;">Spielstarten</button>';
             root.getElementById("startGameBtn").disabled = true;
@@ -121,7 +121,7 @@ function ServerAnswerParser(doc){
         if(message.data[0].Player.id === Core.getPlayerId() && message.data[1].ServerGame !== undefined){
             Core.showElement(root.getElementById("game"));
             
-            setTimeout(function () {Core.prepareJoinedGame(message.data[1].ServerGame.id);},    100);
+            setTimeout(function () {Core.prepareJoinedGame(message.data[1].ServerGame.id);},    300);
         }
         else if(Core.isInGameLobby()){
             var player = new PlayerObject(message.data[0].Player.name, parseInt(message.data[0].Player.id), message.data[0].Player.playerStatus, message.data[0].Player.ready);
@@ -209,6 +209,13 @@ function ServerAnswerParser(doc){
                             lastPlayer = true;
                     } else {
                         Core.updatePlayerList();
+                        if(message.data[i].ServerGame.currentPlayerId === Core.getPlayerId()){
+                            Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, message.data[i].ServerGame.numberOfUnitsToPlace, "");
+                        } else {
+                            Core.connectionHandler.listPlayers();
+                            Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Einheiten Setzen");
+                        }
+                        Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
                     }   
                 }
             }
@@ -302,6 +309,8 @@ function ServerAnswerParser(doc){
             Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
             Core.svgHandler.setLandUnitcount(message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount); 
             
+            Core.svgHandler.changeLandVisible(message.data[0].MapChange.countryId);
+            
             if(parseInt(message.data[2].ServerGame.currentPlayerId) === Core.getPlayerId()){
                 Core.gameSteps.handleCurrentGameStatus(message.data[2].ServerGame.currentGameStatus, 0, "");
             }
@@ -328,13 +337,17 @@ function ServerAnswerParser(doc){
     var handleAttackEndedMessage = function(message){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame ){
-                if(message.data[i].ServerGame.currentPlayerId === Core.getPlayerId()){
-                    Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, 0, "");
-                } else {
-                    Core.connectionHandler.listPlayers();
-                    Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Einheiten verlegen</span>");
+                if(message.data[i].ServerGame.currentGameStatus === "Finished"){
+                    Core.showEndOfGame();
+                }else {
+                    if(message.data[i].ServerGame.currentPlayerId === Core.getPlayerId()){
+                        Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, 0, "");
+                    } else {
+                        Core.connectionHandler.listPlayers();
+                        Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Einheiten verlegen");
+                    }
+                    Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
                 }
-                Core.changePlayerListPic(message.data[i].ServerGame.currentPlayerId);
             }
         }
     };
@@ -359,7 +372,7 @@ function ServerAnswerParser(doc){
     var handleEndTurnMessage = function(message){
         for (var i = 0; i < message.data.length; i++){
             if(message.data[i].ServerGame){
-                if(message.data[i].ServerGame.currentPlayerId === Core.getPlayerId()){
+                if(parseInt(message.data[i].ServerGame.currentPlayerId) === parseInt(Core.getPlayerId())){
                     Core.gameSteps.handleCurrentGameStatus(message.data[i].ServerGame.currentGameStatus, message.data[i].ServerGame.numberOfUnitsToPlace, "");
                 } else {
                     Core.gameSteps.handleCurrentGameStatus("Idle", message.data[i].ServerGame.currentPlayerId, "Einheiten setzen");

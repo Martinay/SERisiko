@@ -89,7 +89,6 @@ function MapAnimation(doc){
         if(sourceUnit !== null && sourceUnit !== undefined){
             var xmlns = "http://www.w3.org/2000/svg";
             var image = root.createElementNS(xmlns, "image");
-            setTimeout(function(){Core.svgHandler.changeLandVisible(source);}, 200);
             image.setAttribute("id", target + "_Unit_mov");
             image.setAttribute("x", sourceUnit.getAttribute("x"));
             image.setAttribute("y", sourceUnit.getAttribute("y"));
@@ -116,7 +115,6 @@ function MapAnimation(doc){
             //route = calcUnitRunWay(source, target);
             route = new Array();
             route.push(target);
-            console.log("ErgebnisRoute: " + route.toString());
             this.nextUnitTarget(route, 0);
         }
     }; 
