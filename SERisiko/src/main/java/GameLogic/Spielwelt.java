@@ -127,12 +127,12 @@ public class Spielwelt {
                     angreifer_ausgesandt--;
                 }
 		
-		int neue_anz_ver=verteidiger.gib_anzahl_armeen()-verteidiger_gestorben;
 		for (int i=0; i<verteidiger_gestorben; i++) verteidiger.decArmeen(); 
 		
-		if (neue_anz_ver<=0){
+		if (verteidiger.gib_anzahl_armeen()<=0){
 			verteidiger.neuerBesitzer(angreifer.gib_besitzer());
 			verteidiger.mehr_Armeen(angreifer_ausgesandt);
+                        if (verteidiger.gib_anzahl_armeen()==0) verteidiger.mehr_Armeen(1);
 			for (int i=0; i<angreifer_ausgesandt; i++) angreifer.decArmeen();
 		}
 		

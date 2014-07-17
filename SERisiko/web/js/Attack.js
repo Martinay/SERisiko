@@ -33,7 +33,7 @@ function Attack(document){
         
         var countDefend = parseInt(Core.svgHandler.getLandUnitcount(defendId));
         
-        if(Core.svgHandler.getLandOwner(defendId) === Core.getPlayerName()){
+        if(parseInt(Core.svgHandler.getLandOwner(defendId)) === Core.getPlayerId()){
             Core.attackHandler.showAttackResult(true);
         } else {
             if(parseInt(Core.svgHandler.getLandUnitcount(attackId)) === 1){
@@ -46,9 +46,9 @@ function Attack(document){
                 var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
-                                                <td colspan="2">Attacker:</td>\n\
+                                                <td colspan="2">Attacker: (' + attackId + ')</td>\n\
                                                 <td style="width: 50px;"></td>\n\
-                                                <td colspan="2">Defender:</td>\n\
+                                                <td colspan="2">Defender: (' + defendId + ')</td>\n\
                                             </tr>\n\
                                             <tr>\n\
                                                 <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + countAttack + '</div></td>\n\

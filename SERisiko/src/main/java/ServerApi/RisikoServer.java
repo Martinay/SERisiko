@@ -5,12 +5,12 @@ import Network.WebSocket.WebSocketResponse;
 import ServerLogic.Messages.*;
 import ServerLogic.Model.*;
 import ServerLogic.ServerLogic;
-import org.json.simple.JSONObject;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+import org.json.simple.JSONObject;
 
 
 /**
@@ -53,7 +53,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.addTargetClientList( message.PlayerIDsToUpdate );
         
         
-        if(message.Player != null) { //check player (neccessary if player leve lobby before)
+        if(message.Player != null) { //check player (neccessary if player leave lobby before)
             response.addChangedObject(message.Player);
         }
         
@@ -449,10 +449,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("chat message: " + text);
         
        
+        String msg = escapeHtml(text);
+        
         int clientId = gameClient.getIdentifyer();
         
         ChatMessage responseObject = new ChatMessage();
-        responseObject.text = text;        
+        responseObject.text = msg;        
         responseObject.player = clientId;
        
         ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);

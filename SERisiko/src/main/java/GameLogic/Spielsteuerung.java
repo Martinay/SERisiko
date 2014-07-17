@@ -327,7 +327,8 @@ public class Spielsteuerung {
         if (!(DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler))) {
             aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
             throw new IllegalArgumentException("can not attack!");
-        }        
+        }
+        if ((Ereigniss.erstesLand.gib_anzahl_armeen()-Ereigniss.anz_Armeen)<=0) throw new IllegalArgumentException("To many armis are selected!");
         
         //***********Angriff an sich********************
   

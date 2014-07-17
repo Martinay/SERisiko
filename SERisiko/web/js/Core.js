@@ -118,7 +118,7 @@ function Core() {
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] !== null){
                 if(players[i].getPlayerStatus() === "Defeated"){
-                    if(this.getPlayerId() === CurrentPlayerId){
+                    if(this.getPlayerId() === players[i].getPlayerStatus()){
                         document.getElementById("loading_overlay").style.display = "block";
                         document.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='clearShowDefeat' onClick='Core.backToLobby()'>Anzeige Schließen</button>";
