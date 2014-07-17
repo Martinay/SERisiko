@@ -13,14 +13,15 @@ import java.net.URL;
 public class Server 
 {
     
-    private final static int  HTTP_SERVER_PORT = 80;
+    private final static int  HTTP_SERVER_PORT = 12345;
     private final static int  WEBSOCKET_SERVER_PORT = 8080;
     
     public static void main( String[] args )
     {
         URL serverLocation = Server.class.getProtectionDomain().getCodeSource().getLocation();
 
-        String docRoot = "web";
+        //String docRoot = "web";
+        String docRoot = "C:\\Users\\M.Ayasse.VESCON\\IdeaProjects\\SERisiko\\SERisiko\\web";
         System.out.println("set documentRoot: " + docRoot);
         
         WebServer webServer = WebServers.createWebServer(HTTP_SERVER_PORT)
