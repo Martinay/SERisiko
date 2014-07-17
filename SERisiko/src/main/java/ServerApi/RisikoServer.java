@@ -12,9 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
-
-
 /**
  * Serverside API Implementation for Risiko WebGame
  * 
@@ -457,13 +454,11 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse sendChatMessage(GameClient gameClient, String text) {
         System.out.println("chat message: " + text);
         
-       
-        String msg = escapeHtml(text);
         
         int clientId = gameClient.getIdentifyer();
         
         ChatMessage responseObject = new ChatMessage();
-        responseObject.text = msg;        
+        responseObject.text = text;        
         responseObject.player = clientId;
        
         ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);

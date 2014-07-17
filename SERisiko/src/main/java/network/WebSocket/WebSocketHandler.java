@@ -6,16 +6,14 @@ import ServerApi.RisikoServerResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.webbitserver.BaseWebSocketHandler;
 import org.webbitserver.WebSocketConnection;
-
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 
@@ -96,13 +94,18 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
     
     private void handleApiRequest(GameClient currentClient, String requestData){
      
-        try {
+        try {           
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject)parser.parse(requestData);
             
             String methodName = (String)obj.get("name");
-            JSONArray arguments = (JSONArray)obj.get("args");
+            JSONArray args = (JSONArray)obj.get("args");
 
+            
+            JSONArray arguments = this.escapeArguments(args);
+            
+            
+            
             //get API method
             Method m = this.apiCmdList.get(methodName);
             
@@ -127,6 +130,28 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
             currentClient.sendMessage(response.toJSON());
         }    
 
+    }
+    /**
+     * Escape String Arguments given by client
+     * 
+     * @param args
+     * @return JSONArray
+     */
+    private JSONArray escapeArguments(JSONArray args) {
+        
+        JSONArray arguments = new JSONArray();
+        for(int i=0; i< args.size(); i++) {
+            
+            if( args.get(i) instanceof String) {
+                System.out.println("escape");
+                arguments.add(  escapeHtml( (String)args.get(i) ) );
+            } else {
+                arguments.add(  args.get(i) );
+            }
+            
+        }
+        
+        return arguments;
     }
     
     
