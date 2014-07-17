@@ -10,6 +10,7 @@
     <name>SERisiko</name>
     <url>http://maven.apache.org</url>
     <build>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -60,15 +61,16 @@
             </plugin>
             
             <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                            <archive>
-                                    <manifest>
-                                            <mainClass>main.Server</mainClass>
-                                    </manifest>
-                            </archive>
-                    </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <archive>
+                        <manifest>
+                            <mainClass>main.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
             
         </plugins>    
@@ -117,8 +119,6 @@
             <artifactId>linq4j</artifactId>
             <version>0.4</version>
         </dependency> 
-
-
 
         <dependency>
             <groupId>webbitserver-temp</groupId>
