@@ -1,5 +1,8 @@
 package GameLogic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Spielwelt {
 
 	private Land [] dieLaender;
@@ -103,12 +106,13 @@ public class Spielwelt {
         }
 	
 	protected boolean pruefe_Attacke(Land angreifer, Land verteidiger, Spieler aktuellerSpieler){
-		if ((angreifer.gib_besitzer()==aktuellerSpieler) && (angreifer.gib_besitzer()!=verteidiger.gib_besitzer()) && (angreifer.gib_anzahl_armeen()>1)){
+		if (!(angreifer.gib_besitzer()==aktuellerSpieler))          throw new IllegalArgumentException("Not the own country!");
+                if (angreifer.gib_besitzer()==verteidiger.gib_besitzer())   throw new IllegalArgumentException("Player attack himself");
+                if (!(angreifer.gib_anzahl_armeen()>1))                     throw new IllegalArgumentException("not enougth armis");
 			
-			return angreifer.ist_angrenzendes_Land(verteidiger);
+		if (!(angreifer.ist_angrenzendes_Land(verteidiger)))        throw new IllegalArgumentException("att country is not next to dev country");
 						
-		}
-		else {return false;}
+		return true;
 	}
 	
 	protected int gib_Anzahl_Angreifer(Land angreifer){
@@ -126,26 +130,17 @@ public class Spielwelt {
                     angreifer_ausgesandt--;
                 }
 		
-		int neue_anz_ver=verteidiger.gib_anzahl_armeen()-verteidiger_gestorben;
 		for (int i=0; i<verteidiger_gestorben; i++) verteidiger.decArmeen(); 
 		
-		if (neue_anz_ver<=0){
+		if (verteidiger.gib_anzahl_armeen()<=0){
 			verteidiger.neuerBesitzer(angreifer.gib_besitzer());
 			verteidiger.mehr_Armeen(angreifer_ausgesandt);
+                        if (verteidiger.gib_anzahl_armeen()==0) verteidiger.mehr_Armeen(1);
 			for (int i=0; i<angreifer_ausgesandt; i++) angreifer.decArmeen();
 		}
 		
 	}
-	
-	protected boolean pruefe_verschieben(Land Ausgang, Land Ziel, Spieler aktuellerSpieler){
-		if ((Ausgang.gib_besitzer()==aktuellerSpieler) && (Ausgang.gib_besitzer()==Ziel.gib_besitzer()) && (Ausgang.gib_anzahl_armeen()>1)){
-			
-			return Ausgang.ist_angrenzendes_Land(Ziel);
-						
-		}
-		else {return false;}
-	}
-	
+		
 	protected int max_anzahl_verschiebbare_Armeen(Land Frageland){
 		return (Frageland.gib_anzahl_armeen()-1);		
 	}
@@ -155,9 +150,15 @@ public class Spielwelt {
 		Ziel.mehr_Armeen(anzahl_Armeen);
 	}
 	
-	protected boolean pruefe_zusatz_Armeen (Land Zielland, Spieler aktueller_Spieler){
-		if (Zielland.gib_besitzer()==aktueller_Spieler) return true;
-		return false;
+	protected boolean pruefe_zusatz_Armeen (Land Ausgangsland, Land Zielland, Spieler aktueller_Spieler){
+                List<Land> gepruefte_laender = new ArrayList<Land>();
+                if (!(Ausgangsland.ist_angrenzendes_Land_verschieben(Zielland, aktueller_Spieler, gepruefte_laender))) return false;
+                
+                if ((Ausgangsland.gib_besitzer()==aktueller_Spieler) && (Zielland.gib_besitzer()==aktueller_Spieler)) return true;
+		
+                return false;
+                
+                
 	}
 	
 	protected void fuege_Armeen_hinzu(Land Zielland, int anzahl_Armeen){

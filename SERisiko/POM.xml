@@ -34,8 +34,46 @@
                 </execution>
               </executions>
             </plugin>
-      
+
+            <plugin>
+              <artifactId>maven-resources-plugin</artifactId>
+              <version>2.6</version>
+              <executions>
+                <execution>
+                  <id>copy-resources</id>
+                  <!-- here the phase you need -->
+                  <phase>validate</phase>
+                  <goals>
+                    <goal>copy-resources</goal>
+                  </goals>
+                  <configuration>
+                    <outputDirectory>${basedir}/target/web</outputDirectory>
+                    <resources>          
+                      <resource>
+                        <directory>web</directory>
+                        <filtering>true</filtering>
+                      </resource>
+                    </resources>              
+                  </configuration>            
+                </execution>
+              </executions>
+            </plugin>
+            
+            <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <configuration>
+                            <archive>
+                                    <manifest>
+                                            <mainClass>main.Server</mainClass>
+                                    </manifest>
+                            </archive>
+                    </configuration>
+            </plugin>
+            
         </plugins>
+
+        
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -95,5 +133,9 @@
             <scope>compile</scope>
         </dependency>                
         
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
     </dependencies>
 </project>

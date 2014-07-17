@@ -19,6 +19,10 @@ function SvgFunctions(document){
         svgDoc = doc;
     };
     
+    this.getPlayerColor = function(playerId){
+        return playerColorHREF['"' + playerId + '"'];
+    }
+    
     this.getLandOwner = function(landId){
         return parseInt(svgDoc.getElementById(landId).getAttribute("owner"));  
     };
@@ -28,11 +32,11 @@ function SvgFunctions(document){
     };
     
     this.changeLandVisible = function(landId){
-        if(svgDoc.getElementById(landId + "_Unit") !== null){
-            svgDoc.getElementById(landId + "_Unit").setAttribute("xlink:href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
+        if(svgDoc.getElementById(landId + "_Unit") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
+            svgDoc.getElementById(landId + "_Unit").setAttributeNS("http://www.w3.org/1999/xlink", "href", playerColorHREF['"' + parseInt(svgDoc.getElementById(landId).getAttribute("owner")) + '"']);
         }
-        if(svgDoc.getElementById(landId + "_UnitCount") !== null){
-            svgDoc.getElementById(landId + "_UnitCount").innerHTML = parseInt(svgDoc.getElementById(landId).getAttribute("unitcount"));
+        if(svgDoc.getElementById(landId + "_UnitCount") !== null || svgDoc.getElementById(landId + "_Unit") !== undefined){
+            svgDoc.getElementById(landId + "_UnitCount").replaceChild(document.createTextNode(svgDoc.getElementById(landId).getAttribute("unitcount")), svgDoc.getElementById(landId + "_UnitCount").firstChild);
         }
     };
     
@@ -106,7 +110,7 @@ function SvgFunctions(document){
                     theRect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'default');");
                     theRect.onclick = new Function("Core.svgHandler.identifyDestination(this.id, '" + id + "' );");
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
-                    newNeighorLands = newNeighorLands.concat(theRect.getAttribute("neighbor").split(","));
+                    newNeighorLands = newNeighorLands.concat(this.getLandNeighborsFiltered(theRect.getAttribute("id"), true));
                     goOn = true;
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
@@ -145,7 +149,7 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK || Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITMOVEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") === Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
+                if(parseInt(rect.getAttribute("owner")) === Core.getPlayerId() && rect.getAttribute("unitcount") > 1){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.svgHandler.identifySource(this.id);");
@@ -158,7 +162,7 @@ function SvgFunctions(document){
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.UNITPLACEMENT || Core.gameSteps.getGameStep() === Core.gameSteps.state.FIRSTUNITPLACEMENT){
             var rects = svgDoc.getElementsByTagName("rect");
             [].slice.call(rects).forEach(function(rect){
-                if(rect.getAttribute("owner") === Core.getPlayerId()){
+                if(parseInt(rect.getAttribute("owner")) === Core.getPlayerId()){
                     rect.onmouseover = new Function("Core.svgHandler.setOpacityOnRect(this.id, 0.75, 'pointer');");
                     rect.onmouseout = new Function("Core.svgHandler.setOpacityOnRect(this.id, 1, 'default');");
                     rect.onclick = new Function("Core.unitPlacementHandler.unitPlacement(this.id, \""+value+"\");");
@@ -182,10 +186,11 @@ function SvgFunctions(document){
         var width = 0;
         var countryHeight = 0;
         var countryWidth = 0;
+        var rectID = "";
         var mapUnitID = svgDoc.getElementById("mapUnit");
         var mapUnitCountCountry = svgDoc.getElementById("unitCountCountry");
-        var rectID = "";
-                
+        var xmlns = "http://www.w3.org/2000/svg";
+            
         initPlayerColor();
         
         [].slice.call(rects).forEach(function(rect){
@@ -213,7 +218,15 @@ function SvgFunctions(document){
                 }
                 
                 yPosition = (parseInt(rect.getAttribute("y")) + countryHeight/2) - (height / 2);
-                mapUnitID.innerHTML = mapUnitID.innerHTML + '<image id="' + rectID + '_Unit" x="' + xPosition + '" y="' + yPosition + '" width="' + width + '" height="' + height + '" xlink:href="" />';
+                
+                var image = document.createElementNS(xmlns, "image");
+                
+                image.setAttribute("id", rectID + '_Unit');
+                image.setAttribute("x", xPosition);
+                image.setAttribute("y", yPosition);
+                image.setAttribute("width", width);
+                image.setAttribute("height", height);
+                image.setAttributeNS("http://www.w3.org/1999/xlink", "href", "/img/player_img/player_red.png");
                 
                 if(countryWidth > 1234){
                     xPosition = xPosition + width * 1.4 ;
@@ -222,8 +235,18 @@ function SvgFunctions(document){
                     xPosition = xPosition + width/2 ;
                     yPosition = yPosition + height * 1.5;
                 }
-               
-                mapUnitCountCountry.innerHTML = mapUnitCountCountry.innerHTML + '<text id="' + rectID + '_UnitCount" x="' + xPosition + '" y="' + yPosition + '" class="fil6 fnt2" text-anchor="middle"></text>';
+                
+                var text = document.createElementNS(xmlns, "text");
+                
+                text.setAttribute("id", rectID + '_UnitCount');
+                text.setAttribute("x", xPosition);
+                text.setAttribute("y", yPosition);
+                text.setAttribute("class", "fil6 fnt2");
+                text.setAttribute("text-anchor", "middle");
+                var textChild = document.createTextNode("0");
+                text.appendChild(textChild);
+                mapUnitID.appendChild(image);
+                mapUnitCountCountry.appendChild(text);
             }
         });
     };

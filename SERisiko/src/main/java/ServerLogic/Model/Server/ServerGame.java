@@ -141,13 +141,12 @@ public class ServerGame extends Game {
     }
 
     public void PlaceUnits(List<ClientMapChange> clientMapChanges) {
+        int currentPlayerId = _spiel.aktueller_Spieler.Id;
 
         for(ClientMapChange change : clientMapChanges)
-        {
             PlaceUnits(change.CountryId, change.AddedUnits);
-        }
 
-        if (_spiel.Zustand == Spielzustaende.Armeen_hinzufuegen) {
+        if (_spiel.Zustand == Spielzustaende.Armeen_hinzufuegen && _spiel.aktueller_Spieler.Id == currentPlayerId) {
             Client_Response gameResponse = InteractWithGameLogic(1, null, null, true);
             UpdateGameStatus(gameResponse);
         }
@@ -178,7 +177,10 @@ public class ServerGame extends Game {
 
         if (_spiel != null)
         {
-            _spiel.EntferneSpieler(PlayerMapper.Map(player));
+            if (player.PlayerStatus != PlayerStatus.Defeated)
+                _spiel.EntferneSpieler(PlayerMapper.Map(player));
+            Client_Response gameResponse = _spiel.gib_aktuellen_Zustand();
+            UpdateGameStatus(gameResponse);
         }
 
         Players.remove(player);
@@ -230,7 +232,7 @@ public class ServerGame extends Game {
     private void UpdateGameStatus(Client_Response gameResponse) {
         CurrentPlayer = PlayerMapper.Map(gameResponse.gib_aktuellen_Spieler());
         CurrentGameStatus = MapSpielZustand(gameResponse.gib_aktuellen_Zustand());
-        NumberOfUnitsToPlace = gameResponse.gib_Anzahl_Armeen_von_Spieler(gameResponse.gib_aktuellen_Spieler());
+        NumberOfUnitsToPlace = gameResponse.hinzufuegbare_Armeen;
         UpdatePlayerStatus();
     }
 

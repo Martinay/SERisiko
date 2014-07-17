@@ -1,76 +1,126 @@
 package GameLogic;
 
 import java.util.Arrays;
-import java.util.Collections;
-
 
 public class Spielsteuerung {
 
 	
-	private boolean ist_erste_runde;
-	public Spieler aktueller_Spieler;
-	
-	public Spielwelt DieSpielwelt;
-	private Spieler[] dieSpieler;
-	
-	public Spielzustaende Zustand;
-        
-        
-        private Client_Response aktueller_Response;
-	
-	
-	//Zustandsvariabeln
-	
-	private int hinzuzufuegende_Armeen;
+    private boolean ist_erste_runde;
+    public Spieler aktueller_Spieler;
 
-	public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
-		ist_erste_runde=true;
+    public Spielwelt DieSpielwelt;
+    private Spieler[] dieSpieler;
 
-		this.dieSpieler = dieSpieler;
-		
-		DieSpielwelt = new Spielwelt(kontinente);
-		
-		this.aktueller_Spieler=dieSpieler[0];
+    public Spielzustaende Zustand;
 
-                setzeBesitzer(kontinente);
-		
-                if (constructor_ok()){
-                    armeen_hinzufuegen_betreten();
-                }else{
-                   Zustand=Spielzustaende.Beenden;
-                   new Client_Response(null, null, null, true); 
-                   System.out.println("Spiel konnte nicht erstellt werden. Unzulaessige Eingaben");
-                }
-      	}
-        
-        private boolean constructor_ok(){
-           
-            if (dieSpieler.length<2) return false;
-            if (DieSpielwelt.gibLaender()==null) return false;
-            if (DieSpielwelt.gibLaender().length<5) return false;
+
+    private Client_Response aktueller_Response;
+
+
+    //Zustandsvariabeln
+
+    private int hinzuzufuegende_Armeen;
+
+    public Spielsteuerung( Spieler[] dieSpieler, Kontinent[] kontinente){
+            ist_erste_runde=true;
+
+            this.dieSpieler = dieSpieler;
+
+            DieSpielwelt = new Spielwelt(kontinente);
+
+            this.aktueller_Spieler=dieSpieler[0];
+
+            //setzeBesitzer(kontinente);
+            setFairRandomOwner(kontinente); // this coud be a kind of more handy
             
-            //Falls noch Fehlzustaende zur Erzeugung fuehren bitte hier Abfrage erstellen 
-            
-            return true;
-        }
+            if (constructor_ok()){
+                armeen_hinzufuegen_betreten();
+            }else{
+               Zustand=Spielzustaende.Beenden;
+               this.aktueller_Response = new Client_Response(null, null, null, true); 
+               throw new IllegalArgumentException("Init failed -> not enought data");
+            }
+    }
 
-        private void setzeBesitzer(Kontinent[] kontinente) {
+    private boolean constructor_ok(){
 
-        //Todo testen...
-        
+        if (dieSpieler.length<2) return false;
+        if (DieSpielwelt.gibLaender()==null) return false;
+        if (DieSpielwelt.gibLaender().length<5) return false;
+
+        //Falls noch Fehlzustaende zur Erzeugung fuehren bitte hier Abfrage erstellen 
+
+        return true;
+    }
+
+    private void setzeBesitzer(Kontinent[] kontinente) {
+        //Todo testen... 
+
         int[] verteilung = new int[dieSpieler.length];
-        for (int i=0; i<dieSpieler.length; i++){
+        for (int i=0; i<dieSpieler.length; i++){ //default für int ist 0 also kann man sich die loop sparen ;)
             verteilung[i]=0;			
-	} 
+        } 
 
         for (Kontinent kontinent : kontinente)
         {
             for (Land land : kontinent.GETLands())
                 land.neuerBesitzer(auswahl_zufall_spieler(dieSpieler, verteilung));
+
         }
     }
+    
+    private void spieler_wechsel(){
+        int pos=0;
+	while(this.aktueller_Spieler!=dieSpieler[pos]){
+            pos++;
+	}
+		
+	if (pos>=dieSpieler.length-1){
+            aktueller_Spieler=dieSpieler[0];
+	}else{
+            aktueller_Spieler=dieSpieler[pos+1];
+	}
+		
+	if (DieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) spieler_wechsel();
         
-    private Spieler auswahl_zufall_spieler(Spieler[] spieler, int[] verteilung){
+    }
+    
+    /*
+    choose a fair player for each land, dependedd by a priotity list
+    */
+    private void setFairRandomOwner(Kontinent[] kontinente){
+        int[] priorities = new int[dieSpieler.length]; 
+        for (Kontinent kontinent : kontinente){
+            for (Land land : kontinent.GetLandsShuffeld())
+                land.neuerBesitzer(dieSpieler[choosePriotedPlayer(dieSpieler.length, priorities)]);
+        }
+    }
+    
+   /*
+    returns a random integer number with given boundaries
+    */
+    private static int myRandom(int low, int high) {
+        return (int) (Math.random() * (high - low) + low);
+    }
+    
+    /*
+    returns a player by given player list, depended by a priotity list
+    */
+    private int choosePriotedPlayer(int playerAmount, int[] priorities){
+        int highestPrio = myRandom(0, playerAmount);
+        int i = 0;
+        if (playerAmount > 0){
+            for (; i < playerAmount; i++){
+                if (priorities[i] < priorities[highestPrio]){
+                    highestPrio = i;
+                }
+            }  
+            priorities[highestPrio]++;
+        }
+        return highestPrio;
+    }
+       
+    private Spieler auswahl_zufall_spieler(Spieler[] spieler, int[] verteilung){ // ja bei 2 spielern ist es fair wenn einer 30% und der andere 70% bekommt, bei 4 Spieler aufwärts ist die funktion in ordnung
         int merk=10000;
 	int pos=0;
 		
@@ -97,31 +147,49 @@ public class Spielsteuerung {
             return aktueller_Response;
         }
     
-    /*
-    
-    kein kommentar ..............
-    */
-    public void EntferneSpieler(Spieler zuentfernenderspieler){
-        if (dieSpieler.length == 0)             // wozu? schwachsinn??? Wer pfuscht da rumm?
+
+    public void EntferneSpieler(Spieler zuentfernenderspieler) {
+
+        if (dieSpieler.length <= 1) {
+            dieSpieler = new Spieler[0];
+            Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
             return;
+        }
 
-        Spieler[] dienewSpieler = new Spieler[dieSpieler.length-1];
-        int i=0;
+        Spieler[] dienewSpieler = new Spieler[dieSpieler.length - 1];
+        int i = 0;
 
-        while((dieSpieler[i]!=zuentfernenderspieler) && (i<(dieSpieler.length-1))){
-        	dienewSpieler[i]=dieSpieler[i];
-        	i++;
+        while ((dieSpieler[i] != zuentfernenderspieler) && (i < (dieSpieler.length - 1))) {
+            dienewSpieler[i] = dieSpieler[i];
+            i++;
         }
         i++;
-        while (i<dieSpieler.length){
-        	dienewSpieler[i-1]=dieSpieler[i];
-        	i++;
+        while (i < dieSpieler.length) {
+            dienewSpieler[i - 1] = dieSpieler[i];
+            i++;
         }
-        dieSpieler=dienewSpieler;
+        dieSpieler = dienewSpieler;
+
+        if (dieSpieler.length == 1){
+            Zustand = Spielzustaende.Beenden;
+            aktueller_Response.setzeAktuellenZustand(Zustand);
+
+            for (Land land : DieSpielwelt.gibLaender())
+                land.neuerBesitzer(dieSpieler[0]);
+            return;
+        }
+
+
         DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
+
+        if (zuentfernenderspieler == this.aktueller_Spieler) {           // Case den ich nicht bedacht habe
+            this.spieler_wechsel();
+            this.armeen_hinzufuegen_betreten();
+        }
     }
 	
-	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){
+	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){          
 		
 		switch (Zustand) {
 		
@@ -173,13 +241,9 @@ public class Spielsteuerung {
 		Zustand=Spielzustaende.Armeen_hinzufuegen;
                 Client_Response zwischen = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
                 
-                /*
-                also wenn man sich schon so switch cases irg wo raus kopiert
-                dann bitte auch richt anpassen, was für nen monat bitte XDDDDDDD
-                want to buy cat
-                */
+                
                 if (ist_erste_runde==true){
-                	switch (dieSpieler.length){     // i want to switch a month var
+                	switch (dieSpieler.length){  
                             case 2:  hinzuzufuegende_Armeen=40;
                                          break;
                             case 3:  hinzuzufuegende_Armeen=35;
@@ -215,7 +279,7 @@ public class Spielsteuerung {
 				hinzuzufuegende_Armeen=hinzuzufuegende_Armeen-Ereigniss.anz_Armeen;
 			}else{
                                 aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
-				return aktueller_Response;
+				throw new IllegalArgumentException("This is not the Players county! - can not increment armis");
 			}
 		
 			if (hinzuzufuegende_Armeen<=0) return armeen_hinzufuegen_verlassen();
@@ -228,18 +292,12 @@ public class Spielsteuerung {
 	
 	private Client_Response armeen_hinzufuegen_verlassen(){
 		if (ist_erste_runde==true){
-			int pos=0;
-			while(this.aktueller_Spieler!=dieSpieler[pos]){
-				pos++;
-			}
+                    
+			spieler_wechsel();
 			
-			if (pos>=dieSpieler.length-1){
-				ist_erste_runde=false;
-				aktueller_Spieler=dieSpieler[0];
-			}else{
-				aktueller_Spieler=dieSpieler[pos+1];
-			}
-			
+                        if (this.aktueller_Spieler == dieSpieler[0])
+                            ist_erste_runde=false;
+                                
 			return armeen_hinzufuegen_betreten();
 			
 		}else{
@@ -258,14 +316,7 @@ public class Spielsteuerung {
 		
 	private Client_Response angriff(SpielEreigniss Ereigniss) {
 
-        //
-        //
-        // http://i.imgur.com/6xGoQrf.gif
-        //
-        //
-        // nochmal was soll der mist - pfusch nicht im Code herrum - nicht du Martin... Irgendein Depp macht die ganze Logik kaputt
 
-            
             
         //***********wechsel der Phase????********************
         if (Ereigniss.phasenwechsel)
@@ -273,10 +324,11 @@ public class Spielsteuerung {
 
         //***********Darf der Angriff durchgefuehrt werden???********************
         
-        if (!DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)) {
+        if (!(DieSpielwelt.pruefe_Attacke(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler))) {
             aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
-            return aktueller_Response;
-        }        
+            throw new IllegalArgumentException("can not attack!");
+        }
+        if ((Ereigniss.erstesLand.gib_anzahl_armeen()-Ereigniss.anz_Armeen)<=0) throw new IllegalArgumentException("To many armis are selected!");
         
         //***********Angriff an sich********************
   
@@ -300,17 +352,12 @@ public class Spielsteuerung {
         int tote_angreifer=0;
         int tote_verteidiger=0;
         
-        for (int i=0; i<angreifer_wuerfel_array.length;i++){
-            
-            if (i>=verteidiger_wuerfel_array.length){
-                tote_verteidiger++;                
-            }else{
+        for (int i=0; i<verteidiger_wuerfel_array.length;i++){
                 if (angreifer_wuerfel_array[i]<=verteidiger_wuerfel_array[i]){
                     tote_angreifer++;
                 }else{
                     tote_verteidiger++;
-                }
-            }       
+                }     
         }
         
         //Angriff durchfuehren
@@ -355,26 +402,19 @@ public class Spielsteuerung {
 	private Client_Response verschieben(SpielEreigniss Ereigniss){
 		if (Ereigniss.phasenwechsel){
 			return verschieben_verlassen();	
-		}else{
-			DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
-                        aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
-			return aktueller_Response;
 		}
+                if (DieSpielwelt.pruefe_zusatz_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, aktueller_Spieler)){
+                    DieSpielwelt.verschiebe_Armeen(Ereigniss.erstesLand, Ereigniss.zweitesLand, Ereigniss.anz_Armeen);
+                    aktueller_Response = new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, false);
+                    return aktueller_Response;
+                }else{
+                    aktueller_Response=new Client_Response(DieSpielwelt, Zustand, aktueller_Spieler, true);
+                    throw new IllegalArgumentException("Can not move armis, because aktiv Player is not owner of both countries...");   
+                }
 	}
 			
 	private Client_Response verschieben_verlassen(){
-		int pos=0;
-		while(this.aktueller_Spieler!=dieSpieler[pos]){
-			pos++;
-		}
-		
-		if (pos>=dieSpieler.length-1){
-			aktueller_Spieler=dieSpieler[0];
-		}else{
-			aktueller_Spieler=dieSpieler[pos+1];
-		}
-		
-		if (DieSpielwelt.gib_anz_Laender(aktueller_Spieler)==0) verschieben_verlassen();
+		this.spieler_wechsel();
 		
 		return armeen_hinzufuegen_betreten();
 	}

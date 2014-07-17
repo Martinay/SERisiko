@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-
 /**
  * Serverside API Implementation for Risiko WebGame
  * 
@@ -50,15 +49,22 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         RisikoServerResponse response = new RisikoServerResponse();
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
-        response.addTargetClient( clientId );
-        
-        //TODO response.addTargetClientList( message.PlayerIDsToUpdate );
-        
-        response.addChangedObject(message.Player);
-        
-        
-        
-        
+        response.addTargetClientList( message.PlayerIDsToUpdate );
+
+        List<MapChange> changedMaps = message.Map;
+        if(changedMaps != null){
+            for(int i = 0; i< changedMaps.size(); i++) {
+                response.addChangedObject( changedMaps.get(i) );
+            }
+        }
+
+        if(message.Player != null) { //check player (neccessary if player leave lobby before)
+            response.addChangedObject(message.Player);
+        }
+
+        if (message.Game != null)
+            response.addChangedObject( message.Game );
+
         return response;
     } 
 
@@ -115,6 +121,9 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         
         
         response.addChangedObject( message.Player );
+
+        if (message.Game != null)
+            response.addChangedObject(message.Game);
                 
         return response;
     }
@@ -397,14 +406,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response; 
     }
 
-    @Override
-    protected void connectionTerminated(GameClient gameClient) {
-        
-        int clientId = gameClient.getIdentifyer();
-        
-        this.gameManager.LeaveServer(clientId);
-    }
-
+   
     @Override
     public WebSocketResponse endFirstUnitPlacement(GameClient gameClient, JSONObject value) {
         System.out.println("end first unitplacement");
@@ -452,7 +454,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     public WebSocketResponse sendChatMessage(GameClient gameClient, String text) {
         System.out.println("chat message: " + text);
         
-       
+        
         int clientId = gameClient.getIdentifyer();
         
         ChatMessage responseObject = new ChatMessage();
@@ -471,5 +473,17 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         return response;
     }
     
-    
+    /**
+     * not used for api
+     * 
+     * @param gameClient
+     * @return 
+     */
+    @Override
+    protected RisikoServerResponse connectionTerminated(GameClient gameClient) {
+        
+        //cast to RisikoServerResponse
+        return (RisikoServerResponse)this.leaveServer(gameClient);
+        
+    }
 }

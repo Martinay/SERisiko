@@ -75,7 +75,7 @@
 }
 
 #gameOptions { 	
-    width: 180px; 
+    width: 230px; 
     padding-bottom: 10000px; 
     margin-bottom: -10000px;
     float: right; 
@@ -88,12 +88,7 @@
     overflow: hidden;
     overflow-y: hidden;
     float: left;
-    margin: -30px 50px 0px 50px;    
-}
-
-#svg_obj{
-    width: 100%;
-    height: 100%;
+    margin: -30px 25px 0px 25px;    
 }
 
 #gameMap {
@@ -102,17 +97,18 @@
 }
 
 #gameStatus{
-    padding-top: 120px;
-    height: 200px;
+    padding-top: 45px;
+    height: 150px;
 }
 
 #playerList{
     padding: 7px;
     border: 2px solid black;
-    width: 160px;
-    height: 180px;
+    width: 200px;
+    height: 260px;
     text-align: center;
     margin: 0px 10px;
+    font-size: larger;
     position: absolute;
 }
 /**anderes **/
@@ -193,7 +189,7 @@ label[for=unitAmountAttack]{
     margin-bottom: 10px; 
     width: 160px;
     position: relative;
-    margin-top: 180px;
+    margin-top: 260px;
 }
 
 /** Chat Stuff **/
@@ -234,8 +230,19 @@ input {
     border:1px solid #ACD8F0; 
     margin-bottom:10px;
 }
-  
-#submit { width: 60px; 
 
-.msgln { margin:0 0 2px 0;
+#insertSliderAfter {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+} 
+
+#abortUnitPlacement{
+    position: absolute;
+    top: 10px;
+    right: 60px;
 }
+  
+#submit { width: 60px; }
+
+.msgln { margin: 0px 0px 2px 0px;}

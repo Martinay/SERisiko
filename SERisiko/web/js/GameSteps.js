@@ -70,6 +70,7 @@ function GameSteps(doc){
         switch(currentGameStatus){
             case "FirstRoundPlacing":
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(arg));
+                root.getElementById("gameStatus").innerHTML = root.getElementById("gameStatus").innerHTML + "<div>Sie haben: " + parseInt(arg) + "<br> Einheiten zur Verfügung</div>";
                 break;
             case "PlacingUnits":
                 Core.gameSteps.setGameStep(Core.gameSteps.state.UNITPLACEMENT);
@@ -77,6 +78,7 @@ function GameSteps(doc){
                 root.getElementById("gameStatus").innerHTML = "Sie sind in Iherer Versorgungsphase:<br> <span style='color: red;'>Platzieren Sie ihre Einheiten</span>";
                 Core.unitPlacementHandler.clearPlacementArray();
                 Core.svgHandler.refreshOwnerRightsForUnitPlace(parseInt(arg));
+                root.getElementById("gameStatus").innerHTML = root.getElementById("gameStatus").innerHTML + "<div>Sie haben: " + parseInt(arg) + "<br> Einheiten zur Verfügung</div>";
                 break;
             case "Attack":
                 Core.gameSteps.setGameStep(Core.gameSteps.state.ATTACK);

@@ -13,13 +13,13 @@ public class MapLoader implements IMapLoader {
     IMapParser _mapParser;
 
     public MapLoader() {
-        _fileReader = new MapFileReader();
+        //_fileReader = new OnlyForTestMapFileReader();
+        _fileReader = new DummyMapFileReader();
         _mapParser = new MapParser();
     }
 
     @Override
-    public Collection<Kontinent> GetKontinets()
-    {
+    public Collection<Kontinent> GetKontinets() {
         String fileContent = _fileReader.ReadMapFile();
         return _mapParser.Parse(fileContent);
     }

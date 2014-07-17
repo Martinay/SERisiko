@@ -27,10 +27,11 @@ public class MessageCreator {
         return message;
     }
 
-    public static NewPlayerJoinedGameMessage CreateNewPlayerJoinedGameMessage(List<Integer> idsToUpdate, Player player) {
+    public static NewPlayerJoinedGameMessage CreateNewPlayerJoinedGameMessage(List<Integer> idsToUpdate, Player player, Game game) {
         NewPlayerJoinedGameMessage message = new NewPlayerJoinedGameMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
+        message.Game = game;
         return message;
     }
 
@@ -51,10 +52,12 @@ public class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player) {
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player, Game gameToSend, List<MapChange> map) {
         PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
+        message.Map = map;
+        message.Game = gameToSend;
 
         return message;
     }

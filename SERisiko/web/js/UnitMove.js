@@ -13,8 +13,8 @@ function UnitMove(document){
             root.getElementById("bottom_overlay").innerHTML = "\
                             <label for='unitAmount'>Anzahl Einheiten von: " + source + " nach: " + destination + "</label> \
                             <select name='unitAmount' value='1' id='unitAmount' style='margin-left: 20px;'></select> \
-                            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitMoveHandler.moveUnits(\""+source+"\",\""+destination+"\")' style='margin-right: 10px; margin-top: 10px; float: right;'>OK</button>\
-                            <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.clearUnitMoveDisplay()' style='margin-right: 20px; margin-top: 10px; float: right;'>Abbrechen</Button>";
+                            <button id='insertSliderAfter' name='setUnitAmount' onClick='Core.unitMoveHandler.moveUnits(\""+source+"\",\""+destination+"\")'>OK</button>\
+                            <button id='abortUnitPlacement' name='abortUnitPlacement' onClick='Core.unitMoveHandler.clearUnitMoveDisplay()'>Abbrechen</Button>";
             Core.createSlider("unitAmount", "abortUnitPlacement", 1, (parseInt(Core.svgHandler.getLandUnitcount(source)) - 1));
         } else {
             this.clearUnitMoveDisplay();
