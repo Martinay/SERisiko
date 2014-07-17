@@ -89,9 +89,11 @@ function SvgFunctions(document){
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
                 }
             }
+            document.getElementById("gameMap").style.height = "730px";
+            document.getElementById("bottom_overlay").style.height = "40px";
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
-                    <button name='clearAttackBottomDisplay' onClick='Core.attackHandler.clearAttackBottomDisplay();' style='margin: 22px 398px;'>Auswahl aufheben</button>";
+                    <button name='clearAttackBottomDisplay' onClick='Core.attackHandler.clearAttackBottomDisplay();' style='margin: 7px 400px;'>Auswahl aufheben</button>";
         } else {
             neighborLands = this.getLandNeighborsFiltered(id, true); 
             var newNeighorLands = null;
@@ -115,14 +117,17 @@ function SvgFunctions(document){
                 }
                 neighborLands = arraySchnittmengeDelete(newNeighorLands, doneCountrys);
             }
+            document.getElementById("gameMap").style.height = "700px";
+            document.getElementById("bottom_overlay").style.height = "40px";
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
-                    <button name='clearUnitMoveDisplay' onClick='Core.unitMoveHandler.clearUnitMoveDisplay();' style='margin: 22px 398px;'>Auswahl aufheben</button>";
+                    <button name='clearUnitMoveDisplay' onClick='Core.unitMoveHandler.clearUnitMoveDisplay();' style='margin: 7px 400px;'>Auswahl aufheben</button>";
         }
     };
     
     this.identifyDestination = function(id, attacker){
         this.setRectsOnClickNull();
+        document.getElementById("gameMap").style.height = "70px";
         svgDoc.getElementById(attacker + "_back").setAttribute('opacity','0.5');
         svgDoc.getElementById(id + "_back").setAttribute('opacity','0.5');
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK){

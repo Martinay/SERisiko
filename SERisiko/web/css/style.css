@@ -94,6 +94,7 @@
 #gameMap {
     border: 2px solid black;
     width: 100%;
+    height: 660px;
 }
 
 #gameStatus{
@@ -140,8 +141,9 @@ hr{
     background: #404040; /* Fallback IE 6-8 */
     background: rgba(0, 0, 0, .95);
     height: 70px;
-    margin-top: -70px;
-    width: 946px;
+    width: 950px;
+    margin-top: -7px;
+    margin-left: -2px;
 }
 
 #mutex {

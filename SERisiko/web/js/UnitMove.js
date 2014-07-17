@@ -24,13 +24,15 @@ function UnitMove(document){
     this.moveUnits = function(source, destination){ 
         var countSelector = root.getElementById("unitAmount").options[root.getElementById("unitAmount").selectedIndex].value;
         Core.connectionHandler.sendUnitMove(source, destination, parseInt(countSelector));
-        $( "#bottom_overlay" ).slideUp( "slow");
+        document.getElementById("gameMap").style.height = "660px";
+        $( "#bottom_overlay" ).slideDown( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
         Core.svgHandler.setRectsOnClickNull();
     };
     
     this.clearUnitMoveDisplay = function(){
+        document.getElementById("gameMap").style.height = "660px";
         $( "#bottom_overlay" ).slideUp( "slow");
         Core.hideElement(root.getElementById("mutex"));
         root.getElementById("bottom_overlay").innerHTML = "";
