@@ -11,6 +11,7 @@ var WebSocketApi = function(address, host, port) {
 
     ws.onclose = function() { 
         console.log("Disconnected"); 
+        location.reload();
     };
 
 

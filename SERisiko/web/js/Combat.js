@@ -100,8 +100,10 @@ function Combat(doc){
     };
     
     var enableStartAttack = function(looseUnitsAttack){
-        if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0 &&  root.getElementById("startAttack") !== null)
-            root.getElementById("startAttack").disabled = false;
+        if(root.getElementById("CountAttackAnzahl") !== null && root.getElementById("startAttack") !== null){
+            if(parseInt(root.getElementById("CountAttackAnzahl").innerHTML ) - parseInt(looseUnitsAttack) > 0 &&  root.getElementById("startAttack") !== null)
+                root.getElementById("startAttack").disabled = false;
+        }
     };
     
     this.getDicesCountRotate = function(attackCount, defendCount){
