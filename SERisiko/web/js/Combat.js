@@ -36,7 +36,7 @@ function Combat(doc){
             this.deleteDices();
             for (var i = 0; i < message.data.length; i++){
                 if(message.data[i].MapChange){
-                    lands[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
+                    lands[i] = parseInt(Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId));
                     landIds[i] = message.data[i].MapChange.countryId;
                     looseUnitCounts[i] = parseInt(lands[i]) - parseInt(message.data[i].MapChange.unitCount);
                     if(Core.svgHandler.getLandOwner(message.data[i].MapChange.countryId) === Core.getPlayerId()){
@@ -76,7 +76,7 @@ function Combat(doc){
                 Core.svgHandler.refreshOwnerRights();
             } else if(defeater === true){
                 setBlockedStatus(true);
-                Core.defendHandler.showDefend(lands[0], lands[1], attackDiceCount-1, defeatDiceCount-1, landIds[0], landIds[1]);
+                Core.defendHandler.showDefend(lands[0] - 1, lands[1], attackDiceCount-1, defeatDiceCount-1, landIds[0], landIds[1]);
                 editUnitCountDisplay(looseUnitCounts[0], looseUnitCounts[1]);
             }
         }
@@ -117,7 +117,7 @@ function Combat(doc){
     
     this.getDicesCountRotate = function(attackCount, defendCount){
         var countRotate = 18;
-                 
+        
         if(attackCount > 3){
             attackCount = 3;
         }
