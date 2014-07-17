@@ -124,8 +124,8 @@ hr{
     position: relative;
     background: #404040; /* Fallback IE 6-8 */
     background: rgba(0, 0, 0, .95);
-    margin-top: -670px;
-    height: 670px;
+    margin-top: -667px;
+    height: 667px;
     padding-top: 150px;
     text-align: center;
 }

@@ -89,7 +89,7 @@ function SvgFunctions(document){
                     svgDoc.getElementById(theRect.getAttribute("id") + "_back").setAttribute('opacity','0.75');
                 }
             }
-            document.getElementById("gameMap").style.height = "730px";
+            document.getElementById("gameMap").style.height = "700px";
             document.getElementById("bottom_overlay").style.height = "40px";
             $( "#bottom_overlay" ).slideDown( "slow");
             root.getElementById("bottom_overlay").innerHTML = "\
@@ -127,7 +127,6 @@ function SvgFunctions(document){
     
     this.identifyDestination = function(id, attacker){
         this.setRectsOnClickNull();
-        document.getElementById("gameMap").style.height = "70px";
         svgDoc.getElementById(attacker + "_back").setAttribute('opacity','0.5');
         svgDoc.getElementById(id + "_back").setAttribute('opacity','0.5');
         if(Core.gameSteps.getGameStep() === Core.gameSteps.state.ATTACK){

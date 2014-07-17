@@ -23,19 +23,17 @@ function Combat(doc){
     };
     
     this.showCombat = function(message){
-        var defeater = false;
-        var attacker = false;
-        var lands = new Array();
-        var landIds = new Array();
-        var looseUnitCounts = new Array();
-        var attackDiceCount = 1;
-        var defeatDiceCount = 1;
-        this.deleteDices();
-        
         if(getBlockedStatus()){
             setTimeout(function (){Core.combatHandler.showCombat(message)}, 50);
         } else {
-        
+            var defeater = false;
+            var attacker = false;
+            var lands = new Array();
+            var landIds = new Array();
+            var looseUnitCounts = new Array();
+            var attackDiceCount = 1;
+            var defeatDiceCount = 1;
+            this.deleteDices();
             for (var i = 0; i < message.data.length; i++){
                 if(message.data[i].MapChange){
                     lands[i] = Core.svgHandler.getLandUnitcount(message.data[i].MapChange.countryId);
@@ -68,6 +66,7 @@ function Combat(doc){
                 looseUnitCounts[0] = looseUnitCounts[0] - (parseInt(message.data[1].MapChange.unitCount) + 1);
                 Core.mapAnimationHandler.prepareUnitAddRemove(message.data[1].MapChange.countryId,  0);
                 Core.svgHandler.setLandUnitcount(message.data[0].MapChange.countryId, message.data[0].MapChange.unitCount);
+                Core.svgHandler.changeLandVisible(message.data[0].MapChange.countryId);
                 Core.mapAnimationHandler.doMovementAnimation(message.data[0].MapChange.countryId, message.data[1].MapChange.countryId, message.data[1].MapChange.unitCount);
                 Core.svgHandler.setLandComplete(message.data[1].MapChange.countryId, message.data[1].MapChange.ownerId, message.data[1].MapChange.unitCount);
             }
@@ -156,7 +155,7 @@ function Combat(doc){
             if(counter === (rotate/18)){
                 counter = 0;
                 i = 0;
-                setTimeout(function(){enableStartAttack();}, 600);
+                setTimeout(function(){enableStartAttack();}, 400);
             }
        }
     };
@@ -165,7 +164,7 @@ function Combat(doc){
         var count = Core.combatHandler.getDice(id);
         count = 7-count;
         var canvas = root.getElementById('canvas_' + id);
-        if(canvas !== null && canvas.getContext && count > 0 && count < 7){
+        if(canvas !== null && canvas.getContext){
             var context = canvas.getContext('2d');
             context.font = '40pt Arial';
             context.textAlign = 'center';
