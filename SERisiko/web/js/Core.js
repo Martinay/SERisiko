@@ -274,6 +274,14 @@ function Core() {
                 if(key === 13)
                      this.createNewGame();
                 break;
+            case "newGameAmount":
+                if (key === 13){
+                    document.getElementById("maxPlayers").value = this.minmax(document.getElementById("maxPlayers").value, 2, 6)
+                    this.createNewGame();
+                }
+                else
+                    document.getElementById("maxPlayers").value = this.minmax(document.getElementById("maxPlayers").value, 2, 6)
+                break;
             default:
                     //nothing
         }
