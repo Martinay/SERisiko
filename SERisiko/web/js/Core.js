@@ -270,6 +270,10 @@ function Core() {
                 if(key === 13)
                     this.validateChatMessage();
                 break;
+            case "newGame":
+                if(key === 13)
+                     this.createNewGame();
+                break;
             default:
                     //nothing
         }
@@ -321,6 +325,27 @@ function Core() {
         document.getElementById(id).disabled = state;
     };
     
+    /*
+     * sleep1 in ms function
+     * choose one
+     */
+    this.sleep = function(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    };
+    
+    /*
+     * sleep2 in ms function
+     * choose one
+     */
+    function sleep(millis, callback) {
+        setTimeout(function() { callback(); } , millis);
+    };
+    
     //# Private Methods  
     var hideElement = function(element){
         element.style.display = "none";
@@ -336,6 +361,8 @@ function Core() {
         if(valid === null){
             return false;
         }
+        if(str.length > 15)
+            return false;
         return true;
     };
     var validateMessage = function(str){
