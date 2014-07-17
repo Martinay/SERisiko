@@ -61,10 +61,10 @@
     <div id="newGame" style="width: 80%; text-align: center;">
         <h3 class="playerNameDisplay" style="text-align: center;"></h3>
         <div id="errorInGameName" style="color: red; font-size: 14pt;"></div><br />
-        Name des Spiels: <input id="gameName" placeholder="Spielname" size="26" style="margin-left: 50px;"><br />
+        Name des Spiels: <input id="gameName" placeholder="Spielname" size="26" onkeyup="Core.checkForKey('newGame', event.keyCode)" style="margin-left: 50px;"><br />
         Anzahl der Spieler: <input id="maxPlayers" value="6" size="26" onkeyup='this.value = Core.minmax(this.value, 2, 6);' style="margin-left: 40px; margin-top: 5px;"><br />
         <button style="margin-left: 25px; margin-top: 5px;" name="leaveCreateGame" onClick="Core.leaveCreateGame()">Zurück</button>
-        <button style="margin-left: 90px; margin-top: 5px;"  name="createtNewGame" onClick="Core.checkForKey('newGame', event.keyCode)">neues Spiel erstellen</button>
+        <button style="margin-left: 90px; margin-top: 5px;"  name="createtNewGame" onClick="Core.createNewGame()">neues Spiel erstellen</button>
     </div>
     <div id="game"> 
         <div id="GameScreen">
