@@ -241,7 +241,7 @@ function Core() {
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] !== null){
-                if(player[i].getPlayerId() === this.getPlayerId && getplayers[i].getPlayerStatus() !== "Defeated"){
+                if(players[i].getPlayerId() === this.getPlayerId && players[i].getPlayerStatus() !== "Defeated"){
                     document.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
                 } else {
