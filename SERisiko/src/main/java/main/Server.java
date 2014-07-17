@@ -20,8 +20,7 @@ public class Server
     {
         URL serverLocation = Server.class.getProtectionDomain().getCodeSource().getLocation();
 
-        //String docRoot = "web";
-        String docRoot = "C:\\Users\\M.Ayasse.VESCON\\IdeaProjects\\SERisiko\\SERisiko\\web";
+        String docRoot = "web";
         System.out.println("set documentRoot: " + docRoot);
         
         WebServer webServer = WebServers.createWebServer(HTTP_SERVER_PORT)
