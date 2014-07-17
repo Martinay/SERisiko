@@ -10,6 +10,7 @@
     <name>SERisiko</name>
     <url>http://maven.apache.org</url>
     <build>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -60,21 +61,21 @@
             </plugin>
             
             <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <configuration>
-                            <archive>
-                                    <manifest>
-                                            <mainClass>main.Server</mainClass>
-                                    </manifest>
-                            </archive>
-                    </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <archive>
+                        <manifest>
+                            <mainClass>main.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
             
-        </plugins>
-
-        
+        </plugins>    
     </build>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -91,8 +92,15 @@
             <name>Conjars</name>
             <url>http://conjars.org/repo</url>
             <layout>default</layout>
+        </repository>        
+        <repository>
+            <id>localRepo</id>
+            <name>SERisiko-TINF12</name>
+            <url>file://${project.basedir}\libs</url>
         </repository>
+        
     </repositories>
+
 
     <dependencies>
         <dependency>
@@ -107,19 +115,26 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-            <groupId>org.webbitserver</groupId>
-            <artifactId>webbit</artifactId>
-            <version>0.4.15</version>
-        </dependency>
-        <dependency>
             <groupId>net.hydromatic</groupId>
             <artifactId>linq4j</artifactId>
             <version>0.4</version>
-        </dependency>
+        </dependency> 
+
+        <dependency>
+            <groupId>webbitserver-temp</groupId>
+            <artifactId>webbit</artifactId>
+            <version>0.4.16-SNAPSHOT</version>
+        </dependency>  
+                      
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty</artifactId>
+            <version>3.9.2.Final</version>
         </dependency>
     </dependencies>
 </project>

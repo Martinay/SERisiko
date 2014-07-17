@@ -143,7 +143,6 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
         for(int i=0; i< args.size(); i++) {
             
             if( args.get(i) instanceof String) {
-                System.out.println("escape");
                 arguments.add(  escapeHtml( (String)args.get(i) ) );
             } else {
                 arguments.add(  args.get(i) );

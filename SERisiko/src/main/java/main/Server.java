@@ -3,9 +3,8 @@ package main;
 import ServerApi.RisikoServer;
 import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
+import org.webbitserver.WebbitException;
 import org.webbitserver.handler.StaticFileHandler;
-
-import java.net.URL;
 
 /**
  *
@@ -18,22 +17,25 @@ public class Server
     
     public static void main( String[] args )
     {
-        URL serverLocation = Server.class.getProtectionDomain().getCodeSource().getLocation();
 
         String docRoot = "web";
         System.out.println("set documentRoot: " + docRoot);
-        
-        WebServer webServer = WebServers.createWebServer(HTTP_SERVER_PORT)
-                .add(new StaticFileHandler( docRoot )); //add http response Service
-        
-        webServer.start();
-        System.out.println("Webserver running at " + webServer.getUri());
-        
-        
-         WebServer webSocketServer = WebServers.createWebServer(WEBSOCKET_SERVER_PORT)
-                        .add("/websocket", new RisikoServer()); //add Risiko Api Service 
-        webSocketServer.start();
-        
-        System.out.println("Websocketserver running at " + webSocketServer.getUri());
+
+        try{
+            WebServer webServer = WebServers.createWebServer(HTTP_SERVER_PORT)
+                    .add(new StaticFileHandler( docRoot )); //add http response Service
+
+            webServer.start();
+            System.out.println("Webserver running at " + webServer.getUri());
+            WebServer webSocketServer = WebServers.createWebServer(WEBSOCKET_SERVER_PORT)
+                            .add("/websocket", new RisikoServer()); //add Risiko Api Service 
+            webSocketServer.start();
+
+            System.out.println("Websocketserver running at " + webSocketServer.getUri());
+        } catch(WebbitException ex) {
+            //drop the exception (connection closed during sending data)
+            //FIX IT and find the problem
+            //only temp solution
+        }
     }
 }
