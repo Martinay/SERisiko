@@ -52,11 +52,12 @@ public class MessageCreator {
         return message;
     }
 
-    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player, List<MapChange> map) {
+    public static PlayerLeftMessage CreatePlayerLeftMessage(List<Integer> idsToUpdate, Player player, Game gameToSend, List<MapChange> map) {
         PlayerLeftMessage message = new PlayerLeftMessage();
         message.PlayerIDsToUpdate = idsToUpdate;
         message.Player = player;
         message.Map = map;
+        message.Game = gameToSend;
 
         return message;
     }

@@ -7,4 +7,5 @@ import java.util.List;
 public class PlayerLeftMessage extends MessageBase{
     public ServerLogic.Model.Player Player;
     public List<MapChange> Map;
+    public ServerLogic.Model.Game Game;
 }

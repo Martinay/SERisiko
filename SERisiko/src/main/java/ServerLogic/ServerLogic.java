@@ -94,10 +94,11 @@ public class ServerLogic implements IServerLogic {
 
         Player player = _state.TryGetPlayer(playerID);
         if (player == null)
-            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<>(), null, null);
+            return MessageCreator.CreatePlayerLeftMessage(new LinkedList<>(), null, null, null);
 
         List<Integer> idsToUpdate = new LinkedList<>(_state.Lobby.GetPlayerIDs());
         List<MapChange> map = null;
+        Game gameToSend = null;
 
         if (player.PlayerStatus != PlayerStatus.InLobby && player.PlayerStatus != PlayerStatus.Undefined) {
             ServerGame game = _state.TryGetGameByPlayerId(playerID);
@@ -105,6 +106,7 @@ public class ServerLogic implements IServerLogic {
             {
                 PlayerLeftGameMessage message = LeaveGame(playerID);
                 map = message.Map;
+                gameToSend = message.Game;
                 idsToUpdate = new LinkedList<>(message.PlayerIDsToUpdate);
             }
         }
@@ -114,7 +116,7 @@ public class ServerLogic implements IServerLogic {
         PlayerMapper.Remove(player);
         idsToUpdate.remove(player);
 
-        return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player, map);
+        return MessageCreator.CreatePlayerLeftMessage(idsToUpdate, player, gameToSend,map);
     }
 
     @Override
