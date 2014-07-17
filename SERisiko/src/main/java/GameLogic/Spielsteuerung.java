@@ -157,6 +157,11 @@ public class Spielsteuerung {
             return;
         }
 
+        if (zuentfernenderspieler == this.aktueller_Spieler) {           // Case den ich nicht bedacht habe
+            this.spieler_wechsel();
+            this.armeen_hinzufuegen_betreten();
+        }
+
         Spieler[] dienewSpieler = new Spieler[dieSpieler.length - 1];
         int i = 0;
 
@@ -182,11 +187,6 @@ public class Spielsteuerung {
 
 
         DieSpielwelt.verteile_neu_ohne(zuentfernenderspieler, dieSpieler);
-
-        if (zuentfernenderspieler == this.aktueller_Spieler) {           // Case den ich nicht bedacht habe
-            this.spieler_wechsel();
-            this.armeen_hinzufuegen_betreten();
-        }
     }
 	
 	public Client_Response zustandssteuerung(SpielEreigniss Ereigniss){          
