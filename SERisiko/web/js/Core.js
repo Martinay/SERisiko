@@ -118,7 +118,7 @@ function Core() {
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] !== null){
                 if(players[i].getPlayerStatus() === "Defeated"){
-                    if(this.getPlayerId() === CurrentPlayerId){
+                    if(this.getPlayerId() === players[i].getPlayerId()){
                         document.getElementById("loading_overlay").style.display = "block";
                         document.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='clearShowDefeat' onClick='Core.backToLobby()'>Anzeige Schließen</button>";
@@ -241,7 +241,7 @@ function Core() {
         var players = this.playerList.getPlayers();
         for(var i = 0; i < this.playerList.getPlayerAmount(); i++){
             if(players[i] !== null){
-                if(player[i].getPlayerId() === this.getPlayerId && getplayers[i].getPlayerStatus() !== "Defeated"){
+                if(players[i].getPlayerId() === this.getPlayerId && players[i].getPlayerStatus() !== "Defeated"){
                     document.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
                 } else {
@@ -269,6 +269,10 @@ function Core() {
             case "usermsg":
                 if(key === 13)
                     this.validateChatMessage();
+                break;
+            case "newGame":
+                if(key === 13)
+                     this.createNewGame();
                 break;
             default:
                     //nothing
@@ -321,6 +325,27 @@ function Core() {
         document.getElementById(id).disabled = state;
     };
     
+    /*
+     * sleep1 in ms function
+     * choose one
+     */
+    this.sleep = function(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    };
+    
+    /*
+     * sleep2 in ms function
+     * choose one
+     */
+    function sleep(millis, callback) {
+        setTimeout(function() { callback(); } , millis);
+    };
+    
     //# Private Methods  
     var hideElement = function(element){
         element.style.display = "none";
@@ -336,6 +361,8 @@ function Core() {
         if(valid === null){
             return false;
         }
+        if(str.length > 15)
+            return false;
         return true;
     };
     var validateMessage = function(str){

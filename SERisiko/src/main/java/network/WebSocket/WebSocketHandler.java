@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 
 /**
@@ -95,7 +96,6 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
     
     private void handleApiRequest(GameClient currentClient, String requestData){
      
-
         try {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject)parser.parse(requestData);
@@ -107,23 +107,26 @@ public abstract class WebSocketHandler extends BaseWebSocketHandler {
             Method m = this.apiCmdList.get(methodName);
             
             arguments.add(0, currentClient); //add GameClient to methodParams (at first position)
-            for (Object argument : arguments) {
-                System.out.println( argument.getClass().getName() );
-            }
             
             //@TODO WRONG (specific object type) ..... NEW ..... !!!!!!!
             RisikoServerResponse ret = (RisikoServerResponse)m.invoke(this, arguments.toArray() );
             this.sendAnswer(ret);
             
-        } catch (ParseException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch(Exception e) {
+            
+            Throwable ex = ExceptionUtils.getCause(e);
+ 
+            //Logger.getLogger(WebSocketHandler.class.getName()).log(Level.SEVERE, null, ex);
+            
+            //also to specific in this class !!!
+            RisikoServerResponse response = new RisikoServerResponse();
+            response.setState(1);
+            response.setMessage("ERROR");
+            response.addTargetClient( currentClient.getIdentifyer() );
+            response.addError( ex.getMessage() );
+            currentClient.sendMessage(response.toJSON());
+        }    
+
     }
     
     

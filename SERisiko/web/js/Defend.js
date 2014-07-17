@@ -6,7 +6,7 @@
 function Defend(document){
     var root = document;
     
-    this.showDefend = function (countAttack, countDefend, attackDiceCount, attackState){
+    this.showDefend = function (countAttack, countDefend, attackDiceCount, defendDiceCount, attackId, defendId, attackState){
         root.getElementById("loading_overlay").innerHTML = "";
         root.getElementById("loading_overlay").style.display = "block";
         
@@ -15,9 +15,9 @@ function Defend(document){
         var OverlayString = '<div id="showAttack">\n\
                                         <table id="attackerTable">\n\
                                             <tr>\n\n\
-                                                <td colspan="2">Attacker:</td>\n\
+                                                <td colspan="2">Attacker: (' + attackId + ')</td>\n\
                                                 <td style="width: 50px;"></td>\n\
-                                                <td colspan="2">Defender:</td>\n\
+                                                <td colspan="2">Defender: (' + defendId + ')</td>\n\
                                             </tr>\n\
                                             <tr>\n\
                                                 <td> Einheiten zum Angreifen:<div id="CountAttackAnzahl" style="color: green;"> ' + (parseInt(countAttack) - 1) + '</div></td>\n\
@@ -38,7 +38,7 @@ function Defend(document){
                                                     <canvas width="150" height="150" id="canvas_D1" style="margin-bottom: 50px;"></canvas><br />\n';
 
                 setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D1", rotate);},50);
-                if(countDefend > 1){
+                if(defendDiceCount > 1){
                     OverlayString = OverlayString + '<canvas width="150" height="150" id="canvas_D2"></canvas>\n';
                     setTimeout(function(){Core.combatHandler.drawRotatePaperOnCanvas("D2", rotate);},50); 
                 }
@@ -50,7 +50,7 @@ function Defend(document){
                                     
                                    "<button style='margin-top: 20px;' name='AbortAttack' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
                 root.getElementById("loading_overlay").innerHTML = OverlayString;
-                //setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 8500);
+                setTimeout(function(){ Core.defendHandler.showDefendResult(attackState);}, 7500);
     };
     
     this.showDefendResult = function(arg){
@@ -61,7 +61,7 @@ function Defend(document){
             root.getElementById("loading_overlay").innerHTML = "<div style='color:red; font-size: 28px;'>Sie haben verloren!</div><br /><br />\n\
                                                                 <button style='margin-top: 20px;' name='clearShowDefend' onClick='Core.defendHandler.clearShowDefend()'>Anzeige Schließen</button>";
         }
-        setTimeout(function(){ Core.defendHandler.clearShowDefend();}, 2000);
+        setTimeout(function(){ Core.defendHandler.clearShowDefend();}, 1500);
     };
     
     this.clearShowDefend = function(){

@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+
 
 /**
  * Serverside API Implementation for Risiko WebGame
@@ -51,14 +53,21 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         response.setState(1);
         response.setMessage( message.getClass().getSimpleName() );
         response.addTargetClientList( message.PlayerIDsToUpdate );
-        
-        
-        if(message.Player != null) { //check player (neccessary if player leve lobby before)
+
+        List<MapChange> changedMaps = message.Map;
+        if(changedMaps != null){
+            for(int i = 0; i< changedMaps.size(); i++) {
+                response.addChangedObject( changedMaps.get(i) );
+            }
+        }
+
+        if(message.Player != null) { //check player (neccessary if player leave lobby before)
             response.addChangedObject(message.Player);
         }
-        
-        
-        
+
+        if (message.Game != null)
+            response.addChangedObject( message.Game );
+
         return response;
     } 
 
@@ -449,10 +458,12 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
         System.out.println("chat message: " + text);
         
        
+        String msg = escapeHtml(text);
+        
         int clientId = gameClient.getIdentifyer();
         
         ChatMessage responseObject = new ChatMessage();
-        responseObject.text = text;        
+        responseObject.text = msg;        
         responseObject.player = clientId;
        
         ListPlayerInGameMessage message = gameManager.GetPlayersInGame(clientId);
