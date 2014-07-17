@@ -31,7 +31,7 @@ function Core() {
     this.setPlayerName = function(){
         var name = document.getElementById("playerName").value;
         if(name === "" || !validate(name)){
-            document.getElementById("errorInName").innerHTML = "Ihren Spielernamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Spielernamen ein der nur aus Buchstaben und Zahlen besteht";
+            document.getElementById("errorInName").innerHTML = "Ihren Spielernamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Spielernamen ein der nur aus Buchstaben und Zahlen besteht (maximal 15 Zeichen)";
         } else{
             myData.setPlayerName(name);
             // create Player on Server + joinLobby
@@ -204,7 +204,7 @@ function Core() {
         var maxPlayers = document.getElementById("maxPlayers").value;
         // validate name
         if(gameName === "" || !validate(gameName)){
-            document.getElementById("errorInGameName").innerHTML = "Ihren Gamenamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Gamenamen ein der nur aus Buchstaben und Zahlen besteht";
+            document.getElementById("errorInGameName").innerHTML = "Ihren Gamenamen können wir so nicht verwenden.<br /> Bitte geben Sie einen Gamenamen ein der nur aus Buchstaben und Zahlen besteht (maximal 15 Zeichen)";
         }else {
             //parse data to server
             this.connectionHandler.createGame(gameName, parseInt(maxPlayers));

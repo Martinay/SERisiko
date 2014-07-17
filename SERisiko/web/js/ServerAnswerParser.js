@@ -37,6 +37,9 @@ function ServerAnswerParser(doc){
                 case "PlayerLeftGameMessage":
                     handlePlayerLeftGameMessage(message);
                     break;
+                case "PlayerLeftMessage":
+                    handlePlayerLeftGameMessage(message);
+                    break;
                 case "PlayerCreatedMessage":
                     handlePlayerCreatedMessage(message);
                     break;
