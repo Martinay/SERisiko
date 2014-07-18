@@ -226,7 +226,7 @@ function ServerAnswerParser(doc){
                 Core.clearDisplayBackToLobby();
                 }
             else{
-                root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!<br> Alle anderen Spieler haben das Spiel verlaasen!</div><br /><br />\n\
+                root.getElementById("loading_overlay").innerHTML = "<div style='color:green; font-size: 28px;'>Sie haben gewonnen!<br> Alle anderen Spieler haben das Spiel verlassen!</div><br /><br />\n\
                                                                             <button style='margin-top: 20px;' name='LeaveGame' onClick='Core.backToLobby();'>Spiel Verlassen</button>";
                 Core.showElement(root.getElementById("loading_overlay"));
             }      
