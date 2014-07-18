@@ -341,7 +341,7 @@ public class Spielsteuerung {
         
         if (angreifer>3) angreifer_wuerfel=3; else angreifer_wuerfel=angreifer;
         if (verteidiger_Land.gib_anzahl_armeen()>2) verteidiger_wuerfel=2; else verteidiger_wuerfel=verteidiger_Land.gib_anzahl_armeen();
-        if (verteidiger_wuerfel>angreifer_wuerfel) verteidiger_wuerfel=angreifer_wuerfel;
+        //if (verteidiger_wuerfel>angreifer_wuerfel) verteidiger_wuerfel=angreifer_wuerfel;
         
         //wuerfeln...
         int[] angreifer_wuerfel_array = new int[angreifer_wuerfel];
