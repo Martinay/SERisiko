@@ -23,7 +23,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public WebSocketResponse joinServer(GameClient gameClient, String username) {
-        System.out.println("Join Server");
+        //System.out.println("Join Server");
 
         int clientId = gameClient.getIdentifyer();
         
@@ -40,7 +40,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public WebSocketResponse leaveServer(GameClient gameClient) {
-        System.out.println("leave Server");
+        //System.out.println("leave Server");
 
         int clientId = gameClient.getIdentifyer();
         
@@ -70,7 +70,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse joinLobby(GameClient gameClient) {
-        System.out.println("Join Lobby");
+        //System.out.println("Join Lobby");
 
         int clientId = gameClient.getIdentifyer();
         
@@ -88,7 +88,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse leaveLobby(GameClient gameClient) {
-        System.out.println("Leave Lobby");
+        //System.out.println("Leave Lobby");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -107,7 +107,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse joinGame(GameClient gameClient, Long gameIndex) {
-        System.out.println("Join Game: " + gameIndex);
+        //System.out.println("Join Game: " + gameIndex);
                 
         int clientId = gameClient.getIdentifyer();
         int gameId = gameIndex.intValue();
@@ -130,7 +130,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse leaveGame(GameClient gameClient) {
-        System.out.println("leave game");
+        //System.out.println("leave game");
         
         int clientId = gameClient.getIdentifyer();
 
@@ -162,7 +162,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse createGame(GameClient gameClient, String gamename, Long maxPlayer) {
-        System.out.println("Create Game: " + gamename + '(' +maxPlayer+ ')');
+        //System.out.println("Create Game: " + gamename + '(' +maxPlayer+ ')');
         
         int clientId = gameClient.getIdentifyer();
         
@@ -180,7 +180,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public WebSocketResponse setPlayerState(GameClient gameClient, Boolean state) {
-        System.out.println("set player state");
+        //System.out.println("set player state");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -197,7 +197,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public WebSocketResponse startGame(GameClient gameClient) {
-        System.out.println("Start Game");
+        //System.out.println("Start Game");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -221,7 +221,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse listOpenGames(GameClient gameClient) {
-        System.out.println("List Games");
+       //System.out.println("List Games");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -241,7 +241,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse listPlayers(GameClient gameClient) {
-        System.out.println("List Players");
+        //System.out.println("List Players");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -269,7 +269,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     //game
     @Override
     public WebSocketResponse attack(GameClient gameClient, String source, String target, Long value) {
-        System.out.println("attack");
+        //System.out.println("attack");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -306,7 +306,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
     @Override
     public  WebSocketResponse endAttack(GameClient gameClient) {
-        System.out.println("List Players");
+        //System.out.println("List Players");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -326,7 +326,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse move(GameClient gameClient, String source, String target, Long value) {
-        System.out.println("move Units");
+        //System.out.println("move Units");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -349,7 +349,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse set(GameClient gameClient, JSONObject value) {
-        System.out.println("setUnits");
+        //System.out.println("setUnits");
         
         int clientId = gameClient.getIdentifyer();
         List<ClientMapChange> clientMapChanges = new LinkedList();
@@ -390,7 +390,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
 
     @Override
     public WebSocketResponse endTurn(GameClient gameClient) {
-        System.out.println("end Round");
+        //System.out.println("end Round");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -409,7 +409,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
    
     @Override
     public WebSocketResponse endFirstUnitPlacement(GameClient gameClient, JSONObject value) {
-        System.out.println("end first unitplacement");
+        //System.out.println("end first unitplacement");
         
         int clientId = gameClient.getIdentifyer();
         
@@ -452,7 +452,7 @@ public class RisikoServer extends WebSocketHandler implements RisikoWebSocketApi
     
 
     public WebSocketResponse sendChatMessage(GameClient gameClient, String text) {
-        System.out.println("chat message: " + text);
+        //System.out.println("chat message: " + text);
         
         
         int clientId = gameClient.getIdentifyer();

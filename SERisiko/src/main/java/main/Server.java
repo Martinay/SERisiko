@@ -27,15 +27,20 @@ public class Server
 
             webServer.start();
             System.out.println("Webserver running at " + webServer.getUri());
+            
+        } catch(Exception ex) {
+            //drop the exception (connection closed during sending data)
+            //FIX IT and find the problem
+            //only temp solution
+        }
+            
+            
+            
+            
             WebServer webSocketServer = WebServers.createWebServer(WEBSOCKET_SERVER_PORT)
                             .add("/websocket", new RisikoServer()); //add Risiko Api Service 
             webSocketServer.start();
 
             System.out.println("Websocketserver running at " + webSocketServer.getUri());
-        } catch(WebbitException ex) {
-            //drop the exception (connection closed during sending data)
-            //FIX IT and find the problem
-            //only temp solution
-        }
     }
 }
